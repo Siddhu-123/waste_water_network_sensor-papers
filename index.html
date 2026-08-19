@@ -67,52 +67,6 @@
             line-height: 1.25;
         }
 
-        .subtitle {
-            color: var(--text-secondary);
-            font-size: clamp(13px, 1.5vw, 15px);
-            max-width: 850px;
-        }
-
-        /* Stats Bar */
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-            gap: clamp(10px, 1.5vw, 16px);
-            margin: clamp(18px, 2.5vw, 28px) 0;
-        }
-
-        .stat-card {
-            background: var(--bg-card);
-            border: 1px solid var(--border-color);
-            backdrop-filter: blur(12px);
-            padding: clamp(14px, 2vw, 18px) clamp(16px, 2vw, 22px);
-            border-radius: 12px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
-        }
-
-        .stat-val {
-            font-size: clamp(22px, 2.5vw, 28px);
-            font-weight: 700;
-            color: var(--accent-emerald);
-            font-family: 'JetBrains Mono', monospace;
-            display: flex;
-            align-items: baseline;
-            gap: 6px;
-        }
-
-        .stat-val .total {
-            font-size: clamp(13px, 1.5vw, 16px);
-            color: var(--text-muted);
-            font-weight: 500;
-        }
-
-        .stat-lbl {
-            font-size: clamp(11px, 1.2vw, 13px);
-            font-weight: 500;
-            color: var(--text-secondary);
-            margin-top: 4px;
-        }
-
         /* Search and Filter Bar */
         .controls-bar {
             display: flex;
@@ -257,21 +211,6 @@
             font-weight: 600;
             letter-spacing: 0.02em;
             display: inline-block;
-            white-space: nowrap;
-        }
-
-        .badge-status {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            padding: 4px 10px;
-            border-radius: 6px;
-            font-size: 12px;
-            font-weight: 600;
-            font-family: 'JetBrains Mono', monospace;
-            background: rgba(16, 185, 129, 0.15);
-            color: var(--accent-emerald);
-            border: 1px solid rgba(16, 185, 129, 0.25);
             white-space: nowrap;
         }
 
@@ -515,7 +454,7 @@
                 display: block;
             }
 
-            td.col-num, td.col-cat, td.col-status {
+            td.col-num, td.col-cat {
                 display: none !important;
             }
 
@@ -610,33 +549,13 @@
         <div class="header-top">
             <div>
                 <h1>Wastewater Sensor Research Corpus (Paper 1)</h1>
-                <p class="subtitle">Evidence base of 23 peer-reviewed cornerstone research papers synthesized in <em>"A Comprehensive Review of Sensor Technologies for Wastewater Collection Networks"</em>. Click <strong>📝 8-Step Summary</strong> on any paper to view its annotated structure.</p>
             </div>
             <a href="./paper1.pdf" target="_blank" class="btn-action btn-pdf" style="padding: 10px 16px; font-size: 13px;">
                 📄 View Compiled Paper 1 (PDF)
             </a>
         </div>
 
-        <div class="stats-grid">
-            <div class="stat-card">
-                <div class="stat-val">23 <span class="total">/ 23 (100%)</span></div>
-                <div class="stat-lbl">Full-Text PDFs Saved Locally</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-val">~66 <span class="total">MB</span></div>
-                <div class="stat-lbl">Total Local Corpus Size</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-val">466 <span class="total">pages</span></div>
-                <div class="stat-lbl">Cumulative Source Literature Analyzed</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-val">0</div>
-                <div class="stat-lbl">Redundant / Uncited Papers</div>
-            </div>
-        </div>
-
-        <div class="controls-bar">
+        <div class="controls-bar" style="margin-top: 20px;">
             <div class="search-box">
                 <svg class="search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <circle cx="11" cy="11" r="8"></circle>
@@ -661,8 +580,7 @@
                 <tr>
                     <th style="width: 50px;">#</th>
                     <th>Research Paper & Authors</th>
-                    <th style="width: 160px;">Category</th>
-                    <th style="width: 150px;">Local Status</th>
+                    <th style="width: 180px;">Category</th>
                     <th style="width: 320px;">Interactive Actions</th>
                 </tr>
             </thead>
@@ -1216,7 +1134,6 @@
                             <span class="mobile-num">#${String(paper.id).padStart(2, '0')}</span>
                             <div class="mobile-badges">
                                 <span class="badge-tag">${paper.categoryLabel}</span>
-                                <span class="badge-status">✓ ${paper.size} (${paper.pages}p)</span>
                             </div>
                         </div>
                         <div class="paper-title">${paper.title}</div>
@@ -1226,7 +1143,6 @@
                         </div>
                     </td>
                     <td class="col-cat"><span class="badge-tag">${paper.categoryLabel}</span></td>
-                    <td class="col-status"><span class="badge-status">✓ ${paper.size} (${paper.pages}p)</span></td>
                     <td class="col-actions">
                         <div class="action-btns mobile-actions">
                             <button class="btn-action btn-summary" onclick="openSummary(${paper.id})">📝 8-Step Summary</button>
