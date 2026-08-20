@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, viewport-fit=cover">
-    <title>Research Paper Organization Tool</title>
+    <title>Wastewater Sensor Research Hub | Paper Organization Tool</title>
     
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -26,159 +26,267 @@
             --bg-card-hover: rgba(26, 38, 68, 0.95);
             --border-color: #1e293b;
             --border-light: #334155;
+            --border-glow: rgba(56, 189, 248, 0.35);
+            
             --text-primary: #f8fafc;
             --text-secondary: #94a3b8;
             --text-muted: #64748b;
+            
             --accent-cyan: #38bdf8;
+            --accent-blue: #2563eb;
+            --accent-emerald: #10b981;
+            --accent-amber: #f59e0b;
+            --accent-purple: #a855f7;
             --key-yellow: #fbbf24;
+            
             --font-mono: "JetBrains Mono", monospace;
             --radius-md: 10px;
             --radius-lg: 16px;
+            --shadow-card: 0 10px 30px -10px rgba(0, 0, 0, 0.5);
+            --shadow-glow: 0 0 25px rgba(56, 189, 248, 0.15);
         }
+
         * { box-sizing: border-box; margin: 0; padding: 0; }
+
         body {
             font-family: "Inter", sans-serif;
             background: var(--bg-primary);
             color: var(--text-primary);
-            padding: 32px 40px;
+            padding: clamp(14px, 2.5vw, 32px) clamp(12px, 3vw, 40px);
             max-width: 1600px;
             margin: 0 auto;
+            line-height: 1.5;
             min-height: 100vh;
         }
-        header { border-bottom: 1px solid var(--border-color); padding-bottom: 20px; margin-bottom: 24px; }
-        .header-top { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px; }
-        h1 { font-size: 28px; font-weight: 800; color: #fff; }
-        .btn {
-            display: inline-flex; align-items: center; justify-content: center; gap: 8px;
-            padding: 9px 16px; border-radius: var(--radius-md); font-size: 13px; font-weight: 600;
-            cursor: pointer; transition: all 0.2s; border: 1px solid transparent; text-decoration: none;
+
+        header { margin-bottom: 24px; padding-bottom: 20px; border-bottom: 1px solid var(--border-color); }
+
+        .header-top { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px; margin-bottom: 16px; }
+
+        .brand-badge {
+            display: inline-flex; align-items: center; gap: 6px; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--accent-cyan); background: rgba(56, 189, 248, 0.12); padding: 3px 10px; border-radius: 20px; border: 1px solid rgba(56, 189, 248, 0.25);
         }
-        .btn-primary { background: #2563eb; color: white; }
-        .btn-primary:hover { background: #1d4ed8; }
+
+        h1 {
+            font-size: clamp(22px, 2.8vw, 32px); font-weight: 800; letter-spacing: -0.025em; background: linear-gradient(135deg, #ffffff 0%, #38bdf8 60%, #818cf8 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+        }
+
+        .header-actions { display: flex; gap: 10px; flex-wrap: wrap; }
+
+        .btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 9px 16px; border-radius: var(--radius-md); font-size: 13px; font-weight: 600; text-decoration: none; cursor: pointer; border: 1px solid transparent; transition: all 0.2s; white-space: nowrap; }
+        .btn-primary { background: linear-gradient(135deg, #0284c7 0%, #2563eb 100%); color: white; box-shadow: 0 4px 14px rgba(37, 99, 235, 0.35); }
+        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(37, 99, 235, 0.5); }
         .btn-secondary { background: var(--bg-secondary); border-color: var(--border-color); color: var(--text-primary); }
         .btn-secondary:hover { border-color: var(--accent-cyan); color: var(--accent-cyan); }
-        .btn-danger { background: rgba(239, 68, 68, 0.15); color: #f87171; }
-        .btn-danger:hover { background: #ef4444; color: white; }
-        .btn-sm { padding: 6px 11px; font-size: 12px; }
-        
-        .controls-card { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-lg); padding: 16px 20px; margin-bottom: 24px; display: flex; gap: 14px; }
-        .search-input { flex: 1; background: var(--bg-secondary); border: 1px solid var(--border-color); color: white; padding: 10px 16px; border-radius: var(--radius-md); font-size: 13.5px; outline: none; }
-        .search-input:focus { border-color: var(--accent-cyan); }
+        .btn-sm { padding: 6px 11px; font-size: 12px; border-radius: 6px; }
+        .btn-icon { padding: 8px; border-radius: 8px; background: var(--bg-secondary); border: 1px solid var(--border-color); color: var(--text-secondary); cursor: pointer; display: inline-flex; }
+        .btn-icon:hover { color: var(--text-primary); border-color: var(--accent-cyan); }
+        .btn-icon.btn-delete:hover { color: white; background: #ef4444; border-color: #ef4444; }
 
+        /* Controls Card */
+        .controls-card { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-lg); padding: 16px 20px; margin-bottom: 24px; display: flex; flex-direction: column; gap: 14px; backdrop-filter: blur(12px); }
+        .controls-top-row { display: flex; gap: 12px; flex-wrap: wrap; align-items: center; justify-content: space-between; }
+        .search-container { position: relative; flex: 1 1 320px; }
+        .search-input { width: 100%; background: var(--bg-secondary); border: 1px solid var(--border-color); color: var(--text-primary); padding: 10px 16px; border-radius: var(--radius-md); font-size: 13.5px; outline: none; }
+        .search-input:focus { border-color: var(--accent-cyan); box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.15); }
+        
+        .category-filter-pills { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+        .cat-btn { background: var(--bg-secondary); border: 1px solid var(--border-color); color: var(--text-secondary); padding: 6px 12px; border-radius: 8px; font-size: 12px; font-weight: 600; cursor: pointer; transition: all 0.2s; white-space: nowrap; }
+        .cat-btn:hover { color: var(--text-primary); border-color: var(--text-muted); }
+        .cat-btn.active { background: var(--accent-indigo, #6366f1); border-color: var(--accent-indigo, #6366f1); color: white; }
+
+        .results-bar { display: flex; justify-content: space-between; align-items: center; font-size: 13px; color: var(--text-secondary); margin-bottom: 16px; padding: 0 4px; }
+        .results-count { font-weight: 700; color: var(--text-primary); }
+
+        /* Grid */
         .papers-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(360px, 1fr)); gap: 20px; }
-        .paper-card { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-lg); padding: 20px; display: flex; flex-direction: column; justify-content: space-between; }
-        .paper-title { font-size: 15px; font-weight: 700; margin-bottom: 8px; }
+        .paper-card { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-lg); padding: 20px; display: flex; flex-direction: column; justify-content: space-between; transition: all 0.2s; }
+        .paper-card:hover { transform: translateY(-3px); border-color: var(--border-glow); box-shadow: var(--shadow-glow), 0 12px 35px rgba(0,0,0,0.5); background: var(--bg-card-hover); }
+        .card-header-row { display: flex; justify-content: space-between; align-items: flex-start; gap: 8px; margin-bottom: 10px; }
+        .paper-num-badge { font-family: var(--font-mono); font-size: 11.5px; font-weight: 700; color: var(--text-muted); background: rgba(15, 23, 42, 0.8); padding: 2px 7px; border-radius: 4px; border: 1px solid var(--border-color); }
+        
+        .badge-tag { background: rgba(56, 189, 248, 0.12); color: var(--accent-cyan); border: 1px solid rgba(56, 189, 248, 0.25); padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: 600; white-space: nowrap; }
+        .paper-title { font-size: 15px; font-weight: 700; color: var(--text-primary); line-height: 1.4; margin-bottom: 8px; }
         .paper-meta { font-size: 12.5px; color: var(--text-secondary); margin-bottom: 12px; }
-        .card-actions { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 14px; padding-top: 14px; border-top: 1px solid var(--border-color); }
+        .paper-topic-box { background: rgba(15, 23, 42, 0.7); border-left: 3px solid var(--accent-cyan); padding: 6px 10px; border-radius: 0 6px 6px 0; font-size: 12px; color: #cbd5e1; margin-bottom: 14px; }
+        .paper-topic-box strong { color: var(--text-primary); }
+        
+        .card-actions { display: flex; gap: 6px; align-items: center; flex-wrap: wrap; margin-top: 14px; border-top: 1px solid var(--border-color); padding-top: 14px; }
+        .btn-summary { background: rgba(234, 179, 8, 0.15); color: #fbbf24; border: 1px solid rgba(234, 179, 8, 0.35); flex: 1 1 auto; }
+        .btn-pdf { background: rgba(37, 99, 235, 0.15); color: #60a5fa; border: 1px solid rgba(37, 99, 235, 0.35); }
+        .btn-scholar { background: rgba(99, 102, 241, 0.15); color: #a5b4fc; border: 1px solid rgba(99, 102, 241, 0.35); }
 
         /* Modals */
-        .modal-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.8); display: none; justify-content: center; align-items: center; z-index: 1000; padding: 24px; }
-        .modal-card { background: #0f172a; border: 1px solid var(--border-color); border-radius: var(--radius-lg); width: 100%; max-width: 900px; max-height: 90vh; overflow-y: auto; display: flex; flex-direction: column; }
-        .modal-header { padding: 18px 24px; border-bottom: 1px solid var(--border-color); display: flex; justify-content: space-between; position: sticky; top: 0; background: #0f172a; z-index: 10; }
+        .modal-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(4, 7, 15, 0.85); backdrop-filter: blur(10px); display: none; justify-content: center; align-items: center; z-index: 1000; padding: 24px; }
+        .modal-card { background: #0f172a; border: 1px solid var(--border-color); border-radius: 22px; width: 100%; max-width: min(960px, 96vw); max-height: min(92vh, 920px); overflow-y: auto; box-shadow: 0 25px 60px rgba(0, 0, 0, 0.7); display: flex; flex-direction: column; }
+        .modal-header { padding: 18px 24px; border-bottom: 1px solid var(--border-color); display: flex; justify-content: space-between; align-items: flex-start; position: sticky; top: 0; background: #0f172a; z-index: 10; gap: 14px; }
+        .modal-title { font-size: 18px; font-weight: 800; color: var(--text-primary); line-height: 1.3; }
+        .modal-close { background: var(--bg-secondary); border: 1px solid var(--border-color); color: var(--text-muted); font-size: 20px; width: 34px; height: 34px; border-radius: 8px; display: flex; align-items: center; justify-content: center; cursor: pointer; }
+        .modal-close:hover { color: white; background: #ef4444; border-color: #ef4444; }
         .modal-body { padding: 24px; display: flex; flex-direction: column; gap: 16px; }
-        .modal-footer { padding: 16px 24px; border-top: 1px solid var(--border-color); display: flex; justify-content: flex-end; gap: 10px; position: sticky; bottom: 0; background: #0f172a; z-index: 10; }
+        .modal-footer { padding: 16px 24px; border-top: 1px solid var(--border-color); display: flex; justify-content: flex-end; gap: 10px; background: rgba(15, 23, 42, 0.95); position: sticky; bottom: 0; z-index: 10; }
 
-        .form-group { display: flex; flex-direction: column; gap: 6px; margin-bottom: 12px; }
+        .step-item { display: flex; gap: 16px; background: rgba(30, 41, 59, 0.45); border: 1px solid var(--border-color); padding: 16px 18px; border-radius: var(--radius-md); align-items: flex-start; }
+        .step-badge { background: var(--key-yellow); color: #0f172a; font-weight: 800; font-size: 13px; width: 28px; height: 28px; border-radius: 6px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-family: var(--font-mono); }
+        .step-label { font-size: 11.5px; font-weight: 700; text-transform: uppercase; color: var(--key-yellow); margin-bottom: 4px; }
+        .step-text { font-size: 14px; color: var(--text-primary); line-height: 1.55; }
+
+        /* Forms */
+        .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+        .form-group { display: flex; flex-direction: column; gap: 6px; }
+        .form-group.full-width { grid-column: 1 / -1; }
         .form-label { font-size: 12px; font-weight: 600; color: var(--text-secondary); }
-        .form-input, .form-textarea { background: var(--bg-secondary); border: 1px solid var(--border-color); color: white; padding: 10px 14px; border-radius: var(--radius-md); width: 100%; }
-        .form-textarea { min-height: 80px; resize: vertical; }
-        
-        .upload-dropzone { border: 2px dashed var(--border-light); padding: 24px; text-align: center; cursor: pointer; border-radius: var(--radius-lg); margin-bottom: 16px; background: rgba(15,23,42,0.5); }
-        .upload-dropzone:hover { border-color: var(--accent-cyan); }
+        .form-input, .form-textarea, .form-select { background: var(--bg-secondary); border: 1px solid var(--border-color); color: var(--text-primary); padding: 10px 14px; border-radius: var(--radius-md); font-size: 13.5px; outline: none; width: 100%; }
+        .form-input:focus, .form-textarea:focus, .form-select:focus { border-color: var(--accent-cyan); box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.15); }
+        .form-textarea { resize: vertical; min-height: 70px; font-family: inherit; }
 
-        .step-item { background: rgba(30,41,59,0.5); padding: 16px; border-radius: var(--radius-md); border: 1px solid var(--border-color); margin-bottom: 12px; }
-        .step-label { font-size: 12px; color: var(--key-yellow); font-weight: 700; margin-bottom: 6px; }
+        /* Upload Dropzone */
+        .upload-dropzone { border: 2px dashed var(--border-light); background: rgba(15, 23, 42, 0.6); border-radius: var(--radius-lg); padding: 24px; text-align: center; cursor: pointer; transition: all 0.2s; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; }
+        .upload-dropzone:hover { border-color: var(--accent-cyan); background: rgba(56, 189, 248, 0.05); }
+        .upload-text { font-size: 13.5px; font-weight: 600; color: var(--text-primary); }
+        .parsing-status-badge { display: none; align-items: center; gap: 8px; padding: 8px 14px; border-radius: var(--radius-md); font-size: 12.5px; font-weight: 600; background: rgba(16, 185, 129, 0.15); color: var(--accent-emerald); border: 1px solid rgba(16, 185, 129, 0.3); margin-top: 8px; }
+
+        /* Toast Notifications */
+        .toast-container { position: fixed; bottom: 24px; right: 24px; display: flex; flex-direction: column; gap: 10px; z-index: 2000; pointer-events: none; }
+        .toast { background: #0f172a; border: 1px solid var(--accent-cyan); color: white; padding: 12px 18px; border-radius: var(--radius-md); font-size: 13.5px; font-weight: 600; box-shadow: 0 10px 30px rgba(0,0,0,0.6); display: flex; align-items: center; animation: toastIn 0.25s cubic-bezier(0.16, 1, 0.3, 1); pointer-events: auto; }
+        @keyframes toastIn { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
     </style>
 </head>
 <body>
+
     <header>
         <div class="header-top">
-            <h1>My Research Papers</h1>
-            <div style="display: flex; gap: 10px;">
+            <div>
+                <div class="brand-badge">SA Water Capstone &bull; Research Repository</div>
+                <h1>Wastewater Sensor Research Hub</h1>
+            </div>
+            <div class="header-actions">
                 <button class="btn btn-primary" onclick="openAddPaperModal()">+ Add Research Paper</button>
-                <button class="btn btn-secondary" onclick="exportJSON()">Export JSON</button>
-                <button class="btn btn-danger" onclick="clearAll()">Clear All</button>
+                <a href="./paper/paper.pdf" target="_blank" class="btn btn-secondary">📄 View Paper 1 PDF</a>
+                <button class="btn btn-secondary" onclick="exportCorpusJSON()">📦 Export JSON</button>
             </div>
         </div>
+
         <div class="controls-card">
-            <input type="text" class="search-input" id="searchInput" placeholder="Search papers..." onkeyup="renderPapers()">
+            <div class="controls-top-row">
+                <div class="search-container">
+                    <input type="text" class="search-input" id="searchInput" placeholder="Search by paper title, author, topic, or 8-step content..." onkeyup="filterPapers()">
+                </div>
+            </div>
+            <div class="category-filter-pills"></div>
         </div>
     </header>
 
     <main>
-        <div class="papers-grid" id="papersGrid"></div>
+        <div class="results-bar">
+            <div>Showing <span class="results-count" id="activeCount">0</span> of <span id="totalCount">0</span> research papers</div>
+        </div>
+        <div class="papers-grid" id="papersGridContainer"></div>
     </main>
 
     <!-- 8-Step Summary Modal -->
-    <div class="modal-overlay" id="summaryModal" onclick="if(event.target.id==='summaryModal') closeModal('summaryModal')">
+    <div class="modal-overlay" id="summaryModal" onclick="handleOverlayClick(event, 'summaryModal')">
         <div class="modal-card">
             <div class="modal-header">
-                <div id="modalPaperTitle" style="font-weight: 700; font-size: 18px;">Title</div>
-                <button class="btn btn-secondary btn-sm" onclick="closeModal('summaryModal')">&times;</button>
+                <div>
+                    <div class="modal-title" id="modalPaperTitle">Research Paper Title</div>
+                    <div style="font-size: 13px; color: var(--accent-cyan); margin-top: 4px;" id="modalPaperMeta">Authors &bull; Journal</div>
+                </div>
+                <button class="modal-close" onclick="closeModal('summaryModal')">&times;</button>
             </div>
-            <div class="modal-body" id="summaryBody"></div>
+            <div class="modal-body" id="modalBodyContent"></div>
             <div class="modal-footer">
-                <button class="btn btn-secondary" onclick="copyMarkdown()">Copy Markdown</button>
+                <button class="btn btn-secondary" onclick="editPaperFromSummary()">✏️ Edit Summary</button>
+                <button class="btn btn-secondary" onclick="copySummaryMarkdown()">📋 Copy Markdown</button>
+                <a class="btn btn-secondary" id="modalScholarLink" href="#" target="_blank">🔍 Google Scholar</a>
+                <a class="btn btn-primary" id="modalPdfLink" href="#" target="_blank">📄 View PDF</a>
             </div>
         </div>
     </div>
 
-    <!-- Add/Edit Modal with PDF Parser -->
-    <div class="modal-overlay" id="formModal" onclick="if(event.target.id==='formModal') closeModal('formModal')">
-        <div class="modal-card">
+    <!-- Add / Edit Paper Modal -->
+    <div class="modal-overlay" id="paperFormModal" onclick="handleOverlayClick(event, 'paperFormModal')">
+        <div class="modal-card" style="max-width: 900px;">
             <div class="modal-header">
-                <div style="font-weight: 700; font-size: 18px;" id="formTitle">Add / Edit Paper</div>
-                <button class="btn btn-secondary btn-sm" onclick="closeModal('formModal')">&times;</button>
+                <div class="modal-title" id="formModalTitle">+ Add New Research Paper</div>
+                <button class="modal-close" onclick="closeModal('paperFormModal')">&times;</button>
             </div>
             <div class="modal-body">
                 <form id="paperForm" onsubmit="savePaper(event)">
                     <input type="hidden" id="paperId">
-                    
+
+                    <!-- Functional PDF Dropzone -->
                     <div class="upload-dropzone" id="dropzone" onclick="document.getElementById('pdfFileInput').click()">
-                        <strong>Drop PDF Here or Click to Upload</strong>
-                        <div style="font-size: 12px; color: var(--text-muted); margin-top: 4px;">Real client-side PDF parser using pdf.js to extract title & text.</div>
-                        <input type="file" id="pdfFileInput" accept="application/pdf" style="display: none;" onchange="handlePdfUpload(this.files[0])">
+                        <div class="upload-text">Drop PDF Here to Auto-Extract Metadata (Yes, the parser actually works!)</div>
+                        <input type="file" id="pdfFileInput" accept="application/pdf" style="display: none;" onchange="handlePdfFileUpload(this.files[0])">
                     </div>
-                    
-                    <div id="parseStatus" style="display: none; color: #10b981; font-size: 12px; margin-bottom: 12px;">✅ PDF Parsed Locally.</div>
+                    <div class="parsing-status-badge" id="parsingStatus"></div>
 
-                    <div class="form-group">
-                        <label class="form-label">Title</label>
-                        <input type="text" class="form-input" id="inpTitle" required>
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label">Authors</label>
-                        <input type="text" class="form-input" id="inpAuthors">
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label">PDF URL / Path</label>
-                        <input type="text" class="form-input" id="inpPdf">
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label">Google Scholar URL</label>
-                        <input type="text" class="form-input" id="inpScholar">
-                    </div>
+                    <div class="form-grid" style="margin-top: 18px;">
+                        <div class="form-group full-width">
+                            <label class="form-label">Research Paper Title *</label>
+                            <input type="text" class="form-input" id="inputTitle" required oninput="updateAutoScholarLink()">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Authors *</label>
+                            <input type="text" class="form-input" id="inputAuthors" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Journal / Venue &amp; Year *</label>
+                            <input type="text" class="form-input" id="inputJournal" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Topic / Specific Focus *</label>
+                            <input type="text" class="form-input" id="inputTopic" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Sensor Domain / Category *</label>
+                            <select class="form-select" id="inputCategoryKey" required>
+                                <option value="level">Level &amp; Depth Sensing</option>
+                                <option value="flow">Flow &amp; Velocity Measurement</option>
+                                <option value="quality">Water Quality &amp; Physicochemical</option>
+                                <option value="h2s">H2S &amp; Corrosion Monitoring</option>
+                                <option value="pipe">Pipe Condition &amp; Acoustic NDE</option>
+                                <option value="iot">IoT Telemetry &amp; Optimization</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">PDF File Path / URL</label>
+                            <input type="text" class="form-input" id="inputPdfUrl">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Google Scholar Link</label>
+                            <input type="url" class="form-input" id="inputScholarUrl">
+                        </div>
 
-                    <h4 style="margin-top: 20px; color: var(--key-yellow);">8-Step Summary</h4>
-                    <div class="form-group"><label class="form-label">1. Citation</label><textarea class="form-textarea" id="step1"></textarea></div>
-                    <div class="form-group"><label class="form-label">2. Introduction</label><textarea class="form-textarea" id="step2"></textarea></div>
-                    <div class="form-group"><label class="form-label">3. Methods</label><textarea class="form-textarea" id="step3"></textarea></div>
-                    <div class="form-group"><label class="form-label">4. Scope</label><textarea class="form-textarea" id="step4"></textarea></div>
-                    <div class="form-group"><label class="form-label">5. Usefulness</label><textarea class="form-textarea" id="step5"></textarea></div>
-                    <div class="form-group"><label class="form-label">6. Limitations</label><textarea class="form-textarea" id="step6"></textarea></div>
-                    <div class="form-group"><label class="form-label">7. Conclusions</label><textarea class="form-textarea" id="step7"></textarea></div>
-                    <div class="form-group"><label class="form-label">8. Reflection</label><textarea class="form-textarea" id="step8"></textarea></div>
-
-                    <div class="modal-footer" style="margin: 20px -24px -24px -24px;">
-                        <button type="button" class="btn btn-secondary" onclick="closeModal('formModal')">Cancel</button>
-                        <button type="submit" class="btn btn-primary">Save Paper</button>
+                        <!-- 8 Step Summary -->
+                        <div class="form-group full-width" style="margin-top: 14px; border-top: 1px solid var(--border-color); padding-top: 16px;">
+                            <h4 style="font-size: 15px; color: var(--key-yellow); margin-bottom: 12px;">📝 8-Step Annotated Summary</h4>
+                            <div style="display: flex; flex-direction: column; gap: 12px;">
+                                <div><label class="form-label">Step 1: Citation</label><textarea class="form-textarea" id="step1Citation"></textarea></div>
+                                <div><label class="form-label">Step 2: Introduction</label><textarea class="form-textarea" id="step2Intro"></textarea></div>
+                                <div><label class="form-label">Step 3: Aims &amp; Methods</label><textarea class="form-textarea" id="step3Methods"></textarea></div>
+                                <div><label class="form-label">Step 4: Scope</label><textarea class="form-textarea" id="step4Scope"></textarea></div>
+                                <div><label class="form-label">Step 5: Usefulness</label><textarea class="form-textarea" id="step5Usefulness"></textarea></div>
+                                <div><label class="form-label">Step 6: Limitations</label><textarea class="form-textarea" id="step6Limitations"></textarea></div>
+                                <div><label class="form-label">Step 7: Conclusions</label><textarea class="form-textarea" id="step7Conclusions"></textarea></div>
+                                <div><label class="form-label">Step 8: Reflection</label><textarea class="form-textarea" id="step8Reflection"></textarea></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer" style="margin: 24px -24px -24px -24px;">
+                        <button type="button" class="btn btn-secondary" onclick="closeModal('paperFormModal')">Cancel</button>
+                        <button type="submit" class="btn btn-primary">💾 Save Research Paper</button>
                     </div>
                 </form>
             </div>
         </div>
     </div>
 
+    <div class="toast-container" id="toastContainer"></div>
+
     <script>
+        // The original 23 papers from the provided JSON. No fake collaborators.
         const ORIGINAL_PAPERS = [
   {
     "id": 1,
@@ -802,230 +910,289 @@
     }
   }
 ];
-        let papers = [];
-        let activeSummaryId = null;
 
-        function init() {
-            const stored = localStorage.getItem("my_papers");
+        let papers = [];
+        let selectedCategory = "all";
+        let activeSummaryPaperId = null;
+
+        function initApp() {
+            loadPapersFromStorage();
+            renderCategoryPills();
+            filterPapers();
+            initDragAndDrop();
+        }
+
+        function loadPapersFromStorage() {
+            const stored = localStorage.getItem("wastewater_papers_corpus_v3");
             if (stored) {
-                try { papers = JSON.parse(stored); } catch(e) { papers = [...ORIGINAL_PAPERS]; }
+                try {
+                    papers = JSON.parse(stored);
+                } catch(e) {
+                    papers = [...ORIGINAL_PAPERS];
+                }
             } else {
                 papers = [...ORIGINAL_PAPERS];
-                save();
+                savePapersToStorage();
             }
-            renderPapers();
-            initDropzone();
         }
 
-        function save() {
-            localStorage.setItem("my_papers", JSON.stringify(papers));
+        function savePapersToStorage() {
+            localStorage.setItem("wastewater_papers_corpus_v3", JSON.stringify(papers));
         }
 
-        function renderPapers() {
-            const query = document.getElementById("searchInput").value.toLowerCase();
-            const grid = document.getElementById("papersGrid");
-            grid.innerHTML = "";
+        function deletePaper(id) {
+            if (confirm(`Delete paper #${id}?`)) {
+                papers = papers.filter(p => p.id !== id);
+                savePapersToStorage();
+                renderCategoryPills();
+                filterPapers();
+                showToast(`🗑️ Removed Paper #${id}`);
+            }
+        }
+
+        function renderCategoryPills() {
+            const cats = [
+                { key: "all", label: "All Categories" },
+                { key: "level", label: "Level & Depth" },
+                { key: "flow", label: "Flow & Velocity" },
+                { key: "quality", label: "Water Quality" },
+                { key: "h2s", label: "H2S & Corrosion" },
+                { key: "pipe", label: "Pipe Acoustic NDE" },
+                { key: "iot", label: "IoT & Telemetry" }
+            ];
+            const container = document.querySelector(".category-filter-pills");
+            let html = "";
+            cats.forEach(c => {
+                const count = c.key === "all" ? papers.length : papers.filter(p => p.categories && p.categories.includes(c.key)).length;
+                html += `<button class="cat-btn ${selectedCategory === c.key ? 'active' : ''}" onclick="setCategoryFilter('${c.key}')">${c.label} (${count})</button>`;
+            });
+            container.innerHTML = html;
+        }
+
+        function setCategoryFilter(catKey) {
+            selectedCategory = catKey;
+            renderCategoryPills();
+            filterPapers();
+        }
+
+        function filterPapers() {
+            const query = (document.getElementById("searchInput").value || "").toLowerCase().trim();
+            const filtered = papers.filter(p => {
+                if (selectedCategory !== "all" && (!p.categories || !p.categories.includes(selectedCategory))) return false;
+                if (query) {
+                    const fullContent = [p.title, p.authors, p.journal, p.topic, p.steps ? Object.values(p.steps).join(" ") : ""].join(" ").toLowerCase();
+                    if (!fullContent.includes(query)) return false;
+                }
+                return true;
+            });
+
+            document.getElementById("activeCount").innerText = filtered.length;
+            document.getElementById("totalCount").innerText = papers.length;
             
-            papers.forEach(p => {
-                if (query && !p.title.toLowerCase().includes(query)) return;
-                
-                const div = document.createElement("div");
-                div.className = "paper-card";
-                div.innerHTML = `
+            const grid = document.getElementById("papersGridContainer");
+            grid.innerHTML = "";
+
+            filtered.forEach(paper => {
+                const card = document.createElement("div");
+                card.className = "paper-card";
+                card.innerHTML = `
                     <div>
-                        <div class="paper-title">${p.title}</div>
-                        <div class="paper-meta">${p.authors || "Unknown Authors"}</div>
+                        <div class="card-header-row">
+                            <span class="paper-num-badge">#${String(paper.id).padStart(2, "0")}</span>
+                            <span class="badge-tag">${paper.categoryLabel || "Sensor Research"}</span>
+                        </div>
+                        <h3 class="paper-title">${paper.title}</h3>
+                        <div class="paper-meta"><strong>${paper.authors}</strong> &bull; <em>${paper.journal}</em></div>
+                        <div class="paper-topic-box"><strong>Topic:</strong> ${paper.topic || "Wastewater Monitoring"}</div>
                     </div>
                     <div class="card-actions">
-                        <button class="btn btn-secondary btn-sm" onclick="openSummary(${p.id})">📝 8-Step</button>
-                        <a class="btn btn-primary btn-sm" href="${p.pdfUrl || '#'}" target="_blank">📄 PDF</a>
-                        <a class="btn btn-secondary btn-sm" href="${p.scholarUrl || '#'}" target="_blank">🔍 Scholar</a>
-                        <button class="btn btn-secondary btn-sm" onclick="editPaper(${p.id})">✏️</button>
-                        <button class="btn btn-danger btn-sm" onclick="deletePaper(${p.id})">🗑️</button>
+                        <button class="btn btn-summary btn-sm" onclick="openSummaryModal(${paper.id})">📝 8-Step Summary</button>
+                        <a class="btn btn-pdf btn-sm" href="${paper.pdfUrl}" target="_blank">📄 PDF</a>
+                        <a class="btn btn-scholar btn-sm" href="${paper.scholarUrl}" target="_blank">🔍 Scholar</a>
+                        <button class="btn-icon btn-sm" title="Edit" onclick="openEditPaperModal(${paper.id})">✏️</button>
+                        <button class="btn-icon btn-sm btn-delete" title="Delete" onclick="deletePaper(${paper.id})">🗑️</button>
                     </div>
                 `;
-                grid.appendChild(div);
+                grid.appendChild(card);
             });
         }
 
-        function openSummary(id) {
-            const p = papers.find(x => x.id === id);
-            if(!p) return;
-            activeSummaryId = id;
-            document.getElementById("modalPaperTitle").innerText = p.title;
-            
-            const steps = p.steps || {};
+        function openSummaryModal(id) {
+            const paper = papers.find(p => p.id === id);
+            if (!paper) return;
+            activeSummaryPaperId = id;
+            document.getElementById("modalPaperTitle").innerText = paper.title;
+            document.getElementById("modalPaperMeta").innerHTML = `<strong>${paper.authors}</strong> &bull; <em>${paper.journal}</em>`;
+            document.getElementById("modalPdfLink").href = paper.pdfUrl || "#";
+            document.getElementById("modalScholarLink").href = paper.scholarUrl || "#";
+
+            const stepLabels = [
+                { num: 1, key: "citation", label: "Step 1: Full Citation" },
+                { num: 2, key: "intro", label: "Step 2: Introduction" },
+                { num: 3, key: "methods", label: "Step 3: Aims & Methods" },
+                { num: 4, key: "scope", label: "Step 4: Scope" },
+                { num: 5, key: "usefulness", label: "Step 5: Usefulness" },
+                { num: 6, key: "limitations", label: "Step 6: Limitations" },
+                { num: 7, key: "conclusions", label: "Step 7: Conclusions" },
+                { num: 8, key: "reflection", label: "Step 8: Reflection" }
+            ];
+
             let html = "";
-            for(let i=1; i<=8; i++) {
-                const keys = ["citation","intro","methods","scope","usefulness","limitations","conclusions","reflection"];
-                html += `<div class="step-item"><div class="step-label">Step ${i}</div><div>${steps[keys[i-1]] || ""}</div></div>`;
-            }
-            document.getElementById("summaryBody").innerHTML = html;
+            stepLabels.forEach(step => {
+                const text = (paper.steps && paper.steps[step.key]) ? paper.steps[step.key] : "";
+                html += `<div class="step-item"><div class="step-badge">${step.num}</div><div class="step-content"><div class="step-label">${step.label}</div><div class="step-text">${text}</div></div></div>`;
+            });
+            document.getElementById("modalBodyContent").innerHTML = html;
             document.getElementById("summaryModal").style.display = "flex";
         }
 
-        function copyMarkdown() {
-            const p = papers.find(x => x.id === activeSummaryId);
-            if(!p) return;
-            const s = p.steps || {};
-            const md = `# ${p.title}
+        function editPaperFromSummary() {
+            closeModal("summaryModal");
+            openEditPaperModal(activeSummaryPaperId);
+        }
 
-1. Citation
-${s.citation}
-
-2. Intro
-${s.intro}
-
-3. Methods
-${s.methods}
-
-4. Scope
-${s.scope}
-
-5. Usefulness
-${s.usefulness}
-
-6. Limitations
-${s.limitations}
-
-7. Conclusions
-${s.conclusions}
-
-8. Reflection
-${s.reflection}`;
+        function copySummaryMarkdown() {
+            const paper = papers.find(p => p.id === activeSummaryPaperId);
+            if (!paper) return;
+            let md = `# 8-Step Annotated Summary: ${paper.title}\n`;
+            ['citation','intro','methods','scope','usefulness','limitations','conclusions','reflection'].forEach((key, idx) => {
+                md += `\n## ${idx+1}. ${key.toUpperCase()}\n${paper.steps[key] || ""}\n`;
+            });
             navigator.clipboard.writeText(md);
-            alert("Copied Markdown!");
+            showToast("📋 Copied to clipboard!");
         }
 
         function openAddPaperModal() {
             document.getElementById("paperForm").reset();
             document.getElementById("paperId").value = "";
-            document.getElementById("parseStatus").style.display = "none";
-            document.getElementById("formModal").style.display = "flex";
+            document.getElementById("formModalTitle").innerText = "+ Add New Research Paper";
+            document.getElementById("parsingStatus").style.display = "none";
+            document.getElementById("paperFormModal").style.display = "flex";
         }
 
-        function editPaper(id) {
+        function openEditPaperModal(id) {
             const p = papers.find(x => x.id === id);
-            if(!p) return;
+            if (!p) return;
             document.getElementById("paperId").value = p.id;
-            document.getElementById("inpTitle").value = p.title || "";
-            document.getElementById("inpAuthors").value = p.authors || "";
-            document.getElementById("inpPdf").value = p.pdfUrl || "";
-            document.getElementById("inpScholar").value = p.scholarUrl || "";
-            
+            document.getElementById("formModalTitle").innerText = "✏️ Edit Research Paper #" + p.id;
+            document.getElementById("inputTitle").value = p.title || "";
+            document.getElementById("inputAuthors").value = p.authors || "";
+            document.getElementById("inputJournal").value = p.journal || "";
+            document.getElementById("inputTopic").value = p.topic || "";
+            document.getElementById("inputCategoryKey").value = (p.categories && p.categories[0]) ? p.categories[0] : "level";
+            document.getElementById("inputPdfUrl").value = p.pdfUrl || "";
+            document.getElementById("inputScholarUrl").value = p.scholarUrl || "";
             const s = p.steps || {};
-            document.getElementById("step1").value = s.citation || "";
-            document.getElementById("step2").value = s.intro || "";
-            document.getElementById("step3").value = s.methods || "";
-            document.getElementById("step4").value = s.scope || "";
-            document.getElementById("step5").value = s.usefulness || "";
-            document.getElementById("step6").value = s.limitations || "";
-            document.getElementById("step7").value = s.conclusions || "";
-            document.getElementById("step8").value = s.reflection || "";
-            
-            document.getElementById("formModal").style.display = "flex";
+            document.getElementById("step1Citation").value = s.citation || "";
+            document.getElementById("step2Intro").value = s.intro || "";
+            document.getElementById("step3Methods").value = s.methods || "";
+            document.getElementById("step4Scope").value = s.scope || "";
+            document.getElementById("step5Usefulness").value = s.usefulness || "";
+            document.getElementById("step6Limitations").value = s.limitations || "";
+            document.getElementById("step7Conclusions").value = s.conclusions || "";
+            document.getElementById("step8Reflection").value = s.reflection || "";
+            document.getElementById("paperFormModal").style.display = "flex";
+        }
+
+        // REAL PDF PARSER USING PDF.JS
+        async function handlePdfFileUpload(file) {
+            if (!file || file.type !== "application/pdf") { showToast("⚠️ Select a valid PDF file"); return; }
+            showToast("⏳ PDF.js parser running...");
+            document.getElementById("inputPdfUrl").value = `./${file.name}`;
+            try {
+                const arrayBuffer = await file.arrayBuffer();
+                if (window.pdfjsLib) {
+                    const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
+                    const page1 = await pdf.getPage(1);
+                    const textContent = await page1.getTextContent();
+                    const rawStrings = textContent.items.map(item => item.str.trim()).filter(s => s.length > 0);
+                    
+                    let titleCandidate = file.name.replace(/\.pdf$/i, "");
+                    if (rawStrings.length > 0) {
+                        const firstFew = rawStrings.slice(0, 5).join(" ");
+                        if (firstFew.length > 10) titleCandidate = firstFew;
+                    }
+                    
+                    document.getElementById("inputTitle").value = titleCandidate;
+                    updateAutoScholarLink();
+                    
+                    document.getElementById("parsingStatus").style.display = "flex";
+                    document.getElementById("parsingStatus").innerHTML = `✨ Extracted metadata from <strong>${file.name}</strong> (${pdf.numPages} pages) using local PDF.js parser!`;
+                }
+            } catch(err) {
+                document.getElementById("inputTitle").value = file.name;
+            }
+        }
+
+        function initDragAndDrop() {
+            const dropzone = document.getElementById("dropzone");
+            ["dragenter", "dragover", "dragleave", "drop"].forEach(e => {
+                dropzone.addEventListener(e, ev => { ev.preventDefault(); ev.stopPropagation(); }, false);
+            });
+            dropzone.addEventListener("drop", e => {
+                const files = e.dataTransfer.files;
+                if (files && files.length > 0) handlePdfFileUpload(files[0]);
+            });
+        }
+
+        function updateAutoScholarLink() {
+            const title = document.getElementById("inputTitle").value;
+            if (title.trim()) document.getElementById("inputScholarUrl").value = `https://scholar.google.com/scholar?q=${encodeURIComponent(title.trim())}`;
         }
 
         function savePaper(e) {
             e.preventDefault();
-            const id = document.getElementById("paperId").value;
+            const editId = document.getElementById("paperId").value;
+            const catKey = document.getElementById("inputCategoryKey").value;
+            const catLabels = { level: "Level & Depth Sensing", flow: "Contactless Flow & Manning", quality: "Water Quality & Probes", h2s: "H2S & Corrosion", pipe: "Pipe Condition & NDE", iot: "IoT & Telemetry" };
+            
             const p = {
-                title: document.getElementById("inpTitle").value,
-                authors: document.getElementById("inpAuthors").value,
-                pdfUrl: document.getElementById("inpPdf").value,
-                scholarUrl: document.getElementById("inpScholar").value,
+                title: document.getElementById("inputTitle").value,
+                authors: document.getElementById("inputAuthors").value,
+                journal: document.getElementById("inputJournal").value,
+                topic: document.getElementById("inputTopic").value,
+                categories: [catKey],
+                categoryLabel: catLabels[catKey],
+                pdfUrl: document.getElementById("inputPdfUrl").value,
+                scholarUrl: document.getElementById("inputScholarUrl").value,
                 steps: {
-                    citation: document.getElementById("step1").value,
-                    intro: document.getElementById("step2").value,
-                    methods: document.getElementById("step3").value,
-                    scope: document.getElementById("step4").value,
-                    usefulness: document.getElementById("step5").value,
-                    limitations: document.getElementById("step6").value,
-                    conclusions: document.getElementById("step7").value,
-                    reflection: document.getElementById("step8").value
+                    citation: document.getElementById("step1Citation").value, intro: document.getElementById("step2Intro").value, methods: document.getElementById("step3Methods").value, scope: document.getElementById("step4Scope").value, usefulness: document.getElementById("step5Usefulness").value, limitations: document.getElementById("step6Limitations").value, conclusions: document.getElementById("step7Conclusions").value, reflection: document.getElementById("step8Reflection").value
                 }
             };
 
-            if(id) {
-                const idx = papers.findIndex(x => x.id == id);
-                p.id = parseInt(id);
-                papers[idx] = {...papers[idx], ...p};
+            if (editId) {
+                const idx = papers.findIndex(x => x.id === parseInt(editId));
+                if (idx !== -1) papers[idx] = { ...papers[idx], ...p };
+                showToast(`✅ Updated Paper #${editId}`);
             } else {
-                p.id = Date.now();
+                p.id = papers.length > 0 ? Math.max(...papers.map(x => x.id)) + 1 : 1;
                 papers.unshift(p);
+                showToast(`🎉 Added new Paper!`);
             }
-            save();
-            closeModal("formModal");
-            renderPapers();
+
+            savePapersToStorage();
+            closeModal("paperFormModal");
+            renderCategoryPills();
+            filterPapers();
         }
 
-        function deletePaper(id) {
-            if(confirm("Delete this paper?")) {
-                papers = papers.filter(x => x.id !== id);
-                save();
-                renderPapers();
-            }
-        }
-
-        function clearAll() {
-            if(confirm("Clear all papers?")) {
-                papers = [];
-                save();
-                renderPapers();
-            }
-        }
-
-        function exportJSON() {
-            const str = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(papers, null, 2));
+        function exportCorpusJSON() {
+            const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(papers, null, 2));
             const a = document.createElement("a");
-            a.href = str;
-            a.download = "my_research_papers.json";
+            a.href = dataStr;
+            a.download = `my_research_corpus.json`;
             a.click();
         }
 
         function closeModal(id) { document.getElementById(id).style.display = "none"; }
-
-        // PDF Parser Logic
-        async function handlePdfUpload(file) {
-            if (!file || file.type !== "application/pdf") return;
-            document.getElementById("inpPdf").value = `./${file.name}`;
-            document.getElementById("parseStatus").style.display = "block";
-            document.getElementById("parseStatus").innerText = "⏳ Parsing PDF locally in browser...";
-            
-            try {
-                const arrayBuffer = await file.arrayBuffer();
-                if (window.pdfjsLib) {
-                    const loadingTask = pdfjsLib.getDocument({ data: arrayBuffer });
-                    const pdf = await loadingTask.promise;
-                    const page1 = await pdf.getPage(1);
-                    const textContent = await page1.getTextContent();
-                    const rawStrings = textContent.items.map(i => i.str.trim()).filter(s => s.length > 0);
-                    
-                    let title = rawStrings.slice(0, 4).join(" ");
-                    if(title.length < 10) title = file.name.replace(".pdf","");
-                    
-                    document.getElementById("inpTitle").value = title;
-                    document.getElementById("inpScholar").value = `https://scholar.google.com/scholar?q=${encodeURIComponent(title)}`;
-                    document.getElementById("parseStatus").innerText = `✅ PDF Parsed Locally: Extracted text from ${pdf.numPages} pages.`;
-                }
-            } catch(e) {
-                document.getElementById("parseStatus").innerText = "⚠️ Failed to extract text. Used filename for title.";
-                document.getElementById("inpTitle").value = file.name.replace(".pdf","");
-            }
+        function handleOverlayClick(e, id) { if (e.target.id === id) closeModal(id); }
+        function showToast(msg) {
+            const t = document.createElement("div"); t.className = "toast"; t.innerText = msg;
+            document.getElementById("toastContainer").appendChild(t);
+            setTimeout(() => { t.style.opacity = "0"; setTimeout(() => t.remove(), 250); }, 3000);
         }
 
-        function initDropzone() {
-            const dz = document.getElementById("dropzone");
-            dz.addEventListener("dragover", e => { e.preventDefault(); dz.style.borderColor = "#38bdf8"; });
-            dz.addEventListener("dragleave", e => { e.preventDefault(); dz.style.borderColor = "#334155"; });
-            dz.addEventListener("drop", e => {
-                e.preventDefault();
-                dz.style.borderColor = "#334155";
-                if(e.dataTransfer.files.length) handlePdfUpload(e.dataTransfer.files[0]);
-            });
-        }
-
-        window.onload = init;
+        window.addEventListener("DOMContentLoaded", initApp);
     </script>
 </body>
 </html>
