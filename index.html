@@ -67,6 +67,13 @@
         gap: 16px;
       }
 
+      .header-actions {
+        display: flex;
+        justify-content: flex-end;
+        gap: 8px;
+        flex-wrap: wrap;
+      }
+
       h1 {
         font-size: clamp(22px, 3vw, 30px);
         font-weight: 700;
@@ -425,6 +432,20 @@
         color: var(--text-primary);
         line-height: 1.5;
         word-break: break-word;
+        white-space: pre-wrap;
+      }
+
+      .summary-status {
+        color: var(--text-secondary);
+        font-size: 12px;
+        margin-right: auto;
+      }
+
+      .modal-footer-actions {
+        display: flex;
+        justify-content: flex-end;
+        gap: 10px;
+        flex-wrap: wrap;
       }
 
       .modal-footer {
@@ -564,6 +585,11 @@
         .step-badge {
           align-self: flex-start;
         }
+
+        .summary-status {
+          flex-basis: 100%;
+          margin-right: 0;
+        }
       }
     </style>
   </head>
@@ -573,14 +599,25 @@
         <div>
           <h1>Wastewater Sensor Research Corpus (Paper 1)</h1>
         </div>
-        <a
-          href="./paper/paper.pdf"
-          target="_blank"
-          class="btn-action btn-pdf"
-          style="padding: 10px 16px; font-size: 13px"
-        >
-          📄 View Compiled Paper (PDF)
-        </a>
+        <div class="header-actions">
+          <a
+            href="https://github.com/Siddhu-123/waste_water_network_sensor-papers/edit/main/summaries.json"
+            target="_blank"
+            rel="noopener"
+            class="btn-action btn-scholar"
+            style="padding: 10px 16px; font-size: 13px"
+          >
+            ✎ Edit Shared Summaries on GitHub
+          </a>
+          <a
+            href="./paper/paper.pdf"
+            target="_blank"
+            class="btn-action btn-pdf"
+            style="padding: 10px 16px; font-size: 13px"
+          >
+            📄 View Compiled Paper (PDF)
+          </a>
+        </div>
       </div>
 
       <div class="controls-bar" style="margin-top: 20px">
@@ -663,16 +700,29 @@
           <!-- 8 Steps will be inserted here -->
         </div>
         <div class="modal-footer">
-          <a
-            id="modalPdfLink"
-            href="#"
-            target="_blank"
-            class="btn-action btn-pdf"
-            >📄 Open Full-Text PDF</a
-          >
-          <button class="btn-action btn-scholar" onclick="closeModal()">
-            Close
-          </button>
+          <div class="summary-status" id="summaryStatus" role="status">
+            Shared summaries are loaded from GitHub.
+          </div>
+          <div class="modal-footer-actions">
+            <a
+              href="https://github.com/Siddhu-123/waste_water_network_sensor-papers/edit/main/summaries.json"
+              target="_blank"
+              rel="noopener"
+              class="btn-action btn-scholar"
+            >
+              ✎ Edit JSON on GitHub
+            </a>
+            <a
+              id="modalPdfLink"
+              href="#"
+              target="_blank"
+              class="btn-action btn-pdf"
+              >📄 Open Full-Text PDF</a
+            >
+            <button class="btn-action btn-scholar" onclick="closeModal()">
+              Close
+            </button>
+          </div>
         </div>
       </div>
     </div>
@@ -1460,54 +1510,128 @@
         });
       }
 
+      let currentSummaryPaperId = null;
+      let sharedSummaryData = {};
+      let sharedSummaryLoadState = "loading";
+
+      const stepLabels = [
+        { num: 1, key: "citation", label: "Citation" },
+        { num: 2, key: "intro", label: "Introduction" },
+        { num: 3, key: "methods", label: "Aims & Research Methods" },
+        { num: 4, key: "scope", label: "Scope" },
+        {
+          num: 5,
+          key: "usefulness",
+          label: "Usefulness (To Wastewater Sensing / Research)",
+        },
+        {
+          num: 6,
+          key: "limitations",
+          label: "Limitations & Operational Constraints",
+        },
+        { num: 7, key: "conclusions", label: "Conclusions" },
+        {
+          num: 8,
+          key: "reflection",
+          label: "Reflection (How it Fits into Paper 1 / Thesis)",
+        },
+      ];
+
+      function escapeHtml(value) {
+        return String(value)
+          .replaceAll("&", "&amp;")
+          .replaceAll("<", "&lt;")
+          .replaceAll(">", "&gt;")
+          .replaceAll('"', "&quot;")
+          .replaceAll("'", "&#039;");
+      }
+
+      function getSummarySteps(paper) {
+        const sharedSteps =
+          sharedSummaryData[String(paper.id)] ||
+          sharedSummaryData[paper.id] ||
+          {};
+        return {
+          ...paper.steps,
+          ...sharedSteps,
+        };
+      }
+
+      async function loadSharedSummaries() {
+        try {
+          const response = await fetch("./summaries.json", {
+            cache: "no-store",
+          });
+          if (!response.ok) {
+            throw new Error(`HTTP ${response.status}`);
+          }
+
+          const parsed = await response.json();
+          if (!parsed || typeof parsed !== "object" || Array.isArray(parsed)) {
+            throw new Error("summaries.json must contain an object");
+          }
+
+          sharedSummaryData = parsed;
+          sharedSummaryLoadState = "loaded";
+          document.getElementById("summaryStatus").innerText =
+            "Shared summaries loaded from GitHub.";
+
+          if (
+            currentSummaryPaperId !== null &&
+            document.getElementById("summaryModal").style.display === "flex"
+          ) {
+            renderSummary();
+          }
+        } catch (error) {
+          sharedSummaryLoadState = "fallback";
+          console.warn(
+            "Could not load summaries.json; using bundled fallback summaries.",
+            error,
+          );
+          document.getElementById("summaryStatus").innerText =
+            "Shared file unavailable; showing bundled fallback.";
+        }
+      }
+
       function openSummary(id) {
         const paper = papersData.find((p) => p.id === id);
         if (!paper) return;
 
+        currentSummaryPaperId = id;
         document.getElementById("modalPaperTitle").innerText = paper.title;
         document.getElementById("modalPaperMeta").innerText =
           `${paper.authors} — ${paper.journal}`;
         document.getElementById("modalPdfLink").href = paper.pdfUrl;
+        renderSummary();
+        document.getElementById("summaryStatus").innerText =
+          sharedSummaryLoadState === "loaded"
+            ? "Shared summaries loaded from GitHub."
+            : sharedSummaryLoadState === "loading"
+              ? "Loading shared summaries from GitHub..."
+              : "Shared file unavailable; showing bundled fallback.";
+        document.getElementById("summaryModal").style.display = "flex";
+      }
 
-        const stepLabels = [
-          { num: 1, key: "citation", label: "Citation" },
-          { num: 2, key: "intro", label: "Introduction" },
-          { num: 3, key: "methods", label: "Aims & Research Methods" },
-          { num: 4, key: "scope", label: "Scope" },
-          {
-            num: 5,
-            key: "usefulness",
-            label: "Usefulness (To Wastewater Sensing / Research)",
-          },
-          {
-            num: 6,
-            key: "limitations",
-            label: "Limitations & Operational Constraints",
-          },
-          { num: 7, key: "conclusions", label: "Conclusions" },
-          {
-            num: 8,
-            key: "reflection",
-            label: "Reflection (How it Fits into Paper 1 / Thesis)",
-          },
-        ];
+      function renderSummary() {
+        const paper = papersData.find((p) => p.id === currentSummaryPaperId);
+        if (!paper) return;
 
+        const steps = getSummarySteps(paper);
         let html = "";
         stepLabels.forEach((step) => {
-          const text = paper.steps[step.key] || "";
+          const text = steps[step.key] || "";
           html += `
                     <div class="step-item">
                         <div class="step-badge">${step.num}</div>
                         <div class="step-content">
-                            <div class="step-label">${step.label}</div>
-                            <div class="step-text">${text}</div>
+                            <div class="step-label">${escapeHtml(step.label)}</div>
+                            <div class="step-text">${escapeHtml(text)}</div>
                         </div>
                     </div>
                 `;
         });
 
         document.getElementById("modalBodyContent").innerHTML = html;
-        document.getElementById("summaryModal").style.display = "flex";
       }
 
       function closeModal() {
@@ -1554,6 +1678,7 @@
 
       // Initialize table on load
       renderTable();
+      loadSharedSummaries();
     </script>
   </body>
 </html>

@@ -21,6 +21,12 @@ Every research paper includes an interactive **`📝 8-Step Summary`** in [**`in
 7. **(7) Conclusions:** Primary empirical takeaways and proven performance metrics.
 8. **(8) Reflection:** Direct synthesis explaining how the paper fits into **Paper 1** and your research.
 
+## Updating Shared Summaries
+
+The shared 8-step content is stored in [`summaries.json`](./summaries.json). Each top-level number matches the paper `id` used in `index.html`.
+
+To update the website for everyone, edit and commit [`summaries.json` on GitHub](https://github.com/Siddhu-123/waste_water_network_sensor-papers/edit/main/summaries.json). The hosted page loads the file when it opens. The `index.html` text remains as a bundled fallback for offline or local-file viewing.
+
 ---
 
 ## Verified Research Papers in `sensor_papers/` (23 Full PDFs)
