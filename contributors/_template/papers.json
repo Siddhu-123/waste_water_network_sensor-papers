@@ -11,9 +11,9 @@
       "topic": "Algorithms",
       "filterCategory": "Network optimisation",
       "assignedTo": "Your Name",
+      "doi": "10.1234/example-doi",
       "pdfUrl": "./contributors/your-name/papers/paper.pdf",
-      "scholarUrl": "https://scholar.google.com/",
-      "summaryKey": "24"
+      "scholarUrl": "https://scholar.google.com/"
     }
   ],
   "compiledPapers": [

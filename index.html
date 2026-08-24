@@ -732,6 +732,16 @@
           >
             ✎ Edit Shared Summaries on GitHub
           </a>
+          <a
+            id="compiledPaperHeaderLink"
+            href="./contributors/satya-siddhartha/compiled-papers/paper-1.pdf"
+            target="_blank"
+            rel="noopener"
+            class="btn-action btn-pdf"
+            style="padding: 10px 16px; font-size: 13px"
+          >
+            📄 View Compiled Paper (PDF)
+          </a>
         </div>
       </div>
 
@@ -1792,6 +1802,64 @@
 
       applyPaperMetadata();
 
+      const DOI_PATTERN = /10\.\d{4,9}\/[-._;()/:A-Z0-9]+/i;
+
+      function normalizeDoi(value) {
+        const match = String(value || "").match(DOI_PATTERN);
+        return match ? match[0].toLowerCase().replace(/[.,;:)>]+$/, "") : "";
+      }
+
+      function normalizeIdentityText(value) {
+        return String(value || "")
+          .toLowerCase()
+          .replace(/[^a-z0-9]+/g, " ")
+          .replace(/\s+/g, " ")
+          .trim();
+      }
+
+      function getPaperSummaryRecord(paper) {
+        return (
+          sharedSummaryData[String(paper.id)] ||
+          sharedSummaryData[paper.id] ||
+          {}
+        );
+      }
+
+      function getPaperIdentityKey(paper) {
+        const summary = getPaperSummaryRecord(paper);
+        const doi = normalizeDoi(
+          paper.doi ||
+            paper.doiUrl ||
+            paper.steps?.citation ||
+            summary.doi ||
+            summary.citation ||
+            paper.scholarUrl,
+        );
+        if (doi) return `doi:${doi}`;
+
+        const title = normalizeIdentityText(paper.title);
+        const authors = normalizeIdentityText(paper.authors);
+        const yearMatch = String(
+          paper.year || paper.authors || summary.citation || "",
+        ).match(/\b(?:19|20)\d{2}\b/);
+        if (!title || !authors) return "";
+        return `title:${title}|author:${authors.split(" ")[0]}|year:${
+          yearMatch ? yearMatch[0] : ""
+        }`;
+      }
+
+      function findDuplicateResearchPaper(paper, id) {
+        const identityKey = getPaperIdentityKey(paper);
+        if (!identityKey) return null;
+        return (
+          papersData.find(
+            (candidate) =>
+              Number(candidate.id) !== id &&
+              getPaperIdentityKey(candidate) === identityKey,
+          ) || null
+        );
+      }
+
       function mergeContributorPapers(records) {
         const papersById = new Map(
           papersData.map((paper) => [Number(paper.id), paper]),
@@ -1829,6 +1897,14 @@
 
           if (!rawPaper.title) {
             console.warn(`Skipped contributor paper ${id}: title is required.`);
+            return;
+          }
+
+          const duplicate = findDuplicateResearchPaper(rawPaper, id);
+          if (duplicate) {
+            console.warn(
+              `Skipped duplicate research paper ${id}; it matches paper ${duplicate.id} by DOI or title/author/year.`,
+            );
             return;
           }
 
