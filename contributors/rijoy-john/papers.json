@@ -1,5 +1,41 @@
 {
   "contributor": "Rijoy John",
-  "papers": [],
+  "papers": [
+    {
+      "id": 24,
+      "assignedTo": "Rijoy John",
+      "topic": "OSP",
+      "filterCategory": "Sewer Level Monitoring",
+      "pdfUrl": "./contributors/rijoy-john/papers/Crowley_2025_Information_theoretic_sewer_OSP.pdf"
+    },
+    {
+      "id": 25,
+      "assignedTo": "Rijoy John",
+      "topic": "OSP",
+      "filterCategory": "Pandemic Monitoring",
+      "pdfUrl": "./contributors/rijoy-john/papers/Wang_2024_sewer_OSP_for_pandemic_monitoring.pdf"
+    },
+    {
+      "id": 26,
+      "assignedTo": "Rijoy John",
+      "topic": "OSP",
+      "filterCategory": "Source Identification",
+      "pdfUrl": "./contributors/rijoy-john/papers/Abokifa_2024_sewer_OSP_ML-based_source_ident_approach.pdf"
+    },
+    {
+      "id": 27,
+      "assignedTo": "Rijoy John",
+      "topic": "OSP",
+      "filterCategory": "Smart Wastewater Management",
+      "pdfUrl": "./contributors/rijoy-john/papers/Moradi_2025_Overview_of_Smart_wastewater_management.pdf"
+    },
+    {
+      "id": 28,
+      "assignedTo": "Rijoy John",
+      "topic": "OSP",
+      "filterCategory": "Risk-based Sensor Placement",
+      "pdfUrl": "./contributors/rijoy-john/papers/Moradi_2026_Risk_based_DPP-SP_framework_for_sewer_OSP.pdf"
+    }
+  ],
   "compiledPapers": []
 }
