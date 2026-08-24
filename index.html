@@ -732,16 +732,6 @@
           >
             ✎ Edit Shared Summaries on GitHub
           </a>
-          <a
-            id="compiledPaperHeaderLink"
-            href="./contributors/satya-siddhartha/compiled-papers/paper-1.pdf"
-            target="_blank"
-            rel="noopener"
-            class="btn-action btn-pdf"
-            style="padding: 10px 16px; font-size: 13px"
-          >
-            📄 View Compiled Paper (PDF)
-          </a>
         </div>
       </div>
 
@@ -2129,11 +2119,11 @@
         const list = document.getElementById("compiledPapersList");
         const title = document.getElementById("compiledPapersTitle");
         const count = document.getElementById("compiledPapersCount");
-        const headerLink = document.getElementById("compiledPaperHeaderLink");
         const query = document
           .getElementById("searchInput")
           .value.toLowerCase();
         const selectedUser = document.getElementById("userFilter").value;
+        const hasSelection = currentTopic !== "all" || selectedUser !== "all";
         const matches = compiledPapersInSelectedTopic().filter((paper) => {
           const searchableText = [
             paper.title,
@@ -2149,33 +2139,17 @@
           );
         });
 
-        if (!matches.length) {
+        if (!hasSelection || !matches.length) {
           panel.hidden = true;
-          headerLink.href = "#";
-          headerLink.textContent =
-            currentTopic === "all"
-              ? "No compiled paper for this search"
-              : `No compiled paper for ${currentTopic}`;
-          headerLink.style.opacity = "0.55";
-          headerLink.style.pointerEvents = "none";
-          headerLink.setAttribute("aria-disabled", "true");
           list.innerHTML = "";
           return;
         }
 
         const topicLabel = currentTopic === "all" ? "All topics" : currentTopic;
+        const userLabel = selectedUser === "all" ? "" : ` by ${selectedUser}`;
         panel.hidden = false;
-        title.textContent = `${topicLabel} compiled papers`;
+        title.textContent = `${topicLabel}${userLabel} compiled papers`;
         count.textContent = `${matches.length} available`;
-        headerLink.href = matches[0].pdfUrl;
-        headerLink.textContent =
-          matches.length === 1
-            ? "📄 View Compiled Paper (PDF)"
-            : `📄 View ${matches.length} Compiled Papers`;
-        headerLink.title = matches[0].title;
-        headerLink.style.opacity = "";
-        headerLink.style.pointerEvents = "";
-        headerLink.removeAttribute("aria-disabled");
         list.innerHTML = matches
           .map(
             (paper) => `
