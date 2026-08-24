@@ -41,7 +41,8 @@ Do not rename a contributor folder or change the registered name without updatin
 4. Place the PDF in your contributor's `papers/` folder.
 5. Add the record to `papers.json`. Use a PDF path beginning with `./contributors/`.
 6. Add the matching 8-step entry to [`summaries.json`](./summaries.json) using the same numeric ID.
-7. Set `assignedTo`, `topic`, and `filterCategory` in both metadata locations so the nested filters remain correct.
+7. Add the DOI when the paper has one. Use the canonical value, such as `10.1234/example-doi`.
+8. Set `assignedTo`, `topic`, and `filterCategory` in both metadata locations so the nested filters remain correct.
 
 Example:
 
@@ -56,6 +57,7 @@ Example:
   "topic": "Algorithms",
   "filterCategory": "Network optimisation",
   "assignedTo": "Abraham",
+  "doi": "10.1234/example-doi",
   "pdfUrl": "./contributors/abraham/papers/paper-24.pdf",
   "scholarUrl": "https://scholar.google.com/"
 }
@@ -119,8 +121,16 @@ Check that:
 - the JSON files are valid;
 - every PDF path points to a file in the repository;
 - the research-paper ID is unique;
+- the DOI is not already used;
+- papers without a DOI do not repeat the same title, first author, and year;
 - compiled-paper IDs are unique;
 - contributor names match the manifest exactly;
 - `topic`, `filterCategory`, and `assignedTo` are correct.
 
-For a local browser check, run a static server from this directory and open `index.html`. The website loads contributor files dynamically, so opening the HTML directly from Finder may not load JSON files in some browsers.
+Run the repository validator before committing:
+
+```bash
+python3 scripts/validate_repo.py
+```
+
+For a local browser check, run a static server from this directory and open `index.html`. The website loads contributor files dynamically, so opening the HTML directly from Finder may not load JSON files in some browsers. GitHub Actions runs the same validator on pushes and pull requests.
