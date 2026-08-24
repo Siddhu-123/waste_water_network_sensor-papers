@@ -1,24 +1,57 @@
-# Contributor paper files
+# Contributor guide
 
-Each contributor has one `papers.json` file. Add new papers to your own file only; the website reads every file listed in [`manifest.json`](./manifest.json).
+Each contributor has one folder and one metadata file:
 
-## Paper record
+```text
+contributors/<your-slug>/
+├── papers.json
+├── papers/
+└── compiled-papers/
+```
 
-Copy the example from [`_template/papers.json`](./_template/papers.json), then update:
+The website reads every contributor file listed in [`manifest.json`](./manifest.json). Do not edit `index.html` for normal additions.
 
-- `id`: a unique number across the whole website;
-- `assignedTo`: the contributor's exact registered name;
-- `topic`: the broad research area, such as `Sensors` or `Algorithms`;
-- `filterCategory`: the category shown after that topic is selected;
-- `pdfUrl`: the relative path to the PDF;
-- `summaryKey`: the matching entry ID in the shared `summaries.json` file.
+## Individual research papers
 
-Place PDFs in a folder named `papers` inside the contributor's folder. Keep the existing Paper 1 IDs **1–23** unchanged; new contributions begin at **24**.
+Add records to the `papers` array in your own `papers.json` file. Each record needs:
 
-The current contributors are:
+- a unique numeric `id`;
+- `title`, `authors`, and `journal`;
+- `topic`, `filterCategory`, and the exact `assignedTo` name;
+- `categoryKey` and `categoryLabel` for the research-paper table;
+- a repository-relative `pdfUrl`.
 
-- Satya Siddhartha
-- Abraham
-- Ashis Jose
-- Rijoy John
-- Wimukthi
+Put the PDF in your own `papers/` folder. Add the matching eight-step summary to the root [`summaries.json`](../summaries.json).
+
+## Compiled papers
+
+Add complete reviews or reports to the `compiledPapers` array in the same `papers.json` file. Put each PDF in your `compiled-papers/` folder.
+
+```json
+{
+  "compiledPapers": [
+    {
+      "id": "your-name-algorithms-review-v1",
+      "title": "Your compiled paper title",
+      "topic": "Algorithms",
+      "filterCategory": "Compiled Review",
+      "assignedTo": "Your Registered Name",
+      "description": "One-sentence description.",
+      "pdfUrl": "./contributors/your-slug/compiled-papers/algorithms-review-v1.pdf"
+    }
+  ]
+}
+```
+
+Compiled papers are shown automatically when their topic is selected. They do not need a `summaries.json` entry unless you want them to appear in the 8-step summary system.
+
+## Rules
+
+1. Use the exact contributor name from [`manifest.json`](./manifest.json).
+2. Keep individual paper IDs unique. Paper IDs **1–23** belong to the existing Paper 1 collection.
+3. Keep compiled-paper string IDs unique.
+4. Use paths beginning with `./contributors/` in JSON files.
+5. Keep topic spelling consistent. `Algorithms` and `algorithm` would create different filters.
+6. Validate JSON and test the page locally before committing.
+
+Copy [`_template/papers.json`](./_template/papers.json) when starting a new contributor record.

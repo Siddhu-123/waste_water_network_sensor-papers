@@ -269,6 +269,82 @@
         font-size: 12px;
       }
 
+      .compiled-papers-panel {
+        background: linear-gradient(
+          135deg,
+          rgba(30, 41, 59, 0.95),
+          rgba(15, 23, 42, 0.92)
+        );
+        border: 1px solid var(--border-color);
+        border-radius: 14px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.22);
+        margin-bottom: 24px;
+        padding: clamp(16px, 2.5vw, 24px);
+      }
+
+      .compiled-papers-header {
+        align-items: flex-start;
+        display: flex;
+        gap: 12px;
+        justify-content: space-between;
+        margin-bottom: 16px;
+      }
+
+      .compiled-papers-kicker {
+        color: var(--accent-blue);
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+      }
+
+      .compiled-papers-title {
+        color: var(--text-primary);
+        font-size: 18px;
+        margin: 2px 0 0;
+      }
+
+      .compiled-papers-count {
+        color: var(--text-muted);
+        font-size: 12px;
+        white-space: nowrap;
+      }
+
+      .compiled-papers-list {
+        display: grid;
+        gap: 12px;
+        grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      }
+
+      .compiled-paper-card {
+        background: rgba(15, 23, 42, 0.72);
+        border: 1px solid var(--border-color);
+        border-radius: 10px;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        padding: 14px;
+      }
+
+      .compiled-paper-card h3 {
+        color: var(--text-primary);
+        font-size: 14px;
+        line-height: 1.4;
+        margin: 0;
+      }
+
+      .compiled-paper-meta {
+        color: var(--text-muted);
+        font-size: 11px;
+      }
+
+      .compiled-paper-description {
+        color: var(--text-secondary);
+        flex: 1;
+        font-size: 12px;
+        margin: 0;
+      }
+
       .badge-tag {
         background: rgba(56, 189, 248, 0.12);
         color: var(--accent-blue);
@@ -657,7 +733,8 @@
             ✎ Edit Shared Summaries on GitHub
           </a>
           <a
-            href="./paper/paper.pdf"
+            id="compiledPaperHeaderLink"
+            href="./contributors/satya-siddhartha/compiled-papers/paper-1.pdf"
             target="_blank"
             class="btn-action btn-pdf"
             style="padding: 10px 16px; font-size: 13px"
@@ -708,10 +785,28 @@
         </select>
         <div class="filter-group" id="nestedFilterGroup"></div>
         <p class="filter-help">
-          Select a topic first. The user and category filters then show only values used by that topic. Define <code>topic</code>, <code>filterCategory</code>, and <code>assignedTo</code> per paper in <code>summaries.json</code>.
+          Select a topic first. The user and category filters then show only values used by that topic. Define <code>topic</code>, <code>filterCategory</code>, and <code>assignedTo</code> in each contributor's <code>papers.json</code>; keep the same metadata in <code>summaries.json</code> for shared summaries.
         </p>
       </div>
     </header>
+
+    <section
+      class="compiled-papers-panel"
+      id="compiledPapersPanel"
+      aria-labelledby="compiledPapersTitle"
+      hidden
+    >
+      <div class="compiled-papers-header">
+        <div>
+          <div class="compiled-papers-kicker">Compiled papers</div>
+          <h2 class="compiled-papers-title" id="compiledPapersTitle">
+            Compiled papers
+          </h2>
+        </div>
+        <div class="compiled-papers-count" id="compiledPapersCount"></div>
+      </div>
+      <div class="compiled-papers-list" id="compiledPapersList"></div>
+    </section>
 
     <div class="table-container">
       <table id="papersTable">
@@ -786,7 +881,8 @@
           categoryLabel: "Level Radar",
           size: "7.4 MB",
           pages: 31,
-          pdfUrl: "./Drenoyanis_2019_Radar_Sensor_Network.pdf",
+          pdfUrl:
+            "./contributors/satya-siddhartha/papers/Drenoyanis_2019_Radar_Sensor_Network.pdf",
           scholarUrl:
             "https://scholar.google.com/scholar?q=Implementation+of+an+IoT+Based+Radar+Sensor+Network+Drenoyanis",
           steps: {
@@ -819,7 +915,8 @@
           categoryLabel: "Flow & Manning",
           size: "3.0 MB",
           pages: 19,
-          pdfUrl: "./Alshami_2023_Flow_Sensors_HongKong.pdf",
+          pdfUrl:
+            "./contributors/satya-siddhartha/papers/Alshami_2023_Flow_Sensors_HongKong.pdf",
           scholarUrl:
             "https://scholar.google.com/scholar?q=Monitoring+Blockage+and+Overflow+Events+Alshami",
           steps: {
@@ -851,7 +948,8 @@
           categoryLabel: "LiDAR / Ultrasonic",
           size: "4.1 MB",
           pages: 18,
-          pdfUrl: "./Utepov_2023_Prototyping_an_integrated_IoT_based.pdf",
+          pdfUrl:
+            "./contributors/satya-siddhartha/papers/Utepov_2023_Prototyping_an_integrated_IoT_based.pdf",
           scholarUrl:
             "https://scholar.google.com/scholar?q=Prototyping+an+integrated+IoT+based+sewer+monitoring+Utepov",
           steps: {
@@ -883,7 +981,8 @@
           categoryLabel: "Float Sentinels",
           size: "2.8 MB",
           pages: 19,
-          pdfUrl: "./Sikorski_2022_Coverage_IoT_Monitoring.pdf",
+          pdfUrl:
+            "./contributors/satya-siddhartha/papers/Sikorski_2022_Coverage_IoT_Monitoring.pdf",
           scholarUrl:
             "https://scholar.google.com/scholar?q=Cost-Efficient+Coverage+of+Wastewater+Networks+Sikorski",
           steps: {
@@ -916,7 +1015,7 @@
           size: "7.0 MB",
           pages: 22,
           pdfUrl:
-            "./Blumensaat_2026_The_UWO_dataset____long_term_observation.pdf",
+            "./contributors/satya-siddhartha/papers/Blumensaat_2026_The_UWO_dataset____long_term_observation.pdf",
           scholarUrl:
             "https://scholar.google.com/scholar?q=The+UWO+dataset+Blumensaat",
           steps: {
@@ -948,7 +1047,8 @@
           categoryLabel: "Acoustic Screening",
           size: "482 KB",
           pages: 9,
-          pdfUrl: "./Bin_2011_Rapid_detection_of_sewer_defects_an.pdf",
+          pdfUrl:
+            "./contributors/satya-siddhartha/papers/Bin_2011_Rapid_detection_of_sewer_defects_an.pdf",
           scholarUrl:
             "https://scholar.google.com/scholar?q=Rapid+detection+of+sewer+defects+Bin+Ali",
           steps: {
@@ -981,7 +1081,8 @@
           categoryLabel: "CSO Acoustics",
           size: "11.6 MB",
           pages: 15,
-          pdfUrl: "./See_2021_CSO_Screen_Acoustic.pdf",
+          pdfUrl:
+            "./contributors/satya-siddhartha/papers/See_2021_CSO_Screen_Acoustic.pdf",
           scholarUrl:
             "https://scholar.google.com/scholar?q=An+Acoustic+Sensor+for+Combined+Sewer+Overflow+Screen+See",
           steps: {
@@ -1014,7 +1115,8 @@
           categoryLabel: "Ultrasonic NDE",
           size: "1.0 MB",
           pages: 45,
-          pdfUrl: "./Yu_2021_Acoustic_and_ultrasonic_techniques_for_d.pdf",
+          pdfUrl:
+            "./contributors/satya-siddhartha/papers/Yu_2021_Acoustic_and_ultrasonic_techniques_for_d.pdf",
           scholarUrl:
             "https://scholar.google.com/scholar?q=Acoustic+and+ultrasonic+techniques+for+defect+detection+Yu",
           steps: {
@@ -1047,7 +1149,8 @@
           categoryLabel: "Fiber-Optic DTS/DAS",
           size: "2.0 MB",
           pages: 29,
-          pdfUrl: "./Prisutova_2022_Fiber_Optic_Pipe_Measurements.pdf",
+          pdfUrl:
+            "./contributors/satya-siddhartha/papers/Prisutova_2022_Fiber_Optic_Pipe_Measurements.pdf",
           scholarUrl:
             "https://scholar.google.com/scholar?q=Use+of+Fibre-Optic+Sensors+for+Pipe+Condition+Prisutova",
           steps: {
@@ -1079,7 +1182,8 @@
           categoryLabel: "CCTV Vision AI",
           size: "2.1 MB",
           pages: 15,
-          pdfUrl: "./Moradi_2019_Sewer_Pipeline_Defect_CCTV.pdf",
+          pdfUrl:
+            "./contributors/satya-siddhartha/papers/Moradi_2019_Sewer_Pipeline_Defect_CCTV.pdf",
           scholarUrl:
             "https://scholar.google.com/scholar?q=Review+on+Computer+Aided+Sewer+Pipeline+Defect+Moradi",
           steps: {
@@ -1111,7 +1215,8 @@
           categoryLabel: "Conductivity",
           size: "1.1 MB",
           pages: 13,
-          pdfUrl: "./Shi_2022_Illicit_discharge_detection_in_stor.pdf",
+          pdfUrl:
+            "./contributors/satya-siddhartha/papers/Shi_2022_Illicit_discharge_detection_in_stor.pdf",
           scholarUrl:
             "https://scholar.google.com/scholar?q=Illicit+discharge+detection+in+stormwater+Shi",
           steps: {
@@ -1142,7 +1247,8 @@
           categoryLabel: "Multi-Parameter",
           size: "3.8 MB",
           pages: 10,
-          pdfUrl: "./Li_2017_Sewage_Quality_Abnormal_Event_Monitoring.pdf",
+          pdfUrl:
+            "./contributors/satya-siddhartha/papers/Li_2017_Sewage_Quality_Abnormal_Event_Monitoring.pdf",
           scholarUrl:
             "https://scholar.google.com/scholar?q=A+reliable+sewage+quality+abnormal+event+monitoring+system+Li",
           steps: {
@@ -1174,7 +1280,8 @@
           categoryLabel: "ORP / Redox",
           size: "760 KB",
           pages: 14,
-          pdfUrl: "./Corominas_2024_Catchment_Water_Quality_Profiling.pdf",
+          pdfUrl:
+            "./contributors/satya-siddhartha/papers/Corominas_2024_Catchment_Water_Quality_Profiling.pdf",
           scholarUrl:
             "https://scholar.google.com/scholar?q=Profiling+wastewater+characteristics+in+intra-urban+Corominas",
           steps: {
@@ -1207,7 +1314,8 @@
           categoryLabel: "Optical DO (LDO)",
           size: "1.4 MB",
           pages: 18,
-          pdfUrl: "./Helm_2018_Comparative_validation_of_amperometric_a.pdf",
+          pdfUrl:
+            "./contributors/satya-siddhartha/papers/Helm_2018_Comparative_validation_of_amperometric_a.pdf",
           scholarUrl:
             "https://scholar.google.com/scholar?q=Comparative+validation+of+amperometric+and+optical+analyzers+Helm",
           steps: {
@@ -1239,7 +1347,8 @@
           categoryLabel: "UV-Vis Spectrometry",
           size: "1.2 MB",
           pages: 16,
-          pdfUrl: "./Lepot_2016_UV_Vis_Spectrophotometers_Calibration.pdf",
+          pdfUrl:
+            "./contributors/satya-siddhartha/papers/Lepot_2016_UV_Vis_Spectrophotometers_Calibration.pdf",
           scholarUrl:
             "https://scholar.google.com/scholar?q=Calibration+of+UV/Vis+spectrophotometers+Lepot",
           steps: {
@@ -1272,7 +1381,8 @@
           categoryLabel: "2D-Fluorescence",
           size: "1.2 MB",
           pages: 15,
-          pdfUrl: "./Carstea_2016_Fluorescence_Spectroscopy_BOD.pdf",
+          pdfUrl:
+            "./contributors/satya-siddhartha/papers/Carstea_2016_Fluorescence_Spectroscopy_BOD.pdf",
           scholarUrl:
             "https://scholar.google.com/scholar?q=Fluorescence+spectroscopy+for+wastewater+monitoring+Carstea",
           steps: {
@@ -1304,7 +1414,8 @@
           categoryLabel: "Nutrient ISEs",
           size: "1.6 MB",
           pages: 10,
-          pdfUrl: "./Tan_2022_Electrochemical_Nutrient_Detection.pdf",
+          pdfUrl:
+            "./contributors/satya-siddhartha/papers/Tan_2022_Electrochemical_Nutrient_Detection.pdf",
           scholarUrl:
             "https://scholar.google.com/scholar?q=Electrochemical+detection+of+nitrate+nitrite+and+ammonium+Tan",
           steps: {
@@ -1336,7 +1447,8 @@
           categoryLabel: "MFC Biosensors",
           size: "5.2 MB",
           pages: 20,
-          pdfUrl: "./Sonawane_2020_MFC_BOD_Biosensors.pdf",
+          pdfUrl:
+            "./contributors/satya-siddhartha/papers/Sonawane_2020_MFC_BOD_Biosensors.pdf",
           scholarUrl:
             "https://scholar.google.com/scholar?q=Microbial+Fuel+Cell-Based+Biological+Oxygen+Demand+Sonawane",
           steps: {
@@ -1368,7 +1480,8 @@
           categoryLabel: "H2S Review",
           size: "270 KB",
           pages: 13,
-          pdfUrl: "./Pandey_2012_Hydrogen_Sulfide_Monitoring_Review.pdf",
+          pdfUrl:
+            "./contributors/satya-siddhartha/papers/Pandey_2012_Hydrogen_Sulfide_Monitoring_Review.pdf",
           scholarUrl:
             "https://scholar.google.com/scholar?q=A+review+of+sensor-based+methods+for+monitoring+hydrogen+sulfide+Pandey",
           steps: {
@@ -1401,7 +1514,8 @@
           categoryLabel: "Gas H2S",
           size: "2.4 MB",
           pages: 16,
-          pdfUrl: "./Pacheco_2021_H2S_Gas_Sensors_Sewer.pdf",
+          pdfUrl:
+            "./contributors/satya-siddhartha/papers/Pacheco_2021_H2S_Gas_Sensors_Sewer.pdf",
           scholarUrl:
             "https://scholar.google.com/scholar?q=Comparison+of+H2S+Gas+Sensors+Pacheco+Fernandez",
           steps: {
@@ -1434,7 +1548,8 @@
           categoryLabel: "Liquid Bisulfide",
           size: "2.8 MB",
           pages: 18,
-          pdfUrl: "./Despot_2021_Liquid_Phase_H2S_Monitoring.pdf",
+          pdfUrl:
+            "./contributors/satya-siddhartha/papers/Despot_2021_Liquid_Phase_H2S_Monitoring.pdf",
           scholarUrl:
             "https://scholar.google.com/scholar?q=Comparison+of+Online+Sensors+for+Liquid+Phase+Hydrogen+Despot",
           steps: {
@@ -1467,7 +1582,7 @@
           size: "1.3 MB",
           pages: 24,
           pdfUrl:
-            "./Lopez_Ramirez_2023_Wireless_Sensor_Networks_for_Water_Quali.pdf",
+            "./contributors/satya-siddhartha/papers/Lopez_Ramirez_2023_Wireless_Sensor_Networks_for_Water_Quali.pdf",
           scholarUrl:
             "https://scholar.google.com/scholar?q=Wireless+Sensor+Networks+for+Water+Quality+Monitoring+Lopez-Ramirez",
           steps: {
@@ -1498,7 +1613,8 @@
           categoryLabel: "Low-Cost IoT",
           size: "928 KB",
           pages: 27,
-          pdfUrl: "./DeCamargo_2023_Low_Cost_Water_Quality_IoT.pdf",
+          pdfUrl:
+            "./contributors/satya-siddhartha/papers/DeCamargo_2023_Low_Cost_Water_Quality_IoT.pdf",
           scholarUrl:
             "https://scholar.google.com/scholar?q=Low-Cost+Water+Quality+Sensors+for+IoT+de+Camargo",
           steps: {
@@ -1524,6 +1640,23 @@
 
       const PAPER1_OWNER = "Satya Siddhartha";
       const CONTRIBUTOR_MANIFEST_URL = "./contributors/manifest.json";
+      const defaultCompiledPapers = [
+        {
+          id: "paper-1-sensors",
+          title:
+            "A Comprehensive Review of Sensor Technologies for Wastewater Collection Networks",
+          topic: "Sensors",
+          filterCategory: "Compiled Review",
+          assignedTo: PAPER1_OWNER,
+          description:
+            "Satya Siddhartha's compiled Paper 1 literature review.",
+          pdfUrl:
+            "./contributors/satya-siddhartha/compiled-papers/paper-1.pdf",
+        },
+      ];
+      let compiledPapersData = defaultCompiledPapers.map((paper) => ({
+        ...paper,
+      }));
 
       // Offline fallback. The hosted page overrides these fields from
       // summaries.json when a paper includes assignedTo, topic, or filterCategory.
@@ -1733,6 +1866,59 @@
         return added;
       }
 
+      function mergeCompiledPapers(records) {
+        const compiledById = new Map(
+          compiledPapersData.map((paper) => [String(paper.id), paper]),
+        );
+
+        records.forEach((rawPaper) => {
+          if (
+            !rawPaper ||
+            !rawPaper.id ||
+            !rawPaper.title ||
+            !rawPaper.topic ||
+            !rawPaper.pdfUrl
+          ) {
+            console.warn(
+              "Skipped compiled paper: id, title, topic, and pdfUrl are required.",
+            );
+            return;
+          }
+
+          const id = String(rawPaper.id);
+          const existing = compiledById.get(id);
+          const incomingOwner = String(
+            rawPaper.assignedTo || rawPaper.user || "",
+          ).trim();
+
+          if (
+            existing &&
+            incomingOwner &&
+            existing.assignedTo &&
+            incomingOwner !== existing.assignedTo
+          ) {
+            console.warn(
+              `Skipped duplicate compiled paper id ${id}; compiled paper IDs must be unique.`,
+            );
+            return;
+          }
+
+          if (existing) {
+            Object.assign(existing, rawPaper, { id });
+            return;
+          }
+
+          const compiledPaper = {
+            ...rawPaper,
+            id,
+            assignedTo: rawPaper.assignedTo || rawPaper.user || "Unassigned",
+            description: rawPaper.description || "",
+          };
+          compiledPapersData.push(compiledPaper);
+          compiledById.set(id, compiledPaper);
+        });
+      }
+
       function renderTable() {
         const tbody = document.getElementById("tableBody");
         tbody.innerHTML = "";
@@ -1820,11 +2006,21 @@
           : papersData.filter((paper) => paper.topic === currentTopic);
       }
 
+      function compiledPapersInSelectedTopic() {
+        return currentTopic === "all"
+          ? compiledPapersData
+          : compiledPapersData.filter((paper) => paper.topic === currentTopic);
+      }
+
       function populateTopicOptions() {
         const topicFilter = document.getElementById("topicFilter");
-        const topics = [...new Set(papersData.map((paper) => paper.topic))].sort(
-          (a, b) => a.localeCompare(b),
-        );
+        const topics = [
+          ...new Set(
+            [...papersData, ...compiledPapersData]
+              .map((paper) => paper.topic)
+              .filter(Boolean),
+          ),
+        ].sort((a, b) => a.localeCompare(b));
 
         topicFilter.innerHTML =
           '<option value="all">Topic: All</option>' +
@@ -1842,7 +2038,12 @@
         const userFilter = document.getElementById("userFilter");
         const selectedUser = userFilter.value || "all";
         const users = [
-          ...new Set(papersInSelectedTopic().map((paper) => paper.assignedTo)),
+          ...new Set(
+            [
+              ...papersInSelectedTopic(),
+              ...compiledPapersInSelectedTopic(),
+            ].map((paper) => paper.assignedTo),
+          ),
         ].sort((a, b) => a.localeCompare(b));
 
         userFilter.innerHTML =
@@ -1854,6 +2055,82 @@
             )
             .join("");
         userFilter.value = users.includes(selectedUser) ? selectedUser : "all";
+      }
+
+      function renderCompiledPapers() {
+        const panel = document.getElementById("compiledPapersPanel");
+        const list = document.getElementById("compiledPapersList");
+        const title = document.getElementById("compiledPapersTitle");
+        const count = document.getElementById("compiledPapersCount");
+        const headerLink = document.getElementById("compiledPaperHeaderLink");
+        const query = document
+          .getElementById("searchInput")
+          .value.toLowerCase();
+        const selectedUser = document.getElementById("userFilter").value;
+        const matches = compiledPapersInSelectedTopic().filter((paper) => {
+          const searchableText = [
+            paper.title,
+            paper.topic,
+            paper.assignedTo,
+            paper.description,
+          ]
+            .join(" ")
+            .toLowerCase();
+          return (
+            (selectedUser === "all" || paper.assignedTo === selectedUser) &&
+            searchableText.includes(query)
+          );
+        });
+
+        if (!matches.length) {
+          panel.hidden = true;
+          headerLink.href = "#";
+          headerLink.textContent =
+            currentTopic === "all"
+              ? "No compiled paper for this search"
+              : `No compiled paper for ${currentTopic}`;
+          headerLink.style.opacity = "0.55";
+          headerLink.style.pointerEvents = "none";
+          headerLink.setAttribute("aria-disabled", "true");
+          list.innerHTML = "";
+          return;
+        }
+
+        const topicLabel = currentTopic === "all" ? "All topics" : currentTopic;
+        panel.hidden = false;
+        title.textContent = `${topicLabel} compiled papers`;
+        count.textContent = `${matches.length} available`;
+        headerLink.href = matches[0].pdfUrl;
+        headerLink.textContent =
+          matches.length === 1
+            ? "📄 View Compiled Paper (PDF)"
+            : `📄 View ${matches.length} Compiled Papers`;
+        headerLink.title = matches[0].title;
+        headerLink.style.opacity = "";
+        headerLink.style.pointerEvents = "";
+        headerLink.removeAttribute("aria-disabled");
+        list.innerHTML = matches
+          .map(
+            (paper) => `
+              <article class="compiled-paper-card">
+                <h3>${escapeHtml(paper.title)}</h3>
+                <div class="compiled-paper-meta">
+                  ${escapeHtml(paper.assignedTo)} · ${escapeHtml(paper.topic)}${
+                    paper.filterCategory
+                      ? ` · ${escapeHtml(paper.filterCategory)}`
+                      : ""
+                  }
+                </div>
+                <p class="compiled-paper-description">${escapeHtml(
+                  paper.description || "Compiled paper for this topic.",
+                )}</p>
+                <a class="btn-action btn-pdf" href="${escapeHtml(
+                  paper.pdfUrl,
+                )}" target="_blank" rel="noopener">📄 Open compiled PDF</a>
+              </article>
+            `,
+          )
+          .join("");
       }
 
       function makeFilterButton(label, category) {
@@ -1996,26 +2273,43 @@
                   : parsed && Array.isArray(parsed.papers)
                     ? parsed.papers
                     : [];
+                const compiledPapers =
+                  !Array.isArray(parsed) &&
+                  parsed &&
+                  Array.isArray(parsed.compiledPapers)
+                    ? parsed.compiledPapers
+                    : [];
                 const owner =
                   (parsed && parsed.contributor) ||
                   contributor.name ||
                   "Unassigned";
 
-                return papers.map((paper) => ({
-                  ...paper,
-                  assignedTo: paper.assignedTo || paper.user || owner,
-                }));
+                return {
+                  papers: papers.map((paper) => ({
+                    ...paper,
+                    assignedTo: paper.assignedTo || paper.user || owner,
+                  })),
+                  compiledPapers: compiledPapers.map((paper) => ({
+                    ...paper,
+                    assignedTo: paper.assignedTo || paper.user || owner,
+                  })),
+                };
               } catch (error) {
                 console.warn(
                   `Could not load contributor file for ${contributor.name || "unknown contributor"}.`,
                   error,
                 );
-                return [];
+                return { papers: [], compiledPapers: [] };
               }
             }),
           );
 
-          mergeContributorPapers(contributorRecords.flat());
+          mergeContributorPapers(
+            contributorRecords.flatMap((record) => record.papers),
+          );
+          mergeCompiledPapers(
+            contributorRecords.flatMap((record) => record.compiledPapers),
+          );
           applyPaperMetadata(sharedSummaryData);
           refreshNestedFilters();
           renderTable();
@@ -2108,11 +2402,14 @@
             row.style.display = "none";
           }
         });
+
+        renderCompiledPapers();
       }
 
       // Initialize table on load
       refreshNestedFilters();
       renderTable();
+      renderCompiledPapers();
       loadSharedSummaries();
       loadContributorPapers();
     </script>

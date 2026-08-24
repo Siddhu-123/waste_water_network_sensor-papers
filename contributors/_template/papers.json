@@ -15,5 +15,16 @@
       "scholarUrl": "https://scholar.google.com/",
       "summaryKey": "24"
     }
+  ],
+  "compiledPapers": [
+    {
+      "id": "your-name-topic-review-v1",
+      "title": "Compiled paper title",
+      "topic": "Algorithms",
+      "filterCategory": "Compiled Review",
+      "assignedTo": "Your Name",
+      "description": "One-sentence description of the compiled paper.",
+      "pdfUrl": "./contributors/your-name/compiled-papers/topic-review-v1.pdf"
+    }
   ]
 }
