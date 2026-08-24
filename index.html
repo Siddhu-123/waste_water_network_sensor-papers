@@ -160,6 +160,25 @@
         color: white;
       }
 
+      .filter-select {
+        appearance: none;
+        background: var(--bg-secondary);
+        border: 1px solid var(--border-color);
+        border-radius: 8px;
+        color: var(--text-primary);
+        cursor: pointer;
+        font-size: 13px;
+        font-weight: 500;
+        min-height: 36px;
+        outline: none;
+        padding: 8px 32px 8px 12px;
+      }
+
+      .filter-select:focus {
+        border-color: var(--accent-blue);
+        box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.15);
+      }
+
       /* Table & Responsive Container */
       .table-container {
         background: var(--bg-card);
@@ -220,6 +239,34 @@
         align-items: center;
         gap: 6px;
         flex-wrap: wrap;
+      }
+
+      .paper-meta .meta-chip {
+        background: rgba(99, 102, 241, 0.12);
+        border: 1px solid rgba(129, 140, 248, 0.24);
+        border-radius: 999px;
+        color: #c7d2fe;
+        font-size: 11px;
+        font-weight: 600;
+        padding: 2px 7px;
+      }
+
+      .paper-meta .meta-chip.topic-chip {
+        background: rgba(16, 185, 129, 0.1);
+        border-color: rgba(52, 211, 153, 0.22);
+        color: #6ee7b7;
+      }
+
+      .paper-meta .meta-chip.filter-chip {
+        background: rgba(245, 158, 11, 0.1);
+        border-color: rgba(251, 191, 36, 0.22);
+        color: #fcd34d;
+      }
+
+      .filter-help {
+        color: var(--text-muted);
+        flex: 1 0 100%;
+        font-size: 12px;
       }
 
       .badge-tag {
@@ -643,26 +690,26 @@
             onkeyup="filterTable()"
           />
         </div>
-        <div class="filter-group">
-          <button class="filter-btn active" onclick="setCategory('all', this)">
-            All (23)
-          </button>
-          <button class="filter-btn" onclick="setCategory('level', this)">
-            Level & Flow
-          </button>
-          <button class="filter-btn" onclick="setCategory('quality', this)">
-            Water Quality
-          </button>
-          <button class="filter-btn" onclick="setCategory('h2s', this)">
-            H2S & Corrosion
-          </button>
-          <button class="filter-btn" onclick="setCategory('pipe', this)">
-            Acoustic / Pipe NDE
-          </button>
-          <button class="filter-btn" onclick="setCategory('iot', this)">
-            IoT & Telemetry
-          </button>
-        </div>
+        <select
+          id="topicFilter"
+          class="filter-select"
+          aria-label="Filter papers by research topic"
+          onchange="setTopic(this.value)"
+        >
+          <option value="all">Topic: All</option>
+        </select>
+        <select
+          id="userFilter"
+          class="filter-select"
+          aria-label="Filter papers by assigned user"
+          onchange="filterTable()"
+        >
+          <option value="all">User: All</option>
+        </select>
+        <div class="filter-group" id="nestedFilterGroup"></div>
+        <p class="filter-help">
+          Select a topic first. The user and category filters then show only values used by that topic. Define <code>topic</code>, <code>filterCategory</code>, and <code>assignedTo</code> per paper in <code>summaries.json</code>.
+        </p>
       </div>
     </header>
 
@@ -1475,13 +1522,153 @@
         },
       ];
 
+      // Offline fallback. The hosted page overrides these fields from
+      // summaries.json when a paper includes assignedTo, topic, or filterCategory.
+      const defaultPaperMetadataById = {
+        1: {
+          assignedTo: "Satya Siddhartha Balanagu",
+          topic: "Sensors",
+          filterCategory: "Level & Flow",
+        },
+        2: {
+          assignedTo: "Abraham Jaison",
+          topic: "Sensors",
+          filterCategory: "Level & Flow",
+        },
+        3: {
+          assignedTo: "Satya Siddhartha Balanagu",
+          topic: "Sensors",
+          filterCategory: "Level & Flow",
+        },
+        4: {
+          assignedTo: "Satya Siddhartha Balanagu",
+          topic: "Sensors",
+          filterCategory: "Sensor Placement",
+        },
+        5: {
+          assignedTo: "Unassigned",
+          topic: "Sensors",
+          filterCategory: "Level & Flow",
+        },
+        6: {
+          assignedTo: "Nicholas",
+          topic: "Sensors",
+          filterCategory: "Pipe & Acoustic",
+        },
+        7: {
+          assignedTo: "Nicholas",
+          topic: "Sensors",
+          filterCategory: "Pipe & Acoustic",
+        },
+        8: {
+          assignedTo: "Nicholas",
+          topic: "Sensors",
+          filterCategory: "Pipe & Acoustic",
+        },
+        9: {
+          assignedTo: "Nicholas",
+          topic: "Sensors",
+          filterCategory: "Pipe & Acoustic",
+        },
+        10: {
+          assignedTo: "Nicholas",
+          topic: "Sensors",
+          filterCategory: "Pipe & Acoustic",
+        },
+        11: {
+          assignedTo: "Mohammed",
+          topic: "Sensors",
+          filterCategory: "Water Quality",
+        },
+        12: {
+          assignedTo: "Mohammed",
+          topic: "Sensors",
+          filterCategory: "Water Quality",
+        },
+        13: {
+          assignedTo: "Unassigned",
+          topic: "Sensors",
+          filterCategory: "Water Quality",
+        },
+        14: {
+          assignedTo: "Unassigned",
+          topic: "Sensors",
+          filterCategory: "Water Quality",
+        },
+        15: {
+          assignedTo: "Mohammed",
+          topic: "Sensors",
+          filterCategory: "Water Quality",
+        },
+        16: {
+          assignedTo: "Mohammed",
+          topic: "Sensors",
+          filterCategory: "Water Quality",
+        },
+        17: {
+          assignedTo: "Unassigned",
+          topic: "Sensors",
+          filterCategory: "Water Quality",
+        },
+        18: {
+          assignedTo: "Unassigned",
+          topic: "Sensors",
+          filterCategory: "Water Quality",
+        },
+        19: {
+          assignedTo: "Isaac",
+          topic: "Sensors",
+          filterCategory: "H2S & Corrosion",
+        },
+        20: {
+          assignedTo: "Isaac",
+          topic: "Sensors",
+          filterCategory: "H2S & Corrosion",
+        },
+        21: {
+          assignedTo: "Isaac",
+          topic: "Sensors",
+          filterCategory: "H2S & Corrosion",
+        },
+        22: {
+          assignedTo: "Unassigned",
+          topic: "Sensors",
+          filterCategory: "IoT & Telemetry",
+        },
+        23: {
+          assignedTo: "Unassigned",
+          topic: "Sensors",
+          filterCategory: "IoT & Telemetry",
+        },
+      };
+
+      function applyPaperMetadata(sharedMetadata = {}) {
+        papersData.forEach((paper) => {
+          const fallback = defaultPaperMetadataById[paper.id] || {};
+          const shared =
+            sharedMetadata[String(paper.id)] || sharedMetadata[paper.id] || {};
+          paper.assignedTo =
+            shared.assignedTo || shared.user || fallback.assignedTo || "Unassigned";
+          paper.topic = shared.topic || fallback.topic || "General";
+          paper.filterCategory =
+            shared.filterCategory ||
+            shared.category ||
+            fallback.filterCategory ||
+            paper.categoryLabel;
+        });
+      }
+
+      applyPaperMetadata();
+
       function renderTable() {
         const tbody = document.getElementById("tableBody");
         tbody.innerHTML = "";
 
         papersData.forEach((paper) => {
           const tr = document.createElement("tr");
-          tr.setAttribute("data-category", paper.categoryKey);
+          tr.dataset.user = paper.assignedTo;
+          tr.dataset.topic = paper.topic;
+          tr.dataset.filterCategory = paper.filterCategory;
           tr.innerHTML = `
                     <td class="col-num" style="color: var(--text-muted); font-family: 'JetBrains Mono', monospace;">${String(paper.id).padStart(2, "0")}</td>
                     <td class="col-main">
@@ -1495,6 +1682,11 @@
                         <div class="paper-meta">
                             <span>${paper.authors}</span> &bull; 
                             <span><em>${paper.journal}</em></span>
+                        </div>
+                        <div class="paper-meta" style="margin-top: 7px">
+                            <span class="meta-chip">User: ${escapeHtml(paper.assignedTo)}</span>
+                            <span class="meta-chip topic-chip">Topic: ${escapeHtml(paper.topic)}</span>
+                            <span class="meta-chip filter-chip">Filter: ${escapeHtml(paper.filterCategory)}</span>
                         </div>
                     </td>
                     <td class="col-cat"><span class="badge-tag">${paper.categoryLabel}</span></td>
@@ -1546,6 +1738,108 @@
           .replaceAll("'", "&#039;");
       }
 
+      let currentTopic = "all";
+      let currentFilterCategory = "all";
+
+      function papersInSelectedTopic() {
+        return currentTopic === "all"
+          ? papersData
+          : papersData.filter((paper) => paper.topic === currentTopic);
+      }
+
+      function populateTopicOptions() {
+        const topicFilter = document.getElementById("topicFilter");
+        const topics = [...new Set(papersData.map((paper) => paper.topic))].sort(
+          (a, b) => a.localeCompare(b),
+        );
+
+        topicFilter.innerHTML =
+          '<option value="all">Topic: All</option>' +
+          topics
+            .map(
+              (topic) =>
+                `<option value="${escapeHtml(topic)}">Topic: ${escapeHtml(topic)}</option>`,
+            )
+            .join("");
+        currentTopic = topics.includes(currentTopic) ? currentTopic : "all";
+        topicFilter.value = currentTopic;
+      }
+
+      function populateUserOptions() {
+        const userFilter = document.getElementById("userFilter");
+        const selectedUser = userFilter.value || "all";
+        const users = [
+          ...new Set(papersInSelectedTopic().map((paper) => paper.assignedTo)),
+        ].sort((a, b) => a.localeCompare(b));
+
+        userFilter.innerHTML =
+          '<option value="all">User: All</option>' +
+          users
+            .map(
+              (user) =>
+                `<option value="${escapeHtml(user)}">User: ${escapeHtml(user)}</option>`,
+            )
+            .join("");
+        userFilter.value = users.includes(selectedUser) ? selectedUser : "all";
+      }
+
+      function makeFilterButton(label, category) {
+        const button = document.createElement("button");
+        button.className = `filter-btn${
+          currentFilterCategory === category ? " active" : ""
+        }`;
+        button.type = "button";
+        button.textContent = label;
+        button.addEventListener("click", () => setFilterCategory(category));
+        return button;
+      }
+
+      function renderNestedFilters() {
+        const group = document.getElementById("nestedFilterGroup");
+        const topicPapers = papersInSelectedTopic();
+        const categories = [
+          ...new Set(topicPapers.map((paper) => paper.filterCategory)),
+        ].sort((a, b) => a.localeCompare(b));
+
+        if (!categories.includes(currentFilterCategory)) {
+          currentFilterCategory = "all";
+        }
+
+        group.innerHTML = "";
+        group.appendChild(
+          makeFilterButton(
+            `All ${currentTopic === "all" ? "papers" : currentTopic} (${topicPapers.length})`,
+            "all",
+          ),
+        );
+        categories.forEach((category) => {
+          const count = topicPapers.filter(
+            (paper) => paper.filterCategory === category,
+          ).length;
+          group.appendChild(makeFilterButton(`${category} (${count})`, category));
+        });
+      }
+
+      function refreshNestedFilters() {
+        populateTopicOptions();
+        populateUserOptions();
+        renderNestedFilters();
+      }
+
+      function setTopic(topic) {
+        currentTopic = topic;
+        currentFilterCategory = "all";
+        populateUserOptions();
+        renderNestedFilters();
+        filterTable();
+      }
+
+      function setFilterCategory(category) {
+        currentFilterCategory = category;
+        renderNestedFilters();
+        filterTable();
+      }
+
       function getSummarySteps(paper) {
         const sharedSteps =
           sharedSummaryData[String(paper.id)] ||
@@ -1572,6 +1866,10 @@
           }
 
           sharedSummaryData = parsed;
+          applyPaperMetadata(parsed);
+          refreshNestedFilters();
+          renderTable();
+          filterTable();
           sharedSummaryLoadState = "loaded";
           document.getElementById("summaryStatus").innerText =
             "Shared summaries loaded from GitHub.";
@@ -1644,31 +1942,30 @@
         }
       }
 
-      let currentCategory = "all";
-
-      function setCategory(cat, btn) {
-        currentCategory = cat;
-        document
-          .querySelectorAll(".filter-btn")
-          .forEach((b) => b.classList.remove("active"));
-        btn.classList.add("active");
-        filterTable();
-      }
-
       function filterTable() {
         const query = document
           .getElementById("searchInput")
           .value.toLowerCase();
+        const selectedUser = document.getElementById("userFilter").value;
         const rows = document.querySelectorAll("#papersTable tbody tr");
 
         rows.forEach((row) => {
           const text = row.innerText.toLowerCase();
-          const category = row.getAttribute("data-category") || "";
           const matchesSearch = text.includes(query);
-          const matchesCategory =
-            currentCategory === "all" || category.includes(currentCategory);
+          const matchesUser =
+            selectedUser === "all" || row.dataset.user === selectedUser;
+          const matchesTopic =
+            currentTopic === "all" || row.dataset.topic === currentTopic;
+          const matchesFilterCategory =
+            currentFilterCategory === "all" ||
+            row.dataset.filterCategory === currentFilterCategory;
 
-          if (matchesSearch && matchesCategory) {
+          if (
+            matchesSearch &&
+            matchesUser &&
+            matchesTopic &&
+            matchesFilterCategory
+          ) {
             row.style.display = "";
           } else {
             row.style.display = "none";
@@ -1677,6 +1974,7 @@
       }
 
       // Initialize table on load
+      refreshNestedFilters();
       renderTable();
       loadSharedSummaries();
     </script>

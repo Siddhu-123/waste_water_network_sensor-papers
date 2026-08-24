@@ -27,6 +27,22 @@ The shared 8-step content is stored in [`summaries.json`](./summaries.json). Eac
 
 To update the website for everyone, edit and commit [`summaries.json` on GitHub](https://github.com/Siddhu-123/waste_water_network_sensor-papers/edit/main/summaries.json). The hosted page loads the file when it opens. The `index.html` text remains as a bundled fallback for offline or local-file viewing.
 
+### Nested filters
+
+Each paper entry can also define its filter metadata. `topic` is the broad research area, while `filterCategory` is shown only after that topic is selected. `assignedTo` limits the user filter to people who have papers in the selected topic.
+
+```json
+"<paper-id>": {
+  "assignedTo": "Teammate name",
+  "topic": "Algorithms",
+  "filterCategory": "Network optimisation",
+  "citation": "...",
+  "intro": "..."
+}
+```
+
+The key must match that paper's existing `id` in `index.html`. For example, an **Algorithms** paper with `filterCategory: "Network optimisation"` will make the page show the Algorithms topic, then only its algorithm-related category and user options. It will not show Sensor categories in that view.
+
 ---
 
 ## Verified Research Papers in `sensor_papers/` (23 Full PDFs)

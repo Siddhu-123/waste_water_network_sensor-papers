@@ -1,5 +1,8 @@
 {
   "1": {
+    "assignedTo": "Satya Siddhartha Balanagu",
+    "topic": "Sensors",
+    "filterCategory": "Level & Flow",
     "citation": "Drenoyanis, A., Raad, R., Wady, I., & Krogh, C. (2019). Implementation of an IoT Based Radar Sensor Network for Wastewater Management. Sensors, 19(2), 254. https://doi.org/10.3390/s19020254",
     "intro": "In this article, Drenoyanis et al. examine the design and municipal deployment of an autonomous IoT-enabled millimeter-wave radar network for real-time wastewater level tracking and overflow prevention.",
     "methods": "The authors designed battery-powered sensor nodes integrating 77–81 GHz FMCW millimeter-wave radar transducers, GPS, and cellular telemetry, deployed across 15 critical sewer manholes in Shoalhaven Water (Australia) over 12 months.",
@@ -10,6 +13,9 @@
     "reflection": "This study forms the foundational empirical basis for Section 2 in Paper 1, substantiating our recommendation of 77–81 GHz FMCW radar as the gold-standard non-contact level technology."
   },
   "2": {
+    "assignedTo": "Abraham Jaison",
+    "topic": "Sensors",
+    "filterCategory": "Level & Flow",
     "citation": "Alshami, A., Elsayed, M., Ali, E., Eltoukhy, A. E. E., & Zayed, T. (2023). Monitoring Blockage and Overflow Events in Small-Sized Sewer Network Using Contactless Flow Sensors in Hong Kong: Problems, Causes, and Proposed Solution. IEEE Access, 11, 87131–87149. https://doi.org/10.1109/ACCESS.2023.3305275",
     "intro": "This paper investigates contactless open-channel flow monitoring and highlights why conventional depth-to-flow Manning equations fail during sewer blockage events.",
     "methods": "The authors deployed non-contact dual-radar devices combining 24 GHz microwave Doppler surface velocimeters and level sensors across small-sized gravity sewers (DN225–DN375) in Hong Kong.",
@@ -20,6 +26,9 @@
     "reflection": "Directly illuminates Section 4 of Paper 1, providing the mathematical justification for why single-parameter depth sensors cannot be used with Manning's equation during abnormal pipe conditions."
   },
   "3": {
+    "assignedTo": "Satya Siddhartha Balanagu",
+    "topic": "Sensors",
+    "filterCategory": "Level & Flow",
     "citation": "Utepov, Y., Neftissov, A., Mkilima, T., et al. (2023). Prototyping an integrated IoT-based real-time sewer monitoring system using low-power sensors. Eastern-European Journal of Enterprise Technologies, 3(5/123), 6–23. https://doi.org/10.15587/1729-4061.2023.283393",
     "intro": "Utepov et al. present the prototyping, bench-testing, and embedded software architecture for low-cost, low-power sewer depth monitoring nodes.",
     "methods": "The authors designed edge microcomputing prototypes pairing low-power microcontrollers with optical micro-LiDAR Time-of-Flight (VL53L1X) and waterproof ultrasonic transceivers (JSN-SR04T) under simulated sewer humidity and foam conditions.",
@@ -30,6 +39,9 @@
     "reflection": "Informs the low-cost edge tier analysis in Paper 1 and justifies why acoustic and radar methods outperform optical infrared ToF in active sewer manholes."
   },
   "4": {
+    "assignedTo": "Satya Siddhartha Balanagu",
+    "topic": "Sensors",
+    "filterCategory": "Sensor Placement",
     "citation": "Sikorski, A., Solano Donado, F., & Kozdrowski, S. (2022). Cost-Efficient Coverage of Wastewater Networks by IoT Monitoring Devices. Sensors, 22(18), 6854. https://doi.org/10.3390/s22186854",
     "intro": "This paper develops an optimization framework for achieving maximum sewer network overflow monitoring coverage using ultra-low-cost, battery-efficient discrete IoT sentinels.",
     "methods": "The authors formulated a multi-objective coverage optimization model pairing zero-quiescent-power discrete float switches and tilt sensors with LoRaWAN telemetry across simulated large-scale municipal sewer networks.",
@@ -40,6 +52,9 @@
     "reflection": "Substantiates Section 3 of Paper 1 by establishing the clear functional boundary between continuous depth gauges and discrete event sentinels."
   },
   "5": {
+    "assignedTo": "Unassigned",
+    "topic": "Sensors",
+    "filterCategory": "Level & Flow",
     "citation": "Blumensaat, F., et al. (2026). The UWO dataset -- long-term observations from a full-scale field laboratory to better understand urban hydrology at small spatio-temporal scales. Earth System Science Data, 18, 5187–5208. https://doi.org/10.5194/essd-18-5187-2026",
     "intro": "Blumensaat et al. present a benchmark empirical dataset collected from a full-scale urban sewer catchment equipped with high-density flow and level monitoring.",
     "methods": "Continuous multi-year hydrological data collection using synchronized non-contact radar level sensors, submerged area-velocity Doppler flowmeters, and raingauge networks at 1-minute resolution.",
@@ -50,6 +65,9 @@
     "reflection": "Cited across Paper 1 as the reference field dataset for continuous sewer hydrograph and open-channel velocity dynamics."
   },
   "6": {
+    "assignedTo": "Nicholas",
+    "topic": "Sensors",
+    "filterCategory": "Pipe & Acoustic",
     "citation": "Bin Ali, M. T., Horoshenkov, K. V., & Tait, S. J. (2011). Rapid detection of sewer defects and blockages using acoustic-based instrumentation. Water Science and Technology, 64(8), 1700–1707. https://doi.org/10.2166/wst.2011.183",
     "intro": "This paper presents the development and field trial of an acoustic pulse reflectometry instrument (SewerBatt) for rapid, non-invasive sewer pipe inspection.",
     "methods": "Emitted low-frequency acoustic chirp pulses (0.1–5 kHz) down the sewer pipe headspace from a manhole rim and processed the reflected acoustic impulse response to detect blockages and structural defects.",
@@ -60,6 +78,9 @@
     "reflection": "Forms the core evidence for Section 7 in Paper 1 regarding rapid non-invasive acoustic inspection technologies."
   },
   "7": {
+    "assignedTo": "Nicholas",
+    "topic": "Sensors",
+    "filterCategory": "Pipe & Acoustic",
     "citation": "See, C. H., Horoshenkov, K. V., Bin Ali, M. T., & Tait, S. J. (2021). An Acoustic Sensor for Combined Sewer Overflow Screen Condition Monitoring in a Drainage Infrastructure. Sensors, 21(2), 404. https://doi.org/10.3390/s21020404",
     "intro": "See et al. develop an autonomous acoustic transceiver system for continuous real-time monitoring of bar screen ragging in Combined Sewer Overflow (CSO) chambers.",
     "methods": "Designed an acoustic transmitter/receiver array measuring acoustic wave attenuation and frequency shifts as debris and wet wipes blind the CSO bar screen.",
@@ -70,6 +91,9 @@
     "reflection": "Cited in Section 7 of Paper 1 as an outstanding example of non-contact acoustic sensing overcoming physical wipe ragging in sewer infrastructure."
   },
   "8": {
+    "assignedTo": "Nicholas",
+    "topic": "Sensors",
+    "filterCategory": "Pipe & Acoustic",
     "citation": "Yu, Y., Safari, A., Niu, X., Drinkwater, B., & Horoshenkov, K. V. (2021). Acoustic and ultrasonic techniques for defect detection and condition monitoring in water and sewerage pipes: A review. Applied Acoustics, 183, 108282. https://doi.org/10.1016/j.apacoust.2021.108282",
     "intro": "A definitive review synthesizing acoustic reflectometry, ultrasonic guided waves, and resonance methods for non-destructive evaluation (NDE) of pipelines.",
     "methods": "Systematically analyzed acoustic wave propagation physics in cylindrical conduits, comparing bulk wave, guided wave, and resonance techniques across metallic, concrete, and PVC pipes.",
@@ -80,6 +104,9 @@
     "reflection": "Serves as the theoretical wave mechanics foundation for Section 7 of Paper 1."
   },
   "9": {
+    "assignedTo": "Nicholas",
+    "topic": "Sensors",
+    "filterCategory": "Pipe & Acoustic",
     "citation": "Prisutova, J., Krynkin, A., Tait, S., & Horoshenkov, K. (2022). Use of Fibre-Optic Sensors for Pipe Condition and Hydraulics Measurements: A Review. CivilEng, 3(1), 85–113. https://doi.org/10.3390/civileng3010006",
     "intro": "This review evaluates the application of distributed fiber-optic sensors (DTS and DAS) for sewer pipe condition assessment and continuous hydraulic monitoring.",
     "methods": "Examined Raman/Brillouin Distributed Temperature Sensing (DTS) and Rayleigh Distributed Acoustic Sensing (DAS) installed along sewer pipe inverts and crowns.",
@@ -90,6 +117,9 @@
     "reflection": "Synthesized in Section 7 of Paper 1 to evaluate continuous distributed linear sensors versus point sensors in sewer management."
   },
   "10": {
+    "assignedTo": "Nicholas",
+    "topic": "Sensors",
+    "filterCategory": "Pipe & Acoustic",
     "citation": "Moradi, S., Zayed, T., & Golkhoo, F. (2019). Review on Computer Aided Sewer Pipeline Defect Detection and Condition Assessment. Infrastructures, 4(1), 10. https://doi.org/10.3390/infrastructures4010010",
     "intro": "A systematic review of automated Closed-Circuit Television (CCTV) inspection, computer vision algorithms, and AI defect classification for sewer pipe inspection.",
     "methods": "Compared image processing, feature extraction, convolutional neural networks (CNNs), and robotic crawler platforms for identifying cracks, root intrusions, FOG deposits, and pipe collapses.",
@@ -100,6 +130,9 @@
     "reflection": "Incorporated in Section 7 of Paper 1 to contrast episodic visual robotic inspections with continuous permanent IoT sensory networks."
   },
   "11": {
+    "assignedTo": "Mohammed",
+    "topic": "Sensors",
+    "filterCategory": "Water Quality",
     "citation": "Shi, B., Catsamas, S., Deletic, A., et al. (2022). Illicit discharge detection in stormwater drains using an Arduino-based low-cost sensor network. Water Science and Technology, 85(5), 1372–1383. https://doi.org/10.2166/wst.2022.034",
     "intro": "Shi et al. detail the design and deployment of an open-source, low-cost sensor network measuring electrical conductivity and temperature to detect illicit domestic sewage cross-connections in stormwater drains.",
     "methods": "Built Arduino-based sensor nodes equipped with toroidal/conductive electrical conductivity (EC) probes and DS18B20 temperature sensors, deployed across an urban stormwater catchment in Melbourne, Australia.",
@@ -110,6 +143,9 @@
     "reflection": "Cited in Section 5 of Paper 1 to support the analysis of electrical conductivity sensing for tracking water quality anomalies and rainwater dilution."
   },
   "12": {
+    "assignedTo": "Mohammed",
+    "topic": "Sensors",
+    "filterCategory": "Water Quality",
     "citation": "Li, T., Winnel, M., Lin, H., et al. (2017). A reliable sewage quality abnormal event monitoring system. Water Research, 121, 248–257. https://doi.org/10.1016/j.watres.2017.05.040",
     "intro": "Li et al. develop an online multi-parameter sensor station and event-detection algorithm for tracking toxic industrial chemical dumping in municipal sewers.",
     "methods": "Deployed an automated online multi-sensor platform measuring pH, ORP, electrical conductivity, and turbidity coupled with principal component analysis (PCA) and support vector machines (SVM).",
@@ -120,6 +156,9 @@
     "reflection": "Forms the cornerstone in Section 5 of Paper 1 for multi-parameter physicochemical sensing arrays and automated anti-fouling requirements."
   },
   "13": {
+    "assignedTo": "Unassigned",
+    "topic": "Sensors",
+    "filterCategory": "Water Quality",
     "citation": "Corominas, L., et al. (2024). Profiling wastewater characteristics in intra-urban catchments using online monitoring stations. Water Science and Technology, 89(6), 1412–1426. https://doi.org/10.2166/wst.2024.069",
     "intro": "This empirical study investigates high-frequency online water quality monitoring across intra-urban sewer catchments to profile dynamic wastewater pollutant loads.",
     "methods": "Operated multiple continuous monitoring stations equipped with in-situ spectrophotometers, pH/ORP probes, and conductivity sensors across distinct urban catchment typologies (residential, commercial, industrial).",
@@ -130,6 +169,9 @@
     "reflection": "Directly supports Section 5 of Paper 1 regarding the use of potentiometric ORP probes as early sentinels for septic conditions in sewer networks."
   },
   "14": {
+    "assignedTo": "Unassigned",
+    "topic": "Sensors",
+    "filterCategory": "Water Quality",
     "citation": "Helm, I., Karina, G., Jalukse, L., Pagano, T., & Leito, I. (2018). Comparative validation of amperometric and optical analyzers of dissolved oxygen: a case study. Environmental Monitoring and Assessment, 190, 313. https://doi.org/10.1007/s10661-018-6692-5",
     "intro": "Helm et al. rigorously compare the measurement uncertainty, calibration stability, and performance of optical luminescent DO (LDO) sensors versus electrochemical Clark polarographic cells.",
     "methods": "Conducted extensive ISO/IEC 17025 validation protocols, drift tests, and response time experiments on optical luminescence-quenching vs. amperometric dissolved oxygen analyzers in complex water matrices.",
@@ -140,6 +182,9 @@
     "reflection": "Directly provides the comparative scientific evidence in Section 5 of Paper 1 for recommending optical luminescent DO over electrochemical sensors in sewer networks."
   },
   "15": {
+    "assignedTo": "Mohammed",
+    "topic": "Sensors",
+    "filterCategory": "Water Quality",
     "citation": "Lepot, M., Torres, A., Hofer, T., et al. (2016). Calibration of UV/Vis spectrophotometers: A review and comparison of different methods to estimate TSS and total and dissolved COD concentrations in sewers, WWTPs and rivers. Water Research, 101, 519–534. https://doi.org/10.1016/j.watres.2016.05.070",
     "intro": "A definitive review and methodological evaluation of in-situ UV-Vis spectrophotometry for real-time estimation of Total Suspended Solids (TSS) and Chemical Oxygen Demand (COD) in wastewater.",
     "methods": "Evaluated single-wavelength, multi-wavelength, and full-spectrum (200–750 nm) chemometric calibration models (PLS, PCR, SVM) across field data collected from municipal sewers and WWTPs.",
@@ -150,6 +195,9 @@
     "reflection": "Serves as the central scientific reference in Section 6 of Paper 1 for UV-Vis spectrophotometric organic load and solids monitoring in sewers."
   },
   "16": {
+    "assignedTo": "Mohammed",
+    "topic": "Sensors",
+    "filterCategory": "Water Quality",
     "citation": "Carstea, E. M., Bridgeman, J., Baker, A., & Reynolds, D. M. (2016). Fluorescence spectroscopy for wastewater monitoring: A review. Water Research, 95, 205–219. https://doi.org/10.1016/j.watres.2016.03.021",
     "intro": "This review evaluates the application of 2D excitation-emission matrix (EEM) fluorescence spectroscopy for real-time organic characterization and biological oxygen demand (BOD5) monitoring in wastewater.",
     "methods": "Synthesized optical fluorophore mechanics across sewage matrices, focusing on Protein-like Peak T (Tryptophan, ex 280 nm, em 350 nm) and Peak B (Tyrosine) vs. Humic-like Peaks A and C.",
@@ -160,6 +208,9 @@
     "reflection": "Directly provides the theoretical and empirical foundation for Section 6 of Paper 1 on optical fluorescence spectroscopy for real-time organic load monitoring."
   },
   "17": {
+    "assignedTo": "Unassigned",
+    "topic": "Sensors",
+    "filterCategory": "Water Quality",
     "citation": "Tan, E. X., Anastasi, A., & Chandra, S. (2022). Electrochemical detection of nitrate, nitrite and ammonium for on-site water quality monitoring. Current Opinion in Electrochemistry, 32, 100926. https://doi.org/10.1016/j.coelec.2021.100926",
     "intro": "Tan et al. review electrochemical sensor technologies and ion-selective electrodes (ISEs) for on-site nutrient detection (NH4+, NO2-, NO3-) in wastewater.",
     "methods": "Evaluated potentiometric ion-selective field-effect transistors (ISFETs), PVC membrane ISEs, and amperometric nutrient sensors for real-time nitrogen speciation in water.",
@@ -170,6 +221,9 @@
     "reflection": "Synthesized in Section 5 of Paper 1 to analyze nutrient sensor performance and electrochemical cross-interference challenges."
   },
   "18": {
+    "assignedTo": "Unassigned",
+    "topic": "Sensors",
+    "filterCategory": "Water Quality",
     "citation": "Sonawane, J. M., Ezugwu, C. I., & Ghosh, P. C. (2020). Microbial Fuel Cell-Based Biological Oxygen Demand Sensors for Monitoring Wastewater: State-of-the-Art and Practical Applications. ACS Sensors, 5(8), 2297–2316. https://doi.org/10.1021/acssensors.0c01299",
     "intro": "A state-of-the-art review on Microbial Fuel Cell (MFC) biosensors for continuous, self-powered biological oxygen demand (BOD) and toxicity monitoring in wastewater.",
     "methods": "Analyzed exoelectrogenic biofilm kinetics (e.g., Geobacter, Shewanella) on conductive anode electrodes where extracellular electron transfer produces electrical current proportional to biodegradable organic substrate concentration.",
@@ -180,6 +234,9 @@
     "reflection": "Directly forms Section 6 of Paper 1 on biological and bioelectrochemical biosensing in wastewater networks."
   },
   "19": {
+    "assignedTo": "Isaac",
+    "topic": "Sensors",
+    "filterCategory": "H2S & Corrosion",
     "citation": "Pandey, S. K., Kim, K.-H., & Tang, K.-T. (2012). A review of sensor-based methods for monitoring hydrogen sulfide. TrAC Trends in Analytical Chemistry, 32, 87–99. https://doi.org/10.1016/j.trac.2011.08.008",
     "intro": "Pandey et al. provide a comprehensive analysis of sensor-based techniques for detecting and quantifying hydrogen sulfide (H2S) in gaseous and liquid phases.",
     "methods": "Systematically compared electrochemical amperometric cells, metal oxide semiconductors (MOS), optical absorbance/fluorescence, and conductometric gas sensors for H2S quantification.",
@@ -190,6 +247,9 @@
     "reflection": "Provides the theoretical and chemical foundation in Section 5 of Paper 1 for headspace H2S sensing and sewer asset preservation."
   },
   "20": {
+    "assignedTo": "Isaac",
+    "topic": "Sensors",
+    "filterCategory": "H2S & Corrosion",
     "citation": "Pacheco Fernández, M., Despot, D., & Barjenbruch, M. (2021). Comparison of H2S Gas Sensors: A Sensor Management Procedure for Sewer Monitoring. Sustainability, 13(19), 10779. https://doi.org/10.3390/su131910779",
     "intro": "This empirical study evaluates the field performance and longevity of multiple commercial electrochemical H2S gas sensors deployed inside municipal sewer manholes.",
     "methods": "Field-tested four different electrochemical H2S sensor units under harsh real sewer conditions (continuous 95–100% RH, H2S peaks up to 500 ppm, biogenic sulfuric acid) over 6 months, developing a utility sensor management procedure.",
@@ -200,6 +260,9 @@
     "reflection": "Directly cited in Section 5 and Section 8 of Paper 1 to substantiate the maintenance intervals and failure modes of sewer gas monitoring instrumentation."
   },
   "21": {
+    "assignedTo": "Isaac",
+    "topic": "Sensors",
+    "filterCategory": "H2S & Corrosion",
     "citation": "Despot, D., Pacheco Fernández, M., & Barjenbruch, M. (2021). Comparison of Online Sensors for Liquid Phase Hydrogen Sulphide Monitoring in Sewer Systems. Water, 13(13), 1876. https://doi.org/10.3390/w13131876",
     "intro": "This research paper compares direct liquid-phase in-situ dissolved sulfide sensors with indirect headspace gas sensors for real-time sewer corrosion and chemical dosing management.",
     "methods": "Evaluated submerged UV spectrophotometric probes measuring dissolved bisulfide ions (HS- at 230 nm) directly in raw sewage in parallel with headspace H2S gas analyzers and chemical dosing pumps.",
@@ -210,6 +273,9 @@
     "reflection": "Serves as the primary evidence in Section 5 of Paper 1 for liquid-phase dissolved sulfide sensing and real-time corrosion mitigation dosing."
   },
   "22": {
+    "assignedTo": "Unassigned",
+    "topic": "Sensors",
+    "filterCategory": "IoT & Telemetry",
     "citation": "Lopez-Ramirez, G. A., & Aragon-Zavala, A. (2023). Wireless Sensor Networks for Water Quality Monitoring: A Comprehensive Review. IEEE Access, 11, 95120–95142. https://doi.org/10.1109/ACCESS.2023.3308905",
     "intro": "A comprehensive review investigating subterranean and surface wireless sensor network (WSN) topologies, telemetry protocols, and packaging architectures for water infrastructure.",
     "methods": "Compared RF propagation loss, antenna radiation patterns, communication protocols (LoRaWAN, NB-IoT, ZigBee), and energy harvesting mechanisms across subterranean manholes and water distribution assets.",
@@ -220,6 +286,9 @@
     "reflection": "Forms the foundational technical reference for Section 8 of Paper 1 regarding subterranean telemetry, radio path loss, and edge node packaging."
   },
   "23": {
+    "assignedTo": "Unassigned",
+    "topic": "Sensors",
+    "filterCategory": "IoT & Telemetry",
     "citation": "de Camargo, E. T., et al. (2023). Low-Cost Water Quality Sensors for IoT: A Systematic Review. Sensors, 23(9), 4424. https://doi.org/10.3390/s23094424",
     "intro": "A systematic review exploring low-cost sensing hardware, open-source microcontrollers, and edge processing architectures for IoT water monitoring.",
     "methods": "Systematically categorized and benchmarked low-cost sensors for pH, turbidity, conductivity, temperature, and dissolved oxygen paired with low-power microcontrollers (ESP32, Arduino, ARM Cortex).",
