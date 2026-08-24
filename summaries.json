@@ -1,6 +1,6 @@
 {
   "1": {
-    "assignedTo": "Satya Siddhartha Balanagu",
+    "assignedTo": "Satya Siddhartha",
     "topic": "Sensors",
     "filterCategory": "Level & Flow",
     "citation": "Drenoyanis, A., Raad, R., Wady, I., & Krogh, C. (2019). Implementation of an IoT Based Radar Sensor Network for Wastewater Management. Sensors, 19(2), 254. https://doi.org/10.3390/s19020254",
@@ -13,7 +13,7 @@
     "reflection": "This study forms the foundational empirical basis for Section 2 in Paper 1, substantiating our recommendation of 77–81 GHz FMCW radar as the gold-standard non-contact level technology."
   },
   "2": {
-    "assignedTo": "Abraham Jaison",
+    "assignedTo": "Satya Siddhartha",
     "topic": "Sensors",
     "filterCategory": "Level & Flow",
     "citation": "Alshami, A., Elsayed, M., Ali, E., Eltoukhy, A. E. E., & Zayed, T. (2023). Monitoring Blockage and Overflow Events in Small-Sized Sewer Network Using Contactless Flow Sensors in Hong Kong: Problems, Causes, and Proposed Solution. IEEE Access, 11, 87131–87149. https://doi.org/10.1109/ACCESS.2023.3305275",
@@ -26,7 +26,7 @@
     "reflection": "Directly illuminates Section 4 of Paper 1, providing the mathematical justification for why single-parameter depth sensors cannot be used with Manning's equation during abnormal pipe conditions."
   },
   "3": {
-    "assignedTo": "Satya Siddhartha Balanagu",
+    "assignedTo": "Satya Siddhartha",
     "topic": "Sensors",
     "filterCategory": "Level & Flow",
     "citation": "Utepov, Y., Neftissov, A., Mkilima, T., et al. (2023). Prototyping an integrated IoT-based real-time sewer monitoring system using low-power sensors. Eastern-European Journal of Enterprise Technologies, 3(5/123), 6–23. https://doi.org/10.15587/1729-4061.2023.283393",
@@ -39,7 +39,7 @@
     "reflection": "Informs the low-cost edge tier analysis in Paper 1 and justifies why acoustic and radar methods outperform optical infrared ToF in active sewer manholes."
   },
   "4": {
-    "assignedTo": "Satya Siddhartha Balanagu",
+    "assignedTo": "Satya Siddhartha",
     "topic": "Sensors",
     "filterCategory": "Sensor Placement",
     "citation": "Sikorski, A., Solano Donado, F., & Kozdrowski, S. (2022). Cost-Efficient Coverage of Wastewater Networks by IoT Monitoring Devices. Sensors, 22(18), 6854. https://doi.org/10.3390/s22186854",
@@ -52,7 +52,7 @@
     "reflection": "Substantiates Section 3 of Paper 1 by establishing the clear functional boundary between continuous depth gauges and discrete event sentinels."
   },
   "5": {
-    "assignedTo": "Unassigned",
+    "assignedTo": "Satya Siddhartha",
     "topic": "Sensors",
     "filterCategory": "Level & Flow",
     "citation": "Blumensaat, F., et al. (2026). The UWO dataset -- long-term observations from a full-scale field laboratory to better understand urban hydrology at small spatio-temporal scales. Earth System Science Data, 18, 5187–5208. https://doi.org/10.5194/essd-18-5187-2026",
@@ -65,7 +65,7 @@
     "reflection": "Cited across Paper 1 as the reference field dataset for continuous sewer hydrograph and open-channel velocity dynamics."
   },
   "6": {
-    "assignedTo": "Nicholas",
+    "assignedTo": "Satya Siddhartha",
     "topic": "Sensors",
     "filterCategory": "Pipe & Acoustic",
     "citation": "Bin Ali, M. T., Horoshenkov, K. V., & Tait, S. J. (2011). Rapid detection of sewer defects and blockages using acoustic-based instrumentation. Water Science and Technology, 64(8), 1700–1707. https://doi.org/10.2166/wst.2011.183",
@@ -78,7 +78,7 @@
     "reflection": "Forms the core evidence for Section 7 in Paper 1 regarding rapid non-invasive acoustic inspection technologies."
   },
   "7": {
-    "assignedTo": "Nicholas",
+    "assignedTo": "Satya Siddhartha",
     "topic": "Sensors",
     "filterCategory": "Pipe & Acoustic",
     "citation": "See, C. H., Horoshenkov, K. V., Bin Ali, M. T., & Tait, S. J. (2021). An Acoustic Sensor for Combined Sewer Overflow Screen Condition Monitoring in a Drainage Infrastructure. Sensors, 21(2), 404. https://doi.org/10.3390/s21020404",
@@ -91,7 +91,7 @@
     "reflection": "Cited in Section 7 of Paper 1 as an outstanding example of non-contact acoustic sensing overcoming physical wipe ragging in sewer infrastructure."
   },
   "8": {
-    "assignedTo": "Nicholas",
+    "assignedTo": "Satya Siddhartha",
     "topic": "Sensors",
     "filterCategory": "Pipe & Acoustic",
     "citation": "Yu, Y., Safari, A., Niu, X., Drinkwater, B., & Horoshenkov, K. V. (2021). Acoustic and ultrasonic techniques for defect detection and condition monitoring in water and sewerage pipes: A review. Applied Acoustics, 183, 108282. https://doi.org/10.1016/j.apacoust.2021.108282",
@@ -104,7 +104,7 @@
     "reflection": "Serves as the theoretical wave mechanics foundation for Section 7 of Paper 1."
   },
   "9": {
-    "assignedTo": "Nicholas",
+    "assignedTo": "Satya Siddhartha",
     "topic": "Sensors",
     "filterCategory": "Pipe & Acoustic",
     "citation": "Prisutova, J., Krynkin, A., Tait, S., & Horoshenkov, K. (2022). Use of Fibre-Optic Sensors for Pipe Condition and Hydraulics Measurements: A Review. CivilEng, 3(1), 85–113. https://doi.org/10.3390/civileng3010006",
@@ -117,7 +117,7 @@
     "reflection": "Synthesized in Section 7 of Paper 1 to evaluate continuous distributed linear sensors versus point sensors in sewer management."
   },
   "10": {
-    "assignedTo": "Nicholas",
+    "assignedTo": "Satya Siddhartha",
     "topic": "Sensors",
     "filterCategory": "Pipe & Acoustic",
     "citation": "Moradi, S., Zayed, T., & Golkhoo, F. (2019). Review on Computer Aided Sewer Pipeline Defect Detection and Condition Assessment. Infrastructures, 4(1), 10. https://doi.org/10.3390/infrastructures4010010",
@@ -130,7 +130,7 @@
     "reflection": "Incorporated in Section 7 of Paper 1 to contrast episodic visual robotic inspections with continuous permanent IoT sensory networks."
   },
   "11": {
-    "assignedTo": "Mohammed",
+    "assignedTo": "Satya Siddhartha",
     "topic": "Sensors",
     "filterCategory": "Water Quality",
     "citation": "Shi, B., Catsamas, S., Deletic, A., et al. (2022). Illicit discharge detection in stormwater drains using an Arduino-based low-cost sensor network. Water Science and Technology, 85(5), 1372–1383. https://doi.org/10.2166/wst.2022.034",
@@ -143,7 +143,7 @@
     "reflection": "Cited in Section 5 of Paper 1 to support the analysis of electrical conductivity sensing for tracking water quality anomalies and rainwater dilution."
   },
   "12": {
-    "assignedTo": "Mohammed",
+    "assignedTo": "Satya Siddhartha",
     "topic": "Sensors",
     "filterCategory": "Water Quality",
     "citation": "Li, T., Winnel, M., Lin, H., et al. (2017). A reliable sewage quality abnormal event monitoring system. Water Research, 121, 248–257. https://doi.org/10.1016/j.watres.2017.05.040",
@@ -156,7 +156,7 @@
     "reflection": "Forms the cornerstone in Section 5 of Paper 1 for multi-parameter physicochemical sensing arrays and automated anti-fouling requirements."
   },
   "13": {
-    "assignedTo": "Unassigned",
+    "assignedTo": "Satya Siddhartha",
     "topic": "Sensors",
     "filterCategory": "Water Quality",
     "citation": "Corominas, L., et al. (2024). Profiling wastewater characteristics in intra-urban catchments using online monitoring stations. Water Science and Technology, 89(6), 1412–1426. https://doi.org/10.2166/wst.2024.069",
@@ -169,7 +169,7 @@
     "reflection": "Directly supports Section 5 of Paper 1 regarding the use of potentiometric ORP probes as early sentinels for septic conditions in sewer networks."
   },
   "14": {
-    "assignedTo": "Unassigned",
+    "assignedTo": "Satya Siddhartha",
     "topic": "Sensors",
     "filterCategory": "Water Quality",
     "citation": "Helm, I., Karina, G., Jalukse, L., Pagano, T., & Leito, I. (2018). Comparative validation of amperometric and optical analyzers of dissolved oxygen: a case study. Environmental Monitoring and Assessment, 190, 313. https://doi.org/10.1007/s10661-018-6692-5",
@@ -182,7 +182,7 @@
     "reflection": "Directly provides the comparative scientific evidence in Section 5 of Paper 1 for recommending optical luminescent DO over electrochemical sensors in sewer networks."
   },
   "15": {
-    "assignedTo": "Mohammed",
+    "assignedTo": "Satya Siddhartha",
     "topic": "Sensors",
     "filterCategory": "Water Quality",
     "citation": "Lepot, M., Torres, A., Hofer, T., et al. (2016). Calibration of UV/Vis spectrophotometers: A review and comparison of different methods to estimate TSS and total and dissolved COD concentrations in sewers, WWTPs and rivers. Water Research, 101, 519–534. https://doi.org/10.1016/j.watres.2016.05.070",
@@ -195,7 +195,7 @@
     "reflection": "Serves as the central scientific reference in Section 6 of Paper 1 for UV-Vis spectrophotometric organic load and solids monitoring in sewers."
   },
   "16": {
-    "assignedTo": "Mohammed",
+    "assignedTo": "Satya Siddhartha",
     "topic": "Sensors",
     "filterCategory": "Water Quality",
     "citation": "Carstea, E. M., Bridgeman, J., Baker, A., & Reynolds, D. M. (2016). Fluorescence spectroscopy for wastewater monitoring: A review. Water Research, 95, 205–219. https://doi.org/10.1016/j.watres.2016.03.021",
@@ -208,7 +208,7 @@
     "reflection": "Directly provides the theoretical and empirical foundation for Section 6 of Paper 1 on optical fluorescence spectroscopy for real-time organic load monitoring."
   },
   "17": {
-    "assignedTo": "Unassigned",
+    "assignedTo": "Satya Siddhartha",
     "topic": "Sensors",
     "filterCategory": "Water Quality",
     "citation": "Tan, E. X., Anastasi, A., & Chandra, S. (2022). Electrochemical detection of nitrate, nitrite and ammonium for on-site water quality monitoring. Current Opinion in Electrochemistry, 32, 100926. https://doi.org/10.1016/j.coelec.2021.100926",
@@ -221,7 +221,7 @@
     "reflection": "Synthesized in Section 5 of Paper 1 to analyze nutrient sensor performance and electrochemical cross-interference challenges."
   },
   "18": {
-    "assignedTo": "Unassigned",
+    "assignedTo": "Satya Siddhartha",
     "topic": "Sensors",
     "filterCategory": "Water Quality",
     "citation": "Sonawane, J. M., Ezugwu, C. I., & Ghosh, P. C. (2020). Microbial Fuel Cell-Based Biological Oxygen Demand Sensors for Monitoring Wastewater: State-of-the-Art and Practical Applications. ACS Sensors, 5(8), 2297–2316. https://doi.org/10.1021/acssensors.0c01299",
@@ -234,7 +234,7 @@
     "reflection": "Directly forms Section 6 of Paper 1 on biological and bioelectrochemical biosensing in wastewater networks."
   },
   "19": {
-    "assignedTo": "Isaac",
+    "assignedTo": "Satya Siddhartha",
     "topic": "Sensors",
     "filterCategory": "H2S & Corrosion",
     "citation": "Pandey, S. K., Kim, K.-H., & Tang, K.-T. (2012). A review of sensor-based methods for monitoring hydrogen sulfide. TrAC Trends in Analytical Chemistry, 32, 87–99. https://doi.org/10.1016/j.trac.2011.08.008",
@@ -247,7 +247,7 @@
     "reflection": "Provides the theoretical and chemical foundation in Section 5 of Paper 1 for headspace H2S sensing and sewer asset preservation."
   },
   "20": {
-    "assignedTo": "Isaac",
+    "assignedTo": "Satya Siddhartha",
     "topic": "Sensors",
     "filterCategory": "H2S & Corrosion",
     "citation": "Pacheco Fernández, M., Despot, D., & Barjenbruch, M. (2021). Comparison of H2S Gas Sensors: A Sensor Management Procedure for Sewer Monitoring. Sustainability, 13(19), 10779. https://doi.org/10.3390/su131910779",
@@ -260,7 +260,7 @@
     "reflection": "Directly cited in Section 5 and Section 8 of Paper 1 to substantiate the maintenance intervals and failure modes of sewer gas monitoring instrumentation."
   },
   "21": {
-    "assignedTo": "Isaac",
+    "assignedTo": "Satya Siddhartha",
     "topic": "Sensors",
     "filterCategory": "H2S & Corrosion",
     "citation": "Despot, D., Pacheco Fernández, M., & Barjenbruch, M. (2021). Comparison of Online Sensors for Liquid Phase Hydrogen Sulphide Monitoring in Sewer Systems. Water, 13(13), 1876. https://doi.org/10.3390/w13131876",
@@ -273,7 +273,7 @@
     "reflection": "Serves as the primary evidence in Section 5 of Paper 1 for liquid-phase dissolved sulfide sensing and real-time corrosion mitigation dosing."
   },
   "22": {
-    "assignedTo": "Unassigned",
+    "assignedTo": "Satya Siddhartha",
     "topic": "Sensors",
     "filterCategory": "IoT & Telemetry",
     "citation": "Lopez-Ramirez, G. A., & Aragon-Zavala, A. (2023). Wireless Sensor Networks for Water Quality Monitoring: A Comprehensive Review. IEEE Access, 11, 95120–95142. https://doi.org/10.1109/ACCESS.2023.3308905",
@@ -286,7 +286,7 @@
     "reflection": "Forms the foundational technical reference for Section 8 of Paper 1 regarding subterranean telemetry, radio path loss, and edge node packaging."
   },
   "23": {
-    "assignedTo": "Unassigned",
+    "assignedTo": "Satya Siddhartha",
     "topic": "Sensors",
     "filterCategory": "IoT & Telemetry",
     "citation": "de Camargo, E. T., et al. (2023). Low-Cost Water Quality Sensors for IoT: A Systematic Review. Sensors, 23(9), 4424. https://doi.org/10.3390/s23094424",

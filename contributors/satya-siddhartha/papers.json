@@ -1,0 +1,28 @@
+{
+  "contributor": "Satya Siddhartha",
+  "papers": [
+    { "id": 1, "assignedTo": "Satya Siddhartha", "topic": "Sensors", "filterCategory": "Level & Flow" },
+    { "id": 2, "assignedTo": "Satya Siddhartha", "topic": "Sensors", "filterCategory": "Level & Flow" },
+    { "id": 3, "assignedTo": "Satya Siddhartha", "topic": "Sensors", "filterCategory": "Level & Flow" },
+    { "id": 4, "assignedTo": "Satya Siddhartha", "topic": "Sensors", "filterCategory": "Sensor Placement" },
+    { "id": 5, "assignedTo": "Satya Siddhartha", "topic": "Sensors", "filterCategory": "Level & Flow" },
+    { "id": 6, "assignedTo": "Satya Siddhartha", "topic": "Sensors", "filterCategory": "Pipe & Acoustic" },
+    { "id": 7, "assignedTo": "Satya Siddhartha", "topic": "Sensors", "filterCategory": "Pipe & Acoustic" },
+    { "id": 8, "assignedTo": "Satya Siddhartha", "topic": "Sensors", "filterCategory": "Pipe & Acoustic" },
+    { "id": 9, "assignedTo": "Satya Siddhartha", "topic": "Sensors", "filterCategory": "Pipe & Acoustic" },
+    { "id": 10, "assignedTo": "Satya Siddhartha", "topic": "Sensors", "filterCategory": "Pipe & Acoustic" },
+    { "id": 11, "assignedTo": "Satya Siddhartha", "topic": "Sensors", "filterCategory": "Water Quality" },
+    { "id": 12, "assignedTo": "Satya Siddhartha", "topic": "Sensors", "filterCategory": "Water Quality" },
+    { "id": 13, "assignedTo": "Satya Siddhartha", "topic": "Sensors", "filterCategory": "Water Quality" },
+    { "id": 14, "assignedTo": "Satya Siddhartha", "topic": "Sensors", "filterCategory": "Water Quality" },
+    { "id": 15, "assignedTo": "Satya Siddhartha", "topic": "Sensors", "filterCategory": "Water Quality" },
+    { "id": 16, "assignedTo": "Satya Siddhartha", "topic": "Sensors", "filterCategory": "Water Quality" },
+    { "id": 17, "assignedTo": "Satya Siddhartha", "topic": "Sensors", "filterCategory": "Water Quality" },
+    { "id": 18, "assignedTo": "Satya Siddhartha", "topic": "Sensors", "filterCategory": "Water Quality" },
+    { "id": 19, "assignedTo": "Satya Siddhartha", "topic": "Sensors", "filterCategory": "H2S & Corrosion" },
+    { "id": 20, "assignedTo": "Satya Siddhartha", "topic": "Sensors", "filterCategory": "H2S & Corrosion" },
+    { "id": 21, "assignedTo": "Satya Siddhartha", "topic": "Sensors", "filterCategory": "H2S & Corrosion" },
+    { "id": 22, "assignedTo": "Satya Siddhartha", "topic": "Sensors", "filterCategory": "IoT & Telemetry" },
+    { "id": 23, "assignedTo": "Satya Siddhartha", "topic": "Sensors", "filterCategory": "IoT & Telemetry" }
+  ]
+}

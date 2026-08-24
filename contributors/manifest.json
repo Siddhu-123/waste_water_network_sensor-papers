@@ -1,0 +1,30 @@
+{
+  "version": 1,
+  "contributors": [
+    {
+      "name": "Satya Siddhartha",
+      "slug": "satya-siddhartha",
+      "file": "./satya-siddhartha/papers.json"
+    },
+    {
+      "name": "Abraham",
+      "slug": "abraham",
+      "file": "./abraham/papers.json"
+    },
+    {
+      "name": "Ashis Jose",
+      "slug": "ashis-jose",
+      "file": "./ashis-jose/papers.json"
+    },
+    {
+      "name": "Rijoy John",
+      "slug": "rijoy-john",
+      "file": "./rijoy-john/papers.json"
+    },
+    {
+      "name": "Wimukthi",
+      "slug": "wimukthi",
+      "file": "./wimukthi/papers.json"
+    }
+  ]
+}

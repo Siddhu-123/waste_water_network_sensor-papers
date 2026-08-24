@@ -43,6 +43,19 @@ Each paper entry can also define its filter metadata. `topic` is the broad resea
 
 The key must match that paper's existing `id` in `index.html`. For example, an **Algorithms** paper with `filterCategory: "Network optimisation"` will make the page show the Algorithms topic, then only its algorithm-related category and user options. It will not show Sensor categories in that view.
 
+## Adding a teammate's papers
+
+Use the [`contributors/`](./contributors/) folder so each person can maintain their own list without editing the large HTML file.
+
+1. Open your own `contributors/<name>/papers.json` file.
+2. Add one record per paper using the fields in [`contributors/_template/papers.json`](./contributors/_template/papers.json).
+3. Use a new numeric `id`. The existing Paper 1 records use IDs **1–23**, so the next new paper should use **24**.
+4. Put the PDF inside that contributor's `papers/` folder and set its relative `pdfUrl`.
+5. Add the matching 8-step summary to [`summaries.json`](./summaries.json) with the same ID.
+6. Commit and push the changes. The website loads the contributor files automatically.
+
+The five contributor names are already registered in [`contributors/manifest.json`](./contributors/manifest.json): Satya Siddhartha, Abraham, Ashis Jose, Rijoy John, and Wimukthi. Keep paper IDs unique and set `topic`, `filterCategory`, and `assignedTo` so the nested filters stay accurate.
+
 ---
 
 ## Verified Research Papers in `sensor_papers/` (23 Full PDFs)

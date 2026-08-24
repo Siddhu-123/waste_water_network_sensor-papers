@@ -1522,121 +1522,124 @@
         },
       ];
 
+      const PAPER1_OWNER = "Satya Siddhartha";
+      const CONTRIBUTOR_MANIFEST_URL = "./contributors/manifest.json";
+
       // Offline fallback. The hosted page overrides these fields from
       // summaries.json when a paper includes assignedTo, topic, or filterCategory.
       const defaultPaperMetadataById = {
         1: {
-          assignedTo: "Satya Siddhartha Balanagu",
+          assignedTo: PAPER1_OWNER,
           topic: "Sensors",
           filterCategory: "Level & Flow",
         },
         2: {
-          assignedTo: "Abraham Jaison",
+          assignedTo: PAPER1_OWNER,
           topic: "Sensors",
           filterCategory: "Level & Flow",
         },
         3: {
-          assignedTo: "Satya Siddhartha Balanagu",
+          assignedTo: PAPER1_OWNER,
           topic: "Sensors",
           filterCategory: "Level & Flow",
         },
         4: {
-          assignedTo: "Satya Siddhartha Balanagu",
+          assignedTo: PAPER1_OWNER,
           topic: "Sensors",
           filterCategory: "Sensor Placement",
         },
         5: {
-          assignedTo: "Unassigned",
+          assignedTo: PAPER1_OWNER,
           topic: "Sensors",
           filterCategory: "Level & Flow",
         },
         6: {
-          assignedTo: "Nicholas",
+          assignedTo: PAPER1_OWNER,
           topic: "Sensors",
           filterCategory: "Pipe & Acoustic",
         },
         7: {
-          assignedTo: "Nicholas",
+          assignedTo: PAPER1_OWNER,
           topic: "Sensors",
           filterCategory: "Pipe & Acoustic",
         },
         8: {
-          assignedTo: "Nicholas",
+          assignedTo: PAPER1_OWNER,
           topic: "Sensors",
           filterCategory: "Pipe & Acoustic",
         },
         9: {
-          assignedTo: "Nicholas",
+          assignedTo: PAPER1_OWNER,
           topic: "Sensors",
           filterCategory: "Pipe & Acoustic",
         },
         10: {
-          assignedTo: "Nicholas",
+          assignedTo: PAPER1_OWNER,
           topic: "Sensors",
           filterCategory: "Pipe & Acoustic",
         },
         11: {
-          assignedTo: "Mohammed",
+          assignedTo: PAPER1_OWNER,
           topic: "Sensors",
           filterCategory: "Water Quality",
         },
         12: {
-          assignedTo: "Mohammed",
+          assignedTo: PAPER1_OWNER,
           topic: "Sensors",
           filterCategory: "Water Quality",
         },
         13: {
-          assignedTo: "Unassigned",
+          assignedTo: PAPER1_OWNER,
           topic: "Sensors",
           filterCategory: "Water Quality",
         },
         14: {
-          assignedTo: "Unassigned",
+          assignedTo: PAPER1_OWNER,
           topic: "Sensors",
           filterCategory: "Water Quality",
         },
         15: {
-          assignedTo: "Mohammed",
+          assignedTo: PAPER1_OWNER,
           topic: "Sensors",
           filterCategory: "Water Quality",
         },
         16: {
-          assignedTo: "Mohammed",
+          assignedTo: PAPER1_OWNER,
           topic: "Sensors",
           filterCategory: "Water Quality",
         },
         17: {
-          assignedTo: "Unassigned",
+          assignedTo: PAPER1_OWNER,
           topic: "Sensors",
           filterCategory: "Water Quality",
         },
         18: {
-          assignedTo: "Unassigned",
+          assignedTo: PAPER1_OWNER,
           topic: "Sensors",
           filterCategory: "Water Quality",
         },
         19: {
-          assignedTo: "Isaac",
+          assignedTo: PAPER1_OWNER,
           topic: "Sensors",
           filterCategory: "H2S & Corrosion",
         },
         20: {
-          assignedTo: "Isaac",
+          assignedTo: PAPER1_OWNER,
           topic: "Sensors",
           filterCategory: "H2S & Corrosion",
         },
         21: {
-          assignedTo: "Isaac",
+          assignedTo: PAPER1_OWNER,
           topic: "Sensors",
           filterCategory: "H2S & Corrosion",
         },
         22: {
-          assignedTo: "Unassigned",
+          assignedTo: PAPER1_OWNER,
           topic: "Sensors",
           filterCategory: "IoT & Telemetry",
         },
         23: {
-          assignedTo: "Unassigned",
+          assignedTo: PAPER1_OWNER,
           topic: "Sensors",
           filterCategory: "IoT & Telemetry",
         },
@@ -1648,17 +1651,87 @@
           const shared =
             sharedMetadata[String(paper.id)] || sharedMetadata[paper.id] || {};
           paper.assignedTo =
-            shared.assignedTo || shared.user || fallback.assignedTo || "Unassigned";
-          paper.topic = shared.topic || fallback.topic || "General";
+            shared.assignedTo ||
+            shared.user ||
+            fallback.assignedTo ||
+            paper.assignedTo ||
+            "Unassigned";
+          paper.topic = shared.topic || fallback.topic || paper.topic || "General";
           paper.filterCategory =
             shared.filterCategory ||
             shared.category ||
             fallback.filterCategory ||
+            paper.filterCategory ||
             paper.categoryLabel;
         });
       }
 
       applyPaperMetadata();
+
+      function mergeContributorPapers(records) {
+        const papersById = new Map(
+          papersData.map((paper) => [Number(paper.id), paper]),
+        );
+        let added = 0;
+
+        records.forEach((rawPaper) => {
+          const id = Number(rawPaper && rawPaper.id);
+          if (!Number.isInteger(id) || id < 1) return;
+
+          const existing = papersById.get(id);
+          const incomingOwner = String(
+            rawPaper.assignedTo || rawPaper.user || "",
+          ).trim();
+
+          if (existing) {
+            if (
+              incomingOwner &&
+              existing.assignedTo &&
+              incomingOwner !== existing.assignedTo
+            ) {
+              console.warn(
+                `Skipped duplicate paper id ${id} from ${incomingOwner}; paper IDs must be unique.`,
+              );
+              return;
+            }
+
+            Object.assign(existing, rawPaper, { id });
+            existing.steps = {
+              ...(existing.steps || {}),
+              ...(rawPaper.steps || {}),
+            };
+            return;
+          }
+
+          if (!rawPaper.title) {
+            console.warn(`Skipped contributor paper ${id}: title is required.`);
+            return;
+          }
+
+          const paper = {
+            ...rawPaper,
+            id,
+            title: rawPaper.title,
+            authors: rawPaper.authors || "Authors not provided",
+            journal: rawPaper.journal || "Publication details not provided",
+            categoryKey: rawPaper.categoryKey || "other",
+            categoryLabel:
+              rawPaper.categoryLabel || rawPaper.filterCategory || "Other",
+            size: rawPaper.size || "",
+            pages: rawPaper.pages || "",
+            pdfUrl: rawPaper.pdfUrl || "#",
+            scholarUrl: rawPaper.scholarUrl || "#",
+            steps: rawPaper.steps || {},
+          };
+
+          papersData.push(paper);
+          papersById.set(id, paper);
+          added += 1;
+        });
+
+        papersData.sort((a, b) => Number(a.id) - Number(b.id));
+        return added;
+      }
 
       function renderTable() {
         const tbody = document.getElementById("tableBody");
@@ -1891,6 +1964,70 @@
         }
       }
 
+      async function loadContributorPapers() {
+        try {
+          const manifestResponse = await fetch(CONTRIBUTOR_MANIFEST_URL, {
+            cache: "no-store",
+          });
+          if (!manifestResponse.ok) {
+            throw new Error(`HTTP ${manifestResponse.status}`);
+          }
+
+          const manifest = await manifestResponse.json();
+          if (!manifest || !Array.isArray(manifest.contributors)) {
+            throw new Error("contributors/manifest.json must list contributors");
+          }
+
+          const contributorRecords = await Promise.all(
+            manifest.contributors.map(async (contributor) => {
+              try {
+                const fileUrl = new URL(
+                  contributor.file,
+                  new URL(CONTRIBUTOR_MANIFEST_URL, window.location.href),
+                );
+                const response = await fetch(fileUrl, { cache: "no-store" });
+                if (!response.ok) {
+                  throw new Error(`HTTP ${response.status}`);
+                }
+
+                const parsed = await response.json();
+                const papers = Array.isArray(parsed)
+                  ? parsed
+                  : parsed && Array.isArray(parsed.papers)
+                    ? parsed.papers
+                    : [];
+                const owner =
+                  (parsed && parsed.contributor) ||
+                  contributor.name ||
+                  "Unassigned";
+
+                return papers.map((paper) => ({
+                  ...paper,
+                  assignedTo: paper.assignedTo || paper.user || owner,
+                }));
+              } catch (error) {
+                console.warn(
+                  `Could not load contributor file for ${contributor.name || "unknown contributor"}.`,
+                  error,
+                );
+                return [];
+              }
+            }),
+          );
+
+          mergeContributorPapers(contributorRecords.flat());
+          applyPaperMetadata(sharedSummaryData);
+          refreshNestedFilters();
+          renderTable();
+          filterTable();
+        } catch (error) {
+          console.warn(
+            "Could not load contributors/manifest.json; using bundled Paper 1 data.",
+            error,
+          );
+        }
+      }
+
       function openSummary(id) {
         const paper = papersData.find((p) => p.id === id);
         if (!paper) return;
@@ -1977,6 +2114,7 @@
       refreshNestedFilters();
       renderTable();
       loadSharedSummaries();
+      loadContributorPapers();
     </script>
   </body>
 </html>

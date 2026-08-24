@@ -1,0 +1,19 @@
+{
+  "contributor": "Your Name",
+  "papers": [
+    {
+      "id": 24,
+      "title": "Paper title",
+      "authors": "Authors (year)",
+      "journal": "Journal, volume, pages",
+      "categoryKey": "other",
+      "categoryLabel": "Network optimisation",
+      "topic": "Algorithms",
+      "filterCategory": "Network optimisation",
+      "assignedTo": "Your Name",
+      "pdfUrl": "./contributors/your-name/papers/paper.pdf",
+      "scholarUrl": "https://scholar.google.com/",
+      "summaryKey": "24"
+    }
+  ]
+}
