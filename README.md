@@ -13,7 +13,6 @@ sensor_papers/
 ├── contributors/
 │   ├── manifest.json                  Registered contributors
 │   ├── _template/papers.json          Copy this for a new contribution
-│   ├── README.md                      Contributor-specific reference
 │   └── <contributor>/
 │       ├── papers.json                Research-paper and compiled-paper metadata
 │       ├── papers/                    Individual research-paper PDFs
