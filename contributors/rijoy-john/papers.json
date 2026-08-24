@@ -3,38 +3,73 @@
   "papers": [
     {
       "id": 24,
-      "assignedTo": "Rijoy John",
+      "title": "Information-theoretic sensor placement for large sewer networks",
+      "authors": "Crowley, G, Tait, S, Panoutsos, G, Speight, V & Esnaola, I (2025)",
+      "journal": "Water Research, vol. 268, p. 122718",
+      "categoryKey": "sewer_level_monitoring",
+      "categoryLabel": "Sewer Level Monitoring",
       "topic": "OSP",
       "filterCategory": "Sewer Level Monitoring",
-      "pdfUrl": "./contributors/rijoy-john/papers/Crowley_2025_Information_theoretic_sewer_OSP.pdf"
+      "assignedTo": "Rijoy John",
+      "doi": "10.1016/j.watres.2024.122718",
+      "pdfUrl": "./contributors/rijoy-john/papers/Crowley_2025_Information_theoretic_sewer_OSP.pdf",
+      "scholarUrl": "https://scholar.google.com/scholar?q=%22Information-theoretic+sensor+placement+for+large+sewer+networks%22"
     },
     {
       "id": 25,
-      "assignedTo": "Rijoy John",
+      "title": "Cost-effective sensor placement optimization for large-scale urban sewage surveillance",
+      "authors": "Wang, S, Xu, K & Zhou, Y (2024)",
+      "journal": "Sustainable Cities and Society, vol. 103, p. 105250",
+      "categoryKey": "pandemic_monitoring",
+      "categoryLabel": "Pandemic Monitoring",
       "topic": "OSP",
       "filterCategory": "Pandemic Monitoring",
-      "pdfUrl": "./contributors/rijoy-john/papers/Wang_2024_sewer_OSP_for_pandemic_monitoring.pdf"
+      "assignedTo": "Rijoy John",
+      "doi": "10.1016/j.scs.2024.105250",
+      "pdfUrl": "./contributors/rijoy-john/papers/Wang_2024_sewer_OSP_for_pandemic_monitoring.pdf",
+      "scholarUrl": "https://scholar.google.com/scholar?q=%22Cost-effective+sensor+placement+optimization+for+large-scale+urban+sewage+surveillance%22"
     },
     {
       "id": 26,
-      "assignedTo": "Rijoy John",
+      "title": "Sensor Placement Optimization in Sewer Networks: Machine Learning-Based Source Identification Approach",
+      "authors": "Salem, AK & Abokifa, AA (2024)",
+      "journal": "Journal of Water Resources Planning and Management, vol. 150, no. 11",
+      "categoryKey": "source_identification",
+      "categoryLabel": "Source Identification",
       "topic": "OSP",
       "filterCategory": "Source Identification",
-      "pdfUrl": "./contributors/rijoy-john/papers/Abokifa_2024_sewer_OSP_ML-based_source_ident_approach.pdf"
+      "assignedTo": "Rijoy John",
+      "doi": "10.1061/JWRMD5.WRENG-6430",
+      "pdfUrl": "./contributors/rijoy-john/papers/Abokifa_2024_sewer_OSP_ML-based_source_ident_approach.pdf",
+      "scholarUrl": "https://scholar.google.com/scholar?q=%22Sensor+Placement+Optimization+in+Sewer+Networks%22"
     },
     {
       "id": 27,
-      "assignedTo": "Rijoy John",
+      "title": "Advancing sensor network optimization and data analytics for smart wastewater and stormwater collection systems: An overview",
+      "authors": "Moradi, M, Najafi, M, Lin, Z & Pan, H (2025)",
+      "journal": "Proceedings of the Pipelines 2025 Conference, pp. 463–474",
+      "categoryKey": "smart_wastewater_management",
+      "categoryLabel": "Smart Wastewater Management",
       "topic": "OSP",
       "filterCategory": "Smart Wastewater Management",
-      "pdfUrl": "./contributors/rijoy-john/papers/Moradi_2025_Overview_of_Smart_wastewater_management.pdf"
+      "assignedTo": "Rijoy John",
+      "doi": "",
+      "pdfUrl": "./contributors/rijoy-john/papers/Moradi_2025_Overview_of_Smart_wastewater_management.pdf",
+      "scholarUrl": "https://scholar.google.com/scholar?q=%22Advancing+sensor+network+optimization+and+data+analytics%22"
     },
     {
       "id": 28,
-      "assignedTo": "Rijoy John",
+      "title": "Risk-Driven Sensor Placement in Sewer Networks: A Descriptive–Predictive–Prescriptive Framework",
+      "authors": "Moradi, M & Najafi, M (2026)",
+      "journal": "Water, vol. 18, no. 15, p. 1901",
+      "categoryKey": "risk_based_sensor_placement",
+      "categoryLabel": "Risk-based Sensor Placement",
       "topic": "OSP",
       "filterCategory": "Risk-based Sensor Placement",
-      "pdfUrl": "./contributors/rijoy-john/papers/Moradi_2026_Risk_based_DPP-SP_framework_for_sewer_OSP.pdf"
+      "assignedTo": "Rijoy John",
+      "doi": "10.3390/w18151901",
+      "pdfUrl": "./contributors/rijoy-john/papers/Moradi_2026_Risk_based_DPP-SP_framework_for_sewer_OSP.pdf",
+      "scholarUrl": "https://scholar.google.com/scholar?q=%22Risk-Driven+Sensor+Placement+in+Sewer+Networks%22"
     }
   ],
   "compiledPapers": []
