@@ -403,7 +403,7 @@
     "reflection": "This paper provides a concrete, real-network account of how sensor data translates into an early-warning method for chokes. It is directly relevant to establishing what a monitored sewer network can and cannot detect with a given sensor configuration."
   },
   "32": {
-    "assignedTo": "wimukthi",
+    "assignedTo": "Wimukthi",
     "topic": "OSP",
     "filterCategory": "wastewater",
     "citation": "Simone, A., Cesaro, A., Di Cristo, C., Fecarotta, O., & Morani, M. C. (2023). Two different approaches for monitoring planning in sewer networks: Topological vs. deterministic optimization. Journal of Hydroinformatics, 25(6), 2323-2337. https://doi.org/10.2166/hydro.2023.296",
@@ -416,7 +416,7 @@
     "reflection": "Reading the full text strengthens rather than weakens the case for using this as our methodological backbone. The single most valuable finding for us is that the outfall and the few high-flow junctions upstream of it dominate the solution, and that installing sensors further upstream is described as worthless because downstream coverage already accounts for that part of the network. If that generalises, SA Water's optimal layout may be far sparser than they expect, which is a genuinely useful result to be able to defend. The honest caution is that the paper's networks are small, single-outfall and dry-weather, and our client's network is none of those, so we should treat the two-step procedure as a hypothesis to test rather than a result to import. It is also worth noting that the paper does not cost anything: no capital cost, no maintenance, no access constraints on which manholes can actually host a device. Since SA Water will care about exactly that, adding a cost or accessibility constraint to this MILP formulation would be a real and achievable contribution rather than a reproduction."
   },
   "33": {
-    "assignedTo": "wimukthi",
+    "assignedTo": "Wimukthi",
     "topic": "OSP",
     "filterCategory": "wastewater",
     "citation": "Malek Mohammadi, M., Najafi, M., Kermanshachi, S., Kaushal, V., & Serajiantehrani, R. (2020). Factors influencing the condition of sewer pipes: State-of-the-art review. Journal of Pipeline Systems Engineering and Practice, 11(4), 03120002. https://doi.org/10.1061/(ASCE)PS.1949-1204.0000483",
@@ -429,7 +429,7 @@
     "reflection": "The most useful thing this paper does for us is undercut the temptation to import published deterioration coefficients into an SA Water risk layer. The contradictions across studies are not noise to be averaged away; they are the paper's central finding, and they mean any risk weighting we build has to be fitted to Adelaide data or left out. That is a constraint worth stating early in our report rather than discovering late. It also reframes what we should ask SA Water for: not just the network topology but the asset register fields (age, material, diameter, length) and, if it exists, the WSAA-graded inspection history. On its own this paper contributes background and justification rather than method, and I would place it in the literature review to establish why monitoring effort should follow asset risk, then hand the actual modelling question to Ma et al."
   },
   "34": {
-    "assignedTo": "wimukthi",
+    "assignedTo": "Wimukthi",
     "topic": "OSP",
     "filterCategory": "wastewater",
     "citation": "Ma, S., Zayed, T., Xing, J., & Ren, Z. (2025). Analyzing factors influencing defect-based conditions for sewer pipes using Bayesian networks. Reliability Engineering & System Safety, 262, 111243. https://doi.org/10.1016/j.ress.2025.111243",
@@ -442,7 +442,7 @@
     "reflection": "This paper is best read as a data engineering blueprint rather than a source of transferable findings, and I would frame it that way in our review. The factor rankings should not be carried into an Adelaide context, but the pipeline that produced them should be. The practical question it raises for our team is whether SA Water can supply CCTV-derived defect records at all; the entire method depends on them, and without that the risk layer becomes a proxy built from asset attributes alone, which is much weaker. Worth asking Adel or Vineeth directly and early, because the answer determines whether we can attempt a risk-weighted placement or must restrict ourselves to topology and hydraulics. I would also treat the causal language in this paper as a cautionary example: our own report should be careful to describe learned dependencies as associations, since a client is likely to read a directed graph as a causal claim."
   },
   "35": {
-    "assignedTo": "wimukthi",
+    "assignedTo": "Wimukthi",
     "topic": "OSP",
     "filterCategory": "wastewater",
     "citation": "Ding, Z., Kumar, A., Islam, I. M. A., Montezuma, M. A., Zhang, R., & Zhang, K. (2026). Optimizing sensor placement for flow reconstruction in urban drainage networks: A digital twin-based sparse sensing approach (arXiv:2511.04556v2) [Preprint, submitted to Water Research]. arXiv. https://doi.org/10.48550/arXiv.2511.04556",
