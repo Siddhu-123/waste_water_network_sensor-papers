@@ -1,5 +1,34 @@
 {
   "contributor": "Abraham",
-  "papers": [],
+  "papers": [
+    {
+      "id": 30,
+      "title": "Optimal Sensor Placement in Smart Sewer Systems Using Network Topology and Elevation",
+      "authors": "Ninh, T.H.D., Do, N.C., Zeng, W & Lambert, M.F (2025)",
+      "journal": "Journal of Water Resources Planning and Management, vol. 151, no. 7, p. 04025016",
+      "categoryKey": "osp",
+      "categoryLabel": "Sensor Placement",
+      "topic": "OSP",
+      "filterCategory": "Topology-Based Placement",
+      "assignedTo": "Abraham",
+      "doi": "10.1061/JWRMD5.WRENG-6660",
+      "pdfUrl": "./contributors/abraham/papers/2025_Ninh_topology-elevation-sensor-placement.pdf",
+      "scholarUrl": "https://scholar.google.com/scholar?q=Optimal+Sensor+Placement+in+Smart+Sewer+Systems+Using+Network+Topology+and+Elevation"
+    },
+    {
+      "id": 31,
+      "title": "Proactive Detection of Wastewater Overflows for Smart Sanitary Sewer Systems: Case Study in South Australia",
+      "authors": "Do, N.C., Dix, L., Lambert, M.F & Stephens, M.L (2023)",
+      "journal": "Journal of Water Resources Planning and Management, vol. 149, no. 1, p. 05022016",
+      "categoryKey": "osp",
+      "categoryLabel": "Overflow Detection Case Study",
+      "topic": "OSP",
+      "filterCategory": "South Australia Case Study",
+      "assignedTo": "Abraham",
+      "doi": "10.1061/JWRMD5.WRENG-5589",
+      "pdfUrl": "./contributors/abraham/papers/2023_Do_Stonyfell-SA-overflow-detection.pdf",
+      "scholarUrl": "https://scholar.google.com/scholar?q=Proactive+Detection+of+Wastewater+Overflows+for+Smart+Sanitary+Sewer+Systems+South+Australia"
+    }
+  ],
   "compiledPapers": []
 }
