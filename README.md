@@ -44,6 +44,25 @@ Do not rename a contributor folder or change the registered name without updatin
 7. Add the DOI when the paper has one. Use the canonical value, such as `10.1234/example-doi`.
 8. Set `assignedTo`, `topic`, and `filterCategory` in both metadata locations so the nested filters remain correct.
 
+Template:
+
+```json
+{
+  "id": ,
+  "title": "",
+  "authors": "",
+  "journal": "",
+  "categoryKey": "",
+  "categoryLabel": "",
+  "topic": "",
+  "filterCategory": "",
+  "assignedTo": "",
+  "doi": "",
+  "pdfUrl": "",
+  "scholarUrl": ""
+}
+```
+
 Example:
 
 ```json
@@ -67,7 +86,7 @@ Example:
 
 A compiled paper is a complete review, report, or thesis-style document. It is separate from the individual research-paper list.
 
-1. Put the PDF in `contributors/<your-slug>/compiled-papers/`.
+1. Put the PDF in `contributors/<your-slug>/compiled-papers/`. Name the file `<first-author-first-name>_<published-year>_<paper-name>.pdf`, using the paper title as the paper name and underscores between every word (e.g. `John_2023_Wastewater_Network_Optimisation.pdf`).
 2. Add a `compiledPapers` array to your contributor's `papers.json`.
 3. Give the compiled paper a unique string ID.
 4. Set its `topic`, `assignedTo`, `title`, `description`, and `pdfUrl`.
