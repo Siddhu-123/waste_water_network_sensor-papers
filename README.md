@@ -41,6 +41,25 @@ Do not rename a contributor folder or change the registered name without updatin
 4. Place the PDF in your contributor's `papers/` folder.
 5. Add the record to `papers.json`. Use a PDF path beginning with `./contributors/`.
 6. Add the matching 8-step entry to [`summaries.json`](./summaries.json) using the same numeric ID.
+
+Template:
+
+```json
+  "": {
+    "assignedTo": "",
+    "topic": "",
+    "filterCategory": "",
+    "citation": "",
+    "intro": "",
+    "methods": "",
+    "scope": "",
+    "usefulness": "",
+    "limitations": "",
+    "conclusions": "",
+    "reflection": ""
+  }
+```
+
 7. Add the DOI when the paper has one. Use the canonical value, such as `10.1234/example-doi`.
 8. Set `assignedTo`, `topic`, and `filterCategory` in both metadata locations so the nested filters remain correct.
 
@@ -86,7 +105,7 @@ Example:
 
 A compiled paper is a complete review, report, or thesis-style document. It is separate from the individual research-paper list.
 
-1. Put the PDF in `contributors/<your-slug>/compiled-papers/`. Name the file `<first-author-first-name>_<published-year>_<paper-name>.pdf`, using the paper title as the paper name and underscores between every word (e.g. `John_2023_Wastewater_Network_Optimisation.pdf`).
+1. Put the PDF in `contributors/<your-slug>/compiled-papers/`. Name the file `<first-author-first-name>_<published-year>_<paper-name>.pdf`, using the paper title as the paper name and underscores between every word (e.g. `Antonietta_2023_Two_different_approaches_for_monitoring_planning_in_sewer_networks.pdf`).
 2. Add a `compiledPapers` array to your contributor's `papers.json`.
 3. Give the compiled paper a unique string ID.
 4. Set its `topic`, `assignedTo`, `title`, `description`, and `pdfUrl`.

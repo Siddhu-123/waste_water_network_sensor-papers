@@ -1,5 +1,63 @@
 {
   "contributor": "Wimukthi",
-  "papers": [],
-  "compiledPapers": []
+  "papers": [
+    {
+      "id": 32,
+      "title": "Two different approaches for monitoring planning in sewer networks: topological vs. deterministic optimization",
+      "authors": "Antonietta Simone, Alessandra Cesaro, Cristiana Di Cristo, Oreste Fecarotta, Maria Cristina Morani",
+      "journal": "Journal of Hydroinformatics, Vol. 25, No. 6, pp. 2323–2337 (2023)",
+      "categoryKey": "sensor-placement",
+      "categoryLabel": "Sensor Placement Optimization",
+      "topic": "Monitoring point selection in sewer networks via deterministic optimization vs. complex network theory (harmonic centrality)",
+      "filterCategory": "wastewater",
+      "assignedTo": "wimukthi",
+      "doi": "10.2166/hydro.2023.296",
+      "pdfUrl": "./contributors/wimukthi/papers/Antonietta_2023_Two_different_approaches_for_monitoring_planning_in_sewer_networks.pdf",
+      "scholarUrl": "https://scholar.google.com/scholar?q=Two+different+approaches+for+monitoring+planning+in+sewer+networks"
+    },
+    {
+      "id": 33,
+      "title": "Factors Influencing the Condition of Sewer Pipes: State-of-the-Art Review",
+      "authors": "Mohammadreza Malek Mohammadi, Mohammad Najafi, Sharareh Kermanshachi, Vinayak Kaushal, Ramtin Serajiantehrani",
+      "journal": "Journal of Pipeline Systems Engineering and Practice, Vol. 11, No. 4, Art. 03120002 (2020)",
+      "categoryKey": "condition-assessment",
+      "categoryLabel": "Condition Assessment & Deterioration Prediction",
+      "topic": "Review of sewer pipe condition prediction models (AI vs. statistical) and the physical, environmental, and operational factors driving deterioration",
+      "filterCategory": "wastewater",
+      "assignedTo": "wimukthi",
+      "doi": "10.1061/(ASCE)PS.1949-1204.0000483",
+      "pdfUrl": "./contributors/wimukthi/papers/Mohammadreza_2020_Factors_Influencing_the_Condition_of_Sewer_Pipes.pdf",
+      "scholarUrl": "https://scholar.google.com/scholar?q=Factors+Influencing+the+Condition+of+Sewer+Pipes+State-of-the-Art+Review"
+    },
+    {
+      "id": 34,
+      "title": "Analyzing factors influencing defect-based conditions for sewer pipes using Bayesian networks",
+      "authors": "Shihui Ma, Tarek Zayed, Jiduo Xing, Zhihao Ren",
+      "journal": "Reliability Engineering & System Safety, Vol. 262, Art. 111243 (2025)",
+      "categoryKey": "condition-assessment",
+      "categoryLabel": "Condition Assessment & Deterioration Prediction",
+      "topic": "Data-driven Bayesian network model relating fourteen physical, environmental, and climate factors to defect-based sewer pipe condition, validated on the Hong Kong sewer network",
+      "filterCategory": "wastewater",
+      "assignedTo": "wimukthi",
+      "doi": "10.1016/j.ress.2025.111243",
+      "pdfUrl": "./contributors/wimukthi/papers/Shihui_2025_Analyzing_factors_influencing_defect-based_conditions_for_sewe_pipes_using_BN.pdf",
+      "scholarUrl": "https://scholar.google.com/scholar?q=Analyzing+factors+influencing+defect-based+conditions+for+sewer+pipes+using+Bayesian+networks"
+    },
+    {
+      "id": 35,
+      "title": "Optimizing Sensor Placement for Flow Reconstruction in Urban Drainage Networks: A Digital Twin-Based Sparse Sensing Approach",
+      "authors": "Zihang Ding, Amit Kumar, Imran Md. Azizul Islam, Mila Avellar Montezuma, Ruihang Zhang, Kun Zhang",
+      "journal": "arXiv preprint arXiv:2511.04556 [cs.AI] (v2, 2026)",
+      "categoryKey": "sensor-placement",
+      "categoryLabel": "Sensor Placement Optimization",
+      "topic": "Data-driven sparse sensing using EPA-SWMM digital twin, SVD reduced basis, and QR pivoting to select minimal sensor sets for system-level flow reconstruction in an urban drainage network",
+      "filterCategory": "wastewater",
+      "assignedTo": "wimukthi",
+      "doi": "10.48550/arXiv.2511.04556",
+      "pdfUrl": "./contributors/wimukthi/papers/Zihang_2025_Optimizing_Sensor_Placement_for_Flow_Reconstruction_in_Urban_Drainage_Networks.pdf",
+      "scholarUrl": "https://scholar.google.com/scholar_lookup?arxiv_id=2511.04556"
+    }
+  ],
+  "compiledPapers": [
+  ]
 }
