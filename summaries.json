@@ -362,7 +362,7 @@
     "limitations": "The results depend on the quality of the available failure data, GIS network representation and machine-learning predictions. The utility data used in the study are confidential and cannot be publicly redistributed. In addition, the reported coverage ceiling is influenced by the candidate sensor locations and assumed detection radius, meaning that the results may not directly generalise to other sewer networks.",
     "conclusions": "The authors conclude that the DPP-SP framework can substantially improve risk coverage without necessarily increasing the number of sensors. Using the existing budget of 48 sensors, the optimised configuration achieved substantially greater risk coverage than the existing arrangement. The study also identifies detection radius and network fragmentation as important factors affecting achievable coverage.",
     "reflection": "This paper is highly relevant to my research because it demonstrates how an OSP problem can be formulated around a practical infrastructure objective: reducing monitoring risk. The integration of machine-learning-based risk prediction with optimisation provides a potential direction for developing a multi-stage or data-driven sensor placement framework."
-  }
+  },
   "29": {
   "assignedTo": "Ashis Jose",
   "topic": "OSP",
