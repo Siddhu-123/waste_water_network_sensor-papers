@@ -13,6 +13,48 @@
   "doi": "10.3390/app15094976",
   "pdfUrl": "./contributors/ashis-jose/papers/paper-29.pdf",
   "scholarUrl": "https://scholar.google.com/scholar?q=Optimal+Arrangement+Strategy+of+IoT+Sensors+in+Urban+Drainage+Networks+Ma+Guo+Wang"
+}
+{
+  "id": 36,
+  "title": "A Novel Framework for Optimization and Evaluation of Sensors Network in Urban Drainage System",
+  "authors": "Zheng, Jin, Wei, Zhou & Zhang (2025)",
+  "journal": "Water Research, 270, 122833",
+  "categoryKey": "sensor-placement-optimisation",
+  "categoryLabel": "Sensor Placement Optimisation",
+  "topic": "OSP",
+  "filterCategory": "Sensor Placement Optimisation",
+  "assignedTo": "Ashis Jose",
+  "doi": "10.1016/j.watres.2024.122833",
+  "pdfUrl": "./contributors/ashis-jose/papers/paper-36.pdf",
+  "scholarUrl": "https://scholar.google.com/"
+},
+{
+  "id": 37,
+  "title": "The Spread of Contaminants in Urban Drainage Networks Based on a Topological Analysis",
+  "authors": "Simone, Cesaro, Del Giudice, Di Cristo, Esposito & Fecarotta (2022)",
+  "journal": "Environmental Sciences Proceedings, 21(1), 20",
+  "categoryKey": "source-identification",
+  "categoryLabel": "Source Identification",
+  "topic": "OSP",
+  "filterCategory": "Source Identification",
+  "assignedTo": "Ashis Jose",
+  "doi": "10.3390/environsciproc2022021020",
+  "pdfUrl": "./contributors/ashis-jose/papers/paper-37.pdf",
+  "scholarUrl": "https://scholar.google.com/"
+},
+{
+  "id": 38,
+  "title": "Entropy Theory Based Criterion for Hydrometric Network Evaluation and Design: Maximum Information Minimum Redundancy",
+  "authors": "Li, Singh & Mishra (2012)",
+  "journal": "Water Resources Research, 48(5), W05521",
+  "categoryKey": "network-design",
+  "categoryLabel": "Network Design",
+  "topic": "OSP",
+  "filterCategory": "Network Design",
+  "assignedTo": "Ashis Jose",
+  "doi": "10.1029/2011WR011251",
+  "pdfUrl": "./contributors/ashis-jose/papers/paper-38.pdf",
+  "scholarUrl": "https://scholar.google.com/"
 }],
   "compiledPapers": []
 }
