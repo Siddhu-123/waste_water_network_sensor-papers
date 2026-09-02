@@ -28,6 +28,20 @@
       "doi": "10.1061/JWRMD5.WRENG-5589",
       "pdfUrl": "./contributors/abraham/papers/2023_Do_Stonyfell-SA-overflow-detection.pdf",
       "scholarUrl": "https://scholar.google.com/scholar?q=Proactive+Detection+of+Wastewater+Overflows+for+Smart+Sanitary+Sewer+Systems+South+Australia"
+    },
+    {
+      "id": 39,
+      "title": "Proactive blockage detection in sewer pipes using paired acoustic sensors: An experimental study",
+      "authors": "Ninh, T.H.D., Zeng, W., Lambert, M.F., Do, N.C. & Yin, C. (2026)",
+      "journal": "Applied Acoustics, vol. 246, article 111244",
+      "categoryKey": "sensors",
+      "categoryLabel": "Acoustic Blockage Detection",
+      "topic": "Sensors",
+      "filterCategory": "Pipe & Acoustic",
+      "assignedTo": "Abraham",
+      "doi": "10.1016/j.apacoust.2026.111244",
+      "pdfUrl": "./contributors/abraham/papers/2026_Ninh_paired-acoustic-blockage-detection.pdf",
+      "scholarUrl": "https://scholar.google.com/scholar?q=Proactive+blockage+detection+in+sewer+pipes+using+paired+acoustic+sensors"
     }
   ],
   "compiledPapers": []
