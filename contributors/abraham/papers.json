@@ -44,5 +44,15 @@
       "scholarUrl": "https://scholar.google.com/scholar?q=Proactive+blockage+detection+in+sewer+pipes+using+paired+acoustic+sensors"
     }
   ],
-  "compiledPapers": []
+  "compiledPapers": [
+    {
+      "id": "abraham-sa-wastewater-data",
+      "title": "Public Wastewater Network Data in South Australia",
+      "topic": "OSP",
+      "filterCategory": "Compiled Review",
+      "assignedTo": "Abraham",
+      "description": "Abraham's compiled review on public wastewater network data in South Australia.",
+      "pdfUrl": "./contributors/abraham/compiled-papers/Public Wastewater Network Data in South Australia.pdf"
+    }
+  ]
 }

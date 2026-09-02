@@ -118,6 +118,11 @@ def validate() -> Validation:
 
     names: set[str] = set()
     slugs: set[str] = set()
+    all_manifest_names = {
+        entry.get("name")
+        for entry in entries
+        if isinstance(entry, dict) and isinstance(entry.get("name"), str) and entry["name"].strip()
+    }
     paper_ids: dict[int, str] = {}
     compiled_ids: dict[str, str] = {}
     compiled_paths: dict[str, str] = {}
@@ -239,8 +244,30 @@ def validate() -> Validation:
             for field in ("title", "topic", "description"):
                 if not isinstance(compiled.get(field), str) or not compiled[field].strip():
                     validation.error(f"{label}: {field} is required")
-            if compiled.get("assignedTo") != name:
-                validation.error(f"{label}: assignedTo must match {name}")
+            assigned = compiled.get("assignedTo")
+            if isinstance(assigned, list):
+                if not assigned or not all(isinstance(a, str) and a.strip() for a in assigned):
+                    validation.error(f"{label}: assignedTo list must contain non-empty author names")
+                elif name not in assigned:
+                    validation.error(f"{label}: assignedTo list must include {name}")
+                else:
+                    for author in assigned:
+                        if author not in all_manifest_names and author not in ("Team", "All"):
+                            validation.error(f"{label}: unknown assigned contributor '{author}'")
+            elif isinstance(assigned, str) and assigned.strip():
+                assigned_authors = [a.strip() for a in assigned.split(",") if a.strip()]
+                if not assigned_authors:
+                    validation.error(f"{label}: assignedTo cannot be empty")
+                elif len(assigned_authors) > 1:
+                    if name not in assigned_authors:
+                        validation.error(f"{label}: assignedTo must include {name}")
+                    for author in assigned_authors:
+                        if author not in all_manifest_names and author not in ("Team", "All"):
+                            validation.error(f"{label}: unknown assigned contributor '{author}'")
+                elif assigned != name and assigned not in ("Team", "All"):
+                    validation.error(f"{label}: assignedTo must match {name}")
+            else:
+                validation.error(f"{label}: assignedTo is required")
             resolve_local_pdf(compiled.get("pdfUrl"), label, validation)
             pdf_url = compiled.get("pdfUrl")
             if isinstance(pdf_url, str):

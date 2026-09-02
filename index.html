@@ -54,8 +54,8 @@
       }
 
       header {
-        margin-bottom: clamp(20px, 3vw, 32px);
-        padding-bottom: clamp(16px, 2.5vw, 24px);
+        margin-bottom: clamp(20px, 3vw, 0px);
+        padding-bottom: clamp(16px, 2.5vw, 0px);
         border-bottom: 1px solid var(--border-color);
       }
 
@@ -89,7 +89,7 @@
       .controls-bar {
         display: flex;
         gap: 12px;
-        margin-bottom: 24px;
+        margin-bottom: 2px;
         flex-wrap: wrap;
         align-items: center;
         justify-content: space-between;
@@ -283,11 +283,55 @@
       }
 
       .compiled-papers-header {
-        align-items: flex-start;
+        align-items: center;
         display: flex;
         gap: 12px;
         justify-content: space-between;
         margin-bottom: 16px;
+      }
+
+      .compiled-header-actions {
+        align-items: center;
+        display: flex;
+        gap: 12px;
+      }
+
+      .btn-squeeze-toggle {
+        align-items: center;
+        background: rgba(30, 41, 59, 0.85);
+        border: 1px solid var(--border-color);
+        border-radius: 6px;
+        color: var(--accent-blue);
+        cursor: pointer;
+        display: inline-flex;
+        font-family: inherit;
+        font-size: 11px;
+        font-weight: 600;
+        gap: 5px;
+        letter-spacing: 0.02em;
+        padding: 4px 10px;
+        transition: all 0.2s ease;
+        user-select: none;
+      }
+
+      .btn-squeeze-toggle:hover {
+        background: rgba(56, 189, 248, 0.12);
+        border-color: var(--accent-blue);
+        color: #fff;
+      }
+
+      .compiled-papers-panel.is-squeezed {
+        margin-bottom: 16px;
+        padding-bottom: 14px;
+        padding-top: 14px;
+      }
+
+      .compiled-papers-panel.is-squeezed .compiled-papers-header {
+        margin-bottom: 0;
+      }
+
+      .compiled-papers-panel.is-squeezed .compiled-shelves-container {
+        display: none !important;
       }
 
       .compiled-papers-kicker {
@@ -310,10 +354,45 @@
         white-space: nowrap;
       }
 
-      .compiled-papers-list {
+      .compiled-shelves-container {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+        width: 100%;
+      }
+
+      .compiled-shelf {
+        width: 100%;
+      }
+
+      .compiled-shelf:last-child {
+        margin-bottom: 0;
+      }
+
+      .compiled-shelf-label {
+        align-items: center;
+        color: var(--text-muted);
+        display: flex;
+        font-size: 11px;
+        font-weight: 700;
+        gap: 8px;
+        letter-spacing: 0.06em;
+        margin-bottom: 10px;
+        text-transform: uppercase;
+      }
+
+      .compiled-shelf-label::after {
+        background: var(--border-color);
+        content: "";
+        flex: 1;
+        height: 1px;
+      }
+
+      .compiled-papers-grid {
         display: grid;
         gap: 12px;
-        grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        width: 100%;
       }
 
       .compiled-paper-card {
@@ -785,7 +864,11 @@
         </select>
         <div class="filter-group" id="nestedFilterGroup"></div>
         <p class="filter-help">
-          Select a topic first. The user and category filters then show only values used by that topic. Define <code>topic</code>, <code>filterCategory</code>, and <code>assignedTo</code> in each contributor's <code>papers.json</code>; keep the same metadata in <code>summaries.json</code> for shared summaries.
+          Select a topic first. The user and category filters then show only
+          values used by that topic. Define <code>topic</code>,
+          <code>filterCategory</code>, and <code>assignedTo</code> in each
+          contributor's <code>papers.json</code>; keep the same metadata in
+          <code>summaries.json</code> for shared summaries.
         </p>
       </div>
     </header>
@@ -803,9 +886,21 @@
             Compiled papers
           </h2>
         </div>
-        <div class="compiled-papers-count" id="compiledPapersCount"></div>
+        <div class="compiled-header-actions">
+          <div class="compiled-papers-count" id="compiledPapersCount"></div>
+          <button
+            type="button"
+            id="toggleCompiledBtn"
+            class="btn-squeeze-toggle"
+            onclick="toggleCompiledSection()"
+            title="Squeeze or expand compiled papers panel"
+          >
+            <span id="squeezeIcon">▲</span>
+            <span id="squeezeText">Squeeze</span>
+          </button>
+        </div>
       </div>
-      <div class="compiled-papers-list" id="compiledPapersList"></div>
+      <div class="compiled-shelves-container" id="compiledPapersList"></div>
     </section>
 
     <div class="table-container">
@@ -870,936 +965,25 @@
     </div>
 
     <script>
-      const papersData = [
-        {
-          id: 1,
-          title:
-            "Implementation of an IoT Based Radar Sensor Network for Wastewater Management",
-          authors: "Drenoyanis, A., Raad, R., Wady, I., & Krogh, C. (2019)",
-          journal: "Sensors (MDPI), 19(2), 254",
-          categoryKey: "level",
-          categoryLabel: "Level Radar",
-          size: "7.4 MB",
-          pages: 31,
-          pdfUrl:
-            "./contributors/satya-siddhartha/papers/Drenoyanis_2019_Radar_Sensor_Network.pdf",
-          scholarUrl:
-            "https://scholar.google.com/scholar?q=Implementation+of+an+IoT+Based+Radar+Sensor+Network+Drenoyanis",
-          steps: {
-            citation:
-              "Drenoyanis, A., Raad, R., Wady, I., & Krogh, C. (2019). Implementation of an IoT Based Radar Sensor Network for Wastewater Management. Sensors, 19(2), 254. https://doi.org/10.3390/s19020254",
-            intro:
-              "In this article, Drenoyanis et al. examine the design and municipal deployment of an autonomous IoT-enabled millimeter-wave radar network for real-time wastewater level tracking and overflow prevention.",
-            methods:
-              "The authors designed battery-powered sensor nodes integrating 77–81 GHz FMCW millimeter-wave radar transducers, GPS, and cellular telemetry, deployed across 15 critical sewer manholes in Shoalhaven Water (Australia) over 12 months.",
-            scope:
-              "Focuses on continuous water level monitoring in deep, obstructed sewer manholes with narrow inverts (150–300 mm), high humidity (95–100% RH), and confined space constraints.",
-            usefulness:
-              "Highly useful to our research as it provides empirical proof that 77–81 GHz narrow-beam radar completely avoids false echoes from internal ladder rungs, step irons, and benching walls, unlike ultrasonic transducers.",
-            limitations:
-              "Higher unit component cost and higher active sweep power demand compared to simple acoustic sensors, requiring strict duty-cycling (2–5 min sleep intervals) for multi-year battery autonomy.",
-            conclusions:
-              "The authors conclude that 80 GHz FMCW radar provides sub-millimeter level measurement accuracy, is immune to thermal gradients and toxic sewer gas mixtures, and prevents catastrophic SSOs.",
-            reflection:
-              "This study forms the foundational empirical basis for Section 2 in Paper 1, substantiating our recommendation of 77–81 GHz FMCW radar as the gold-standard non-contact level technology.",
-          },
-        },
-        {
-          id: 2,
-          title:
-            "Monitoring Blockage and Overflow Events in Small-Sized Sewer Network Using Contactless Flow Sensors in Hong Kong",
-          authors:
-            "Alshami, A., Elsayed, M., Ali, E., Eltoukhy, A., & Zayed, T. (2023)",
-          journal: "IEEE Access, 11, 87131–87149",
-          categoryKey: "level",
-          categoryLabel: "Flow & Manning",
-          size: "3.0 MB",
-          pages: 19,
-          pdfUrl:
-            "./contributors/satya-siddhartha/papers/Alshami_2023_Flow_Sensors_HongKong.pdf",
-          scholarUrl:
-            "https://scholar.google.com/scholar?q=Monitoring+Blockage+and+Overflow+Events+Alshami",
-          steps: {
-            citation:
-              "Alshami, A., Elsayed, M., Ali, E., Eltoukhy, A. E. E., & Zayed, T. (2023). Monitoring Blockage and Overflow Events in Small-Sized Sewer Network Using Contactless Flow Sensors in Hong Kong: Problems, Causes, and Proposed Solution. IEEE Access, 11, 87131–87149. https://doi.org/10.1109/ACCESS.2023.3305275",
-            intro:
-              "This paper investigates contactless open-channel flow monitoring and highlights why conventional depth-to-flow Manning equations fail during sewer blockage events.",
-            methods:
-              "The authors deployed non-contact dual-radar devices combining 24 GHz microwave Doppler surface velocimeters and level sensors across small-sized gravity sewers (DN225–DN375) in Hong Kong.",
-            scope:
-              "Small-diameter sewer conduits subject to severe sedimentation, grease accumulation, and tidal backwater surcharge.",
-            usefulness:
-              "Crucial for our research as it mathematically and empirically demonstrates that level-only sensing fails to identify downstream blockages where water depth increases while flow velocity drops to near zero.",
-            limitations:
-              "Surface velocimetry requires an empirical velocity profile integration factor (alpha approx 0.85–0.90) to estimate cross-sectional mean velocity, which fluctuates in highly turbulent or disturbed flow regimes.",
-            conclusions:
-              "Direct dual-measurement of both depth and surface velocity is mandatory to detect early-stage blockages and distinguish backwater pooling from true hydraulic peak inflows.",
-            reflection:
-              "Directly illuminates Section 4 of Paper 1, providing the mathematical justification for why single-parameter depth sensors cannot be used with Manning's equation during abnormal pipe conditions.",
-          },
-        },
-        {
-          id: 3,
-          title:
-            "Prototyping an Integrated IoT-Based Real-Time Sewer Monitoring System Using Low-Power Sensors",
-          authors: "Utepov, Y., Neftissov, A., Mkilima, T., et al. (2023)",
-          journal: "EEJET, 3(5/123), 6–23",
-          categoryKey: "level iot",
-          categoryLabel: "LiDAR / Ultrasonic",
-          size: "4.1 MB",
-          pages: 18,
-          pdfUrl:
-            "./contributors/satya-siddhartha/papers/Utepov_2023_Prototyping_an_integrated_IoT_based.pdf",
-          scholarUrl:
-            "https://scholar.google.com/scholar?q=Prototyping+an+integrated+IoT+based+sewer+monitoring+Utepov",
-          steps: {
-            citation:
-              "Utepov, Y., Neftissov, A., Mkilima, T., et al. (2023). Prototyping an integrated IoT-based real-time sewer monitoring system using low-power sensors. Eastern-European Journal of Enterprise Technologies, 3(5/123), 6–23. https://doi.org/10.15587/1729-4061.2023.283393",
-            intro:
-              "Utepov et al. present the prototyping, bench-testing, and embedded software architecture for low-cost, low-power sewer depth monitoring nodes.",
-            methods:
-              "The authors designed edge microcomputing prototypes pairing low-power microcontrollers with optical micro-LiDAR Time-of-Flight (VL53L1X) and waterproof ultrasonic transceivers (JSN-SR04T) under simulated sewer humidity and foam conditions.",
-            scope:
-              "Short-range depth sensing (0.2–4.0 m), power consumption benchmarking in sleep/active modes, and sensor housing waterproof design.",
-            usefulness:
-              "Provides concrete operational data on the trade-offs between optical infrared ToF sensors and ultrasonic transducers in constrained sewer atmospheres.",
-            limitations:
-              "Optical infrared ToF suffered from signal absorption on dark/turbid wastewater and condensation droplet blinding, while ultrasonic sensors showed minimum dead-band blind spots (<20 cm).",
-            conclusions:
-              "Ultrasonic transducers provide superior reflection off dirty liquids compared to micro-LiDAR, but require temperature-compensated sound velocity corrections.",
-            reflection:
-              "Informs the low-cost edge tier analysis in Paper 1 and justifies why acoustic and radar methods outperform optical infrared ToF in active sewer manholes.",
-          },
-        },
-        {
-          id: 4,
-          title:
-            "Cost-Efficient Coverage of Wastewater Networks by IoT Monitoring Devices",
-          authors: "Sikorski, A., Solano Donado, F., & Kozdrowski, S. (2022)",
-          journal: "Sensors (MDPI), 22(18), 6854",
-          categoryKey: "level iot",
-          categoryLabel: "Float Sentinels",
-          size: "2.8 MB",
-          pages: 19,
-          pdfUrl:
-            "./contributors/satya-siddhartha/papers/Sikorski_2022_Coverage_IoT_Monitoring.pdf",
-          scholarUrl:
-            "https://scholar.google.com/scholar?q=Cost-Efficient+Coverage+of+Wastewater+Networks+Sikorski",
-          steps: {
-            citation:
-              "Sikorski, A., Solano Donado, F., & Kozdrowski, S. (2022). Cost-Efficient Coverage of Wastewater Networks by IoT Monitoring Devices. Sensors, 22(18), 6854. https://doi.org/10.3390/s22186854",
-            intro:
-              "This paper develops an optimization framework for achieving maximum sewer network overflow monitoring coverage using ultra-low-cost, battery-efficient discrete IoT sentinels.",
-            methods:
-              "The authors formulated a multi-objective coverage optimization model pairing zero-quiescent-power discrete float switches and tilt sensors with LoRaWAN telemetry across simulated large-scale municipal sewer networks.",
-            scope:
-              "Network-wide overflow surveillance, binary surcharge alarm generation, LPWAN battery lifespan estimation (>5–10 years), and utility CAPEX minimization.",
-            usefulness:
-              "Extremely useful for understanding the exact operational role of discrete binary pulse/float switches ($0$ sleep current) as high-density surcharge sentinels.",
-            limitations:
-              "Binary float switches provide no rate-of-rise or diurnal flow hydrograph data until the sewage level reaches the physical switch trigger threshold.",
-            conclusions:
-              "A tiered monitoring strategy combining a sparse core of continuous radar gauges with a dense swarm of binary float sentinels delivers 90%+ overflow coverage at minimal cost.",
-            reflection:
-              "Substantiates Section 3 of Paper 1 by establishing the clear functional boundary between continuous depth gauges and discrete event sentinels.",
-          },
-        },
-        {
-          id: 5,
-          title:
-            "The UWO Dataset -- Long-Term Observations from a Full-Scale Field Laboratory",
-          authors: "Blumensaat, F. et al. (2026)",
-          journal: "Earth System Science Data, 18, 5187–5208",
-          categoryKey: "level",
-          categoryLabel: "Hydrology Data",
-          size: "7.0 MB",
-          pages: 22,
-          pdfUrl:
-            "./contributors/satya-siddhartha/papers/Blumensaat_2026_The_UWO_dataset____long_term_observation.pdf",
-          scholarUrl:
-            "https://scholar.google.com/scholar?q=The+UWO+dataset+Blumensaat",
-          steps: {
-            citation:
-              "Blumensaat, F., et al. (2026). The UWO dataset -- long-term observations from a full-scale field laboratory to better understand urban hydrology at small spatio-temporal scales. Earth System Science Data, 18, 5187–5208. https://doi.org/10.5194/essd-18-5187-2026",
-            intro:
-              "Blumensaat et al. present a benchmark empirical dataset collected from a full-scale urban sewer catchment equipped with high-density flow and level monitoring.",
-            methods:
-              "Continuous multi-year hydrological data collection using synchronized non-contact radar level sensors, submerged area-velocity Doppler flowmeters, and raingauge networks at 1-minute resolution.",
-            scope:
-              "Urban drainage dynamics, dry-weather vs wet-weather hydrographs, inflow/infiltration (I&I), and sensor data quality in hostile subterranean sewer environments.",
-            usefulness:
-              "Provides the open-source empirical benchmark for evaluating continuous level and flow sensor performance under real-world hydraulic fluctuations.",
-            limitations:
-              "Highlights the necessity of robust automated data validation filters to remove transient signal spikes caused by surface wave action and debris snagging.",
-            conclusions:
-              "High-resolution continuous monitoring is vital to capture localized surcharge dynamics that coarse or static hydraulic models fail to predict.",
-            reflection:
-              "Cited across Paper 1 as the reference field dataset for continuous sewer hydrograph and open-channel velocity dynamics.",
-          },
-        },
-        {
-          id: 6,
-          title:
-            "Rapid Detection of Sewer Defects and Blockages Using Acoustic-Based Instrumentation",
-          authors: "Bin Ali, M. T., Horoshenkov, K. V., & Tait, S. J. (2011)",
-          journal: "Water Science & Tech., 64(8), 1700–1707",
-          categoryKey: "pipe",
-          categoryLabel: "Acoustic Screening",
-          size: "482 KB",
-          pages: 9,
-          pdfUrl:
-            "./contributors/satya-siddhartha/papers/Bin_2011_Rapid_detection_of_sewer_defects_an.pdf",
-          scholarUrl:
-            "https://scholar.google.com/scholar?q=Rapid+detection+of+sewer+defects+Bin+Ali",
-          steps: {
-            citation:
-              "Bin Ali, M. T., Horoshenkov, K. V., & Tait, S. J. (2011). Rapid detection of sewer defects and blockages using acoustic-based instrumentation. Water Science and Technology, 64(8), 1700–1707. https://doi.org/10.2166/wst.2011.183",
-            intro:
-              "This paper presents the development and field trial of an acoustic pulse reflectometry instrument (SewerBatt) for rapid, non-invasive sewer pipe inspection.",
-            methods:
-              "Emitted low-frequency acoustic chirp pulses (0.1–5 kHz) down the sewer pipe headspace from a manhole rim and processed the reflected acoustic impulse response to detect blockages and structural defects.",
-            scope:
-              "Gravity sewer pipes (DN150–DN300), inspection reaches up to 100 meters between manholes, and rapid screening without winching CCTV equipment.",
-            usefulness:
-              "Proves that acoustic reflectometry can screen an entire 100-meter pipe reach in under 30 seconds to locate blockages, grease buildups, and severe collapses.",
-            limitations:
-              "Line-of-sight acoustic propagation is impeded by sharp pipe bends, drop junctions, or when sewage depth exceeds 70% of pipe diameter.",
-            conclusions:
-              "Acoustic pulse reflectometry achieved >85% accuracy in locating partial and total blockages rapidly from the manhole rim without entering confined spaces.",
-            reflection:
-              "Forms the core evidence for Section 7 in Paper 1 regarding rapid non-invasive acoustic inspection technologies.",
-          },
-        },
-        {
-          id: 7,
-          title:
-            "An Acoustic Sensor for Combined Sewer Overflow Screen Condition Monitoring",
-          authors:
-            "See, C. H., Horoshenkov, K., Bin Ali, M., & Tait, S. (2021)",
-          journal: "Sensors (MDPI), 21(2), 404",
-          categoryKey: "pipe",
-          categoryLabel: "CSO Acoustics",
-          size: "11.6 MB",
-          pages: 15,
-          pdfUrl:
-            "./contributors/satya-siddhartha/papers/See_2021_CSO_Screen_Acoustic.pdf",
-          scholarUrl:
-            "https://scholar.google.com/scholar?q=An+Acoustic+Sensor+for+Combined+Sewer+Overflow+Screen+See",
-          steps: {
-            citation:
-              "See, C. H., Horoshenkov, K. V., Bin Ali, M. T., & Tait, S. J. (2021). An Acoustic Sensor for Combined Sewer Overflow Screen Condition Monitoring in a Drainage Infrastructure. Sensors, 21(2), 404. https://doi.org/10.3390/s21020404",
-            intro:
-              "See et al. develop an autonomous acoustic transceiver system for continuous real-time monitoring of bar screen ragging in Combined Sewer Overflow (CSO) chambers.",
-            methods:
-              "Designed an acoustic transmitter/receiver array measuring acoustic wave attenuation and frequency shifts as debris and wet wipes blind the CSO bar screen.",
-            scope:
-              "CSO relief chambers, overflow bar screens, ragging detection, and remote alert generation.",
-            usefulness:
-              "Directly solves the critical utility problem of fibrous ragging on overflow screens without requiring submerged probes that foul rapidly.",
-            limitations:
-              "High background acoustic noise during extreme storm turbulence requires frequency notch filtering and differential thresholding algorithms.",
-            conclusions:
-              "Non-contact acoustic screen monitoring successfully detected screen blinding in under 1 minute with zero submerged probe fouling.",
-            reflection:
-              "Cited in Section 7 of Paper 1 as an outstanding example of non-contact acoustic sensing overcoming physical wipe ragging in sewer infrastructure.",
-          },
-        },
-        {
-          id: 8,
-          title:
-            "Acoustic and Ultrasonic Techniques for Defect Detection and Condition Monitoring: A Review",
-          authors:
-            "Yu, Y., Safari, A., Niu, X., Drinkwater, B., & Horoshenkov, K. (2021)",
-          journal: "Applied Acoustics, 183, 108282",
-          categoryKey: "pipe",
-          categoryLabel: "Ultrasonic NDE",
-          size: "1.0 MB",
-          pages: 45,
-          pdfUrl:
-            "./contributors/satya-siddhartha/papers/Yu_2021_Acoustic_and_ultrasonic_techniques_for_d.pdf",
-          scholarUrl:
-            "https://scholar.google.com/scholar?q=Acoustic+and+ultrasonic+techniques+for+defect+detection+Yu",
-          steps: {
-            citation:
-              "Yu, Y., Safari, A., Niu, X., Drinkwater, B., & Horoshenkov, K. V. (2021). Acoustic and ultrasonic techniques for defect detection and condition monitoring in water and sewerage pipes: A review. Applied Acoustics, 183, 108282. https://doi.org/10.1016/j.apacoust.2021.108282",
-            intro:
-              "A definitive review synthesizing acoustic reflectometry, ultrasonic guided waves, and resonance methods for non-destructive evaluation (NDE) of pipelines.",
-            methods:
-              "Systematically analyzed acoustic wave propagation physics in cylindrical conduits, comparing bulk wave, guided wave, and resonance techniques across metallic, concrete, and PVC pipes.",
-            scope:
-              "Pipe structural condition assessment, crack detection, wall thinning, sediment accumulation, and non-invasive transducers.",
-            usefulness:
-              "Provides the wave dispersion equations and acoustic mechanics governing acoustic reflectometry and guided wave screening in partially filled sewer pipes.",
-            limitations:
-              "High-frequency ultrasonic guided waves require clean acoustic coupling and attenuate rapidly through heavy external biofilm or soft sediment layers.",
-            conclusions:
-              "Headspace acoustic reflectometry is optimal for operational blockage screening, whereas guided ultrasonic waves are superior for structural wall integrity and corrosion thinning.",
-            reflection:
-              "Serves as the theoretical wave mechanics foundation for Section 7 of Paper 1.",
-          },
-        },
-        {
-          id: 9,
-          title:
-            "Use of Fibre-Optic Sensors for Pipe Condition and Hydraulics Measurements: A Review",
-          authors:
-            "Prisutova, J., Krynkin, A., Tait, S., & Horoshenkov, K. (2022)",
-          journal: "CivilEng (MDPI), 3(1), 85–113",
-          categoryKey: "pipe",
-          categoryLabel: "Fiber-Optic DTS/DAS",
-          size: "2.0 MB",
-          pages: 29,
-          pdfUrl:
-            "./contributors/satya-siddhartha/papers/Prisutova_2022_Fiber_Optic_Pipe_Measurements.pdf",
-          scholarUrl:
-            "https://scholar.google.com/scholar?q=Use+of+Fibre-Optic+Sensors+for+Pipe+Condition+Prisutova",
-          steps: {
-            citation:
-              "Prisutova, J., Krynkin, A., Tait, S., & Horoshenkov, K. (2022). Use of Fibre-Optic Sensors for Pipe Condition and Hydraulics Measurements: A Review. CivilEng, 3(1), 85–113. https://doi.org/10.3390/civileng3010006",
-            intro:
-              "This review evaluates the application of distributed fiber-optic sensors (DTS and DAS) for sewer pipe condition assessment and continuous hydraulic monitoring.",
-            methods:
-              "Examined Raman/Brillouin Distributed Temperature Sensing (DTS) and Rayleigh Distributed Acoustic Sensing (DAS) installed along sewer pipe inverts and crowns.",
-            scope:
-              "Continuous spatial profiling along kilometers of sewer pipelines, illicit connection detection, stormwater inflow (I&I) tracking, and acoustic vibration sensing.",
-            usefulness:
-              "Explains how fiber-optic cables convert an entire pipeline into a continuous spatial sensor, pinpointing cold stormwater inflow and warm illegal industrial taps with meter-scale resolution.",
-            limitations:
-              "High capital installation costs and vulnerability of retrofitted fiber cables to high-pressure water jetting (flushing) and mechanical rodding maintenance crews.",
-            conclusions:
-              "Fiber-optic DTS provides unmatched continuous spatial tracking of thermal anomalies from cross-connections, but demands robust armored cable deployment.",
-            reflection:
-              "Synthesized in Section 7 of Paper 1 to evaluate continuous distributed linear sensors versus point sensors in sewer management.",
-          },
-        },
-        {
-          id: 10,
-          title:
-            "Review on Computer Aided Sewer Pipeline Defect Detection and Condition Assessment",
-          authors: "Moradi, S., Zayed, T., & Golkhoo, F. (2019)",
-          journal: "Infrastructures (MDPI), 4(1), 10",
-          categoryKey: "pipe",
-          categoryLabel: "CCTV Vision AI",
-          size: "2.1 MB",
-          pages: 15,
-          pdfUrl:
-            "./contributors/satya-siddhartha/papers/Moradi_2019_Sewer_Pipeline_Defect_CCTV.pdf",
-          scholarUrl:
-            "https://scholar.google.com/scholar?q=Review+on+Computer+Aided+Sewer+Pipeline+Defect+Moradi",
-          steps: {
-            citation:
-              "Moradi, S., Zayed, T., & Golkhoo, F. (2019). Review on Computer Aided Sewer Pipeline Defect Detection and Condition Assessment. Infrastructures, 4(1), 10. https://doi.org/10.3390/infrastructures4010010",
-            intro:
-              "A systematic review of automated Closed-Circuit Television (CCTV) inspection, computer vision algorithms, and AI defect classification for sewer pipe inspection.",
-            methods:
-              "Compared image processing, feature extraction, convolutional neural networks (CNNs), and robotic crawler platforms for identifying cracks, root intrusions, FOG deposits, and pipe collapses.",
-            scope:
-              "Visual inspection technologies, automated defect coding (PACP / WRC standards), image quality degradation, and AI classification accuracy.",
-            usefulness:
-              "Details the industry benchmark inspection modality against which online stationary sensor networks are compared for asset management and condition ranking.",
-            limitations:
-              "CCTV inspection is episodic (every 5–10 years), labor-intensive, cannot operate during high flow/surcharge, and fails to provide real-time operational alerts during storm events.",
-            conclusions:
-              "AI-assisted computer vision dramatically accelerates CCTV video defect scoring, but real-time network safety requires continuous online IoT sensors.",
-            reflection:
-              "Incorporated in Section 7 of Paper 1 to contrast episodic visual robotic inspections with continuous permanent IoT sensory networks.",
-          },
-        },
-        {
-          id: 11,
-          title:
-            "Illicit Discharge Detection in Stormwater Drains Using an Arduino-Based Sensor Network",
-          authors: "Shi, B., Catsamas, S., Deletic, A., et al. (2022)",
-          journal: "Water Science & Tech., 85(5), 1372–1383",
-          categoryKey: "quality",
-          categoryLabel: "Conductivity",
-          size: "1.1 MB",
-          pages: 13,
-          pdfUrl:
-            "./contributors/satya-siddhartha/papers/Shi_2022_Illicit_discharge_detection_in_stor.pdf",
-          scholarUrl:
-            "https://scholar.google.com/scholar?q=Illicit+discharge+detection+in+stormwater+Shi",
-          steps: {
-            citation:
-              "Shi, B., Catsamas, S., Deletic, A., et al. (2022). Illicit discharge detection in stormwater drains using an Arduino-based low-cost sensor network. Water Science and Technology, 85(5), 1372–1383. https://doi.org/10.2166/wst.2022.034",
-            intro:
-              "Shi et al. detail the design and deployment of an open-source, low-cost sensor network measuring electrical conductivity and temperature to detect illicit domestic sewage cross-connections in stormwater drains.",
-            methods:
-              "Built Arduino-based sensor nodes equipped with toroidal/conductive electrical conductivity (EC) probes and DS18B20 temperature sensors, deployed across an urban stormwater catchment in Melbourne, Australia.",
-            scope:
-              "Stormwater drains, dry-weather baseflow, sewage cross-connection detection, and low-cost hardware fabrication (<$300 USD per node).",
-            usefulness:
-              "Demonstrates how electrical conductivity and diurnal temperature fluctuations serve as reliable, low-cost proxies for illicit wastewater ingress and seawater infiltration.",
-            limitations:
-              "Biofilm growth and mineral scaling on direct-contact galvanic electrodes caused signal drift over 3–4 weeks, highlighting the superiority of toroidal inductive probes.",
-            conclusions:
-              "High-frequency EC and temperature time series accurately flagged illicit greywater and blackwater discharges by detecting conductivity spikes during dry weather.",
-            reflection:
-              "Cited in Section 5 of Paper 1 to support the analysis of electrical conductivity sensing for tracking water quality anomalies and rainwater dilution.",
-          },
-        },
-        {
-          id: 12,
-          title: "A Reliable Sewage Quality Abnormal Event Monitoring System",
-          authors: "Li, T., Winnel, M., Lin, H., et al. (2017)",
-          journal: "Water Research, 121, 248–257",
-          categoryKey: "quality",
-          categoryLabel: "Multi-Parameter",
-          size: "3.8 MB",
-          pages: 10,
-          pdfUrl:
-            "./contributors/satya-siddhartha/papers/Li_2017_Sewage_Quality_Abnormal_Event_Monitoring.pdf",
-          scholarUrl:
-            "https://scholar.google.com/scholar?q=A+reliable+sewage+quality+abnormal+event+monitoring+system+Li",
-          steps: {
-            citation:
-              "Li, T., Winnel, M., Lin, H., et al. (2017). A reliable sewage quality abnormal event monitoring system. Water Research, 121, 248–257. https://doi.org/10.1016/j.watres.2017.05.040",
-            intro:
-              "Li et al. develop an online multi-parameter sensor station and event-detection algorithm for tracking toxic industrial chemical dumping in municipal sewers.",
-            methods:
-              "Deployed an automated online multi-sensor platform measuring pH, ORP, electrical conductivity, and turbidity coupled with principal component analysis (PCA) and support vector machines (SVM).",
-            scope:
-              "Industrial catchment gravity sewers, illicit acidic/alkaline chemical dumping, WWTP protection, and real-time anomaly alarm classification.",
-            usefulness:
-              "Directly informs water quality sensor selection (pH/ORP/EC) and proves how multi-sensor fusion distinguishes benign diurnal sewage fluctuations from toxic industrial shock loads.",
-            limitations:
-              "Submerged electrochemical probes suffered from rapid biofouling and reference junction sulfide poisoning, requiring automated high-pressure water washing every 12 hours.",
-            conclusions:
-              "Multi-parameter sensor arrays combined with machine learning successfully detected 100% of illegal chemical dumping events with false alarm rates below 2%.",
-            reflection:
-              "Forms the cornerstone in Section 5 of Paper 1 for multi-parameter physicochemical sensing arrays and automated anti-fouling requirements.",
-          },
-        },
-        {
-          id: 13,
-          title:
-            "Profiling Wastewater Characteristics in Intra-Urban Catchments Using Online Monitoring Stations",
-          authors: "Corominas, L. et al. (2024)",
-          journal: "Water Science & Tech., 89(6), 1412–1426",
-          categoryKey: "quality",
-          categoryLabel: "ORP / Redox",
-          size: "760 KB",
-          pages: 14,
-          pdfUrl:
-            "./contributors/satya-siddhartha/papers/Corominas_2024_Catchment_Water_Quality_Profiling.pdf",
-          scholarUrl:
-            "https://scholar.google.com/scholar?q=Profiling+wastewater+characteristics+in+intra-urban+Corominas",
-          steps: {
-            citation:
-              "Corominas, L., et al. (2024). Profiling wastewater characteristics in intra-urban catchments using online monitoring stations. Water Science and Technology, 89(6), 1412–1426. https://doi.org/10.2166/wst.2024.069",
-            intro:
-              "This empirical study investigates high-frequency online water quality monitoring across intra-urban sewer catchments to profile dynamic wastewater pollutant loads.",
-            methods:
-              "Operated multiple continuous monitoring stations equipped with in-situ spectrophotometers, pH/ORP probes, and conductivity sensors across distinct urban catchment typologies (residential, commercial, industrial).",
-            scope:
-              "Intra-urban sewer trunks, dynamic diurnal hydrographs, sewer catchment typology characterization, and redox potential (ORP) tracking.",
-            usefulness:
-              "Demonstrates that oxidation-reduction potential (ORP) is a highly sensitive indicator of septic anaerobic conditions and sulfide generation kinetics in gravity sewers.",
-            limitations:
-              "Significant capital and maintenance burden associated with operating multi-parameter spectrophotometric stations in remote manhole locations.",
-            conclusions:
-              "Real-time water quality profiles revealed substantial spatial and temporal variability driven by human activity patterns and sewer hydraulic retention times.",
-            reflection:
-              "Directly supports Section 5 of Paper 1 regarding the use of potentiometric ORP probes as early sentinels for septic conditions in sewer networks.",
-          },
-        },
-        {
-          id: 14,
-          title:
-            "Comparative Validation of Amperometric and Optical Analyzers of Dissolved Oxygen",
-          authors:
-            "Helm, I., Karina, G., Jalukse, L., Pagano, T., & Leito, I. (2018)",
-          journal: "Env. Monitoring & Assess., 190, 313",
-          categoryKey: "quality",
-          categoryLabel: "Optical DO (LDO)",
-          size: "1.4 MB",
-          pages: 18,
-          pdfUrl:
-            "./contributors/satya-siddhartha/papers/Helm_2018_Comparative_validation_of_amperometric_a.pdf",
-          scholarUrl:
-            "https://scholar.google.com/scholar?q=Comparative+validation+of+amperometric+and+optical+analyzers+Helm",
-          steps: {
-            citation:
-              "Helm, I., Karina, G., Jalukse, L., Pagano, T., & Leito, I. (2018). Comparative validation of amperometric and optical analyzers of dissolved oxygen: a case study. Environmental Monitoring and Assessment, 190, 313. https://doi.org/10.1007/s10661-018-6692-5",
-            intro:
-              "Helm et al. rigorously compare the measurement uncertainty, calibration stability, and performance of optical luminescent DO (LDO) sensors versus electrochemical Clark polarographic cells.",
-            methods:
-              "Conducted extensive ISO/IEC 17025 validation protocols, drift tests, and response time experiments on optical luminescence-quenching vs. amperometric dissolved oxygen analyzers in complex water matrices.",
-            scope:
-              "Dissolved oxygen (DO) monitoring (0–20 mg/L), sulfide and toxic gas poisoning, calibration drift over time, and temperature compensation.",
-            usefulness:
-              "Provides rigorous experimental evidence proving why optical luminescent DO sensors are vastly superior to electrochemical Clark cells in wastewater (no electrolyte depletion, no oxygen consumption, zero sulfide poisoning).",
-            limitations:
-              "Optical sensing caps suffer from photobleaching under continuous excitation light and biofouling slime accumulation, necessitating periodic wipe cleaning.",
-            conclusions:
-              "Optical DO analyzers demonstrated significantly lower drift (<1% over 3 months), required zero flow dependence, and were completely unaffected by H2S poisoning.",
-            reflection:
-              "Directly provides the comparative scientific evidence in Section 5 of Paper 1 for recommending optical luminescent DO over electrochemical sensors in sewer networks.",
-          },
-        },
-        {
-          id: 15,
-          title:
-            "Calibration of UV/Vis Spectrophotometers: A Review to Estimate TSS and COD Concentrations",
-          authors: "Lepot, M., Torres, A., Hofer, T., et al. (2016)",
-          journal: "Water Research, 101, 519–534",
-          categoryKey: "quality",
-          categoryLabel: "UV-Vis Spectrometry",
-          size: "1.2 MB",
-          pages: 16,
-          pdfUrl:
-            "./contributors/satya-siddhartha/papers/Lepot_2016_UV_Vis_Spectrophotometers_Calibration.pdf",
-          scholarUrl:
-            "https://scholar.google.com/scholar?q=Calibration+of+UV/Vis+spectrophotometers+Lepot",
-          steps: {
-            citation:
-              "Lepot, M., Torres, A., Hofer, T., et al. (2016). Calibration of UV/Vis spectrophotometers: A review and comparison of different methods to estimate TSS and total and dissolved COD concentrations in sewers, WWTPs and rivers. Water Research, 101, 519–534. https://doi.org/10.1016/j.watres.2016.05.070",
-            intro:
-              "A definitive review and methodological evaluation of in-situ UV-Vis spectrophotometry for real-time estimation of Total Suspended Solids (TSS) and Chemical Oxygen Demand (COD) in wastewater.",
-            methods:
-              "Evaluated single-wavelength, multi-wavelength, and full-spectrum (200–750 nm) chemometric calibration models (PLS, PCR, SVM) across field data collected from municipal sewers and WWTPs.",
-            scope:
-              "In-situ UV-Vis spectrometry, optical path length selection (1–5 mm for raw sewage), turbidity compensation, and organic matter surrogacy.",
-            usefulness:
-              "Critical for understanding optical absorbance physics (Beer-Lambert law), turbidity cross-interference, and site-specific chemometric calibration algorithms for real-time organic load tracking.",
-            limitations:
-              "Raw wastewater requires short optical path lengths (1–2 mm) to prevent light saturation; mechanical wiper cleaning or ultrasonic cavitation is mandatory to prevent window fouling.",
-            conclusions:
-              "Partial Least Squares (PLS) regression over multi-wavelength UV-Vis spectra yields robust real-time COD (R2 > 0.90) and TSS proxies once site-specific turbidity compensation is applied.",
-            reflection:
-              "Serves as the central scientific reference in Section 6 of Paper 1 for UV-Vis spectrophotometric organic load and solids monitoring in sewers.",
-          },
-        },
-        {
-          id: 16,
-          title:
-            "Fluorescence Spectroscopy for Wastewater Monitoring: A Review",
-          authors:
-            "Carstea, E. M., Bridgeman, J., Baker, A., & Reynolds, D. (2016)",
-          journal: "Water Research, 95, 205–219",
-          categoryKey: "quality",
-          categoryLabel: "2D-Fluorescence",
-          size: "1.2 MB",
-          pages: 15,
-          pdfUrl:
-            "./contributors/satya-siddhartha/papers/Carstea_2016_Fluorescence_Spectroscopy_BOD.pdf",
-          scholarUrl:
-            "https://scholar.google.com/scholar?q=Fluorescence+spectroscopy+for+wastewater+monitoring+Carstea",
-          steps: {
-            citation:
-              "Carstea, E. M., Bridgeman, J., Baker, A., & Reynolds, D. M. (2016). Fluorescence spectroscopy for wastewater monitoring: A review. Water Research, 95, 205–219. https://doi.org/10.1016/j.watres.2016.03.021",
-            intro:
-              "This review evaluates the application of 2D excitation-emission matrix (EEM) fluorescence spectroscopy for real-time organic characterization and biological oxygen demand (BOD5) monitoring in wastewater.",
-            methods:
-              "Synthesized optical fluorophore mechanics across sewage matrices, focusing on Protein-like Peak T (Tryptophan, ex 280 nm, em 350 nm) and Peak B (Tyrosine) vs. Humic-like Peaks A and C.",
-            scope:
-              "Optical fluorescence spectroscopy, instantaneous biochemical oxygen demand (BOD5) surrogacy, microbial activity tracking, and inner-filter effect corrections.",
-            usefulness:
-              "Provides the scientific justification for using Tryptophan Peak T fluorescence as an instantaneous optical proxy for the standard 5-day BOD5 laboratory test in sewer catchments.",
-            limitations:
-              "High sample absorbance and suspended solids cause inner-filter attenuation and scattering, requiring optical turbidity correction and temperature compensation.",
-            conclusions:
-              "Tryptophan Peak T fluorescence correlates exceptionally well with labile organic matter (R2 > 0.85–0.95) and provides instantaneous feedback on raw sewage microbial strength.",
-            reflection:
-              "Directly provides the theoretical and empirical foundation for Section 6 of Paper 1 on optical fluorescence spectroscopy for real-time organic load monitoring.",
-          },
-        },
-        {
-          id: 17,
-          title:
-            "Electrochemical Detection of Nitrate, Nitrite and Ammonium for On-Site Monitoring",
-          authors: "Tan, E. X., Anastasi, A., & Chandra, S. (2022)",
-          journal: "Curr. Opinion in Electrochem., 32, 100926",
-          categoryKey: "quality",
-          categoryLabel: "Nutrient ISEs",
-          size: "1.6 MB",
-          pages: 10,
-          pdfUrl:
-            "./contributors/satya-siddhartha/papers/Tan_2022_Electrochemical_Nutrient_Detection.pdf",
-          scholarUrl:
-            "https://scholar.google.com/scholar?q=Electrochemical+detection+of+nitrate+nitrite+and+ammonium+Tan",
-          steps: {
-            citation:
-              "Tan, E. X., Anastasi, A., & Chandra, S. (2022). Electrochemical detection of nitrate, nitrite and ammonium for on-site water quality monitoring. Current Opinion in Electrochemistry, 32, 100926. https://doi.org/10.1016/j.coelec.2021.100926",
-            intro:
-              "Tan et al. review electrochemical sensor technologies and ion-selective electrodes (ISEs) for on-site nutrient detection (NH4+, NO2-, NO3-) in wastewater.",
-            methods:
-              "Evaluated potentiometric ion-selective field-effect transistors (ISFETs), PVC membrane ISEs, and amperometric nutrient sensors for real-time nitrogen speciation in water.",
-            scope:
-              "Electrochemical nutrient sensing, ammonium and nitrate tracking, ionic cross-interference (K+, Cl-), and solid-state membrane longevity.",
-            usefulness:
-              "Outlines the working mechanisms and limitations of electrochemical nutrient probes deployed for in-situ sewer monitoring and illicit industrial waste tracking.",
-            limitations:
-              "Potassium ions (K+) severely interfere with ammonium (NH4+) ionophore membranes, requiring concurrent potassium compensation sensors; membrane fouling limits field deployment life to 1–3 months without maintenance.",
-            conclusions:
-              "Solid-state polymeric ISEs with dynamic interference compensation algorithms provide feasible on-site nutrient tracking, though routine recalibration remains necessary.",
-            reflection:
-              "Synthesized in Section 5 of Paper 1 to analyze nutrient sensor performance and electrochemical cross-interference challenges.",
-          },
-        },
-        {
-          id: 18,
-          title:
-            "Microbial Fuel Cell-Based Biological Oxygen Demand Sensors for Monitoring Wastewater",
-          authors: "Sonawane, J. M., Ezugwu, C. I., & Ghosh, P. C. (2020)",
-          journal: "ACS Sensors, 5(8), 2297–2316",
-          categoryKey: "quality",
-          categoryLabel: "MFC Biosensors",
-          size: "5.2 MB",
-          pages: 20,
-          pdfUrl:
-            "./contributors/satya-siddhartha/papers/Sonawane_2020_MFC_BOD_Biosensors.pdf",
-          scholarUrl:
-            "https://scholar.google.com/scholar?q=Microbial+Fuel+Cell-Based+Biological+Oxygen+Demand+Sonawane",
-          steps: {
-            citation:
-              "Sonawane, J. M., Ezugwu, C. I., & Ghosh, P. C. (2020). Microbial Fuel Cell-Based Biological Oxygen Demand Sensors for Monitoring Wastewater: State-of-the-Art and Practical Applications. ACS Sensors, 5(8), 2297–2316. https://doi.org/10.1021/acssensors.0c01299",
-            intro:
-              "A state-of-the-art review on Microbial Fuel Cell (MFC) biosensors for continuous, self-powered biological oxygen demand (BOD) and toxicity monitoring in wastewater.",
-            methods:
-              "Analyzed exoelectrogenic biofilm kinetics (e.g., Geobacter, Shewanella) on conductive anode electrodes where extracellular electron transfer produces electrical current proportional to biodegradable organic substrate concentration.",
-            scope:
-              "Bioelectrochemical biosensors, real-time BOD measurement (5–500 mg/L), heavy metal toxicity shock detection, and self-powered bio-battery operation.",
-            usefulness:
-              "Explains the operational physics of bioelectrochemical biosensors that directly measure biologically assimilable organic matter in sewers without chemical reagents.",
-            limitations:
-              "Biofilm metabolic lag (10–30 min response time), substrate saturation at high COD concentrations, sensitivity to wastewater temperature fluctuations, and biofilm vulnerability to extreme toxic chemical flushes.",
-            conclusions:
-              "MFC biosensors deliver a linear electrical current response for low-to-medium BOD concentrations while serving as a continuous early-warning system for microbial toxic shocks.",
-            reflection:
-              "Directly forms Section 6 of Paper 1 on biological and bioelectrochemical biosensing in wastewater networks.",
-          },
-        },
-        {
-          id: 19,
-          title:
-            "A Review of Sensor-Based Methods for Monitoring Hydrogen Sulfide",
-          authors: "Pandey, S. K., Kim, K.-H., & Tang, K.-T. (2012)",
-          journal: "TrAC Trends in Anal. Chem., 32, 87–99",
-          categoryKey: "h2s",
-          categoryLabel: "H2S Review",
-          size: "270 KB",
-          pages: 13,
-          pdfUrl:
-            "./contributors/satya-siddhartha/papers/Pandey_2012_Hydrogen_Sulfide_Monitoring_Review.pdf",
-          scholarUrl:
-            "https://scholar.google.com/scholar?q=A+review+of+sensor-based+methods+for+monitoring+hydrogen+sulfide+Pandey",
-          steps: {
-            citation:
-              "Pandey, S. K., Kim, K.-H., & Tang, K.-T. (2012). A review of sensor-based methods for monitoring hydrogen sulfide. TrAC Trends in Analytical Chemistry, 32, 87–99. https://doi.org/10.1016/j.trac.2011.08.008",
-            intro:
-              "Pandey et al. provide a comprehensive analysis of sensor-based techniques for detecting and quantifying hydrogen sulfide (H2S) in gaseous and liquid phases.",
-            methods:
-              "Systematically compared electrochemical amperometric cells, metal oxide semiconductors (MOS), optical absorbance/fluorescence, and conductometric gas sensors for H2S quantification.",
-            scope:
-              "H2S sensing principles, detection limits (ppb to ppm levels), response times, cross-sensitivity to humidity and volatile organic compounds (VOCs).",
-            usefulness:
-              "Establishes the chemical kinetics and sensor transducer principles governing biogenic sulfuric acid generation, odor nuisance, and concrete crown corrosion in sewer headspace.",
-            limitations:
-              "Standard MOS sensors operate at high heater temperatures (200–400°C) requiring high power; electrochemical gas cells suffer from electrolyte dry-out in dry seasons and condensation flooding in 100% RH sewers.",
-            conclusions:
-              "Electrochemical gas sensors offer the best balance of low power consumption and ppb-to-ppm sensitivity for battery-powered sewer IoT monitoring, provided moisture-permeable membranes are utilized.",
-            reflection:
-              "Provides the theoretical and chemical foundation in Section 5 of Paper 1 for headspace H2S sensing and sewer asset preservation.",
-          },
-        },
-        {
-          id: 20,
-          title:
-            "Comparison of H2S Gas Sensors: A Sensor Management Procedure for Sewer Monitoring",
-          authors:
-            "Pacheco Fernández, M., Despot, D., & Barjenbruch, M. (2021)",
-          journal: "Sustainability (MDPI), 13(19), 10779",
-          categoryKey: "h2s",
-          categoryLabel: "Gas H2S",
-          size: "2.4 MB",
-          pages: 16,
-          pdfUrl:
-            "./contributors/satya-siddhartha/papers/Pacheco_2021_H2S_Gas_Sensors_Sewer.pdf",
-          scholarUrl:
-            "https://scholar.google.com/scholar?q=Comparison+of+H2S+Gas+Sensors+Pacheco+Fernandez",
-          steps: {
-            citation:
-              "Pacheco Fernández, M., Despot, D., & Barjenbruch, M. (2021). Comparison of H2S Gas Sensors: A Sensor Management Procedure for Sewer Monitoring. Sustainability, 13(19), 10779. https://doi.org/10.3390/su131910779",
-            intro:
-              "This empirical study evaluates the field performance and longevity of multiple commercial electrochemical H2S gas sensors deployed inside municipal sewer manholes.",
-            methods:
-              "Field-tested four different electrochemical H2S sensor units under harsh real sewer conditions (continuous 95–100% RH, H2S peaks up to 500 ppm, biogenic sulfuric acid) over 6 months, developing a utility sensor management procedure.",
-            scope:
-              "Manhole headspace gas monitoring, sensor calibration decay, condensation blinding, electrolyte acidification, and operational lifetime.",
-            usefulness:
-              "Directly informs utility sensor maintenance schedules and documents the real-world lifespan of electrochemical gas sensors in aggressive sewer atmospheres.",
-            limitations:
-              "Sensors experienced severe signal drift and zero-baseline drift after 3–4 months due to acid condensation on membrane pores and electrolyte saturation.",
-            conclusions:
-              "Developed a standardized maintenance protocol indicating that electrochemical H2S sensors in sewer headspaces require recalibration every 2–3 months and membrane replacement every 6–12 months.",
-            reflection:
-              "Directly cited in Section 5 and Section 8 of Paper 1 to substantiate the maintenance intervals and failure modes of sewer gas monitoring instrumentation.",
-          },
-        },
-        {
-          id: 21,
-          title:
-            "Comparison of Online Sensors for Liquid Phase Hydrogen Sulphide Monitoring in Sewers",
-          authors:
-            "Despot, D., Pacheco Fernández, M., & Barjenbruch, M. (2021)",
-          journal: "Water (MDPI), 13(13), 1876",
-          categoryKey: "h2s quality",
-          categoryLabel: "Liquid Bisulfide",
-          size: "2.8 MB",
-          pages: 18,
-          pdfUrl:
-            "./contributors/satya-siddhartha/papers/Despot_2021_Liquid_Phase_H2S_Monitoring.pdf",
-          scholarUrl:
-            "https://scholar.google.com/scholar?q=Comparison+of+Online+Sensors+for+Liquid+Phase+Hydrogen+Despot",
-          steps: {
-            citation:
-              "Despot, D., Pacheco Fernández, M., & Barjenbruch, M. (2021). Comparison of Online Sensors for Liquid Phase Hydrogen Sulphide Monitoring in Sewer Systems. Water, 13(13), 1876. https://doi.org/10.3390/w13131876",
-            intro:
-              "This research paper compares direct liquid-phase in-situ dissolved sulfide sensors with indirect headspace gas sensors for real-time sewer corrosion and chemical dosing management.",
-            methods:
-              "Evaluated submerged UV spectrophotometric probes measuring dissolved bisulfide ions (HS- at 230 nm) directly in raw sewage in parallel with headspace H2S gas analyzers and chemical dosing pumps.",
-            scope:
-              "Liquid-phase sulfide speciation (H2S <=> HS- + H+), pH dependence, real-time iron salt / nitrate dosing control, and optical biofilm fouling.",
-            usefulness:
-              "Proves that liquid-phase UV bisulfide measurement provides immediate feedback for chemical dosing (preventing expensive over-dosing) long before H2S gas volatilizes into the headspace.",
-            limitations:
-              "Submerged UV probes experience rapid biological biofilm growth on optical windows within 48 hours, requiring automated mechanical wiping or compressed air cleaning.",
-            conclusions:
-              "In-situ liquid HS- monitoring allows precise, closed-loop chemical dosing control, reducing utility chemical costs by up to 30% compared to reactive gas-phase monitoring.",
-            reflection:
-              "Serves as the primary evidence in Section 5 of Paper 1 for liquid-phase dissolved sulfide sensing and real-time corrosion mitigation dosing.",
-          },
-        },
-        {
-          id: 22,
-          title:
-            "Wireless Sensor Networks for Water Quality Monitoring: A Comprehensive Review",
-          authors: "Lopez-Ramirez, G. A., & Aragon-Zavala, A. (2023)",
-          journal: "IEEE Access, 11, 95120–95142",
-          categoryKey: "iot",
-          categoryLabel: "Wireless Telemetry",
-          size: "1.3 MB",
-          pages: 24,
-          pdfUrl:
-            "./contributors/satya-siddhartha/papers/Lopez_Ramirez_2023_Wireless_Sensor_Networks_for_Water_Quali.pdf",
-          scholarUrl:
-            "https://scholar.google.com/scholar?q=Wireless+Sensor+Networks+for+Water+Quality+Monitoring+Lopez-Ramirez",
-          steps: {
-            citation:
-              "Lopez-Ramirez, G. A., & Aragon-Zavala, A. (2023). Wireless Sensor Networks for Water Quality Monitoring: A Comprehensive Review. IEEE Access, 11, 95120–95142. https://doi.org/10.1109/ACCESS.2023.3308905",
-            intro:
-              "A comprehensive review investigating subterranean and surface wireless sensor network (WSN) topologies, telemetry protocols, and packaging architectures for water infrastructure.",
-            methods:
-              "Compared RF propagation loss, antenna radiation patterns, communication protocols (LoRaWAN, NB-IoT, ZigBee), and energy harvesting mechanisms across subterranean manholes and water distribution assets.",
-            scope:
-              "Subterranean RF attenuation through cast-iron and reinforced concrete manhole covers (20–40 dB loss), IP68 submersible enclosures, and LPWAN network topology.",
-            usefulness:
-              "Directly informs the electronic packaging, telemetry selection, and antenna placement strategies necessary to transmit sensor data reliably from underground sewers to cloud servers.",
-            limitations:
-              "Heavy cast-iron manhole covers severely attenuate high-frequency radio signals, requiring manhole-rim slot antennas or non-metallic composite cover replacements.",
-            conclusions:
-              "Sub-GHz LPWAN protocols (LoRaWAN 868/915 MHz and NB-IoT Band 8/20) provide the highest penetration and range for subterranean sewer monitoring nodes.",
-            reflection:
-              "Forms the foundational technical reference for Section 8 of Paper 1 regarding subterranean telemetry, radio path loss, and edge node packaging.",
-          },
-        },
-        {
-          id: 23,
-          title: "Low-Cost Water Quality Sensors for IoT: A Systematic Review",
-          authors: "de Camargo, E. T. et al. (2023)",
-          journal: "Sensors (MDPI), 23(9), 4424",
-          categoryKey: "iot quality",
-          categoryLabel: "Low-Cost IoT",
-          size: "928 KB",
-          pages: 27,
-          pdfUrl:
-            "./contributors/satya-siddhartha/papers/DeCamargo_2023_Low_Cost_Water_Quality_IoT.pdf",
-          scholarUrl:
-            "https://scholar.google.com/scholar?q=Low-Cost+Water+Quality+Sensors+for+IoT+de+Camargo",
-          steps: {
-            citation:
-              "de Camargo, E. T., et al. (2023). Low-Cost Water Quality Sensors for IoT: A Systematic Review. Sensors, 23(9), 4424. https://doi.org/10.3390/s23094424",
-            intro:
-              "A systematic review exploring low-cost sensing hardware, open-source microcontrollers, and edge processing architectures for IoT water monitoring.",
-            methods:
-              "Systematically categorized and benchmarked low-cost sensors for pH, turbidity, conductivity, temperature, and dissolved oxygen paired with low-power microcontrollers (ESP32, Arduino, ARM Cortex).",
-            scope:
-              "Edge microcomputing, analog-to-digital sensor conditioning, sleep-mode power management, calibration protocols, and total cost of ownership.",
-            usefulness:
-              "Provides clear cost-performance curves and design blueprints for developing scalable, low-cost edge sensing nodes for high-density sewer monitoring deployments.",
-            limitations:
-              "Low-cost consumer-grade sensor components suffer from higher thermal drift and lower chemical resistance, requiring intelligent firmware filtering and baseline correction.",
-            conclusions:
-              "Low-cost edge sensor nodes achieve acceptable operational accuracy when paired with digital temperature compensation and edge-computed drift correction algorithms.",
-            reflection:
-              "Directly supports Section 8 of Paper 1 regarding low-cost edge processing, duty cycling, and scalable sensor node architectures.",
-          },
-        },
-      ];
-
-      const PAPER1_OWNER = "Satya Siddhartha";
+      let papersData = [];
       const CONTRIBUTOR_MANIFEST_URL = "./contributors/manifest.json";
-      const defaultCompiledPapers = [
-        {
-          id: "paper-1-sensors",
-          title:
-            "A Comprehensive Review of Sensor Technologies for Wastewater Collection Networks",
-          topic: "Sensors",
-          filterCategory: "Compiled Review",
-          assignedTo: PAPER1_OWNER,
-          description:
-            "Satya Siddhartha's compiled Paper 1 literature review.",
-          pdfUrl:
-            "./contributors/satya-siddhartha/compiled-papers/paper-1.pdf",
-        },
-      ];
-      let compiledPapersData = defaultCompiledPapers.map((paper) => ({
-        ...paper,
-      }));
-
-      // Offline fallback. The hosted page overrides these fields from
-      // summaries.json when a paper includes assignedTo, topic, or filterCategory.
-      const defaultPaperMetadataById = {
-        1: {
-          assignedTo: PAPER1_OWNER,
-          topic: "Sensors",
-          filterCategory: "Level & Flow",
-        },
-        2: {
-          assignedTo: PAPER1_OWNER,
-          topic: "Sensors",
-          filterCategory: "Level & Flow",
-        },
-        3: {
-          assignedTo: PAPER1_OWNER,
-          topic: "Sensors",
-          filterCategory: "Level & Flow",
-        },
-        4: {
-          assignedTo: PAPER1_OWNER,
-          topic: "Sensors",
-          filterCategory: "Sensor Placement",
-        },
-        5: {
-          assignedTo: PAPER1_OWNER,
-          topic: "Sensors",
-          filterCategory: "Level & Flow",
-        },
-        6: {
-          assignedTo: PAPER1_OWNER,
-          topic: "Sensors",
-          filterCategory: "Pipe & Acoustic",
-        },
-        7: {
-          assignedTo: PAPER1_OWNER,
-          topic: "Sensors",
-          filterCategory: "Pipe & Acoustic",
-        },
-        8: {
-          assignedTo: PAPER1_OWNER,
-          topic: "Sensors",
-          filterCategory: "Pipe & Acoustic",
-        },
-        9: {
-          assignedTo: PAPER1_OWNER,
-          topic: "Sensors",
-          filterCategory: "Pipe & Acoustic",
-        },
-        10: {
-          assignedTo: PAPER1_OWNER,
-          topic: "Sensors",
-          filterCategory: "Pipe & Acoustic",
-        },
-        11: {
-          assignedTo: PAPER1_OWNER,
-          topic: "Sensors",
-          filterCategory: "Water Quality",
-        },
-        12: {
-          assignedTo: PAPER1_OWNER,
-          topic: "Sensors",
-          filterCategory: "Water Quality",
-        },
-        13: {
-          assignedTo: PAPER1_OWNER,
-          topic: "Sensors",
-          filterCategory: "Water Quality",
-        },
-        14: {
-          assignedTo: PAPER1_OWNER,
-          topic: "Sensors",
-          filterCategory: "Water Quality",
-        },
-        15: {
-          assignedTo: PAPER1_OWNER,
-          topic: "Sensors",
-          filterCategory: "Water Quality",
-        },
-        16: {
-          assignedTo: PAPER1_OWNER,
-          topic: "Sensors",
-          filterCategory: "Water Quality",
-        },
-        17: {
-          assignedTo: PAPER1_OWNER,
-          topic: "Sensors",
-          filterCategory: "Water Quality",
-        },
-        18: {
-          assignedTo: PAPER1_OWNER,
-          topic: "Sensors",
-          filterCategory: "Water Quality",
-        },
-        19: {
-          assignedTo: PAPER1_OWNER,
-          topic: "Sensors",
-          filterCategory: "H2S & Corrosion",
-        },
-        20: {
-          assignedTo: PAPER1_OWNER,
-          topic: "Sensors",
-          filterCategory: "H2S & Corrosion",
-        },
-        21: {
-          assignedTo: PAPER1_OWNER,
-          topic: "Sensors",
-          filterCategory: "H2S & Corrosion",
-        },
-        22: {
-          assignedTo: PAPER1_OWNER,
-          topic: "Sensors",
-          filterCategory: "IoT & Telemetry",
-        },
-        23: {
-          assignedTo: PAPER1_OWNER,
-          topic: "Sensors",
-          filterCategory: "IoT & Telemetry",
-        },
-      };
+      let compiledPapersData = [];
 
       function applyPaperMetadata(sharedMetadata = {}) {
         papersData.forEach((paper) => {
-          const fallback = defaultPaperMetadataById[paper.id] || {};
           const shared =
             sharedMetadata[String(paper.id)] || sharedMetadata[paper.id] || {};
-          paper.assignedTo =
-            shared.assignedTo ||
-            shared.user ||
-            fallback.assignedTo ||
-            paper.assignedTo ||
-            "Unassigned";
-          paper.topic = shared.topic || fallback.topic || paper.topic || "General";
-          paper.filterCategory =
-            shared.filterCategory ||
-            shared.category ||
-            fallback.filterCategory ||
-            paper.filterCategory ||
-            paper.categoryLabel;
+          if (shared.assignedTo || shared.user) {
+            paper.assignedTo = shared.assignedTo || shared.user;
+          }
+          if (shared.topic) {
+            paper.topic = shared.topic;
+          }
+          if (shared.filterCategory || shared.category) {
+            paper.filterCategory = shared.filterCategory || shared.category;
+          }
         });
       }
-
-      applyPaperMetadata();
 
       const DOI_PATTERN = /10\.\d{4,9}\/[-._;()/:A-Z0-9]+/i;
 
@@ -2100,18 +1284,57 @@
         topicFilter.value = currentTopic;
       }
 
+      function isTeamPaper(paper) {
+        if (!paper) return false;
+        if (paper.isTeam) return true;
+        const assigned = Array.isArray(paper.assignedTo)
+          ? paper.assignedTo
+          : String(paper.assignedTo || "")
+              .split(",")
+              .map((s) => s.trim().toLowerCase());
+        return assigned.includes("team") || assigned.includes("all");
+      }
+
+      function getPaperContributors(paper) {
+        if (!paper || !paper.assignedTo) return [];
+        if (Array.isArray(paper.assignedTo)) {
+          return paper.assignedTo.map((s) => String(s).trim()).filter(Boolean);
+        }
+        return String(paper.assignedTo)
+          .split(",")
+          .map((s) => s.trim())
+          .filter(Boolean);
+      }
+
+      function paperMatchesUser(paper, user) {
+        if (!user || user === "all") return true;
+        return getPaperContributors(paper).includes(user);
+      }
+
+      function formatAuthors(paper) {
+        if (isTeamPaper(paper)) return "Team";
+        const contributors = getPaperContributors(paper);
+        return contributors.length ? contributors.join(", ") : "Unassigned";
+      }
+
       function populateUserOptions() {
         const userFilter = document.getElementById("userFilter");
         const selectedUser = userFilter.value || "all";
-        const users = [
-          ...new Set(
-            [
-              ...papersInSelectedTopic(),
-              ...compiledPapersInSelectedTopic(),
-            ].map((paper) => paper.assignedTo),
-          ),
-        ].sort((a, b) => a.localeCompare(b));
+        const allUsers = new Set();
 
+        [
+          ...papersInSelectedTopic(),
+          ...compiledPapersInSelectedTopic(),
+        ].forEach((paper) => {
+          if (isTeamPaper(paper)) return;
+          getPaperContributors(paper).forEach((u) => {
+            if (u.toLowerCase() !== "team" && u.toLowerCase() !== "all") {
+              allUsers.add(u);
+            }
+          });
+        });
+
+        const users = [...allUsers].sort((a, b) => a.localeCompare(b));
         userFilter.innerHTML =
           '<option value="all">User: All</option>' +
           users
@@ -2123,6 +1346,36 @@
         userFilter.value = users.includes(selectedUser) ? selectedUser : "all";
       }
 
+      function renderCompiledPaperCard(paper) {
+        const isTeam = isTeamPaper(paper);
+        const authors = formatAuthors(paper);
+        const teamBadge = isTeam
+          ? '<span class="badge-tag" style="background: rgba(37, 99, 235, 0.15); color: #60a5fa; border: 1px solid rgba(96, 165, 250, 0.3); font-size: 11px; padding: 2px 8px; border-radius: 4px; font-weight: 600;">👥 Team Compiled</span>'
+          : "";
+
+        return `
+          <article class="compiled-paper-card"${isTeam ? ' style="border-left: 3px solid #3b82f6;"' : ""}>
+            <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 8px;">
+              <h3 style="margin-bottom: 4px;">${escapeHtml(paper.title)}</h3>
+              ${teamBadge}
+            </div>
+            <div class="compiled-paper-meta">
+              ${escapeHtml(authors)} · ${escapeHtml(paper.topic)}${
+                paper.filterCategory
+                  ? ` · ${escapeHtml(paper.filterCategory)}`
+                  : ""
+              }
+            </div>
+            <p class="compiled-paper-description">${escapeHtml(
+              paper.description || "Compiled paper for this topic.",
+            )}</p>
+            <a class="btn-action btn-pdf" href="${escapeHtml(
+              paper.pdfUrl,
+            )}" target="_blank" rel="noopener">📄 Open compiled PDF</a>
+          </article>
+        `;
+      }
+
       function renderCompiledPapers() {
         const panel = document.getElementById("compiledPapersPanel");
         const list = document.getElementById("compiledPapersList");
@@ -2132,23 +1385,45 @@
           .getElementById("searchInput")
           .value.toLowerCase();
         const selectedUser = document.getElementById("userFilter").value;
-        const hasSelection = currentTopic !== "all" || selectedUser !== "all";
-        const matches = compiledPapersInSelectedTopic().filter((paper) => {
+
+        // Filter papers by current topic and query:
+        const topicMatches = compiledPapersData.filter((paper) => {
+          const matchesTopic =
+            currentTopic === "all" || paper.topic === currentTopic;
+          if (!matchesTopic) return false;
+
+          const authors = getPaperContributors(paper).join(" ");
           const searchableText = [
             paper.title,
             paper.topic,
-            paper.assignedTo,
+            authors,
             paper.description,
+            isTeamPaper(paper) ? "team all" : "",
           ]
             .join(" ")
             .toLowerCase();
-          return (
-            (selectedUser === "all" || paper.assignedTo === selectedUser) &&
-            searchableText.includes(query)
-          );
+
+          return searchableText.includes(query);
         });
 
-        if (!hasSelection || !matches.length) {
+        let teamPapers = [];
+        let individualPapers = [];
+
+        if (selectedUser === "all") {
+          // "All users": top shelf has team papers, bottom shelf has individual papers
+          teamPapers = topicMatches.filter(isTeamPaper);
+          individualPapers = topicMatches.filter((p) => !isTeamPaper(p));
+        } else {
+          // Filtering a particular user: REMOVE the team paper!
+          // Only show compiled papers where this teammate is assigned (supports 1, 2, or 3 co-authors)
+          teamPapers = [];
+          individualPapers = topicMatches.filter(
+            (p) => !isTeamPaper(p) && paperMatchesUser(p, selectedUser),
+          );
+        }
+
+        const totalCount = teamPapers.length + individualPapers.length;
+        if (!totalCount) {
           panel.hidden = true;
           list.innerHTML = "";
           return;
@@ -2158,29 +1433,64 @@
         const userLabel = selectedUser === "all" ? "" : ` by ${selectedUser}`;
         panel.hidden = false;
         title.textContent = `${topicLabel}${userLabel} compiled papers`;
-        count.textContent = `${matches.length} available`;
-        list.innerHTML = matches
-          .map(
-            (paper) => `
-              <article class="compiled-paper-card">
-                <h3>${escapeHtml(paper.title)}</h3>
-                <div class="compiled-paper-meta">
-                  ${escapeHtml(paper.assignedTo)} · ${escapeHtml(paper.topic)}${
-                    paper.filterCategory
-                      ? ` · ${escapeHtml(paper.filterCategory)}`
-                      : ""
-                  }
+        count.textContent = `${totalCount} available`;
+
+        if (selectedUser === "all") {
+          let html = "";
+          if (teamPapers.length) {
+            html += `
+              <div class="compiled-shelf">
+                <div class="compiled-shelf-label">👥 Team Compiled Paper</div>
+                <div class="compiled-papers-grid">
+                  ${teamPapers.map(renderCompiledPaperCard).join("")}
                 </div>
-                <p class="compiled-paper-description">${escapeHtml(
-                  paper.description || "Compiled paper for this topic.",
-                )}</p>
-                <a class="btn-action btn-pdf" href="${escapeHtml(
-                  paper.pdfUrl,
-                )}" target="_blank" rel="noopener">📄 Open compiled PDF</a>
-              </article>
-            `,
-          )
-          .join("");
+              </div>
+            `;
+          }
+          if (individualPapers.length) {
+            html += `
+              <div class="compiled-shelf">
+                <div class="compiled-shelf-label">📄 Contributor Compiled Papers</div>
+                <div class="compiled-papers-grid">
+                  ${individualPapers.map(renderCompiledPaperCard).join("")}
+                </div>
+              </div>
+            `;
+          }
+          list.innerHTML = html;
+        } else {
+          // Particular user filtered: simple grid of their papers
+          list.innerHTML = `
+            <div class="compiled-papers-grid">
+              ${individualPapers.map(renderCompiledPaperCard).join("")}
+            </div>
+          `;
+        }
+        updateCompiledSqueezeState();
+      }
+
+      let isCompiledSqueezed = false;
+
+      function toggleCompiledSection() {
+        isCompiledSqueezed = !isCompiledSqueezed;
+        updateCompiledSqueezeState();
+      }
+
+      function updateCompiledSqueezeState() {
+        const panel = document.getElementById("compiledPapersPanel");
+        const icon = document.getElementById("squeezeIcon");
+        const text = document.getElementById("squeezeText");
+        if (!panel) return;
+
+        if (isCompiledSqueezed) {
+          panel.classList.add("is-squeezed");
+          if (icon) icon.textContent = "▼";
+          if (text) text.textContent = "Expand";
+        } else {
+          panel.classList.remove("is-squeezed");
+          if (icon) icon.textContent = "▲";
+          if (text) text.textContent = "Squeeze";
+        }
       }
 
       function makeFilterButton(label, category) {
@@ -2216,7 +1526,9 @@
           const count = topicPapers.filter(
             (paper) => paper.filterCategory === category,
           ).length;
-          group.appendChild(makeFilterButton(`${category} (${count})`, category));
+          group.appendChild(
+            makeFilterButton(`${category} (${count})`, category),
+          );
         });
       }
 
@@ -2302,7 +1614,9 @@
 
           const manifest = await manifestResponse.json();
           if (!manifest || !Array.isArray(manifest.contributors)) {
-            throw new Error("contributors/manifest.json must list contributors");
+            throw new Error(
+              "contributors/manifest.json must list contributors",
+            );
           }
 
           const contributorRecords = await Promise.all(
@@ -2360,6 +1674,27 @@
           mergeCompiledPapers(
             contributorRecords.flatMap((record) => record.compiledPapers),
           );
+          if (manifest.teamCompiledPaper) {
+            mergeCompiledPapers([
+              {
+                ...manifest.teamCompiledPaper,
+                isTeam: true,
+              },
+            ]);
+          } else {
+            try {
+              const teamRes = await fetch(
+                "./contributors/team_compiled_paper.json",
+                { cache: "no-store" },
+              );
+              if (teamRes.ok) {
+                const teamData = await teamRes.json();
+                if (teamData) {
+                  mergeCompiledPapers([{ ...teamData, isTeam: true }]);
+                }
+              }
+            } catch (e) {}
+          }
           applyPaperMetadata(sharedSummaryData);
           refreshNestedFilters();
           renderTable();
