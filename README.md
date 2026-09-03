@@ -150,6 +150,8 @@ When two or three teammates collaborate on a compiled paper, `assignedTo` can be
 - **Topic:** Shows topics found in research papers and compiled papers. Selecting a topic dynamically refines the user dropdown and category pills.
 - **User:** Shows registered contributors with material matching the selected topic.
 - **Category buttons:** Filter research papers by specific subcategories within the active topic.
+- **Squeeze filters:** Click **Squeeze filters** to hide the search, topic, user, and category controls while keeping the current selection summary visible. Click **Expand filters** to restore them.
+- **Mobile layout:** On small screens, filters stack vertically, category buttons wrap, compiled-paper cards use one column, and research papers become readable cards with full-width actions.
 - **Layered Compiled Papers Shelves:**
   - **When "User: All" is selected:**
     - **Top Shelf (`👥 Team Compiled Paper`):** Displays the collaborative team review across the top.
@@ -161,6 +163,12 @@ When two or three teammates collaborate on a compiled paper, `assignedTo` can be
   - Click the **Squeeze** button in the compiled papers header to minimize the section into a slim ~48px strip (`All topics compiled papers · X available [▼ Expand]`).
   - This immediately pulls the research papers table front-and-center so users can inspect research papers on first glance.
   - Click **Expand** to restore the stacked shelves at any time.
+
+## Possible duplicate uploads
+
+The viewer keeps suspected duplicates visible. It first compares DOI values; when no DOI is available, it compares the normalized title, first author, and year. The later upload receives a small warning badge beside its title showing the existing paper ID and earlier uploader. Review the badge before deleting or replacing either record.
+
+Research-paper IDs must still be unique. Duplicate DOI or title/author/year matches are reported as validation warnings so contributors can review them without blocking a valid upload.
 
 ## Shared summaries
 
@@ -184,8 +192,8 @@ Check that:
 - the JSON files are valid;
 - every PDF path points to an existing file in the repository;
 - the research-paper ID is unique;
-- the DOI is valid and not already used;
-- papers without a DOI do not repeat the same title, first author, and year;
+- the DOI is valid; review any duplicate-identity warnings;
+- papers without a DOI are reviewed for repeated title, first author, and year;
 - compiled-paper IDs are unique;
 - contributor names match the manifest exactly;
 - co-authored `assignedTo` lists contain valid registered contributors;

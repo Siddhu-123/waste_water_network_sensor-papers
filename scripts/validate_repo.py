@@ -291,8 +291,8 @@ def validate() -> Validation:
             continue
         label = f"{owner} paper {paper.get('id')}"
         if identity in identities:
-            validation.error(
-                f"Duplicate paper identity ({identity[0]}: {identity[1]}): {identities[identity]} and {label}"
+            validation.warning(
+                f"Possible duplicate paper identity ({identity[0]}: {identity[1]}): {identities[identity]} and {label}. Review the website indicator before removing either record."
             )
         else:
             identities[identity] = label

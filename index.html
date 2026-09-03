@@ -179,6 +179,48 @@
         box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.15);
       }
 
+      .filter-panel {
+        background: rgba(19, 27, 46, 0.5);
+        border: 1px solid var(--border-color);
+        border-radius: 12px;
+        margin-top: 20px;
+        padding: 12px 14px 2px;
+      }
+
+      .filter-panel-header {
+        align-items: center;
+        display: flex;
+        gap: 12px;
+        justify-content: space-between;
+        margin-bottom: 8px;
+      }
+
+      .filter-panel-kicker {
+        color: var(--accent-blue);
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+      }
+
+      .filter-panel-summary {
+        color: var(--text-muted);
+        font-size: 12px;
+        margin-top: 2px;
+      }
+
+      .filter-panel.is-squeezed {
+        padding-bottom: 12px;
+      }
+
+      .filter-panel.is-squeezed .filter-panel-header {
+        margin-bottom: 0;
+      }
+
+      .filter-panel.is-squeezed .controls-bar {
+        display: none;
+      }
+
       /* Table & Responsive Container */
       .table-container {
         background: var(--bg-card);
@@ -230,6 +272,20 @@
         margin-bottom: 4px;
         font-size: 14px;
         line-height: 1.4;
+      }
+
+      .duplicate-indicator {
+        display: inline-block;
+        margin-left: 8px;
+        padding: 2px 6px;
+        border: 1px solid rgba(251, 191, 36, 0.35);
+        border-radius: 5px;
+        background: rgba(245, 158, 11, 0.12);
+        color: #fcd34d;
+        font-size: 10px;
+        font-weight: 700;
+        letter-spacing: 0.02em;
+        vertical-align: middle;
       }
 
       .paper-meta {
@@ -666,6 +722,87 @@
 
       /* Mobile & Small Tablet Card Layout (< 768px) */
       @media (max-width: 768px) {
+        body {
+          padding-left: max(12px, env(safe-area-inset-left));
+          padding-right: max(12px, env(safe-area-inset-right));
+        }
+
+        .header-top {
+          gap: 12px;
+        }
+
+        .header-actions {
+          justify-content: stretch;
+          width: 100%;
+        }
+
+        .header-actions .btn-action {
+          flex: 1 1 220px;
+        }
+
+        .filter-panel {
+          margin-top: 16px;
+          padding: 12px;
+        }
+
+        .filter-panel-header {
+          align-items: flex-start;
+        }
+
+        .controls-bar {
+          align-items: stretch;
+          gap: 10px;
+        }
+
+        .search-box {
+          flex-basis: 100%;
+          min-width: 100%;
+        }
+
+        .filter-select {
+          flex: 1 1 220px;
+          min-width: 0;
+        }
+
+        .filter-group {
+          width: 100%;
+        }
+
+        .filter-btn {
+          flex: 1 1 auto;
+          min-height: 36px;
+          white-space: normal;
+        }
+
+        .filter-help {
+          line-height: 1.45;
+        }
+
+        .compiled-papers-header {
+          align-items: flex-start;
+          flex-wrap: wrap;
+        }
+
+        .compiled-header-actions {
+          margin-left: auto;
+        }
+
+        .compiled-papers-grid {
+          grid-template-columns: minmax(0, 1fr);
+        }
+
+        .compiled-paper-card {
+          min-width: 0;
+        }
+
+        .paper-title {
+          overflow-wrap: anywhere;
+        }
+
+        .duplicate-indicator {
+          margin: 6px 0 0;
+        }
+
         table {
           min-width: 100%;
         }
@@ -768,6 +905,30 @@
 
       /* Extra Small Screen Optimization (< 480px) */
       @media (max-width: 480px) {
+        .filter-panel-header {
+          align-items: stretch;
+          flex-direction: column;
+        }
+
+        .filter-panel-header .btn-squeeze-toggle {
+          align-self: flex-start;
+        }
+
+        .filter-select {
+          flex-basis: 100%;
+          width: 100%;
+        }
+
+        .filter-btn {
+          flex-basis: calc(50% - 4px);
+        }
+
+        .compiled-header-actions {
+          justify-content: space-between;
+          margin-left: 0;
+          width: 100%;
+        }
+
         .mobile-actions {
           grid-template-columns: 1fr;
           gap: 8px;
@@ -823,53 +984,75 @@
         </div>
       </div>
 
-      <div class="controls-bar" style="margin-top: 20px">
-        <div class="search-box">
-          <svg
-            class="search-icon"
-            width="16"
-            height="16"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
+      <div class="filter-panel" id="filterPanel">
+        <div class="filter-panel-header">
+          <div>
+            <div class="filter-panel-kicker">Research filters</div>
+            <div class="filter-panel-summary" id="filterPanelSummary">
+              All topics · All users · All categories
+            </div>
+          </div>
+          <button
+            type="button"
+            id="toggleFiltersBtn"
+            class="btn-squeeze-toggle"
+            onclick="toggleFilterSection()"
+            aria-controls="filterControls"
+            aria-expanded="true"
+            title="Squeeze or expand research filters"
           >
-            <circle cx="11" cy="11" r="8"></circle>
-            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-          </svg>
-          <input
-            type="text"
-            id="searchInput"
-            placeholder="Search by paper title, author, topic, or sensor type..."
-            onkeyup="filterTable()"
-          />
+            <span id="filterSqueezeIcon">▲</span>
+            <span id="filterSqueezeText">Squeeze filters</span>
+          </button>
         </div>
-        <select
-          id="topicFilter"
-          class="filter-select"
-          aria-label="Filter papers by research topic"
-          onchange="setTopic(this.value)"
-        >
-          <option value="all">Topic: All</option>
-        </select>
-        <select
-          id="userFilter"
-          class="filter-select"
-          aria-label="Filter papers by assigned user"
-          onchange="filterTable()"
-        >
-          <option value="all">User: All</option>
-        </select>
-        <div class="filter-group" id="nestedFilterGroup"></div>
-        <p class="filter-help">
-          Select a topic first. The user and category filters then show only
-          values used by that topic. Define <code>topic</code>,
-          <code>filterCategory</code>, and <code>assignedTo</code> in each
-          contributor's <code>papers.json</code>; keep the same metadata in
-          <code>summaries.json</code> for shared summaries.
-        </p>
+        <div class="controls-bar" id="filterControls">
+          <div class="search-box">
+            <svg
+              class="search-icon"
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <circle cx="11" cy="11" r="8"></circle>
+              <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+            </svg>
+            <input
+              type="text"
+              id="searchInput"
+              placeholder="Search by paper title, author, topic, or sensor type..."
+              onkeyup="filterTable()"
+            />
+          </div>
+          <select
+            id="topicFilter"
+            class="filter-select"
+            aria-label="Filter papers by research topic"
+            onchange="setTopic(this.value)"
+          >
+            <option value="all">Topic: All</option>
+          </select>
+          <select
+            id="userFilter"
+            class="filter-select"
+            aria-label="Filter papers by assigned user"
+            onchange="filterTable()"
+          >
+            <option value="all">User: All</option>
+          </select>
+          <div class="filter-group" id="nestedFilterGroup"></div>
+          <p class="filter-help">
+            Select a topic first. The user and category filters then show only
+            values used by that topic. Define <code>topic</code>,
+            <code>filterCategory</code>, and <code>assignedTo</code> in each
+            contributor's <code>papers.json</code>; keep the same metadata in
+            <code>summaries.json</code> for shared summaries.
+          </p>
+        </div>
       </div>
     </header>
 
@@ -1034,13 +1217,18 @@
       function findDuplicateResearchPaper(paper, id) {
         const identityKey = getPaperIdentityKey(paper);
         if (!identityKey) return null;
-        return (
-          papersData.find(
-            (candidate) =>
-              Number(candidate.id) !== id &&
-              getPaperIdentityKey(candidate) === identityKey,
-          ) || null
+        const existing = papersData.find(
+          (candidate) =>
+            Number(candidate.id) !== id &&
+            getPaperIdentityKey(candidate) === identityKey,
         );
+        if (!existing) return null;
+        return {
+          paper: existing,
+          matchType: identityKey.startsWith("doi:")
+            ? "DOI"
+            : "title, first author, and year",
+        };
       }
 
       function mergeContributorPapers(records) {
@@ -1084,27 +1272,40 @@
           }
 
           const duplicate = findDuplicateResearchPaper(rawPaper, id);
+          const paperRecord = duplicate
+            ? {
+                ...rawPaper,
+                duplicateOf: {
+                  id: duplicate.paper.id,
+                  assignedTo:
+                    duplicate.paper.assignedTo ||
+                    duplicate.paper.user ||
+                    "Unknown contributor",
+                  matchType: duplicate.matchType,
+                },
+              }
+            : rawPaper;
+
           if (duplicate) {
             console.warn(
-              `Skipped duplicate research paper ${id}; it matches paper ${duplicate.id} by DOI or title/author/year.`,
+              `Possible duplicate research paper ${id}; it matches paper ${duplicate.paper.id} by ${duplicate.matchType}.`,
             );
-            return;
           }
 
           const paper = {
-            ...rawPaper,
+            ...paperRecord,
             id,
-            title: rawPaper.title,
-            authors: rawPaper.authors || "Authors not provided",
-            journal: rawPaper.journal || "Publication details not provided",
-            categoryKey: rawPaper.categoryKey || "other",
+            title: paperRecord.title,
+            authors: paperRecord.authors || "Authors not provided",
+            journal: paperRecord.journal || "Publication details not provided",
+            categoryKey: paperRecord.categoryKey || "other",
             categoryLabel:
-              rawPaper.categoryLabel || rawPaper.filterCategory || "Other",
-            size: rawPaper.size || "",
-            pages: rawPaper.pages || "",
-            pdfUrl: rawPaper.pdfUrl || "#",
-            scholarUrl: rawPaper.scholarUrl || "#",
-            steps: rawPaper.steps || {},
+              paperRecord.categoryLabel || paperRecord.filterCategory || "Other",
+            size: paperRecord.size || "",
+            pages: paperRecord.pages || "",
+            pdfUrl: paperRecord.pdfUrl || "#",
+            scholarUrl: paperRecord.scholarUrl || "#",
+            steps: paperRecord.steps || {},
           };
 
           papersData.push(paper);
@@ -1187,7 +1388,7 @@
                                 <span class="badge-tag">${paper.categoryLabel}</span>
                             </div>
                         </div>
-                        <div class="paper-title">${paper.title}</div>
+                        <div class="paper-title">${paper.title}${duplicateIndicatorHtml(paper)}</div>
                         <div class="paper-meta">
                             <span>${paper.authors}</span> &bull; 
                             <span><em>${paper.journal}</em></span>
@@ -1245,6 +1446,26 @@
           .replaceAll(">", "&gt;")
           .replaceAll('"', "&quot;")
           .replaceAll("'", "&#039;");
+      }
+
+      function contributorDisplayName(value) {
+        return Array.isArray(value)
+          ? value.join(", ")
+          : String(value || "Unknown contributor");
+      }
+
+      function duplicateIndicatorHtml(paper) {
+        if (!paper.duplicateOf) return "";
+
+        const existingId = paper.duplicateOf.id ?? "?";
+        const uploader = contributorDisplayName(
+          paper.duplicateOf.assignedTo || paper.duplicateOf.user,
+        );
+        const matchType = paper.duplicateOf.matchType || "paper metadata";
+        const label = `⚠ Possible duplicate · Existing paper #${existingId} · Uploaded by ${uploader}`;
+        const title = `Possible duplicate matched by ${matchType}. Existing paper #${existingId} was uploaded by ${uploader}.`;
+
+        return `<span class="duplicate-indicator" title="${escapeHtml(title)}">${escapeHtml(label)}</span>`;
       }
 
       let currentTopic = "all";
@@ -1491,6 +1712,47 @@
           if (icon) icon.textContent = "▲";
           if (text) text.textContent = "Squeeze";
         }
+      }
+
+      let isFiltersSqueezed = false;
+
+      function toggleFilterSection() {
+        isFiltersSqueezed = !isFiltersSqueezed;
+        updateFilterSqueezeState();
+      }
+
+      function updateFilterSqueezeState() {
+        const panel = document.getElementById("filterPanel");
+        const icon = document.getElementById("filterSqueezeIcon");
+        const text = document.getElementById("filterSqueezeText");
+        const button = document.getElementById("toggleFiltersBtn");
+        if (!panel) return;
+
+        panel.classList.toggle("is-squeezed", isFiltersSqueezed);
+        if (icon) icon.textContent = isFiltersSqueezed ? "▼" : "▲";
+        if (text) {
+          text.textContent = isFiltersSqueezed
+            ? "Expand filters"
+            : "Squeeze filters";
+        }
+        if (button) {
+          button.setAttribute("aria-expanded", String(!isFiltersSqueezed));
+        }
+      }
+
+      function updateFilterSummary() {
+        const summary = document.getElementById("filterPanelSummary");
+        const userFilter = document.getElementById("userFilter");
+        if (!summary) return;
+
+        const selectedUser = userFilter?.value || "all";
+        const topicLabel = currentTopic === "all" ? "All topics" : currentTopic;
+        const userLabel = selectedUser === "all" ? "All users" : selectedUser;
+        const categoryLabel =
+          currentFilterCategory === "all"
+            ? "All categories"
+            : currentFilterCategory;
+        summary.textContent = `${topicLabel} · ${userLabel} · ${categoryLabel}`;
       }
 
       function makeFilterButton(label, category) {
@@ -1788,12 +2050,15 @@
           }
         });
 
+        updateFilterSummary();
         renderCompiledPapers();
       }
 
       // Initialize table on load
       refreshNestedFilters();
       renderTable();
+      updateFilterSqueezeState();
+      updateFilterSummary();
       renderCompiledPapers();
       loadSharedSummaries();
       loadContributorPapers();
