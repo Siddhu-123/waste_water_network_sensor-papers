@@ -4,6 +4,8 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>PDF Annotation Workspace</title>
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin />
+    <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -1411,13 +1413,21 @@
             const viewport = page.getViewport({ scale });
 
             const canvas = pageElement.querySelector("canvas");
-            const context = canvas.getContext("2d", { alpha: false });
+            const context = canvas.getContext("2d", {
+              alpha: false,
+              desynchronized: true,
+              willReadFrequently: false,
+            });
             canvas.width = Math.ceil(viewport.width);
             canvas.height = Math.ceil(viewport.height);
             canvas.style.width = "100%";
             canvas.style.height = "auto";
 
-            await page.render({ canvasContext: context, viewport }).promise;
+            await page.render({
+              canvasContext: context,
+              viewport,
+              intent: "display",
+            }).promise;
             renderedPages.add(pageNumber);
             pageElement.classList.add("rendered");
 
@@ -1446,9 +1456,13 @@
             const loadingTask = window.pdfjsLib.getDocument({
               url: pdfUrl,
               withCredentials: false,
+              disableAutoFetch: true,
+              disableStream: false,
+              rangeChunkSize: 65536,
               cMapUrl: "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/cmaps/",
               cMapPacked: true,
               enableXfa: false,
+              isEvalSupported: true,
             });
 
             loadingTask.onProgress = (progress) => {
