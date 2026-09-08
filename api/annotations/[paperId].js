@@ -196,6 +196,12 @@ module.exports = async function handler(req, res) {
         message: "Another person saved changes while this was being saved. Reload and try again.",
       });
     }
+    if (error.status === 429) {
+      return json(res, 429, {
+        error: "rate_limited",
+        message: "Too many save requests in a short time. Please wait a moment and try again.",
+      });
+    }
     if (error.status === 502) {
       return json(res, 502, {
         error: "annotation_data_invalid",
@@ -204,7 +210,7 @@ module.exports = async function handler(req, res) {
     }
     return json(res, 503, {
       error: "annotation_service_error",
-      message: "The Vercel annotation storage is temporarily unavailable.",
+      message: error.message || "The Vercel annotation storage is temporarily busy or unavailable. Please retry in a moment.",
     });
   }
 };

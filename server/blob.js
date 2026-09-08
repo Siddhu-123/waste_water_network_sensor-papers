@@ -25,45 +25,66 @@ async function streamToText(stream) {
   return Buffer.concat(chunks).toString("utf8");
 }
 
+async function retryOperation(fn, retries = 2, delayMs = 300) {
+  let lastError;
+  for (let attempt = 0; attempt <= retries; attempt++) {
+    try {
+      return await fn();
+    } catch (err) {
+      lastError = err;
+      if (isBlobConflict(err) || (err && (err.status === 400 || err.status === 401 || err.status === 403 || err.status === 404))) {
+        throw err;
+      }
+      if (attempt < retries) {
+        await new Promise((resolve) => setTimeout(resolve, delayMs * (attempt + 1)));
+      }
+    }
+  }
+  throw lastError;
+}
+
 async function getJsonBlob(pathname) {
-  const { get } = await getBlobModule();
-  const result = await get(pathname, {
-    access: "private",
-    useCache: false,
+  return retryOperation(async () => {
+    const { get } = await getBlobModule();
+    const result = await get(pathname, {
+      access: "private",
+      useCache: false,
+    });
+    if (!result || result.statusCode === 404) return null;
+    if (result.statusCode && result.statusCode !== 200 && result.statusCode !== 206) {
+      const error = new Error("Vercel Blob returned HTTP " + result.statusCode);
+      error.status = result.statusCode;
+      throw error;
+    }
+
+    const text = await streamToText(result.stream);
+    let document;
+    try {
+      document = JSON.parse(text);
+    } catch (_error) {
+      const error = new Error("Invalid JSON in Vercel Blob " + pathname);
+      error.status = 502;
+      throw error;
+    }
+
+    return {
+      document,
+      revision: blobEtag(result),
+    };
   });
-  if (!result || result.statusCode === 404) return null;
-  if (result.statusCode && result.statusCode !== 200 && result.statusCode !== 206) {
-    const error = new Error("Vercel Blob returned HTTP " + result.statusCode);
-    error.status = result.statusCode;
-    throw error;
-  }
-
-  const text = await streamToText(result.stream);
-  let document;
-  try {
-    document = JSON.parse(text);
-  } catch (_error) {
-    const error = new Error("Invalid JSON in Vercel Blob " + pathname);
-    error.status = 502;
-    throw error;
-  }
-
-  return {
-    document,
-    revision: blobEtag(result),
-  };
 }
 
 async function putJsonBlob(pathname, document, options = {}) {
   const { put } = await getBlobModule();
-  return put(pathname, JSON.stringify(document, null, 2) + "\n", {
+  const payload = JSON.stringify(document, null, 2) + "\n";
+  return retryOperation(() => put(pathname, payload, {
     access: "private",
     addRandomSuffix: false,
     allowOverwrite: true,
     contentType: "application/json",
     cacheControlMaxAge: 60,
     ...options,
-  });
+  }));
 }
 
 function hasBlobToken() {
