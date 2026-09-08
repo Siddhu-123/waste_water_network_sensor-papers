@@ -879,16 +879,79 @@
 
         .mobile-actions {
           display: grid;
-          grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
-          gap: 8px;
+          grid-template-columns: repeat(3, 1fr);
+          gap: 6px;
           border-top: 1px solid rgba(35, 49, 79, 0.6);
-          padding-top: 12px;
+          padding-top: 10px;
         }
 
         .btn-action {
-          padding: 9px 8px;
-          font-size: 12px;
+          padding: 8px 4px;
+          font-size: 11.5px;
           justify-content: center;
+          white-space: nowrap;
+        }
+
+        .header-top {
+          flex-direction: row;
+          justify-content: space-between;
+          align-items: center;
+          gap: 8px;
+        }
+
+        .header-top h1 {
+          font-size: 18px;
+          line-height: 1.25;
+        }
+
+        .header-actions {
+          width: auto;
+          gap: 6px;
+        }
+
+        .btn-profile-pill {
+          padding: 5px 10px;
+          font-size: 12px;
+        }
+
+        .welcome-contributor-banner {
+          flex-direction: column;
+          align-items: flex-start;
+          gap: 8px;
+          padding: 10px 14px;
+        }
+
+        .welcome-banner-title {
+          font-size: 12px;
+        }
+
+        .welcome-chip {
+          font-size: 11.5px;
+          padding: 3px 8px;
+        }
+
+        .profile-modal-card {
+          width: 95vw;
+          max-width: 95vw;
+          margin: 10px auto;
+          padding: 16px;
+        }
+
+        .profile-stats-grid {
+          grid-template-columns: repeat(3, 1fr);
+          gap: 6px;
+        }
+
+        .profile-stat-box {
+          padding: 8px 6px;
+        }
+
+        .profile-stat-number {
+          font-size: 18px;
+        }
+
+        .profile-stat-label {
+          font-size: 9.5px;
         }
 
         .step-item {
@@ -930,14 +993,14 @@
         }
 
         .mobile-actions {
-          grid-template-columns: 1fr;
-          gap: 8px;
+          grid-template-columns: repeat(3, 1fr);
+          gap: 4px;
         }
 
         .btn-action {
           width: 100%;
-          padding: 10px;
-          font-size: 13px;
+          padding: 7px 2px;
+          font-size: 11px;
         }
 
         .step-item {
@@ -985,14 +1048,6 @@
         flex-shrink: 0;
       }
 
-      .device-pill-sub {
-        font-size: 11px;
-        color: var(--text-muted);
-        background: rgba(255, 255, 255, 0.06);
-        padding: 1px 6px;
-        border-radius: 4px;
-      }
-
       /* First-Visit Welcome Banner */
       .welcome-contributor-banner {
         background: linear-gradient(135deg, rgba(14, 26, 46, 0.98), rgba(20, 36, 62, 0.95));
@@ -1015,10 +1070,6 @@
       .welcome-banner-title {
         font-size: 13px;
         color: var(--text-color);
-      }
-
-      .welcome-banner-title strong {
-        color: #5eead4;
       }
 
       .welcome-chip-list {
@@ -1060,43 +1111,19 @@
         color: var(--text-color);
       }
 
-      /* Paper Row Notes Badge */
-      .btn-notes-badge {
+      /* Inline Notes Count Pill on PDF button */
+      .notes-count-pill {
         display: inline-flex;
         align-items: center;
-        gap: 4px;
-        padding: 6px 10px;
-        border-radius: 6px;
-        font-size: 12px;
-        font-weight: 600;
-        text-decoration: none;
-        background: rgba(45, 212, 191, 0.1);
-        border: 1px solid rgba(45, 212, 191, 0.25);
-        color: #5eead4;
-        transition: all 120ms ease;
-        white-space: nowrap;
-      }
-
-      .btn-notes-badge:hover {
+        gap: 2px;
         background: rgba(45, 212, 191, 0.22);
-        border-color: #2dd4bf;
-        color: #ffffff;
-        transform: translateY(-1px);
-      }
-
-      .btn-notes-badge.has-notes {
-        background: rgba(45, 212, 191, 0.18);
-        border-color: #2dd4bf;
-        color: #2dd4bf;
+        color: #5eead4;
+        font-size: 10px;
         font-weight: 700;
-        box-shadow: 0 0 10px rgba(45, 212, 191, 0.15);
-      }
-
-      .btn-notes-badge.empty {
-        background: rgba(148, 163, 184, 0.08);
-        border-color: rgba(148, 163, 184, 0.18);
-        color: var(--text-muted);
-        font-weight: 500;
+        padding: 1px 5px;
+        border-radius: 8px;
+        margin-left: 4px;
+        border: 1px solid rgba(45, 212, 191, 0.4);
       }
 
       /* Contributor Profile Modal */
@@ -1235,7 +1262,7 @@
     <div class="welcome-contributor-banner" id="welcomeBanner" style="display: none;">
       <div class="welcome-banner-content">
         <span class="welcome-banner-title">
-          👋 Welcome! Select your name on this <strong id="welcomeDeviceName">MacBook</strong> to track your reviews & notes:
+          👋 Welcome! Select your name to track your reviews & notes:
         </span>
         <div class="welcome-chip-list">
           <button class="welcome-chip" type="button" onclick="selectWelcomeUser('Satya Siddhartha')">Satya Siddhartha</button>
@@ -1256,8 +1283,7 @@
         <div class="header-actions">
           <button class="btn-profile-pill" id="headerProfileBtn" type="button" onclick="openProfileModal()" title="View my contributor profile & reviewed papers">
             <span class="user-dot-indicator" id="headerProfileDot"></span>
-            <span id="headerProfileName">Contributor</span>
-            <span class="device-pill-sub" id="headerDeviceLabel">Device</span>
+            <span id="headerProfileName">Unknown User</span>
           </button>
 
           <a
@@ -1412,7 +1438,7 @@
             <div style="width: 38px; height: 38px; border-radius: 50%; background: #2dd4bf; display: flex; align-items: center; justify-content: center; font-weight: 700; color: #070d17; font-size: 15px;" id="modalProfileAvatar">U</div>
             <div>
               <div class="modal-title" id="modalProfileName">Contributor Profile</div>
-              <div class="modal-meta" id="modalProfileDevice">Linked Device</div>
+              <div class="modal-meta" id="modalProfileDevice" style="font-size: 11px; opacity: 0.65; color: var(--text-muted);">Device</div>
             </div>
           </div>
           <button class="modal-close" type="button" onclick="closeProfileModal()">&times;</button>
@@ -1421,7 +1447,7 @@
           <!-- Injected via JavaScript -->
         </div>
         <div class="modal-footer">
-          <button class="btn-action btn-scholar" type="button" onclick="promptSwitchUser()">Switch User / Device</button>
+          <button class="btn-action btn-scholar" type="button" onclick="promptSwitchUser()">Change Name</button>
           <button class="btn-action btn-summary" type="button" onclick="closeProfileModal()">Close</button>
         </div>
       </div>
@@ -1728,12 +1754,9 @@
                     <td class="col-cat"><span class="badge-tag">${paper.categoryLabel}</span></td>
                     <td class="col-actions">
                         <div class="action-btns mobile-actions">
-                            <button class="btn-action btn-summary" onclick="openSummary(${paper.id})">📝 8-Step Summary</button>
-                            <a class="btn-action btn-pdf" href="${escapeHtml(getPdfViewerUrl(paper))}" target="_blank" rel="noopener">📄 PDF + Notes</a>
-                            <a class="btn-action btn-scholar" href="${paper.scholarUrl}" target="_blank">🔍 Scholar</a>
-                            <a class="btn-action btn-notes-badge empty" id="paper-badge-${paper.id}" href="${escapeHtml(getPdfViewerUrl(paper))}" target="_blank" title="View annotations on this paper">
-                              <span class="badge-icon">💬</span> <span id="badge-text-${paper.id}">Notes</span>
-                            </a>
+                            <button class="btn-action btn-summary" onclick="openSummary(${paper.id})" title="View 8-Step Research Summary">📝 Summary</button>
+                            <a class="btn-action btn-pdf" id="paper-pdf-btn-${paper.id}" href="${escapeHtml(getPdfViewerUrl(paper))}" target="_blank" rel="noopener" title="Read paper and annotations">📄 PDF <span class="notes-count-pill" id="paper-badge-${paper.id}" style="display:none;"></span></a>
+                            <a class="btn-action btn-scholar" href="${paper.scholarUrl}" target="_blank" rel="noopener" title="Search on Google Scholar">🔍 Scholar</a>
                         </div>
                     </td>
                 `;
@@ -2422,7 +2445,10 @@
       ];
 
       function getPersonPalette(name) {
-        const key = String(name || "contributor").trim().toLowerCase();
+        const key = String(name || "Unknown User").trim();
+        if (key.toLowerCase() === "unknown user" || key.toLowerCase() === "contributor") {
+          return { id: "slate", bg: "#475569", light: "#94a3b8" };
+        }
         let hash = 0;
         for (let i = 0; i < key.length; i++) {
           hash = (hash << 5) - hash + key.charCodeAt(i);
@@ -2467,12 +2493,12 @@
         return (
           localStorage.getItem("capstone_user_name") ||
           localStorage.getItem("pdf_active_user") ||
-          "Satya Siddhartha"
+          "Unknown User"
         );
       }
 
       function setActiveUser(name) {
-        const clean = String(name || "").trim() || "Contributor";
+        const clean = String(name || "").trim() || "Unknown User";
         localStorage.setItem("capstone_user_name", clean);
         localStorage.setItem("pdf_active_user", clean);
         updateProfileHeader();
@@ -2483,10 +2509,8 @@
         const palette = getPersonPalette(user);
         const nameEl = document.getElementById("headerProfileName");
         const dotEl = document.getElementById("headerProfileDot");
-        const devEl = document.getElementById("headerDeviceLabel");
         if (nameEl) nameEl.textContent = user;
         if (dotEl) dotEl.style.background = palette.light;
-        if (devEl) devEl.textContent = currentDevice.label;
       }
 
       function selectWelcomeUser(name) {
@@ -2503,9 +2527,6 @@
       function checkWelcomeBanner() {
         const saved = localStorage.getItem("capstone_user_name");
         const dismissed = localStorage.getItem("capstone_welcome_dismissed");
-        const devSpan = document.getElementById("welcomeDeviceName");
-        if (devSpan) devSpan.textContent = currentDevice.label;
-
         if (!saved && !dismissed) {
           const banner = document.getElementById("welcomeBanner");
           if (banner) banner.style.display = "flex";
@@ -2514,7 +2535,7 @@
 
       function promptSwitchUser() {
         const current = getActiveUser();
-        const next = prompt(`Enter your contributor name on this ${currentDevice.label}:`, current);
+        const next = prompt("Enter your contributor name:", current === "Unknown User" ? "" : current);
         if (next && next.trim()) {
           setActiveUser(next.trim());
           if (document.getElementById("profileModal").style.display === "flex") {
@@ -2528,7 +2549,10 @@
         const user = getActiveUser();
         const palette = getPersonPalette(user);
         document.getElementById("modalProfileName").textContent = user;
-        document.getElementById("modalProfileDevice").textContent = `Linked to: ${currentDevice.label} (ID: ${currentDevice.id})`;
+        const devEl = document.getElementById("modalProfileDevice");
+        if (devEl) {
+          devEl.textContent = `Device: ${currentDevice.label}`;
+        }
 
         const avatar = document.getElementById("modalProfileAvatar");
         if (avatar) {
@@ -2558,55 +2582,54 @@
           </div>
 
           <div class="profile-section-title">📄 Papers Reviewed by ${escapeHtml(user)}</div>
+          <div class="profile-paper-list">
         `;
 
         if (!reviewedPaperIds.length) {
-          bodyHtml += `<div class="profile-empty-msg">No papers annotated yet. Open any paper PDF in the library to add sticky notes and highlights!</div>`;
+          bodyHtml += `<div class="profile-empty-msg">No reviewed papers found for ${escapeHtml(user)} yet. Open any paper to add your notes!</div>`;
         } else {
-          bodyHtml += `<div class="profile-paper-list">`;
           reviewedPaperIds.forEach((pid) => {
-            const paper = papersData.find((p) => String(p.id) === String(pid));
-            const title = paper ? paper.title : `Paper ${pid}`;
-            const url = paper ? getPdfViewerUrl(paper) : `./pdf-viewer.html?paper=${pid}`;
+            const pObj = papersData.find((p) => String(p.id) === String(pid));
+            const pTitle = pObj ? pObj.title : `Paper ${pid}`;
             const pNotes = myNotes.filter((n) => String(n.paperId) === String(pid));
-
             bodyHtml += `
               <div class="profile-paper-item">
                 <div class="profile-paper-info">
-                  <strong>${escapeHtml(title)}</strong>
-                  <span class="profile-paper-sub">${pNotes.length} note${pNotes.length === 1 ? "" : "s"} added</span>
+                  <strong>${escapeHtml(pTitle)}</strong>
+                  <span class="profile-paper-sub">${pNotes.length} note${pNotes.length === 1 ? "" : "s"} added by you</span>
                 </div>
-                <a class="btn-action btn-pdf" href="${escapeHtml(url)}" target="_blank" style="padding: 4px 10px; font-size: 11px;">📄 Open Notes</a>
+                <a class="btn-action btn-pdf" href="./pdf-viewer.html?paper=${encodeURIComponent(pid)}&user=${encodeURIComponent(user)}" target="_blank" rel="noopener">Open Notes</a>
               </div>
             `;
           });
-          bodyHtml += `</div>`;
         }
+        bodyHtml += `</div>`;
 
-        bodyHtml += `<div class="profile-section-title" style="margin-top:20px;">📝 My Recent Notes</div>`;
+        bodyHtml += `
+          <div class="profile-section-title" style="margin-top: 20px;">📌 My Notes & Activity</div>
+          <div class="profile-notes-feed">
+        `;
+
         if (!myNotes.length) {
-          bodyHtml += `<div class="profile-empty-msg">No notes authored yet.</div>`;
+          bodyHtml += `<div class="profile-empty-msg">No sticky notes created yet. Click 📌 Note on any PDF page to create one!</div>`;
         } else {
-          bodyHtml += `<div class="profile-notes-feed">`;
-          myNotes.slice(0, 10).forEach((n) => {
-            const paper = papersData.find((p) => String(p.id) === String(n.paperId));
-            const pTitle = paper ? paper.title : `Paper ${n.paperId}`;
-            const shortName = n.title || (n.text ? n.text.slice(0, 32) + "…" : "Note");
-            const url = paper ? getPdfViewerUrl(paper) : `./pdf-viewer.html?paper=${n.paperId}`;
-
+          const sorted = [...myNotes].sort((a, b) => new Date(b.createdAt || 0) - new Date(a.createdAt || 0));
+          sorted.forEach((n) => {
+            const pObj = papersData.find((p) => String(p.id) === String(n.paperId));
+            const pTitle = pObj ? pObj.title : `Paper ${n.paperId}`;
             bodyHtml += `
               <div class="profile-note-card">
                 <div class="profile-note-header">
-                  <strong>📌 ${escapeHtml(shortName)}</strong>
-                  <span class="profile-note-tag">P. ${n.page} · ${escapeHtml(pTitle)}</span>
+                  <span style="font-weight: 700; color: #ffffff;">${escapeHtml(n.title || "Note")}</span>
+                  <span class="profile-note-tag">P. ${n.page} · ${escapeHtml(pTitle).slice(0, 30)}…</span>
                 </div>
                 <div class="profile-note-snippet">${escapeHtml(n.text || "")}</div>
-                <a class="profile-note-link" href="${escapeHtml(url)}" target="_blank">Jump to note in PDF →</a>
+                <a class="profile-note-link" href="./pdf-viewer.html?paper=${encodeURIComponent(n.paperId)}&user=${encodeURIComponent(user)}" target="_blank" rel="noopener">Jump to note in PDF →</a>
               </div>
             `;
           });
-          bodyHtml += `</div>`;
         }
+        bodyHtml += `</div>`;
 
         document.getElementById("modalProfileBody").innerHTML = bodyHtml;
         document.getElementById("profileModal").style.display = "flex";
@@ -2622,8 +2645,8 @@
         }
       }
 
-      // Annotations Summary API for Paper Row Badges
-      let annotationsSummary = { papers: {}, notes: [] };
+      // Shared Annotations Summary for live table badges
+      let annotationsSummary = null;
 
       async function loadAnnotationsSummary() {
         const host = window.location.hostname;
@@ -2665,20 +2688,21 @@
         Object.keys(annotationsSummary.papers).forEach((pid) => {
           const info = annotationsSummary.papers[pid];
           const badge = document.getElementById(`paper-badge-${pid}`);
-          const badgeText = document.getElementById(`badge-text-${pid}`);
-          if (badge && badgeText) {
+          const pdfBtn = document.getElementById(`paper-pdf-btn-${pid}`);
+          if (badge) {
             const count = info.count || 0;
             if (count > 0) {
-              badge.classList.add("has-notes");
-              badge.classList.remove("empty");
-              badgeText.textContent = `${count} Note${count === 1 ? "" : "s"}`;
+              badge.style.display = "inline-flex";
+              badge.textContent = `💬 ${count}`;
               const authorsList = info.authors && info.authors.length ? info.authors.join(", ") : "Team";
-              badge.title = `${count} note${count === 1 ? "" : "s"} added by ${authorsList}`;
+              if (pdfBtn) {
+                pdfBtn.title = `Read PDF (${count} note${count === 1 ? "" : "s"} by ${authorsList})`;
+              }
             } else {
-              badge.classList.add("empty");
-              badge.classList.remove("has-notes");
-              badgeText.textContent = "+ Note";
-              badge.title = "No notes yet. Click to add first note.";
+              badge.style.display = "none";
+              if (pdfBtn) {
+                pdfBtn.title = "Read paper & annotate PDF";
+              }
             }
           }
         });

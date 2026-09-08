@@ -1043,44 +1043,163 @@
         display: none;
       }
 
+      /* Mobile Backdrop for Sidebar & Drawer */
+      .mobile-backdrop {
+        display: none;
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.65);
+        backdrop-filter: blur(2px);
+        z-index: 85;
+      }
+
+      .mobile-backdrop.active {
+        display: block;
+      }
+
       @media (max-width: 768px) {
         .app-header {
           height: auto;
-          flex-wrap: wrap;
-          padding: 6px 10px;
+          display: grid;
+          grid-template-columns: 1fr auto;
+          grid-template-areas:
+            "left right"
+            "center center";
           gap: 6px;
+          padding: 6px 10px;
         }
 
         .header-left {
-          order: 1;
-          width: 100%;
+          grid-area: left;
+          display: flex;
+          align-items: center;
+          gap: 6px;
+          min-width: 0;
         }
 
-        .header-center {
-          order: 2;
+        .nav-back {
+          padding: 3px 6px;
+          font-size: 11.5px;
+          white-space: nowrap;
+        }
+
+        .doc-title {
+          font-size: 12.5px;
+          max-width: calc(100vw - 190px);
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+        }
+
+        .header-sep {
+          display: none;
         }
 
         .header-right {
-          order: 3;
-          margin-left: auto;
+          grid-area: right;
+          display: flex;
+          align-items: center;
+          gap: 4px;
+          margin-left: 0;
+        }
+
+        .header-center {
+          grid-area: center;
+          display: flex;
+          align-items: center;
+          gap: 5px;
+          width: 100%;
+          overflow-x: auto;
+          -webkit-overflow-scrolling: touch;
+          padding: 2px 0;
+          scrollbar-width: none;
+        }
+
+        .header-center::-webkit-scrollbar {
+          display: none;
+        }
+
+        .sync-pill {
+          display: none !important;
+        }
+
+        #saveButton {
+          padding: 4px 8px;
+          font-size: 11.5px;
+          height: 30px;
+        }
+
+        #userSelectorBtn {
+          padding: 3px 6px;
+          font-size: 11px;
+          height: 30px;
+          max-width: 90px;
+        }
+
+        #toggleNotesDrawerBtn {
+          padding: 4px 8px;
+          font-size: 11.5px;
+          height: 30px;
+        }
+
+        .nav-btn {
+          width: 28px;
+          height: 28px;
+          font-size: 11px;
+        }
+
+        .page-indicator {
+          font-size: 11px;
+          padding: 0 4px;
+          min-width: 36px;
+        }
+
+        .tool-btn {
+          padding: 3px 6px;
+          font-size: 11px;
+          height: 28px;
+          white-space: nowrap;
+        }
+
+        .pdf-viewport {
+          padding: 8px 4px;
+        }
+
+        .pdf-page {
+          margin-bottom: 12px;
         }
 
         .outline-sidebar {
           position: fixed;
           top: 0;
           left: 0;
+          width: 85vw;
+          max-width: 320px;
           height: 100vh;
           z-index: 100;
-          box-shadow: 10px 0 30px rgba(0,0,0,0.5);
+          box-shadow: 10px 0 30px rgba(0, 0, 0, 0.6);
         }
 
         .notes-drawer {
           position: fixed;
           top: 0;
           right: 0;
+          width: 88vw;
+          max-width: 360px;
           height: 100vh;
           z-index: 100;
-          box-shadow: -10px 0 30px rgba(0,0,0,0.5);
+          box-shadow: -10px 0 30px rgba(0, 0, 0, 0.6);
+        }
+
+        .note-popover {
+          position: fixed !important;
+          bottom: 12px !important;
+          left: 50% !important;
+          top: auto !important;
+          transform: translateX(-50%) !important;
+          width: calc(100vw - 20px) !important;
+          max-width: 360px !important;
+          z-index: 120 !important;
         }
       }
     </style>
@@ -1162,6 +1281,8 @@
 
       <!-- Main Layout: Left Outline Sidebar + Center PDF Viewport + Right Notes Drawer -->
       <div class="viewer-layout">
+        <div class="mobile-backdrop" id="mobileBackdrop"></div>
+
         <!-- Left Table of Contents Sidebar -->
         <aside class="outline-sidebar" id="outlineSidebar">
           <div class="outline-header">
@@ -1255,7 +1376,10 @@
         ];
 
         function getPersonPalette(name) {
-          const key = String(name || "contributor").trim().toLowerCase();
+          const key = String(name || "Unknown User").trim();
+          if (key.toLowerCase() === "unknown user" || key.toLowerCase() === "contributor") {
+            return { id: "slate", bg: "#475569", light: "#94a3b8", darkBg: "rgba(100, 116, 139, 0.2)", border: "#64748b" };
+          }
           let hash = 0;
           for (let i = 0; i < key.length; i++) {
             hash = (hash << 5) - hash + key.charCodeAt(i);
@@ -1288,12 +1412,12 @@
             localStorage.getItem("capstone_user_name") ||
             localStorage.getItem("pdf_active_user") ||
             query.get("user") ||
-            "Satya Siddhartha"
+            "Unknown User"
           );
         }
 
         function setActiveUser(name) {
-          const clean = String(name || "").trim() || "Contributor";
+          const clean = String(name || "").trim() || "Unknown User";
           localStorage.setItem("capstone_user_name", clean);
           localStorage.setItem("pdf_active_user", clean);
           updateUserDisplay();
@@ -1330,6 +1454,7 @@
           notesDrawer: document.getElementById("notesDrawer"),
           toggleNotesDrawerBtn: document.getElementById("toggleNotesDrawerBtn"),
           closeDrawerBtn: document.getElementById("closeDrawerBtn"),
+          mobileBackdrop: document.getElementById("mobileBackdrop"),
           tabActiveNotes: document.getElementById("tabActiveNotes"),
           tabTimeline: document.getElementById("tabTimeline"),
           activeNotesBadge: document.getElementById("activeNotesBadge"),
@@ -1749,6 +1874,10 @@
                 selectAnnotation(ann.id);
                 const el = elements.pages.querySelector(`[data-annotation-id="${ann.id}"]`);
                 openExistingNote(ann, el, "view");
+                if (window.innerWidth <= 768) {
+                  elements.notesDrawer.classList.add("collapsed");
+                  if (elements.mobileBackdrop) elements.mobileBackdrop.classList.remove("active");
+                }
               });
 
               elements.drawerNotesList.appendChild(card);
@@ -1822,6 +1951,10 @@
                   selectAnnotation(ann.id);
                   const el = elements.pages.querySelector(`[data-annotation-id="${ann.id}"]`);
                   openExistingNote(ann, el, "view");
+                  if (window.innerWidth <= 768) {
+                    elements.notesDrawer.classList.add("collapsed");
+                    if (elements.mobileBackdrop) elements.mobileBackdrop.classList.remove("active");
+                  }
                 }
               });
 
@@ -2317,6 +2450,10 @@
             if (pageNum) {
               itemEl.addEventListener("click", () => {
                 scrollToPage(pageNum);
+                if (window.innerWidth <= 768) {
+                  elements.outlineSidebar.classList.add("collapsed");
+                  if (elements.mobileBackdrop) elements.mobileBackdrop.classList.remove("active");
+                }
               });
             }
 
@@ -2359,7 +2496,13 @@
               <span class="outline-title-text" title="${escapeHtml(h.title)}">${escapeHtml(h.title)}</span>
               <span class="outline-page-num">${h.page}</span>
             `;
-            itemEl.addEventListener("click", () => scrollToPage(h.page));
+            itemEl.addEventListener("click", () => {
+              scrollToPage(h.page);
+              if (window.innerWidth <= 768) {
+                elements.outlineSidebar.classList.add("collapsed");
+                if (elements.mobileBackdrop) elements.mobileBackdrop.classList.remove("active");
+              }
+            });
             elements.outlineTree.appendChild(itemEl);
           });
         }
@@ -2578,16 +2721,27 @@
 
         // Outline Sidebar Listeners
         elements.toggleOutlineBtn.addEventListener("click", () => {
-          elements.outlineSidebar.classList.toggle("collapsed");
+          const isCollapsed = elements.outlineSidebar.classList.toggle("collapsed");
+          if (!isCollapsed) {
+            elements.notesDrawer.classList.add("collapsed");
+            if (elements.mobileBackdrop) elements.mobileBackdrop.classList.add("active");
+          } else {
+            if (elements.notesDrawer.classList.contains("collapsed") && elements.mobileBackdrop) {
+              elements.mobileBackdrop.classList.remove("active");
+            }
+          }
         });
         elements.closeOutlineBtn.addEventListener("click", () => {
           elements.outlineSidebar.classList.add("collapsed");
+          if (elements.notesDrawer.classList.contains("collapsed") && elements.mobileBackdrop) {
+            elements.mobileBackdrop.classList.remove("active");
+          }
         });
 
         // Identity switch handler
         elements.userSelectorBtn.addEventListener("click", () => {
           const current = getActiveUser();
-          const next = prompt("Your contributor name for notes:", current);
+          const next = prompt("Enter your contributor name for notes:", current === "Unknown User" ? "" : current);
           if (next && next.trim() && next.trim() !== current) {
             setActiveUser(next.trim());
             setStatus("Active contributor: " + next.trim(), "neutral");
@@ -2609,11 +2763,30 @@
 
         // Drawer Listeners & Tab Switching
         elements.toggleNotesDrawerBtn.addEventListener("click", () => {
-          elements.notesDrawer.classList.toggle("collapsed");
+          const isCollapsed = elements.notesDrawer.classList.toggle("collapsed");
+          if (!isCollapsed) {
+            elements.outlineSidebar.classList.add("collapsed");
+            if (elements.mobileBackdrop) elements.mobileBackdrop.classList.add("active");
+          } else {
+            if (elements.outlineSidebar.classList.contains("collapsed") && elements.mobileBackdrop) {
+              elements.mobileBackdrop.classList.remove("active");
+            }
+          }
         });
         elements.closeDrawerBtn.addEventListener("click", () => {
           elements.notesDrawer.classList.add("collapsed");
+          if (elements.outlineSidebar.classList.contains("collapsed") && elements.mobileBackdrop) {
+            elements.mobileBackdrop.classList.remove("active");
+          }
         });
+
+        if (elements.mobileBackdrop) {
+          elements.mobileBackdrop.addEventListener("click", () => {
+            elements.outlineSidebar.classList.add("collapsed");
+            elements.notesDrawer.classList.add("collapsed");
+            elements.mobileBackdrop.classList.remove("active");
+          });
+        }
 
         elements.tabActiveNotes.addEventListener("click", () => {
           currentDrawerTab = "active";
