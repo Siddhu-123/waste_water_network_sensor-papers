@@ -2,13 +2,18 @@ const {
   annotationPath,
   applyCors,
   getCollaboratorPermission,
-  getRepositoryFile,
   json,
   normalizeAnnotations,
   parseBody,
-  putRepositoryFile,
   readSession,
 } = require("../../server/github");
+const {
+  blobEtag,
+  getJsonBlob,
+  hasBlobToken,
+  isBlobConflict,
+  putJsonBlob,
+} = require("../../server/blob");
 
 const WRITE_PERMISSIONS = new Set(["admin", "maintain", "push"]);
 
@@ -17,24 +22,40 @@ function emptyDocument(paperId) {
     paperId,
     version: 1,
     revision: null,
+    updatedAt: null,
+    updatedBy: null,
     annotations: [],
   };
 }
 
-function publicDocument(paperId, file) {
-  const document = file && file.document && typeof file.document === "object"
-    ? file.document
+function publicDocument(paperId, stored, revision) {
+  const document = stored && stored.document && typeof stored.document === "object"
+    ? stored.document
     : {};
+  let annotations = [];
+  try {
+    annotations = normalizeAnnotations(
+      Array.isArray(document.annotations) ? document.annotations : [],
+    );
+  } catch (error) {
+    error.status = 502;
+    throw error;
+  }
   return {
     paperId,
     version: Number(document.version || 1),
-    revision: file && file.sha ? file.sha : null,
+    revision: revision || null,
     updatedAt: document.updatedAt || null,
     updatedBy: document.updatedBy || null,
-    annotations: Array.isArray(document.annotations)
-      ? document.annotations
-      : [],
+    annotations,
   };
+}
+
+async function readCurrentDocument(pathname, paperId) {
+  const stored = await getJsonBlob(pathname);
+  return stored
+    ? publicDocument(paperId, stored, stored.revision)
+    : emptyDocument(paperId);
 }
 
 module.exports = async function handler(req, res) {
@@ -51,14 +72,16 @@ module.exports = async function handler(req, res) {
     return json(res, 400, { error: error.message });
   }
 
+  if (!hasBlobToken()) {
+    return json(res, 503, {
+      error: "annotation_storage_not_configured",
+      message: "Connect the Vercel Blob store before using shared annotations.",
+    });
+  }
+
   try {
     if (req.method === "GET") {
-      const file = await getRepositoryFile(identity.path);
-      return json(
-        res,
-        200,
-        file ? publicDocument(identity.paperId, file) : emptyDocument(identity.paperId),
-      );
+      return json(res, 200, await readCurrentDocument(identity.path, identity.paperId));
     }
 
     if (req.method !== "POST") {
@@ -94,16 +117,16 @@ module.exports = async function handler(req, res) {
       return json(res, 400, { error: error.message });
     }
 
-    const currentFile = await getRepositoryFile(identity.path);
-    const currentRevision = currentFile && currentFile.sha ? currentFile.sha : null;
+    const currentStored = await getJsonBlob(identity.path);
+    const currentRevision = currentStored ? currentStored.revision : null;
     const hasExpectedRevision = Object.prototype.hasOwnProperty.call(body, "revision");
-    const expectedRevision = body.revision || null;
+    const expectedRevision = body.revision ? String(body.revision) : null;
     if (
       (hasExpectedRevision || currentRevision) &&
       currentRevision !== expectedRevision
     ) {
-      const current = currentFile
-        ? publicDocument(identity.paperId, currentFile)
+      const current = currentStored
+        ? publicDocument(identity.paperId, currentStored, currentRevision)
         : emptyDocument(identity.paperId);
       return json(res, 409, {
         error: "annotation_conflict",
@@ -119,38 +142,48 @@ module.exports = async function handler(req, res) {
       updatedBy: session.login,
       annotations,
     };
-    const result = await putRepositoryFile(
-      identity.path,
-      JSON.stringify(nextDocument, null, 2) + "\n",
-      currentRevision,
-      session.token,
-      "Update shared PDF annotations for paper " + identity.paperId,
-    );
+    let result;
+    try {
+      result = await putJsonBlob(identity.path, nextDocument, currentRevision
+        ? { ifMatch: currentRevision }
+        : {});
+    } catch (error) {
+      if (isBlobConflict(error)) {
+        return json(res, 409, {
+          error: "annotation_conflict",
+          message: "Another person saved changes while this was being saved. Reload and try again.",
+        });
+      }
+      throw error;
+    }
 
     return json(res, currentRevision ? 200 : 201, {
       ...nextDocument,
-      revision:
-        result && result.content && result.content.sha
-          ? result.content.sha
-          : null,
+      revision: blobEtag(result),
     });
   } catch (error) {
     console.error("Annotation API error:", error);
     if (error.status === 401 || error.status === 403) {
       return json(res, 403, {
         error: "github_write_failed",
-        message: "GitHub rejected the write. Check repository permissions.",
+        message: "GitHub rejected the access check. Check repository permissions.",
       });
     }
-    if (error.status === 409 || error.status === 422) {
+    if (error.status === 409 || error.status === 412 || isBlobConflict(error)) {
       return json(res, 409, {
         error: "annotation_conflict",
-        message: "GitHub changed the file while it was being saved. Reload and try again.",
+        message: "Another person saved changes while this was being saved. Reload and try again.",
       });
     }
-    return json(res, 500, {
+    if (error.status === 502) {
+      return json(res, 502, {
+        error: "annotation_data_invalid",
+        message: "The shared annotation data is invalid and could not be loaded.",
+      });
+    }
+    return json(res, 503, {
       error: "annotation_service_error",
-      message: "The shared annotation service is temporarily unavailable.",
+      message: "The Vercel annotation storage is temporarily unavailable.",
     });
   }
 };

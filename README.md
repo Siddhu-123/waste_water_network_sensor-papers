@@ -11,10 +11,11 @@ sensor_papers/
 ├── index.html                         Dynamic viewer with nested filters & squeeze toggle
 ├── pdf-viewer.html                    PDF.js viewer with shared highlights & sticker notes
 ├── annotation-config.js               Optional Vercel API URL for GitHub Pages
+├── package.json                        Vercel Blob dependency for the API
 ├── summaries.json                     Shared 8-step summaries
-├── annotations/                       Shared annotation JSON files created on save
+├── annotations/                       Optional committed fallback annotations
 ├── api/                               Vercel OAuth and annotation API routes
-├── server/                            Server-only GitHub/OAuth helpers
+├── server/                            Server-only GitHub/OAuth and Blob helpers
 ├── scripts/
 │   └── validate_repo.py               Automated repository consistency validator
 ├── contributors/
@@ -36,12 +37,20 @@ All paper records across contributors are loaded dynamically from their respecti
 
 Click **PDF + Notes** beside any paper. The viewer supports rectangular highlights and draggable sticker notes. Annotation positions are stored as normalized coordinates, so they remain aligned when the PDF is viewed on a different screen size.
 
+The recommended shared site is:
+
+```text
+https://waste-water-network-sensor-papers-two.vercel.app/
+```
+
+Annotations are stored as one small private JSON object per paper in Vercel Blob. The Vercel API fetches that object whenever someone opens the PDF, so the annotations are shared without adding JSON files or PDF copies to GitHub.
+
 The viewer has two modes:
 
-- **Vercel mode:** the Vercel API reads and writes `annotations/paper-<id>.json` in this repository. Everyone sees the committed annotations.
-- **Local/GitHub Pages preview:** annotations can be viewed from committed JSON files and downloaded as JSON, but saving requires the Vercel API.
+- **Vercel mode:** the viewer and API use the same Vercel origin. Shared annotations are loaded from Vercel Blob.
+- **Local/GitHub Pages preview:** the static viewer can load an optional committed JSON fallback and download a local backup. Shared saving still uses the Vercel API.
 
-For the simplest deployment, connect this repository to Vercel and leave `window.ANNOTATION_API_BASE` empty in [`annotation-config.js`](./annotation-config.js). The PDF viewer and API then use the same Vercel origin. The GitHub Pages copy can remain a public read-only library. If GitHub Pages must launch the editor, set `window.ANNOTATION_API_BASE` to the Vercel deployment URL.
+Share the Vercel URL above with the team. GitHub Pages remains an optional static copy. If GitHub Pages should open the shared editor too, set `window.ANNOTATION_API_BASE` in [`annotation-config.js`](./annotation-config.js) to the Vercel URL.
 
 ### Vercel setup for shared saves
 
@@ -60,10 +69,11 @@ GITHUB_REPOSITORY=Siddhu-123/waste_water_network_sensor-papers
 GITHUB_BRANCH=main
 GITHUB_CALLBACK_URL=https://YOUR-VERCEL-DOMAIN.vercel.app/api/auth/github/callback
 SESSION_SECRET=generate-a-random-secret-at-least-32-characters-long
+PUBLIC_APP_URL=https://YOUR-VERCEL-DOMAIN.vercel.app
 ALLOWED_ORIGINS=https://YOUR-VERCEL-DOMAIN.vercel.app,https://siddhu-123.github.io
 ```
 
-Only GitHub accounts with **push**, **maintain**, or **admin** permission on the repository can save. The backend keeps the OAuth token in an encrypted, HttpOnly session cookie and never sends it to the webpage. Each save uses the current GitHub file SHA, so a concurrent edit is rejected instead of silently overwriting someone else's annotations.
+The Vercel Blob connection automatically provides `BLOB_READ_WRITE_TOKEN` to the project. Keep the Blob store private. Only GitHub accounts with **push**, **maintain**, or **admin** permission on the repository can save. The backend keeps the OAuth token in an encrypted, HttpOnly session cookie and never sends it to the webpage. Each save uses the current Blob ETag, so a concurrent edit is rejected instead of silently overwriting someone else's annotations.
 
 Do not put `GITHUB_CLIENT_SECRET`, `SESSION_SECRET`, or a GitHub token in `index.html`, `pdf-viewer.html`, or `annotation-config.js`.
 

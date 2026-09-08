@@ -581,7 +581,7 @@
           <button class="button" type="button" id="reloadButton">Reload shared</button>
           <button class="button" type="button" id="downloadButton">Download JSON</button>
           <button class="button button-primary" type="button" id="saveButton">
-            Save to GitHub
+            Save shared annotations
           </button>
         </div>
       </section>
@@ -601,7 +601,7 @@
       <div class="legend">
         Select <strong>Highlight</strong>, drag across an area, or select
         <strong>Sticker note</strong> and click anywhere on a page. Shared saves
-        require GitHub push access to this repository.
+        are stored in Vercel. Saving requires GitHub sign-in and repository access.
       </div>
     </div>
 
@@ -750,7 +750,7 @@
             ? "Configure the Vercel API to save shared annotations"
             : !currentUser
               ? "Sign in with GitHub to save"
-              : "Save shared annotations to GitHub";
+              : "Save shared annotations to Vercel";
         }
 
         function commitChange(nextAnnotations, selectedId) {
@@ -1101,7 +1101,7 @@
           link.click();
           link.remove();
           URL.revokeObjectURL(url);
-          setStatus("Annotation JSON downloaded. Use it as a manual GitHub fallback.", "success");
+          setStatus("Annotation JSON downloaded as a local backup.", "success");
         }
 
         async function loadLocalAnnotations() {
@@ -1128,7 +1128,7 @@
               documentData = await response.json();
               loadedFromApi = true;
             } catch (error) {
-              setStatus("Vercel annotation API is unavailable; checking the committed GitHub copy.", "warning");
+              setStatus("Vercel annotation storage is unavailable; checking the local fallback.", "warning");
             }
           }
           if (!documentData) documentData = await loadLocalAnnotations();
@@ -1147,12 +1147,12 @@
             const count = annotations.length;
             setStatus(
               count
-                ? count + " shared annotation" + (count === 1 ? "" : "s") + " loaded from GitHub."
+                ? count + " shared annotation" + (count === 1 ? "" : "s") + " loaded from Vercel."
                 : "No shared annotations yet. Add a highlight or sticker note.",
               "success",
             );
           } else if (annotations.length) {
-            setStatus("Committed annotation JSON loaded. Configure Vercel to save new changes.", "warning");
+            setStatus("Local annotation JSON loaded. Configure Vercel to save shared changes.", "warning");
           } else {
             setStatus(
               hasApi
@@ -1234,7 +1234,7 @@
           }
 
           elements.save.disabled = true;
-          setStatus("Saving annotations to GitHub…", "neutral");
+          setStatus("Saving annotations to Vercel…", "neutral");
           try {
             const response = await fetch(apiUrl("/annotations/" + encodeURIComponent(paperId)), {
               method: "POST",
@@ -1263,7 +1263,7 @@
             annotationRevision = data.revision || annotationRevision;
             isDirty = false;
             history = [];
-            setStatus("Saved to GitHub. Everyone opening this paper will see these annotations.", "success");
+            setStatus("Saved to Vercel. Everyone opening this paper will see these annotations.", "success");
           } catch (error) {
             setStatus(error.message || "The shared save failed.", "error");
           } finally {
