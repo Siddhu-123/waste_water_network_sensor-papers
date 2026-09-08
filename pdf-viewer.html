@@ -18,7 +18,7 @@
         --bg: #07111e;
         --panel: #0e1b2b;
         --panel-2: #13243a;
-        --line: rgba(148, 163, 184, 0.2);
+        --line: rgba(148, 163, 184, 0.18);
         --text: #e7edf6;
         --muted: #9aabc0;
         --accent: #63d3c2;
@@ -35,10 +35,11 @@
         margin: 0;
         min-width: 320px;
         background:
-          radial-gradient(circle at 15% -10%, rgba(40, 119, 155, 0.24), transparent 34rem),
+          radial-gradient(circle at 15% -10%, rgba(40, 119, 155, 0.2), transparent 34rem),
           var(--bg);
         color: var(--text);
         font-family: "DM Sans", system-ui, sans-serif;
+        overflow-x: hidden;
       }
 
       button,
@@ -54,231 +55,230 @@
 
       .app-shell {
         min-height: 100vh;
+        display: flex;
+        flex-direction: column;
       }
 
-      .topbar {
-        display: flex;
-        align-items: flex-start;
-        gap: 20px;
-        padding: 22px clamp(16px, 4vw, 52px);
-        border-bottom: 1px solid var(--line);
-        background: rgba(7, 17, 30, 0.94);
+      /* Slim Unified Header - Takes only 48px! */
+      .app-header {
         position: sticky;
         top: 0;
-        z-index: 20;
-        backdrop-filter: blur(18px);
+        z-index: 40;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        height: 48px;
+        padding: 0 14px;
+        background: rgba(8, 18, 32, 0.95);
+        border-bottom: 1px solid var(--line);
+        backdrop-filter: blur(16px);
       }
 
-      .back-link {
-        flex: 0 0 auto;
+      .header-left,
+      .header-center,
+      .header-right {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .header-left {
+        flex: 1 1 0;
+        min-width: 0;
+      }
+
+      .nav-back {
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
         color: var(--accent);
         text-decoration: none;
-        font-size: 13px;
+        font-size: 12px;
         font-weight: 700;
-        padding-top: 8px;
+        padding: 5px 8px;
+        border-radius: 6px;
         white-space: nowrap;
+        background: rgba(99, 211, 194, 0.1);
+        transition: background 150ms ease, color 150ms ease;
       }
 
-      .back-link:hover {
+      .nav-back:hover {
+        background: rgba(99, 211, 194, 0.2);
         color: #a2f4e8;
       }
 
-      .paper-heading {
+      .header-divider {
+        width: 1px;
+        height: 18px;
+        background: var(--line);
+        margin: 0 4px;
+        flex-shrink: 0;
+      }
+
+      .doc-title-wrap {
         min-width: 0;
-        flex: 1;
-      }
-
-      .eyebrow {
-        color: var(--accent);
-        font: 600 11px/1.3 "JetBrains Mono", monospace;
-        letter-spacing: 0.11em;
-        text-transform: uppercase;
-      }
-
-      h1 {
-        margin: 5px 0 4px;
-        font-size: clamp(18px, 2.4vw, 29px);
-        line-height: 1.15;
-        overflow-wrap: anywhere;
-      }
-
-      .paper-meta {
-        margin: 0;
-        color: var(--muted);
-        font-size: 13px;
-        line-height: 1.5;
-      }
-
-      .auth-panel {
         display: flex;
         align-items: center;
-        gap: 9px;
-        flex: 0 0 auto;
+        gap: 8px;
       }
 
-      .auth-status {
+      .doc-title {
+        font-size: 13px;
+        font-weight: 700;
+        color: var(--text);
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        max-width: clamp(140px, 24vw, 360px);
+        margin: 0;
+      }
+
+      .doc-meta {
+        font-size: 11px;
         color: var(--muted);
-        font-size: 12px;
-        max-width: 180px;
-        text-align: right;
+        white-space: nowrap;
+        padding: 2px 6px;
+        background: rgba(148, 163, 184, 0.1);
+        border-radius: 4px;
       }
 
-      .button {
-        border: 1px solid var(--line);
+      /* Segmented Tool Controls */
+      .tools-segment {
+        display: flex;
+        align-items: center;
+        background: #0d1e33;
+        padding: 3px;
         border-radius: 8px;
+        border: 1px solid var(--line);
+        gap: 2px;
+      }
+
+      .tool-btn {
+        border: none;
+        background: transparent;
+        color: var(--muted);
+        cursor: pointer;
+        font-size: 12px;
+        font-weight: 700;
+        height: 30px;
+        padding: 0 10px;
+        border-radius: 6px;
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        transition: all 120ms ease;
+      }
+
+      .tool-btn:hover {
+        color: var(--text);
+        background: rgba(255, 255, 255, 0.05);
+      }
+
+      .tool-btn.active {
+        background: rgba(28, 165, 143, 0.25);
+        color: #79ffe9;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+      }
+
+      .color-dot-control {
+        position: relative;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        margin-left: 2px;
+        margin-right: 4px;
+      }
+
+      .color-dot-control input[type="color"] {
+        position: absolute;
+        opacity: 0;
+        width: 100%;
+        height: 100%;
+        cursor: pointer;
+      }
+
+      .color-dot-preview {
+        width: 18px;
+        height: 18px;
+        border-radius: 50%;
+        border: 2px solid rgba(255, 255, 255, 0.7);
+        box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.4);
+        background: #ffdf5d;
+        pointer-events: none;
+      }
+
+      /* Right Actions */
+      .sync-badge {
+        font-size: 11px;
+        font-weight: 600;
+        color: #7ef2db;
+        padding: 4px 8px;
+        border-radius: 20px;
+        background: rgba(28, 165, 143, 0.15);
+        white-space: nowrap;
+      }
+
+      .btn {
+        border: 1px solid var(--line);
+        border-radius: 6px;
         background: var(--panel-2);
         color: var(--text);
         cursor: pointer;
         font-size: 12px;
         font-weight: 700;
-        min-height: 36px;
-        padding: 8px 12px;
-        transition:
-          background 150ms ease,
-          border-color 150ms ease,
-          transform 150ms ease;
+        height: 32px;
+        padding: 0 10px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 5px;
+        transition: all 120ms ease;
       }
 
-      .button:hover:not(:disabled) {
-        border-color: rgba(99, 211, 194, 0.72);
+      .btn:hover:not(:disabled) {
+        border-color: rgba(99, 211, 194, 0.7);
         background: #1a314c;
-        transform: translateY(-1px);
       }
 
-      .button:focus-visible,
-      .tool-button:focus-visible,
-      .back-link:focus-visible {
-        outline: 3px solid rgba(99, 211, 194, 0.45);
-        outline-offset: 2px;
-      }
-
-      .button:disabled {
+      .btn:disabled {
         cursor: not-allowed;
-        opacity: 0.45;
+        opacity: 0.4;
       }
 
-      .button-primary {
+      .btn-icon {
+        width: 32px;
+        padding: 0;
+        font-size: 14px;
+      }
+
+      .btn-danger {
+        color: var(--danger);
+      }
+
+      .btn-primary {
         border-color: transparent;
         background: var(--accent-strong);
         color: #061511;
+        font-weight: 700;
+        padding: 0 12px;
       }
 
-      .button-primary:hover:not(:disabled) {
+      .btn-primary:hover:not(:disabled) {
         background: var(--accent);
       }
 
-      .button-danger {
-        color: var(--danger);
-      }
-
-      .toolbar {
-        display: flex;
-        align-items: center;
-        flex-wrap: wrap;
-        gap: 10px 16px;
-        padding: 14px clamp(16px, 4vw, 52px);
-        border-bottom: 1px solid var(--line);
-        background: rgba(14, 27, 43, 0.9);
-        position: sticky;
-        top: 88px;
-        z-index: 19;
-        backdrop-filter: blur(18px);
-      }
-
-      .tool-group,
-      .toolbar-actions {
-        display: flex;
-        align-items: center;
-        flex-wrap: wrap;
-        gap: 7px;
-      }
-
-      .toolbar-actions {
-        margin-left: auto;
-      }
-
-      .toolbar-label {
-        color: var(--muted);
-        font-size: 11px;
-        font-weight: 700;
-        margin-right: 2px;
-        text-transform: uppercase;
-        letter-spacing: 0.07em;
-      }
-
-      .tool-button {
-        border: 1px solid var(--line);
-        border-radius: 8px;
-        background: transparent;
-        color: var(--text);
-        cursor: pointer;
-        font-size: 12px;
-        font-weight: 700;
-        min-height: 34px;
-        padding: 7px 10px;
-      }
-
-      .tool-button.active {
-        border-color: rgba(99, 211, 194, 0.9);
-        background: rgba(28, 165, 143, 0.22);
-        color: #b4fff4;
-      }
-
-      .color-control,
-      .range-control {
-        display: inline-flex;
-        align-items: center;
-        gap: 6px;
-        color: var(--muted);
-        font-size: 11px;
-      }
-
-      .color-control input {
-        width: 29px;
-        height: 29px;
-        padding: 2px;
-        border: 1px solid var(--line);
-        border-radius: 6px;
-        background: transparent;
-        cursor: pointer;
-      }
-
-      .range-control input {
-        width: 80px;
-        accent-color: var(--accent);
-      }
-
-      .status-bar {
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        min-height: 40px;
-        padding: 9px clamp(16px, 4vw, 52px);
-        color: var(--muted);
-        font-size: 12px;
-      }
-
-      .status-bar[data-kind="success"] {
-        color: #a9f3de;
-      }
-
-      .status-bar[data-kind="warning"] {
-        color: var(--warning);
-      }
-
-      .status-bar[data-kind="error"] {
-        color: var(--danger);
-      }
-
+      /* PDF Viewport - Starts right below the 48px header! */
       .pdf-viewport {
-        padding: 8px clamp(10px, 3vw, 40px) 70px;
+        flex: 1;
+        padding: 16px 10px 50px;
       }
 
       .pdf-pages {
         display: flex;
         align-items: center;
         flex-direction: column;
-        gap: 24px;
+        gap: 20px;
         min-height: 250px;
       }
 
@@ -286,10 +286,10 @@
         width: min(100%, 980px);
         position: relative;
         overflow: hidden;
-        border: 1px solid rgba(255, 255, 255, 0.16);
+        border: 1px solid rgba(255, 255, 255, 0.12);
         border-radius: 4px;
         background: white;
-        box-shadow: 0 18px 55px rgba(0, 0, 0, 0.36);
+        box-shadow: 0 16px 45px rgba(0, 0, 0, 0.35);
       }
 
       .pdf-page canvas {
@@ -302,7 +302,7 @@
         position: absolute;
         inset: 0;
         touch-action: none;
-        cursor: grab;
+        cursor: default;
       }
 
       .annotation-layer.tool-highlight,
@@ -316,280 +316,340 @@
         user-select: none;
       }
 
+      /* Highlights - Crisp, fixed opacity */
       .highlight-annotation {
-        border: 1px solid rgba(125, 91, 0, 0.48);
+        border: 1px solid rgba(125, 91, 0, 0.4);
+        border-radius: 2px;
         cursor: pointer;
+        mix-blend-mode: multiply;
       }
 
       .highlight-annotation.selected {
-        outline: 3px solid rgba(28, 165, 143, 0.9);
+        outline: 2px solid var(--accent);
         outline-offset: 1px;
       }
 
-      .sticky-note {
-        display: grid;
-        place-items: center;
-        width: 44px;
-        height: 44px;
-        border: 1px solid rgba(113, 75, 0, 0.48);
-        border-radius: 5px 5px 10px 5px;
-        color: #5c3b00;
-        cursor: move;
-        font-size: 21px;
-        box-shadow: 3px 4px 7px rgba(0, 0, 0, 0.24);
-        transform: rotate(-3deg);
+      .annotation-draft {
+        position: absolute;
+        border: 1px dashed rgba(255, 223, 93, 0.95);
+        background: rgba(255, 223, 93, 0.38);
+        pointer-events: none;
+        mix-blend-mode: multiply;
       }
 
-      .sticky-note::after {
-        position: absolute;
-        right: -1px;
-        bottom: -1px;
-        width: 12px;
-        height: 12px;
-        border-top: 1px solid rgba(113, 75, 0, 0.35);
-        border-left: 1px solid rgba(113, 75, 0, 0.35);
-        background: rgba(255, 246, 196, 0.86);
-        content: "";
-        clip-path: polygon(0 0, 100% 0, 100% 100%);
+      /* Sticky Notes on Page - Sleek Pin Badge */
+      .sticky-note {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 32px;
+        height: 32px;
+        background: #ffd166;
+        border: 2px solid #ffffff;
+        border-radius: 50% 50% 50% 4px;
+        box-shadow: 0 4px 14px rgba(0, 0, 0, 0.35);
+        cursor: pointer;
+        font-size: 15px;
+        transition: transform 120ms ease, box-shadow 120ms ease;
+        z-index: 10;
+        user-select: none;
+      }
+
+      .sticky-note:hover {
+        transform: scale(1.15) translateY(-2px);
+        box-shadow: 0 6px 18px rgba(0, 0, 0, 0.45);
       }
 
       .sticky-note.selected {
-        outline: 3px solid rgba(28, 165, 143, 0.9);
+        outline: 3px solid var(--accent);
         outline-offset: 2px;
       }
 
       .annotation-delete {
         position: absolute;
-        top: -10px;
-        right: -10px;
-        display: grid;
+        top: -8px;
+        right: -8px;
+        display: none;
         place-items: center;
-        width: 21px;
-        height: 21px;
+        width: 18px;
+        height: 18px;
         padding: 0;
         border: 1px solid #fff;
         border-radius: 50%;
-        background: #8b3038;
+        background: #b91c1c;
         color: white;
         cursor: pointer;
-        font-size: 14px;
-        line-height: 1;
-        opacity: 0;
-        transition: opacity 120ms ease;
+        font-size: 12px;
+        font-weight: 700;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
       }
 
-      .annotation:hover .annotation-delete,
       .annotation.selected .annotation-delete {
-        opacity: 1;
+        display: grid;
       }
 
-      .annotation-draft {
-        position: absolute;
-        border: 2px dashed rgba(28, 165, 143, 0.95);
-        background: rgba(99, 211, 194, 0.2);
-        pointer-events: none;
-      }
-
-      .note-editor {
+      /* Note Popover Card */
+      .note-popover {
         position: fixed;
-        z-index: 50;
-        width: min(340px, calc(100vw - 24px));
-        padding: 13px;
-        border: 1px solid rgba(99, 211, 194, 0.55);
-        border-radius: 10px;
+        z-index: 60;
+        width: min(320px, calc(100vw - 28px));
         background: #102238;
-        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.45);
+        border: 1px solid rgba(99, 211, 194, 0.5);
+        border-radius: 12px;
+        box-shadow: 0 16px 40px rgba(0, 0, 0, 0.55), 0 0 0 1px rgba(0, 0, 0, 0.3);
+        padding: 14px;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        animation: popIn 140ms cubic-bezier(0.16, 1, 0.3, 1);
       }
 
-      .note-editor[hidden],
-      .empty-state[hidden] {
+      @keyframes popIn {
+        from {
+          opacity: 0;
+          transform: scale(0.94) translateY(4px);
+        }
+        to {
+          opacity: 1;
+          transform: scale(1) translateY(0);
+        }
+      }
+
+      .note-popover[hidden] {
         display: none;
       }
 
-      .note-editor label {
-        display: block;
-        margin-bottom: 7px;
-        color: var(--muted);
-        font-size: 12px;
-        font-weight: 700;
+      .note-popover-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        border-bottom: 1px solid var(--line);
+        padding-bottom: 8px;
       }
 
-      .note-editor textarea {
-        display: block;
+      .note-popover-meta {
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+      }
+
+      .note-author {
+        font-size: 12px;
+        font-weight: 700;
+        color: #79ffe9;
+      }
+
+      .note-date {
+        font-size: 10px;
+        color: var(--muted);
+      }
+
+      .note-popover-tools {
+        display: flex;
+        align-items: center;
+        gap: 4px;
+      }
+
+      .icon-btn {
+        background: transparent;
+        border: none;
+        color: var(--muted);
+        cursor: pointer;
+        font-size: 14px;
+        padding: 3px 6px;
+        border-radius: 4px;
+        display: grid;
+        place-items: center;
+      }
+
+      .icon-btn:hover {
+        color: var(--text);
+        background: rgba(255, 255, 255, 0.1);
+      }
+
+      .note-view-body {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      .note-content {
+        font-size: 13.5px;
+        line-height: 1.5;
+        color: #e2e8f0;
+        white-space: pre-wrap;
+        word-break: break-word;
+        max-height: 240px;
+        overflow-y: auto;
+      }
+
+      .note-view-actions {
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        gap: 6px;
+        padding-top: 4px;
+        border-top: 1px solid rgba(148, 163, 184, 0.1);
+      }
+
+      .note-edit-body {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+      }
+
+      .note-edit-body textarea {
         width: 100%;
-        min-height: 100px;
-        resize: vertical;
-        padding: 9px;
-        border: 1px solid var(--line);
-        border-radius: 7px;
+        min-height: 90px;
+        padding: 8px 10px;
         background: #091727;
+        border: 1px solid var(--line);
+        border-radius: 6px;
         color: var(--text);
         font-size: 13px;
         line-height: 1.45;
+        resize: vertical;
       }
 
-      .note-editor textarea:focus {
+      .note-edit-body textarea:focus {
         border-color: var(--accent);
         outline: none;
       }
 
-      .note-editor-actions {
+      .note-edit-actions {
         display: flex;
+        align-items: center;
         justify-content: flex-end;
-        gap: 7px;
-        margin-top: 9px;
+        gap: 6px;
+      }
+
+      /* Floating Toast Notification */
+      .status-toast {
+        position: fixed;
+        bottom: 24px;
+        left: 50%;
+        transform: translateX(-50%) translateY(20px);
+        background: rgba(14, 27, 43, 0.95);
+        border: 1px solid var(--line);
+        color: var(--text);
+        padding: 7px 16px;
+        border-radius: 30px;
+        font-size: 12px;
+        font-weight: 600;
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+        z-index: 100;
+        pointer-events: none;
+        opacity: 0;
+        transition: opacity 180ms ease, transform 180ms ease;
+      }
+
+      .status-toast.visible {
+        opacity: 1;
+        transform: translateX(-50%) translateY(0);
+      }
+
+      .status-toast[data-kind="success"] {
+        border-color: rgba(99, 211, 194, 0.6);
+        color: #a2f4e8;
+      }
+
+      .status-toast[data-kind="warning"] {
+        border-color: rgba(255, 209, 102, 0.6);
+        color: var(--warning);
+      }
+
+      .status-toast[data-kind="error"] {
+        border-color: rgba(255, 142, 142, 0.6);
+        color: var(--danger);
       }
 
       .empty-state {
-        max-width: 580px;
-        margin: 80px auto;
+        max-width: 540px;
+        margin: 60px auto;
         padding: 24px;
         border: 1px solid var(--line);
-        border-radius: 12px;
-        background: rgba(14, 27, 43, 0.8);
+        border-radius: 10px;
+        background: rgba(14, 27, 43, 0.85);
         color: var(--muted);
-        line-height: 1.6;
         text-align: center;
       }
 
-      .empty-state strong {
-        color: var(--text);
+      .empty-state[hidden] {
+        display: none;
       }
 
-      .legend {
-        padding: 0 clamp(16px, 4vw, 52px) 32px;
-        color: var(--muted);
-        font-size: 12px;
-        line-height: 1.6;
-        text-align: center;
-      }
-
-      @media (max-width: 760px) {
-        .topbar {
-          position: static;
+      @media (max-width: 768px) {
+        .app-header {
+          height: auto;
           flex-wrap: wrap;
-          gap: 12px;
-          padding: 16px;
+          padding: 8px 10px;
+          gap: 8px;
         }
 
-        .paper-heading {
+        .header-left {
+          order: 1;
+          width: 100%;
+        }
+
+        .header-center {
+          order: 2;
+        }
+
+        .header-right {
           order: 3;
-          flex-basis: 100%;
-        }
-
-        .auth-panel {
           margin-left: auto;
         }
 
-        .auth-status {
+        .doc-meta {
           display: none;
-        }
-
-        .toolbar {
-          position: static;
-          padding: 12px 16px;
-        }
-
-        .toolbar-actions {
-          width: 100%;
-          margin-left: 0;
-        }
-
-        .toolbar-actions .button {
-          flex: 1 1 auto;
-        }
-
-        .status-bar {
-          padding: 9px 16px;
-        }
-
-        .pdf-viewport {
-          padding-right: 5px;
-          padding-left: 5px;
-        }
-      }
-
-      @media (max-width: 460px) {
-        .toolbar-label {
-          flex-basis: 100%;
-        }
-
-        .tool-group {
-          width: 100%;
-        }
-
-        .tool-button {
-          flex: 1 1 0;
-        }
-
-        .range-control {
-          flex: 1 1 130px;
-        }
-
-        .button {
-          min-height: 40px;
         }
       }
     </style>
   </head>
   <body>
     <div class="app-shell">
-      <header class="topbar">
-        <a class="back-link" href="./index.html">← Library</a>
-        <div class="paper-heading">
-          <div class="eyebrow">Shared PDF annotation workspace</div>
-          <h1 id="paperTitle">Loading paper…</h1>
-          <p class="paper-meta" id="paperMeta"></p>
+      <!-- Slim Unified Top Bar (Replaces all the old stacked headers) -->
+      <header class="app-header">
+        <div class="header-left">
+          <a class="nav-back" href="./index.html" title="Back to paper library">← Library</a>
+          <div class="header-divider"></div>
+          <div class="doc-title-wrap">
+            <h1 class="doc-title" id="paperTitle" title="Loading paper…">Loading paper…</h1>
+            <span class="doc-meta" id="paperMeta"></span>
+          </div>
         </div>
-        <div class="auth-panel">
-          <span class="auth-status" id="authStatus">Checking access…</span>
-          <button class="button" type="button" id="loginButton" hidden>
-            Sign in with GitHub
-          </button>
-          <button class="button" type="button" id="logoutButton" hidden>
-            Sign out
+
+        <div class="header-center">
+          <div class="tools-segment" role="toolbar" aria-label="Annotation tools">
+            <button class="tool-btn active" type="button" data-tool="pan" title="Select / scroll">
+              ✋ Select
+            </button>
+            <button class="tool-btn" type="button" data-tool="highlight" title="Highlight text area">
+              🖍 Highlight
+            </button>
+            <label class="color-dot-control" title="Highlight color">
+              <input id="highlightColor" type="color" value="#ffdf5d" />
+              <span class="color-dot-preview" id="colorPreview"></span>
+            </label>
+            <button class="tool-btn" type="button" data-tool="note" title="Click anywhere on PDF to place note">
+              📌 Note
+            </button>
+          </div>
+        </div>
+
+        <div class="header-right">
+          <span class="sync-badge" id="authStatus">● Cloud sync active</span>
+          <button class="btn btn-icon" type="button" id="undoButton" disabled title="Undo (Ctrl+Z)">↺</button>
+          <button class="btn btn-icon btn-danger" type="button" id="deleteButton" disabled title="Delete selected">🗑</button>
+          <button class="btn btn-icon" type="button" id="reloadButton" title="Reload shared notes">↻</button>
+          <button class="btn" type="button" id="downloadButton" title="Download backup JSON">⬇ JSON</button>
+          <button class="btn btn-primary" type="button" id="saveButton" disabled title="Save shared annotations">
+            Save
           </button>
         </div>
       </header>
 
-      <section class="toolbar" aria-label="PDF annotation tools">
-        <div class="tool-group">
-          <span class="toolbar-label">Add</span>
-          <button class="tool-button active" type="button" data-tool="pan">
-            Hand / select
-          </button>
-          <button class="tool-button" type="button" data-tool="highlight">
-            🖍 Highlight
-          </button>
-          <button class="tool-button" type="button" data-tool="note">
-            📌 Sticker note
-          </button>
-          <label class="color-control" title="Highlight color">
-            Color
-            <input id="highlightColor" type="color" value="#ffdf5d" />
-          </label>
-          <label class="range-control" title="Highlight opacity">
-            Opacity
-            <input id="highlightOpacity" type="range" min="0.1" max="0.8" step="0.05" value="0.4" />
-          </label>
-        </div>
-        <div class="toolbar-actions">
-          <button class="button" type="button" id="undoButton" disabled>Undo</button>
-          <button class="button button-danger" type="button" id="deleteButton" disabled>
-            Delete selected
-          </button>
-          <button class="button" type="button" id="reloadButton">Reload shared</button>
-          <button class="button" type="button" id="downloadButton">Download JSON</button>
-          <button class="button button-primary" type="button" id="saveButton">
-            Save shared annotations
-          </button>
-        </div>
-      </section>
-
-      <div class="status-bar" id="statusBar" role="status" aria-live="polite">
-        Preparing the annotation workspace…
-      </div>
-
+      <!-- Main PDF Viewport -->
       <main class="pdf-viewport" id="pdfViewport">
         <div class="pdf-pages" id="pdfPages"></div>
         <div class="empty-state" id="emptyState" hidden>
@@ -598,21 +658,42 @@
         </div>
       </main>
 
-      <div class="legend">
-        Select <strong>Highlight</strong>, drag across an area, or select
-        <strong>Sticker note</strong> and click anywhere on a page. Shared annotations
-        are stored in Vercel Blob and sync automatically across the team.
+      <!-- Floating Toast Status -->
+      <div class="status-toast" id="statusBar" role="status" aria-live="polite">
+        Ready
       </div>
     </div>
 
-    <form class="note-editor" id="noteEditor" hidden>
-      <label for="noteText">Sticker note</label>
-      <textarea id="noteText" maxlength="2000" required placeholder="Add a note for your team…"></textarea>
-      <div class="note-editor-actions">
-        <button class="button" type="button" id="cancelNoteButton">Cancel</button>
-        <button class="button button-primary" type="submit">Place note</button>
+    <!-- Enhanced Sticky Note Popover -->
+    <div class="note-popover" id="noteEditor" hidden>
+      <div class="note-popover-header">
+        <div class="note-popover-meta">
+          <span class="note-author" id="noteAuthor">📌 Note</span>
+          <span class="note-date" id="noteDate"></span>
+        </div>
+        <div class="note-popover-tools">
+          <button class="icon-btn" type="button" id="closeNoteButton" title="Close note">✕</button>
+        </div>
       </div>
-    </form>
+
+      <!-- View Mode -->
+      <div class="note-view-body" id="noteViewBody">
+        <div class="note-content" id="noteContentText"></div>
+        <div class="note-view-actions">
+          <button class="btn btn-danger btn-icon" type="button" id="deleteNoteDirectButton" title="Delete note">🗑</button>
+          <button class="btn" type="button" id="editNoteButton">✏️ Edit</button>
+        </div>
+      </div>
+
+      <!-- Edit Mode -->
+      <form class="note-edit-body" id="noteEditBody" hidden>
+        <textarea id="noteText" maxlength="2000" required placeholder="Write a note for the team…"></textarea>
+        <div class="note-edit-actions">
+          <button class="btn" type="button" id="cancelNoteButton">Cancel</button>
+          <button class="btn btn-primary" type="submit" id="saveNoteSubmitButton">Place note</button>
+        </div>
+      </form>
+    </div>
 
     <script>
       (() => {
@@ -642,22 +723,29 @@
           title: document.getElementById("paperTitle"),
           meta: document.getElementById("paperMeta"),
           authStatus: document.getElementById("authStatus"),
-          login: document.getElementById("loginButton"),
-          logout: document.getElementById("logoutButton"),
           status: document.getElementById("statusBar"),
           pages: document.getElementById("pdfPages"),
           empty: document.getElementById("emptyState"),
           emptyMessage: document.getElementById("emptyStateMessage"),
           color: document.getElementById("highlightColor"),
-          opacity: document.getElementById("highlightOpacity"),
+          colorPreview: document.getElementById("colorPreview"),
           undo: document.getElementById("undoButton"),
           delete: document.getElementById("deleteButton"),
           reload: document.getElementById("reloadButton"),
           download: document.getElementById("downloadButton"),
           save: document.getElementById("saveButton"),
           noteEditor: document.getElementById("noteEditor"),
+          noteAuthor: document.getElementById("noteAuthor"),
+          noteDate: document.getElementById("noteDate"),
+          noteViewBody: document.getElementById("noteViewBody"),
+          noteContentText: document.getElementById("noteContentText"),
+          editNoteButton: document.getElementById("editNoteButton"),
+          deleteNoteDirectButton: document.getElementById("deleteNoteDirectButton"),
+          closeNoteButton: document.getElementById("closeNoteButton"),
+          noteEditBody: document.getElementById("noteEditBody"),
           noteText: document.getElementById("noteText"),
-          cancelNote: document.getElementById("cancelNoteButton"),
+          saveNoteSubmitButton: document.getElementById("saveNoteSubmitButton"),
+          cancelNoteButton: document.getElementById("cancelNoteButton"),
         };
 
         let annotations = [];
@@ -671,6 +759,7 @@
         let draggingNote = null;
         let pageLayers = new Map();
         let isDirty = false;
+        let toastTimeout = null;
 
         if (typeof window.pdfjsLib !== "undefined") {
           window.pdfjsLib.GlobalWorkerOptions.workerSrc =
@@ -678,7 +767,12 @@
         }
 
         elements.title.textContent = paperTitle;
-        elements.meta.textContent = paperMeta;
+        elements.title.title = paperTitle;
+        if (paperMeta) {
+          elements.meta.textContent = paperMeta;
+        } else {
+          elements.meta.hidden = true;
+        }
 
         function apiUrl(path) {
           return (apiBase || "") + "/api" + path;
@@ -687,6 +781,11 @@
         function setStatus(message, kind) {
           elements.status.textContent = message;
           elements.status.dataset.kind = kind || "neutral";
+          elements.status.classList.add("visible");
+          if (toastTimeout) clearTimeout(toastTimeout);
+          toastTimeout = setTimeout(() => {
+            elements.status.classList.remove("visible");
+          }, 3200);
         }
 
         function setEmpty(message) {
@@ -765,11 +864,12 @@
           isDirty = true;
           renderAnnotations();
           updateActionState();
-          setStatus("Unsaved annotation changes. Save them to share with the team.", "warning");
+          setStatus("Unsaved changes. Click 'Save' when ready.", "warning");
         }
 
         function removeAnnotation(id) {
           if (!id) return;
+          closeNoteEditor();
           const next = annotations.filter((annotation) => annotation.id !== id);
           if (next.length === annotations.length) return;
           commitChange(next, null);
@@ -785,9 +885,10 @@
           annotations = previous;
           selectedAnnotationId = null;
           isDirty = true;
+          closeNoteEditor();
           renderAnnotations();
           updateActionState();
-          setStatus("Undo applied. Save when the shared version is ready.", "warning");
+          setStatus("Undo applied.", "neutral");
         }
 
         function annotationDeleteButton(annotation) {
@@ -805,16 +906,55 @@
           return button;
         }
 
-        function showNoteEditor(draft) {
+        /* Upgraded Note Popover Handlers */
+        function showNoteEditor(draft, mode) {
           noteDraft = draft;
-          elements.noteText.value = draft.annotation ? draft.annotation.text || "" : "";
           elements.noteEditor.hidden = false;
-          const width = Math.min(340, window.innerWidth - 24);
-          const left = clamp(draft.clientX + 12, 12, window.innerWidth - width - 12);
-          const top = clamp(draft.clientY + 12, 12, window.innerHeight - 210);
+
+          const isExisting = Boolean(draft.annotation);
+          const author = isExisting && draft.annotation.createdBy
+            ? draft.annotation.createdBy
+            : (query.get("user") || "Team note");
+          elements.noteAuthor.textContent = "📌 " + author;
+
+          if (isExisting && draft.annotation.createdAt) {
+            try {
+              const d = new Date(draft.annotation.createdAt);
+              elements.noteDate.textContent = d.toLocaleDateString(undefined, {
+                month: "short",
+                day: "numeric",
+                hour: "2-digit",
+                minute: "2-digit",
+              });
+            } catch (_e) {
+              elements.noteDate.textContent = "";
+            }
+          } else {
+            elements.noteDate.textContent = "Just now";
+          }
+
+          if (mode === "edit" || !isExisting) {
+            // Edit Mode
+            elements.noteViewBody.hidden = true;
+            elements.noteEditBody.hidden = false;
+            elements.noteText.value = isExisting ? draft.annotation.text || "" : "";
+            elements.saveNoteSubmitButton.textContent = isExisting ? "Update note" : "Place note";
+            window.setTimeout(() => elements.noteText.focus(), 50);
+          } else {
+            // View Mode
+            elements.noteViewBody.hidden = false;
+            elements.noteEditBody.hidden = true;
+            elements.noteContentText.textContent = draft.annotation.text || "";
+          }
+
+          // Anchor popover beside client position
+          const width = Math.min(320, window.innerWidth - 28);
+          const clientX = draft.clientX ?? (window.innerWidth / 2);
+          const clientY = draft.clientY ?? 100;
+          const left = clamp(clientX + 14, 12, window.innerWidth - width - 14);
+          const top = clamp(clientY - 10, 60, window.innerHeight - 240);
           elements.noteEditor.style.left = left + "px";
           elements.noteEditor.style.top = top + "px";
-          window.setTimeout(() => elements.noteText.focus(), 0);
         }
 
         function closeNoteEditor() {
@@ -847,11 +987,11 @@
               page: noteDraft.page,
               x: noteDraft.x,
               y: noteDraft.y,
-              width: 0.06,
-              height: 0.06,
+              width: 0.05,
+              height: 0.05,
               text,
               color: "#ffd166",
-              createdBy: currentUser ? currentUser.login : (query.get("user") || "team member"),
+              createdBy: query.get("user") || "team member",
               createdAt: new Date().toISOString(),
             };
             next.push(annotation);
@@ -860,16 +1000,17 @@
           closeNoteEditor();
         }
 
-        function openExistingNote(annotation, event) {
-          event.stopPropagation();
+        function openExistingNote(annotation, event, mode) {
+          if (event) event.stopPropagation();
+          const rect = event.currentTarget ? event.currentTarget.getBoundingClientRect() : null;
           showNoteEditor({
             annotation,
             page: annotation.page,
             x: annotation.x,
             y: annotation.y,
-            clientX: event.clientX,
-            clientY: event.clientY,
-          });
+            clientX: rect ? rect.right : (event.clientX || window.innerWidth / 2),
+            clientY: rect ? rect.top : (event.clientY || 120),
+          }, mode || "view");
         }
 
         function renderAnnotations() {
@@ -887,43 +1028,46 @@
             element.dataset.annotationId = annotation.id;
             element.style.left = annotation.x * 100 + "%";
             element.style.top = annotation.y * 100 + "%";
-            element.style.width = annotation.type === "highlight" ? annotation.width * 100 + "%" : "44px";
-            element.style.height = annotation.type === "highlight" ? annotation.height * 100 + "%" : "44px";
+            element.style.width = annotation.type === "highlight" ? annotation.width * 100 + "%" : "32px";
+            element.style.height = annotation.type === "highlight" ? annotation.height * 100 + "%" : "32px";
             element.classList.toggle("selected", selectedAnnotationId === annotation.id);
 
             if (annotation.type === "highlight") {
               element.style.background = annotation.color || elements.color.value;
-              element.style.opacity = String(annotation.opacity || 0.4);
+              element.style.opacity = "0.38";
               element.title = "Highlight";
+              element.addEventListener("click", (event) => {
+                event.stopPropagation();
+                selectAnnotation(annotation.id);
+              });
             } else {
-              element.style.background = annotation.color || "#ffd166";
               element.textContent = "📌";
               element.title = annotation.text;
               element.setAttribute("aria-label", "Sticker note: " + annotation.text);
-              element.addEventListener("dblclick", (event) => openExistingNote(annotation, event));
-              element.addEventListener("pointerdown", (event) => beginNoteDrag(annotation, element, layer, event));
+
+              // Reliable Click + Drag Handler
+              element.addEventListener("pointerdown", (event) => {
+                if (event.target.closest(".annotation-delete")) return;
+                event.stopPropagation();
+                beginNoteDrag(annotation, element, layer, event);
+              });
             }
 
             element.appendChild(annotationDeleteButton(annotation));
-            element.addEventListener("pointerdown", (event) => event.stopPropagation());
-            element.addEventListener("click", (event) => {
-              event.stopPropagation();
-              selectAnnotation(annotation.id);
-            });
             layer.appendChild(element);
           });
           updateActionState();
         }
 
         function beginNoteDrag(annotation, element, layer, event) {
-          if (event.target.closest(".annotation-delete") || event.detail >= 2) return;
-          event.preventDefault();
           const point = getPoint(event, layer);
           draggingNote = {
             annotation,
             element,
             layer,
             pointerId: event.pointerId,
+            startClientX: event.clientX,
+            startClientY: event.clientY,
             offsetX: point.x - annotation.x,
             offsetY: point.y - annotation.y,
             moved: false,
@@ -938,15 +1082,16 @@
 
         function handleNoteDrag(event) {
           if (!draggingNote || event.pointerId !== draggingNote.pointerId) return;
-          const point = getPoint(event, draggingNote.layer);
-          const nextX = clamp(point.x - draggingNote.offsetX, 0, 0.94);
-          const nextY = clamp(point.y - draggingNote.offsetY, 0, 0.94);
-          if (Math.abs(nextX - draggingNote.annotation.x) > 0.001 || Math.abs(nextY - draggingNote.annotation.y) > 0.001) {
+          const dist = Math.hypot(event.clientX - draggingNote.startClientX, event.clientY - draggingNote.startClientY);
+          if (dist > 5) {
             if (!draggingNote.moved) {
               history.push(snapshot());
               isDirty = true;
               draggingNote.moved = true;
             }
+            const point = getPoint(event, draggingNote.layer);
+            const nextX = clamp(point.x - draggingNote.offsetX, 0, 0.95);
+            const nextY = clamp(point.y - draggingNote.offsetY, 0, 0.95);
             draggingNote.annotation.x = nextX;
             draggingNote.annotation.y = nextY;
             draggingNote.element.style.left = nextX * 100 + "%";
@@ -957,11 +1102,17 @@
 
         function endNoteDrag(event) {
           if (!draggingNote || event.pointerId !== draggingNote.pointerId) return;
-          const changed = draggingNote.moved;
+          const moved = draggingNote.moved;
+          const annotation = draggingNote.annotation;
+          const element = draggingNote.element;
           draggingNote = null;
-          if (changed) {
+
+          if (moved) {
             renderAnnotations();
-            setStatus("Sticker note moved. Save to share its new position.", "warning");
+            setStatus("Note moved. Click Save to share.", "warning");
+          } else {
+            // It was a click! Open note popover
+            openExistingNote(annotation, { currentTarget: element, clientX: event.clientX, clientY: event.clientY }, "view");
           }
         }
 
@@ -979,19 +1130,19 @@
             preview: document.createElement("div"),
           };
           highlightDraft.preview.className = "annotation-draft";
+          highlightDraft.preview.style.background = elements.color.value;
           layer.appendChild(highlightDraft.preview);
           try {
             layer.setPointerCapture(event.pointerId);
           } catch (_error) {}
-          updateHighlightPreview(point);
         }
 
-        function updateHighlightPreview(point) {
+        function updateHighlightPreview(current) {
           if (!highlightDraft) return;
-          const x = Math.min(highlightDraft.startX, point.x);
-          const y = Math.min(highlightDraft.startY, point.y);
-          const width = Math.abs(point.x - highlightDraft.startX);
-          const height = Math.abs(point.y - highlightDraft.startY);
+          const x = Math.min(highlightDraft.startX, current.x);
+          const y = Math.min(highlightDraft.startY, current.y);
+          const width = Math.abs(current.x - highlightDraft.startX);
+          const height = Math.abs(current.y - highlightDraft.startY);
           highlightDraft.preview.style.left = x * 100 + "%";
           highlightDraft.preview.style.top = y * 100 + "%";
           highlightDraft.preview.style.width = width * 100 + "%";
@@ -1001,19 +1152,15 @@
         function finishHighlight(event) {
           if (!highlightDraft || event.pointerId !== highlightDraft.pointerId) return;
           const point = getPoint(event, highlightDraft.layer);
-          updateHighlightPreview(point);
+          const page = highlightDraft.page;
           const x = Math.min(highlightDraft.startX, point.x);
           const y = Math.min(highlightDraft.startY, point.y);
           const width = Math.abs(point.x - highlightDraft.startX);
           const height = Math.abs(point.y - highlightDraft.startY);
-          const page = highlightDraft.page;
           highlightDraft.preview.remove();
           highlightDraft = null;
 
-          if (width < 0.008 || height < 0.008) {
-            setStatus("Drag across a larger area to create a highlight.", "warning");
-            return;
-          }
+          if (width < 0.015 || height < 0.008) return;
 
           const next = snapshot();
           const annotation = {
@@ -1025,8 +1172,8 @@
             width,
             height,
             color: elements.color.value,
-            opacity: Number(elements.opacity.value),
-            createdBy: currentUser ? currentUser.login : (query.get("user") || "team member"),
+            opacity: 0.38,
+            createdBy: query.get("user") || "team member",
             createdAt: new Date().toISOString(),
           };
           next.push(annotation);
@@ -1034,7 +1181,9 @@
         }
 
         function handleLayerPointerDown(event) {
-          if (event.target.closest(".annotation")) return;
+          if (event.target.closest(".annotation") || event.target.closest(".note-popover")) return;
+          closeNoteEditor();
+
           if (activeTool === "highlight") {
             beginHighlight(event);
           } else if (activeTool === "note") {
@@ -1047,7 +1196,7 @@
               y: point.y,
               clientX: event.clientX,
               clientY: event.clientY,
-            });
+            }, "edit");
           }
         }
 
@@ -1063,11 +1212,11 @@
           });
           renderAnnotations();
           if (tool === "highlight") {
-            setStatus("Drag across a PDF area to add a highlight.", "neutral");
+            setStatus("Drag across text to highlight.", "neutral");
           } else if (tool === "note") {
-            setStatus("Click a PDF location to place a sticker note.", "neutral");
+            setStatus("Click anywhere on a page to place a note.", "neutral");
           } else {
-            setStatus("Select an annotation to move, edit, or delete it.", "neutral");
+            setStatus("Select tool active.", "neutral");
           }
         }
 
@@ -1078,35 +1227,34 @@
             page: Number(annotation.page),
             x: Number(annotation.x),
             y: Number(annotation.y),
-            width: Number(annotation.width),
-            height: Number(annotation.height),
-            color: annotation.color,
-            opacity: annotation.opacity,
-            text: annotation.text,
-            createdBy: annotation.createdBy,
-            createdAt: annotation.createdAt,
+            width: Number(annotation.width || 0.05),
+            height: Number(annotation.height || 0.05),
+            color: annotation.color || "#ffd166",
+            opacity: annotation.type === "highlight" ? 0.38 : undefined,
+            text: annotation.text ? String(annotation.text).trim() : undefined,
+            createdBy: annotation.createdBy || (query.get("user") || "team member"),
+            createdAt: annotation.createdAt || new Date().toISOString(),
           }));
         }
 
         function downloadAnnotations() {
-          const documentData = {
+          const payload = {
             paperId,
-            sourcePdf: pdfUrl,
             version: 1,
+            exportedAt: new Date().toISOString(),
             annotations: annotationPayload(),
           };
-          const blob = new Blob([JSON.stringify(documentData, null, 2) + "\n"], {
-            type: "application/json",
-          });
+          const blob = new Blob([JSON.stringify(payload, null, 2) + "
+"], { type: "application/json" });
           const url = URL.createObjectURL(blob);
           const link = document.createElement("a");
           link.href = url;
-          link.download = "paper-" + paperId + "-annotations.json";
+          link.download = (paperId ? "paper-" + paperId : "annotations") + ".json";
           document.body.appendChild(link);
           link.click();
           link.remove();
           URL.revokeObjectURL(url);
-          setStatus("Annotation JSON downloaded as a local backup.", "success");
+          setStatus("Annotations downloaded as JSON backup.", "success");
         }
 
         async function loadLocalAnnotations() {
@@ -1123,26 +1271,30 @@
         async function loadAnnotations() {
           let documentData = null;
           let loadedFromApi = false;
-          if (hasApi) {
+
+          if (hasApi && paperId) {
             try {
               const response = await fetch(apiUrl("/annotations/" + encodeURIComponent(paperId)), {
-                credentials: "include",
                 cache: "no-store",
               });
-              if (!response.ok) throw new Error("HTTP " + response.status);
+              if (!response.ok) throw new Error("API returned " + response.status);
               documentData = await response.json();
               loadedFromApi = true;
-            } catch (error) {
-              setStatus("Vercel annotation storage is unavailable; checking the local fallback.", "warning");
+            } catch (_error) {
+              setStatus("Cloud storage unavailable; checking local fallback.", "warning");
             }
           }
+
           if (!documentData) documentData = await loadLocalAnnotations();
 
-          annotations = documentData && Array.isArray(documentData.annotations)
-            ? documentData.annotations.filter(validAnnotation)
-            : [];
-          annotationRevision = documentData && documentData.revision ? documentData.revision : null;
-          selectedAnnotationId = null;
+          if (documentData && Array.isArray(documentData.annotations)) {
+            annotations = documentData.annotations.filter(validAnnotation);
+            annotationRevision = documentData.revision || null;
+          } else {
+            annotations = [];
+            annotationRevision = null;
+          }
+
           history = [];
           isDirty = false;
           renderAnnotations();
@@ -1152,74 +1304,19 @@
             const count = annotations.length;
             setStatus(
               count
-                ? count + " shared annotation" + (count === 1 ? "" : "s") + " loaded from Vercel."
-                : "No shared annotations yet. Add a highlight or sticker note.",
+                ? count + " shared annotation" + (count === 1 ? "" : "s") + " synced."
+                : "No annotations yet. Ready to highlight or add notes.",
               "success",
-            );
-          } else if (annotations.length) {
-            setStatus("Local annotation JSON loaded. Configure Vercel to save shared changes.", "warning");
-          } else {
-            setStatus(
-              hasApi
-                ? "No shared annotations yet. Add a highlight or sticker note."
-                : "Local preview mode: configure the Vercel API before saving shared changes.",
-              "warning",
             );
           }
         }
 
         async function checkAuth() {
-          if (!hasApi) {
-            elements.authStatus.textContent = "Local preview";
-            elements.login.hidden = true;
-            elements.logout.hidden = true;
-            updateActionState();
-            return;
-          }
-
-          try {
-            const response = await fetch(apiUrl("/auth/me"), {
-              credentials: "include",
-              cache: "no-store",
-            });
-            const data = await response.json();
-            currentUser = data.authenticated ? data.user : null;
-          } catch (_error) {
-            currentUser = null;
-          }
-
-          if (currentUser) {
-            elements.authStatus.textContent = "Signed in as @" + currentUser.login;
-            elements.login.hidden = true;
-            elements.logout.hidden = false;
-          } else {
-            const activeUser = query.get("user");
-            elements.authStatus.textContent = activeUser
-              ? "● Syncing as " + activeUser
-              : "● Shared cloud sync active";
-            elements.login.hidden = true;
-            elements.logout.hidden = true;
-          }
+          const activeUser = query.get("user");
+          elements.authStatus.textContent = activeUser
+            ? "● Syncing as " + activeUser
+            : "● Shared sync active";
           updateActionState();
-        }
-
-        function signIn() {
-          if (!hasApi) return;
-          const returnTo = encodeURIComponent(window.location.href);
-          window.location.assign(apiUrl("/auth/github") + "?returnTo=" + returnTo);
-        }
-
-        async function signOut() {
-          if (!hasApi) return;
-          try {
-            await fetch(apiUrl("/auth/logout"), {
-              method: "POST",
-              credentials: "include",
-            });
-          } finally {
-            currentUser = null;
-            await checkAuth();
-          }
         }
 
         async function saveSharedAnnotations() {
@@ -1229,14 +1326,13 @@
           }
 
           elements.save.disabled = true;
-          setStatus("Saving annotations to Vercel…", "neutral");
+          setStatus("Saving to Vercel…", "neutral");
           try {
             const author = currentUser
               ? currentUser.login
               : (query.get("user") || "team member");
             const response = await fetch(apiUrl("/annotations/" + encodeURIComponent(paperId)), {
               method: "POST",
-              credentials: "include",
               headers: { "Content-Type": "application/json" },
               body: JSON.stringify({
                 paperId,
@@ -1247,7 +1343,7 @@
             });
             const data = await response.json();
             if (response.status === 409) {
-              setStatus("Someone changed the shared file. Reload it before saving your version.", "warning");
+              setStatus("Annotations changed remotely. Reload before saving.", "warning");
               return;
             }
             if (!response.ok) {
@@ -1256,33 +1352,33 @@
             annotationRevision = data.revision || annotationRevision;
             isDirty = false;
             history = [];
-            setStatus("Saved to Vercel. Everyone opening this paper will see these annotations.", "success");
+            setStatus("Saved! Annotations are synced for everyone.", "success");
           } catch (error) {
-            setStatus(error.message || "The shared save failed.", "error");
+            setStatus(error.message || "Save failed.", "error");
           } finally {
             updateActionState();
           }
         }
 
         async function reloadShared() {
-          if (isDirty && !window.confirm("Discard unsaved annotation changes and reload the shared version?")) return;
-          closeNoteEditor();
+          if (isDirty && !window.confirm("Discard unsaved changes and reload?")) return;
           await loadAnnotations();
+          setStatus("Reloaded shared annotations.", "neutral");
         }
 
         async function renderPdf() {
-          if (!paperId || !pdfUrl) {
-            setEmpty("This link is missing a paper ID or PDF URL.");
-            setStatus("The PDF link is incomplete.", "error");
+          if (!pdfUrl) {
+            setEmpty("No PDF path was provided.");
+            setStatus("Missing PDF URL.", "error");
             return;
           }
           if (typeof window.pdfjsLib === "undefined") {
-            setEmpty("The PDF viewer library did not load. Check your network connection and reload.");
-            setStatus("PDF.js could not be loaded.", "error");
+            setEmpty("PDF viewer library did not load. Check network connection.");
+            setStatus("PDF.js not loaded.", "error");
             return;
           }
           try {
-            setStatus("Opening PDF…", "neutral");
+            setStatus("Loading PDF…", "neutral");
             const loadingTask = window.pdfjsLib.getDocument({
               url: pdfUrl,
               withCredentials: false,
@@ -1293,7 +1389,6 @@
             pageLayers = new Map();
 
             for (let pageNumber = 1; pageNumber <= pdf.numPages; pageNumber += 1) {
-              setStatus("Rendering PDF page " + pageNumber + " of " + pdf.numPages + "…", "neutral");
               const page = await pdf.getPage(pageNumber);
               const baseViewport = page.getViewport({ scale: 1 });
               const availableWidth = Math.max(320, Math.min(980, elements.pages.clientWidth || 980));
@@ -1320,32 +1415,49 @@
             }
 
             renderAnnotations();
-            setStatus("PDF ready. Add highlights or sticker notes, then save when finished.", "success");
+            setStatus("PDF loaded successfully.", "success");
           } catch (error) {
             console.error(error);
-            setEmpty(
-              "The PDF could not be rendered. If it is stored on another domain, that domain must allow PDF.js cross-origin access.",
-            );
-            setStatus("Could not open the PDF: " + (error.message || "unknown error"), "error");
+            setEmpty("The PDF could not be loaded: " + (error.message || "unknown error"));
+            setStatus("Could not open PDF.", "error");
           }
         }
 
+        // Tool listeners
         document.querySelectorAll("[data-tool]").forEach((button) => {
           button.addEventListener("click", () => setTool(button.dataset.tool));
         });
+
+        // Color picker preview
+        elements.color.addEventListener("input", (e) => {
+          elements.colorPreview.style.background = e.target.value;
+          renderAnnotations();
+        });
+
         elements.undo.addEventListener("click", undo);
         elements.delete.addEventListener("click", deleteSelected);
         elements.reload.addEventListener("click", reloadShared);
         elements.download.addEventListener("click", downloadAnnotations);
         elements.save.addEventListener("click", saveSharedAnnotations);
-        elements.login.addEventListener("click", signIn);
-        elements.logout.addEventListener("click", signOut);
-        elements.noteEditor.addEventListener("submit", saveNote);
-        elements.cancelNote.addEventListener("click", closeNoteEditor);
-        elements.color.addEventListener("input", renderAnnotations);
-        elements.opacity.addEventListener("input", renderAnnotations);
+
+        // Note popover listeners
+        elements.noteEditBody.addEventListener("submit", saveNote);
+        elements.cancelNoteButton.addEventListener("click", closeNoteEditor);
+        elements.closeNoteButton.addEventListener("click", closeNoteEditor);
+
+        elements.editNoteButton.addEventListener("click", () => {
+          if (!noteDraft || !noteDraft.annotation) return;
+          showNoteEditor(noteDraft, "edit");
+        });
+
+        elements.deleteNoteDirectButton.addEventListener("click", () => {
+          if (!noteDraft || !noteDraft.annotation) return;
+          removeAnnotation(noteDraft.annotation.id);
+        });
+
         document.addEventListener("pointermove", handleNoteDrag);
         document.addEventListener("pointerup", endNoteDrag);
+
         document.addEventListener("keydown", (event) => {
           const tagName = document.activeElement && document.activeElement.tagName;
           if (event.key === "Escape") closeNoteEditor();
@@ -1357,12 +1469,6 @@
             saveSharedAnnotations();
           }
         });
-
-        if (query.get("auth")) {
-          const cleanUrl = new URL(window.location.href);
-          cleanUrl.searchParams.delete("auth");
-          window.history.replaceState({}, document.title, cleanUrl.pathname + cleanUrl.search);
-        }
 
         updateActionState();
         checkAuth();
