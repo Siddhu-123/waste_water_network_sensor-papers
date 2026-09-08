@@ -37,20 +37,21 @@ All paper records across contributors are loaded dynamically from their respecti
 
 Click **PDF + Notes** beside any paper. The viewer supports rectangular highlights and draggable sticker notes. Annotation positions are stored as normalized coordinates, so they remain aligned when the PDF is viewed on a different screen size.
 
-The recommended shared site is:
+The recommended shared library link is:
 
 ```text
-https://waste-water-network-sensor-papers-two.vercel.app/
+https://siddhu-123.github.io/waste_water_network_sensor-papers/index.html
 ```
 
-Annotations are stored as one small private JSON object per paper in Vercel Blob. The Vercel API fetches that object whenever someone opens the PDF, so the annotations are shared without adding JSON files or PDF copies to GitHub.
+GitHub Pages hosts this public library, while Vercel hosts the API and stores one small private JSON object per paper in Vercel Blob. The viewer fetches that object whenever someone opens the PDF, so annotations are shared without adding JSON files or PDF copies to GitHub. The direct Vercel site is also available at `https://waste-water-network-sensor-papers-two.vercel.app/`.
 
 The viewer has two modes:
 
+- **GitHub Pages mode:** the public viewer calls the Vercel API through [`annotation-config.js`](./annotation-config.js), so shared annotations work from the library link above.
 - **Vercel mode:** the viewer and API use the same Vercel origin. Shared annotations are loaded from Vercel Blob.
-- **Local/GitHub Pages preview:** the static viewer can load an optional committed JSON fallback and download a local backup. Shared saving still uses the Vercel API.
+- **Local preview:** the viewer can load an optional committed JSON fallback and download a local backup. Shared saving is disabled on `file://` pages.
 
-Share the Vercel URL above with the team. GitHub Pages remains an optional static copy. If GitHub Pages should open the shared editor too, set `window.ANNOTATION_API_BASE` in [`annotation-config.js`](./annotation-config.js) to the Vercel URL.
+Share the GitHub Pages link above with the team. The Vercel URL is a direct alternative.
 
 ### Vercel setup for shared saves
 
