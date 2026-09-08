@@ -9,7 +9,12 @@ Open [`index.html`](./index.html) to use the viewer.
 ```text
 sensor_papers/
 ├── index.html                         Dynamic viewer with nested filters & squeeze toggle
+├── pdf-viewer.html                    PDF.js viewer with shared highlights & sticker notes
+├── annotation-config.js               Optional Vercel API URL for GitHub Pages
 ├── summaries.json                     Shared 8-step summaries
+├── annotations/                       Shared annotation JSON files created on save
+├── api/                               Vercel OAuth and annotation API routes
+├── server/                            Server-only GitHub/OAuth helpers
 ├── scripts/
 │   └── validate_repo.py               Automated repository consistency validator
 ├── contributors/
@@ -26,6 +31,41 @@ sensor_papers/
 The 23 initial research papers and the individual [compiled Paper 1 PDF](./contributors/satya-siddhartha/compiled-papers/paper-1.pdf) are stored in [`contributors/satya-siddhartha/`](./contributors/satya-siddhartha/). They remain assigned to **Satya Siddhartha**.
 
 All paper records across contributors are loaded dynamically from their respective JSON files. `index.html` contains no hardcoded paper data.
+
+## Shared PDF highlights and sticker notes
+
+Click **PDF + Notes** beside any paper. The viewer supports rectangular highlights and draggable sticker notes. Annotation positions are stored as normalized coordinates, so they remain aligned when the PDF is viewed on a different screen size.
+
+The viewer has two modes:
+
+- **Vercel mode:** the Vercel API reads and writes `annotations/paper-<id>.json` in this repository. Everyone sees the committed annotations.
+- **Local/GitHub Pages preview:** annotations can be viewed from committed JSON files and downloaded as JSON, but saving requires the Vercel API.
+
+For the simplest deployment, connect this repository to Vercel and leave `window.ANNOTATION_API_BASE` empty in [`annotation-config.js`](./annotation-config.js). The PDF viewer and API then use the same Vercel origin. The GitHub Pages copy can remain a public read-only library. If GitHub Pages must launch the editor, set `window.ANNOTATION_API_BASE` to the Vercel deployment URL.
+
+### Vercel setup for shared saves
+
+Create a GitHub OAuth App at **GitHub → Settings → Developer settings → OAuth Apps**. Set its callback URL to:
+
+```text
+https://YOUR-VERCEL-DOMAIN.vercel.app/api/auth/github/callback
+```
+
+Add these Vercel environment variables for Preview and Production:
+
+```text
+GITHUB_CLIENT_ID=your-oauth-client-id
+GITHUB_CLIENT_SECRET=your-oauth-client-secret
+GITHUB_REPOSITORY=Siddhu-123/waste_water_network_sensor-papers
+GITHUB_BRANCH=main
+GITHUB_CALLBACK_URL=https://YOUR-VERCEL-DOMAIN.vercel.app/api/auth/github/callback
+SESSION_SECRET=generate-a-random-secret-at-least-32-characters-long
+ALLOWED_ORIGINS=https://YOUR-VERCEL-DOMAIN.vercel.app,https://siddhu-123.github.io
+```
+
+Only GitHub accounts with **push**, **maintain**, or **admin** permission on the repository can save. The backend keeps the OAuth token in an encrypted, HttpOnly session cookie and never sends it to the webpage. Each save uses the current GitHub file SHA, so a concurrent edit is rejected instead of silently overwriting someone else's annotations.
+
+Do not put `GITHUB_CLIENT_SECRET`, `SESSION_SECRET`, or a GitHub token in `index.html`, `pdf-viewer.html`, or `annotation-config.js`.
 
 ## Registered contributors
 

@@ -1136,8 +1136,9 @@
               id="modalPdfLink"
               href="#"
               target="_blank"
+              rel="noopener"
               class="btn-action btn-pdf"
-              >📄 Open Full-Text PDF</a
+              >📄 Open PDF + Notes</a
             >
             <button class="btn-action btn-scholar" onclick="closeModal()">
               Close
@@ -1403,7 +1404,7 @@
                     <td class="col-actions">
                         <div class="action-btns mobile-actions">
                             <button class="btn-action btn-summary" onclick="openSummary(${paper.id})">📝 8-Step Summary</button>
-                            <a class="btn-action btn-pdf" href="${paper.pdfUrl}" target="_blank">📄 PDF</a>
+                            <a class="btn-action btn-pdf" href="${escapeHtml(getPdfViewerUrl(paper))}" target="_blank" rel="noopener">📄 PDF + Notes</a>
                             <a class="btn-action btn-scholar" href="${paper.scholarUrl}" target="_blank">🔍 Scholar</a>
                         </div>
                     </td>
@@ -1446,6 +1447,21 @@
           .replaceAll(">", "&gt;")
           .replaceAll('"', "&quot;")
           .replaceAll("'", "&#039;");
+      }
+
+      function getPdfViewerUrl(paper) {
+        const viewerUrl = new URL("./pdf-viewer.html", window.location.href);
+        viewerUrl.searchParams.set("paper", String(paper.id));
+        viewerUrl.searchParams.set("pdf", paper.pdfUrl || "");
+        if (paper.title) viewerUrl.searchParams.set("title", paper.title);
+        if (paper.topic) viewerUrl.searchParams.set("topic", paper.topic);
+        if (paper.assignedTo) {
+          viewerUrl.searchParams.set(
+            "user",
+            contributorDisplayName(paper.assignedTo),
+          );
+        }
+        return viewerUrl.href;
       }
 
       function contributorDisplayName(value) {
@@ -1591,8 +1607,8 @@
               paper.description || "Compiled paper for this topic.",
             )}</p>
             <a class="btn-action btn-pdf" href="${escapeHtml(
-              paper.pdfUrl,
-            )}" target="_blank" rel="noopener">📄 Open compiled PDF</a>
+              getPdfViewerUrl(paper),
+            )}" target="_blank" rel="noopener">📄 PDF + Notes</a>
           </article>
         `;
       }
@@ -1977,7 +1993,7 @@
         document.getElementById("modalPaperTitle").innerText = paper.title;
         document.getElementById("modalPaperMeta").innerText =
           `${paper.authors} — ${paper.journal}`;
-        document.getElementById("modalPdfLink").href = paper.pdfUrl;
+        document.getElementById("modalPdfLink").href = getPdfViewerUrl(paper);
         renderSummary();
         document.getElementById("summaryStatus").innerText =
           sharedSummaryLoadState === "loaded"
