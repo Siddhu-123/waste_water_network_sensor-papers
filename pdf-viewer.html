@@ -127,11 +127,11 @@
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
-        max-width: clamp(120px, 20vw, 280px);
+        max-width: clamp(120px, 18vw, 260px);
         margin: 0;
       }
 
-      /* Controls Segment (Page Nav & Zoom) */
+      /* Controls Segment (Page Nav, Zoom & Undo/Redo) */
       .nav-group {
         display: inline-flex;
         align-items: center;
@@ -239,7 +239,7 @@
         pointer-events: none;
       }
 
-      /* User Contributor Badge (Clickable to switch identity) */
+      /* User Contributor Badge (Clickable) */
       .user-pill {
         display: inline-flex;
         align-items: center;
@@ -253,7 +253,7 @@
         color: var(--text);
         cursor: pointer;
         transition: all 120ms ease;
-        max-width: 150px;
+        max-width: 160px;
       }
 
       .user-pill:hover {
@@ -444,6 +444,18 @@
         background: #0f766e;
       }
 
+      .btn-notes-toggle {
+        background: var(--accent-bg);
+        border-color: rgba(45, 212, 191, 0.35);
+        color: var(--accent);
+        font-weight: 700;
+      }
+
+      .btn-notes-toggle:hover {
+        background: rgba(45, 212, 191, 0.25);
+        border-color: var(--accent);
+      }
+
       .badge-count {
         background: rgba(45, 212, 191, 0.25);
         color: #5eead4;
@@ -577,9 +589,9 @@
         outline-offset: 2px;
       }
 
-      /* Notes Slide-Over Drawer */
+      /* Notes Slide-Over Drawer with Tabs */
       .notes-drawer {
-        width: 330px;
+        width: 340px;
         background: var(--sidebar-bg);
         border-left: 1px solid var(--line);
         display: flex;
@@ -599,17 +611,40 @@
         display: flex;
         align-items: center;
         justify-content: space-between;
-        padding: 12px 14px;
+        padding: 8px 12px;
         border-bottom: 1px solid var(--line);
+        gap: 8px;
       }
 
-      .drawer-title {
-        font-size: 13px;
-        font-weight: 700;
+      .drawer-tabs {
+        display: inline-flex;
+        background: rgba(14, 26, 46, 0.85);
+        border: 1px solid var(--line);
+        border-radius: 6px;
+        padding: 2px;
+        gap: 2px;
+      }
+
+      .drawer-tab {
+        background: transparent;
+        border: none;
+        color: var(--muted);
+        font-size: 11.5px;
+        font-weight: 600;
+        padding: 4px 8px;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: all 120ms ease;
+      }
+
+      .drawer-tab:hover {
         color: var(--text);
-        display: flex;
-        align-items: center;
-        gap: 6px;
+      }
+
+      .drawer-tab.active {
+        background: var(--accent-bg);
+        color: var(--accent);
+        font-weight: 700;
       }
 
       .drawer-close {
@@ -664,6 +699,12 @@
         transform: translateY(-1px);
       }
 
+      .note-card-item.deleted-card {
+        opacity: 0.75;
+        border-color: rgba(248, 113, 113, 0.3);
+        background: rgba(24, 15, 25, 0.6);
+      }
+
       .note-card-header {
         display: flex;
         align-items: flex-start;
@@ -695,6 +736,7 @@
         display: flex;
         align-items: center;
         gap: 6px;
+        flex-wrap: wrap;
       }
 
       .author-badge {
@@ -711,6 +753,14 @@
         width: 6px;
         height: 6px;
         border-radius: 50%;
+      }
+
+      .device-tag {
+        font-size: 10px;
+        color: var(--muted);
+        background: rgba(255, 255, 255, 0.05);
+        padding: 1px 5px;
+        border-radius: 4px;
       }
 
       .note-card-text {
@@ -732,6 +782,14 @@
         align-items: center;
         justify-content: flex-end;
         gap: 6px;
+      }
+
+      .btn-restore {
+        font-size: 11px;
+        padding: 2px 8px;
+        height: 24px;
+        color: #5eead4;
+        border-color: rgba(45, 212, 191, 0.4);
       }
 
       /* Anchored Note Popover Modal */
@@ -957,17 +1015,24 @@
         </div>
 
         <div class="header-center">
-          <!-- Page Jump & Zoom Controls -->
+          <!-- Page Jump Controls -->
           <div class="nav-group">
             <button class="nav-btn" type="button" id="prevPageBtn" title="Previous page (Left arrow)">◀</button>
             <span class="page-indicator" id="pageIndicator">1 / -</span>
             <button class="nav-btn" type="button" id="nextPageBtn" title="Next page (Right arrow)">▶</button>
           </div>
 
+          <!-- Zoom Controls -->
           <div class="nav-group">
             <button class="nav-btn" type="button" id="zoomOutBtn" title="Zoom out (−)">−</button>
             <span class="page-indicator" id="zoomIndicator" style="min-width: 42px;">100%</span>
             <button class="nav-btn" type="button" id="zoomInBtn" title="Zoom in (+)">+</button>
+          </div>
+
+          <!-- Undo / Redo Controls (Placed immediately next to Zoom) -->
+          <div class="nav-group">
+            <button class="nav-btn" type="button" id="undoButton" disabled title="Undo (Ctrl+Z / Cmd+Z)">↺</button>
+            <button class="nav-btn" type="button" id="redoButton" disabled title="Redo (Ctrl+Shift+Z / Cmd+Shift+Z)">↻</button>
           </div>
 
           <!-- Annotation Tool Selection -->
@@ -989,16 +1054,6 @@
         </div>
 
         <div class="header-right">
-          <!-- Active Contributor Badge (Click to edit identity) -->
-          <button class="user-pill" type="button" id="userSelectorBtn" title="Your contributor name (click to change)">
-            <span class="user-dot" id="activeUserDot"></span>
-            <span class="user-pill-name" id="activeUserName">Team</span>
-          </button>
-
-          <button class="btn" type="button" id="toggleNotesDrawerBtn" title="Toggle notes list">
-            💬 Notes <span class="badge-count" id="notesCountBadge">0</span>
-          </button>
-
           <!-- Auto-save Toggle -->
           <div class="autosave-group">
             <label class="toggle-control" title="Toggle automatic cloud saving">
@@ -1019,7 +1074,16 @@
             </button>
           </div>
 
-          <button class="btn btn-icon" type="button" id="undoButton" disabled title="Undo (Ctrl+Z)">↺</button>
+          <!-- Active Contributor & Device Badge (Click to edit identity) -->
+          <button class="user-pill" type="button" id="userSelectorBtn" title="Your contributor & device profile (click to change)">
+            <span class="user-dot" id="activeUserDot"></span>
+            <span class="user-pill-name" id="activeUserName">Team</span>
+          </button>
+
+          <!-- Notes Drawer Button (Right-most!) -->
+          <button class="btn btn-notes-toggle" type="button" id="toggleNotesDrawerBtn" title="Toggle notes list & timeline">
+            💬 Notes <span class="badge-count" id="notesCountBadge">0</span>
+          </button>
         </div>
       </header>
 
@@ -1034,16 +1098,22 @@
           </div>
         </main>
 
-        <!-- Slide-Out Notes Drawer -->
+        <!-- Slide-Out Notes Drawer with Dual Tabs -->
         <aside class="notes-drawer collapsed" id="notesDrawer">
           <div class="drawer-header">
-            <div class="drawer-title">
-              💬 Paper Notes <span class="badge-count" id="drawerNotesCount">0</span>
+            <div class="drawer-tabs">
+              <button class="drawer-tab active" type="button" id="tabActiveNotes">Active (<span id="activeNotesBadge">0</span>)</button>
+              <button class="drawer-tab" type="button" id="tabTimeline">Timeline (<span id="timelineBadge">0</span>)</button>
             </div>
             <button class="drawer-close" type="button" id="closeDrawerBtn" title="Close sidebar">✕</button>
           </div>
+          <!-- Active Notes Tab Pane -->
           <div class="drawer-list" id="drawerNotesList">
             <div class="drawer-empty">No notes yet.<br />Select 📌 Note and click on any page to add one.</div>
+          </div>
+          <!-- Timeline & History Tab Pane -->
+          <div class="drawer-list" id="drawerTimelineList" style="display: none;">
+            <div class="drawer-empty">No activity recorded yet.</div>
           </div>
         </aside>
       </div>
@@ -1110,6 +1180,38 @@
           return USER_PALETTES[Math.abs(hash) % USER_PALETTES.length];
         }
 
+        // Method 1: Device Detection & Identity System
+        function detectDevice() {
+          let id = localStorage.getItem("capstone_device_id");
+          if (!id) {
+            id = "dev_" + (window.crypto && typeof window.crypto.randomUUID === "function"
+              ? window.crypto.randomUUID().slice(0, 8)
+              : Math.random().toString(36).slice(2, 10));
+            localStorage.setItem("capstone_device_id", id);
+          }
+
+          const ua = navigator.userAgent || "";
+          let platform = "Device";
+          if (/Macintosh|Mac OS X/i.test(ua)) platform = "MacBook / Mac";
+          else if (/Windows/i.test(ua)) platform = "Windows PC";
+          else if (/iPhone/i.test(ua)) platform = "iPhone";
+          else if (/iPad/i.test(ua)) platform = "iPad";
+          else if (/Android/i.test(ua)) platform = "Android";
+          else if (/Linux/i.test(ua)) platform = "Linux PC";
+
+          let browser = "Browser";
+          if (/Edg\//i.test(ua)) browser = "Edge";
+          else if (/Chrome\//i.test(ua) && !/Edg\//i.test(ua)) browser = "Chrome";
+          else if (/Safari\//i.test(ua) && !/Chrome\//i.test(ua)) browser = "Safari";
+          else if (/Firefox\//i.test(ua)) browser = "Firefox";
+
+          const label = `${platform} (${browser})`;
+          localStorage.setItem("capstone_device_label", label);
+          return { id, label };
+        }
+
+        const currentDevice = detectDevice();
+
         const query = new URLSearchParams(window.location.search);
         const paperId = String(query.get("paper") || "").trim();
         const pdfParameter = query.get("pdf") || "";
@@ -1129,9 +1231,9 @@
           ? new URL("./annotations/paper-" + encodeURIComponent(paperId) + ".json", window.location.href).href
           : "";
 
-        // Identity Management
         function getActiveUser() {
           return (
+            localStorage.getItem("capstone_user_name") ||
             localStorage.getItem("pdf_active_user") ||
             query.get("user") ||
             "Contributor"
@@ -1140,6 +1242,7 @@
 
         function setActiveUser(name) {
           const clean = String(name || "").trim() || "Contributor";
+          localStorage.setItem("capstone_user_name", clean);
           localStorage.setItem("pdf_active_user", clean);
           updateUserDisplay();
         }
@@ -1164,16 +1267,21 @@
           zoomIndicator: document.getElementById("zoomIndicator"),
           zoomInBtn: document.getElementById("zoomInBtn"),
           zoomOutBtn: document.getElementById("zoomOutBtn"),
+          undo: document.getElementById("undoButton"),
+          redo: document.getElementById("redoButton"),
           color: document.getElementById("highlightColor"),
           colorPreview: document.getElementById("colorPreview"),
-          undo: document.getElementById("undoButton"),
           save: document.getElementById("saveButton"),
           notesDrawer: document.getElementById("notesDrawer"),
           toggleNotesDrawerBtn: document.getElementById("toggleNotesDrawerBtn"),
           closeDrawerBtn: document.getElementById("closeDrawerBtn"),
+          tabActiveNotes: document.getElementById("tabActiveNotes"),
+          tabTimeline: document.getElementById("tabTimeline"),
+          activeNotesBadge: document.getElementById("activeNotesBadge"),
+          timelineBadge: document.getElementById("timelineBadge"),
           notesCountBadge: document.getElementById("notesCountBadge"),
-          drawerNotesCount: document.getElementById("drawerNotesCount"),
           drawerNotesList: document.getElementById("drawerNotesList"),
+          drawerTimelineList: document.getElementById("drawerTimelineList"),
           noteEditor: document.getElementById("noteEditor"),
           noteAuthor: document.getElementById("noteAuthor"),
           noteViewBody: document.getElementById("noteViewBody"),
@@ -1193,13 +1301,15 @@
         let annotationRevision = null;
         let selectedAnnotationId = null;
         let activeTool = "pan";
-        let history = [];
+        let undoHistory = [];
+        let redoHistory = [];
         let noteDraft = null;
         let highlightDraft = null;
         let draggingNote = null;
         let pageLayers = new Map();
         let isDirty = false;
         let toastTimeout = null;
+        let currentDrawerTab = "active"; // "active" or "timeline"
 
         // Auto-save state
         let autoSaveTimer = null;
@@ -1217,6 +1327,7 @@
         let renderedPages = new Set();
         let renderingPages = new Set();
         let pageObserver = null;
+        let scrollRafPending = false;
 
         if (typeof window.pdfjsLib !== "undefined") {
           window.pdfjsLib.GlobalWorkerOptions.workerSrc =
@@ -1232,6 +1343,7 @@
           elements.activeUserName.textContent = user;
           elements.activeUserDot.style.background = palette.light;
           elements.userSelectorBtn.style.borderColor = palette.border;
+          elements.userSelectorBtn.title = `${user} on ${currentDevice.label} (click to change)`;
         }
 
         function apiUrl(path) {
@@ -1322,7 +1434,8 @@
         }
 
         function updateActionState() {
-          elements.undo.disabled = history.length === 0;
+          elements.undo.disabled = undoHistory.length === 0;
+          elements.redo.disabled = redoHistory.length === 0;
 
           if (autoSaveEnabled) {
             elements.save.style.display = "none";
@@ -1336,11 +1449,15 @@
                 : "No unsaved changes";
           }
 
-          // Update notes count & drawer
-          const notesOnly = annotations.filter((a) => a.type === "sticky-note" && validAnnotation(a));
-          elements.notesCountBadge.textContent = String(notesOnly.length);
-          elements.drawerNotesCount.textContent = String(notesOnly.length);
-          updateNotesDrawerList(notesOnly);
+          // Count active notes vs timeline items
+          const activeNotes = annotations.filter((a) => a.type === "sticky-note" && validAnnotation(a) && a.status !== "deleted");
+          const allNotes = annotations.filter((a) => a.type === "sticky-note" && validAnnotation(a));
+
+          elements.notesCountBadge.textContent = String(activeNotes.length);
+          elements.activeNotesBadge.textContent = String(activeNotes.length);
+          elements.timelineBadge.textContent = String(allNotes.length);
+
+          updateNotesDrawerList(activeNotes, allNotes);
         }
 
         function scheduleAutoSave() {
@@ -1353,7 +1470,8 @@
         }
 
         function commitChange(nextAnnotations, selectedId) {
-          history.push(snapshot());
+          undoHistory.push(snapshot());
+          redoHistory = []; // Reset redo stack on new modification
           annotations = nextAnnotations;
           selectedAnnotationId = selectedId || null;
           isDirty = true;
@@ -1368,18 +1486,54 @@
           }
         }
 
+        /* Soft Deletion with Audit Trail */
         function removeAnnotation(id) {
           if (!id) return;
           closeNoteEditor();
+          const target = annotations.find((annotation) => annotation.id === id);
+          if (!target) return;
+
+          if (target.type === "sticky-note") {
+            const next = snapshot();
+            const item = next.find((annotation) => annotation.id === id);
+            if (item) {
+              item.status = "deleted";
+              item.deletedBy = getActiveUser();
+              item.deletedAt = new Date().toISOString();
+              item.deletedDevice = currentDevice.label;
+              commitChange(next, null);
+              setStatus("Note deleted. View in Timeline tab to restore.", "neutral");
+              return;
+            }
+          }
+
+          // Highlights can be removed directly
           const next = annotations.filter((annotation) => annotation.id !== id);
-          if (next.length === annotations.length) return;
           commitChange(next, null);
         }
 
+        /* Restore Soft-Deleted Note */
+        function restoreAnnotation(id) {
+          if (!id) return;
+          const next = snapshot();
+          const item = next.find((annotation) => annotation.id === id);
+          if (item) {
+            item.status = "active";
+            delete item.deletedBy;
+            delete item.deletedAt;
+            delete item.deletedDevice;
+            commitChange(next, item.id);
+            setStatus(`Note restored to Page ${item.page}!`, "success");
+            scrollToPage(Number(item.page));
+            selectAnnotation(item.id);
+          }
+        }
+
+        /* Undo & Redo */
         function undo() {
-          const previous = history.pop();
-          if (!previous) return;
-          annotations = previous;
+          if (!undoHistory.length) return;
+          redoHistory.push(snapshot());
+          annotations = undoHistory.pop();
           selectedAnnotationId = null;
           isDirty = true;
           closeNoteEditor();
@@ -1389,7 +1543,20 @@
           if (autoSaveEnabled) scheduleAutoSave();
         }
 
-        /* Note Popover & Drawer with Unique Colors and Short Title */
+        function redo() {
+          if (!redoHistory.length) return;
+          undoHistory.push(snapshot());
+          annotations = redoHistory.pop();
+          selectedAnnotationId = null;
+          isDirty = true;
+          closeNoteEditor();
+          renderAnnotations();
+          updateActionState();
+          setStatus("Redo applied.", "neutral");
+          if (autoSaveEnabled) scheduleAutoSave();
+        }
+
+        /* Note Popover & Drawer with Unique Colors, Short Titles & Timeline */
         function showNoteEditor(draft, mode, targetElement) {
           noteDraft = draft;
           elements.noteEditor.hidden = false;
@@ -1400,7 +1567,6 @@
             : getActiveUser();
           const palette = getPersonPalette(author);
 
-          // Note header styling
           elements.noteAuthor.innerHTML = `
             <span class="user-dot" style="background:${palette.light}"></span>
             <span style="color:${palette.light}">${escapeHtml(author)}</span>
@@ -1428,7 +1594,6 @@
             elements.noteContentText.textContent = draft.annotation.text || "";
           }
 
-          // Positioning relative to target pin
           const width = Math.min(330, window.innerWidth - 28);
           let clientX = draft.clientX;
           let clientY = draft.clientY;
@@ -1473,6 +1638,7 @@
             if (target) {
               target.title = title || undefined;
               target.text = text;
+              target.status = "active";
               commitChange(next, target.id);
             }
           } else {
@@ -1487,8 +1653,11 @@
               height: 0.05,
               title: title || undefined,
               text,
+              status: "active",
               color: palette.light,
               createdBy: author,
+              device: currentDevice.label,
+              deviceId: currentDevice.id,
               createdAt: new Date().toISOString(),
             };
             next.push(annotation);
@@ -1506,54 +1675,116 @@
           }, mode || "view", targetElement);
         }
 
-        function updateNotesDrawerList(notesList) {
-          if (!notesList.length) {
+        function updateNotesDrawerList(activeNotes, allNotes) {
+          // Render Active Notes Tab
+          if (!activeNotes.length) {
             elements.drawerNotesList.innerHTML =
-              '<div class="drawer-empty">No notes yet.<br />Select 📌 Note and click on any page to add one.</div>';
-            return;
+              '<div class="drawer-empty">No active notes.<br />Select 📌 Note and click on any page to add one.</div>';
+          } else {
+            elements.drawerNotesList.innerHTML = "";
+            activeNotes.forEach((ann) => {
+              const author = ann.createdBy || "Contributor";
+              const palette = getPersonPalette(author);
+              const shortTitle = getShortNoteTitle(ann);
+
+              const card = document.createElement("div");
+              card.className = "note-card-item";
+              card.style.borderLeft = `4px solid ${palette.light}`;
+
+              card.innerHTML = `
+                <div class="note-card-header">
+                  <span class="note-card-title" title="${escapeHtml(shortTitle)}">${escapeHtml(shortTitle)}</span>
+                  <span class="note-card-page">P. ${ann.page}</span>
+                </div>
+                <div class="note-card-meta">
+                  <span class="author-badge" style="background:${palette.darkBg}; color:${palette.light}; border:1px solid ${palette.border};">
+                    <span class="author-badge-dot" style="background:${palette.light};"></span>
+                    ${escapeHtml(author)}
+                  </span>
+                  ${ann.device ? `<span class="device-tag">${escapeHtml(ann.device)}</span>` : ""}
+                </div>
+                <div class="note-card-text">${escapeHtml(ann.text || "")}</div>
+                <div class="note-card-actions">
+                  <button class="btn btn-icon" data-del="${ann.id}" title="Delete note" style="width:24px;height:24px;font-size:11px;color:var(--danger)">🗑</button>
+                </div>
+              `;
+
+              card.addEventListener("click", (e) => {
+                if (e.target.closest("[data-del]")) {
+                  e.stopPropagation();
+                  removeAnnotation(ann.id);
+                  return;
+                }
+                scrollToPage(Number(ann.page));
+                selectAnnotation(ann.id);
+                const el = elements.pages.querySelector(`[data-annotation-id="${ann.id}"]`);
+                openExistingNote(ann, el, "view");
+              });
+
+              elements.drawerNotesList.appendChild(card);
+            });
           }
 
-          elements.drawerNotesList.innerHTML = "";
-          notesList.forEach((ann) => {
-            const author = ann.createdBy || "Contributor";
-            const palette = getPersonPalette(author);
-            const shortTitle = getShortNoteTitle(ann);
-
-            const card = document.createElement("div");
-            card.className = "note-card-item";
-            card.style.borderLeft = `4px solid ${palette.light}`;
-
-            card.innerHTML = `
-              <div class="note-card-header">
-                <span class="note-card-title" title="${escapeHtml(shortTitle)}">${escapeHtml(shortTitle)}</span>
-                <span class="note-card-page">Page ${ann.page}</span>
-              </div>
-              <div class="note-card-meta">
-                <span class="author-badge" style="background:${palette.darkBg}; color:${palette.light}; border:1px solid ${palette.border};">
-                  <span class="author-badge-dot" style="background:${palette.light};"></span>
-                  ${escapeHtml(author)}
-                </span>
-              </div>
-              <div class="note-card-text">${escapeHtml(ann.text || "")}</div>
-              <div class="note-card-actions">
-                <button class="btn btn-icon" data-del="${ann.id}" title="Delete" style="width:24px;height:24px;font-size:11px;color:var(--danger)">🗑</button>
-              </div>
-            `;
-
-            card.addEventListener("click", (e) => {
-              if (e.target.closest("[data-del]")) {
-                e.stopPropagation();
-                removeAnnotation(ann.id);
-                return;
-              }
-              scrollToPage(Number(ann.page));
-              selectAnnotation(ann.id);
-              const el = elements.pages.querySelector(`[data-annotation-id="${ann.id}"]`);
-              openExistingNote(ann, el, "view");
+          // Render Timeline / History Tab
+          if (!allNotes.length) {
+            elements.drawerTimelineList.innerHTML = '<div class="drawer-empty">No activity recorded yet.</div>';
+          } else {
+            elements.drawerTimelineList.innerHTML = "";
+            // Sort by most recent activity
+            const sorted = [...allNotes].sort((a, b) => {
+              const timeA = new Date(a.deletedAt || a.createdAt || 0).getTime();
+              const timeB = new Date(b.deletedAt || b.createdAt || 0).getTime();
+              return timeB - timeA;
             });
 
-            elements.drawerNotesList.appendChild(card);
-          });
+            sorted.forEach((ann) => {
+              const isDel = ann.status === "deleted";
+              const author = ann.createdBy || "Contributor";
+              const palette = getPersonPalette(author);
+              const shortTitle = getShortNoteTitle(ann);
+
+              const card = document.createElement("div");
+              card.className = "note-card-item" + (isDel ? " deleted-card" : "");
+              card.style.borderLeft = `4px solid ${isDel ? "var(--danger)" : palette.light}`;
+
+              card.innerHTML = `
+                <div class="note-card-header">
+                  <span class="note-card-title" style="${isDel ? "text-decoration: line-through; color: var(--muted);" : ""}">
+                    ${isDel ? "🗑️ " : "📌 "}${escapeHtml(shortTitle)}
+                  </span>
+                  <span class="note-card-page">P. ${ann.page}</span>
+                </div>
+                <div class="note-card-meta">
+                  <span class="author-badge" style="background:${palette.darkBg}; color:${palette.light}; border:1px solid ${palette.border};">
+                    <span class="author-badge-dot" style="background:${palette.light};"></span>
+                    ${escapeHtml(author)}
+                  </span>
+                  ${ann.device ? `<span class="device-tag">${escapeHtml(ann.device)}</span>` : ""}
+                  ${isDel ? `<span style="color:var(--danger);font-size:10.5px;font-weight:700;">Deleted by ${escapeHtml(ann.deletedBy || "Team")}</span>` : ""}
+                </div>
+                <div class="note-card-text" style="${isDel ? "color:var(--muted);" : ""}">${escapeHtml(ann.text || "")}</div>
+                <div class="note-card-actions">
+                  ${isDel ? `<button class="btn btn-restore" data-restore="${ann.id}">↩ Restore</button>` : `<span style="font-size:10px;color:var(--muted)">Active</span>`}
+                </div>
+              `;
+
+              card.addEventListener("click", (e) => {
+                if (e.target.closest("[data-restore]")) {
+                  e.stopPropagation();
+                  restoreAnnotation(ann.id);
+                  return;
+                }
+                if (!isDel) {
+                  scrollToPage(Number(ann.page));
+                  selectAnnotation(ann.id);
+                  const el = elements.pages.querySelector(`[data-annotation-id="${ann.id}"]`);
+                  openExistingNote(ann, el, "view");
+                }
+              });
+
+              elements.drawerTimelineList.appendChild(card);
+            });
+          }
         }
 
         function escapeHtml(str) {
@@ -1574,7 +1805,7 @@
           layer.classList.toggle("tool-highlight", activeTool === "highlight");
           layer.classList.toggle("tool-note", activeTool === "note");
 
-          const pageAnns = annotations.filter((a) => Number(a.page) === pageNumber && validAnnotation(a));
+          const pageAnns = annotations.filter((a) => Number(a.page) === pageNumber && validAnnotation(a) && a.status !== "deleted");
           pageAnns.forEach((annotation) => {
             const element = document.createElement("div");
             element.className = "annotation " + (annotation.type === "highlight" ? "highlight-annotation" : "sticky-note");
@@ -1645,7 +1876,8 @@
           const dist = Math.hypot(event.clientX - draggingNote.startClientX, event.clientY - draggingNote.startClientY);
           if (dist > 5) {
             if (!draggingNote.moved) {
-              history.push(snapshot());
+              undoHistory.push(snapshot());
+              redoHistory = [];
               isDirty = true;
               draggingNote.moved = true;
             }
@@ -1799,8 +2031,12 @@
               opacity: annotation.type === "highlight" ? 0.38 : undefined,
               title: annotation.title ? String(annotation.title).trim() : undefined,
               text: annotation.text ? String(annotation.text).trim() : undefined,
+              status: annotation.status || "active",
               createdBy: author,
               createdAt: annotation.createdAt || new Date().toISOString(),
+              deletedBy: annotation.deletedBy,
+              deletedAt: annotation.deletedAt,
+              deletedDevice: annotation.deletedDevice,
             };
           });
         }
@@ -1817,9 +2053,7 @@
               if (!response.ok) throw new Error("API returned " + response.status);
               documentData = await response.json();
               loadedFromApi = true;
-            } catch (_error) {
-              // fallback to static file if available
-            }
+            } catch (_error) {}
           }
 
           if (!documentData && localAnnotationUrl) {
@@ -1837,17 +2071,18 @@
             annotationRevision = null;
           }
 
-          history = [];
+          undoHistory = [];
+          redoHistory = [];
           isDirty = false;
           renderAnnotations();
           updateActionState();
 
           if (loadedFromApi) {
             setSyncStatus("synced", "Synced with cloud");
-            const count = annotations.length;
+            const activeCount = annotations.filter((a) => a.type === "sticky-note" && a.status !== "deleted").length;
             setStatus(
-              count
-                ? count + " annotation" + (count === 1 ? "" : "s") + " loaded."
+              activeCount
+                ? activeCount + " active note" + (activeCount === 1 ? "" : "s") + " loaded."
                 : "Ready to highlight or add notes.",
               "success",
             );
@@ -1906,7 +2141,7 @@
           }
         }
 
-        /* Page Jump and Navigation */
+        /* Fixed Page Jump and Accurate Scroll Page Tracking */
         function scrollToPage(pageNum) {
           const pageElement = elements.pages.querySelector(`[data-page-number="${pageNum}"]`);
           if (pageElement) {
@@ -1922,12 +2157,46 @@
           elements.nextPageBtn.disabled = pageNum >= totalPages;
         }
 
-        /* Zoom Controls */
+        // Real-Time Scroll Listener to Update Page Indicator (Scroll up and down)
+        function updateVisiblePageFromScroll() {
+          const pages = elements.pages.querySelectorAll(".pdf-page");
+          if (!pages.length) return;
+          const vpRect = elements.viewport.getBoundingClientRect();
+          const vpCenter = vpRect.top + vpRect.height / 2;
+          let bestPage = currentPageNumber;
+          let minDistance = Infinity;
+
+          pages.forEach((p) => {
+            const rect = p.getBoundingClientRect();
+            const pCenter = rect.top + rect.height / 2;
+            const dist = Math.abs(pCenter - vpCenter);
+            if (dist < minDistance) {
+              minDistance = dist;
+              bestPage = Number(p.dataset.pageNumber);
+            }
+          });
+
+          if (bestPage && bestPage !== currentPageNumber && bestPage >= 1 && bestPage <= totalPages) {
+            updatePageIndicator(bestPage);
+          }
+        }
+
+        elements.viewport.addEventListener("scroll", () => {
+          if (!scrollRafPending) {
+            requestAnimationFrame(() => {
+              updateVisiblePageFromScroll();
+              scrollRafPending = false;
+            });
+            scrollRafPending = true;
+          }
+        }, { passive: true });
+
+        /* Zoom Controls & Gesture Zoom */
         function setZoom(factor) {
-          currentZoomLevel = clamp(factor, 0.7, 1.8);
+          currentZoomLevel = clamp(factor, 0.65, 2.0);
           elements.zoomIndicator.textContent = Math.round(currentZoomLevel * 100) + "%";
-          elements.zoomOutBtn.disabled = currentZoomLevel <= 0.75;
-          elements.zoomInBtn.disabled = currentZoomLevel >= 1.75;
+          elements.zoomOutBtn.disabled = currentZoomLevel <= 0.7;
+          elements.zoomInBtn.disabled = currentZoomLevel >= 1.95;
 
           renderedPages.clear();
           elements.pages.querySelectorAll(".pdf-page").forEach((el) => {
@@ -1939,7 +2208,47 @@
 
           renderPageCanvas(currentPageNumber);
           if (currentPageNumber + 1 <= totalPages) renderPageCanvas(currentPageNumber + 1);
+          if (currentPageNumber - 1 >= 1) renderPageCanvas(currentPageNumber - 1);
         }
+
+        // Two-Finger Trackpad Pinch-to-Zoom (MacBook trackpad wheel + ctrlKey)
+        elements.viewport.addEventListener("wheel", (event) => {
+          if (event.ctrlKey) {
+            event.preventDefault();
+            const delta = -event.deltaY;
+            const step = delta > 0 ? 0.04 : -0.04;
+            setZoom(currentZoomLevel + step);
+          }
+        }, { passive: false });
+
+        // Touch Pinch-to-Zoom (iPad / Mobile touch gesture)
+        let touchStartDist = 0;
+        let touchStartZoom = 1.0;
+        elements.viewport.addEventListener("touchstart", (e) => {
+          if (e.touches.length === 2) {
+            touchStartDist = Math.hypot(
+              e.touches[0].clientX - e.touches[1].clientX,
+              e.touches[0].clientY - e.touches[1].clientY,
+            );
+            touchStartZoom = currentZoomLevel;
+          }
+        }, { passive: true });
+
+        elements.viewport.addEventListener("touchmove", (e) => {
+          if (e.touches.length === 2 && touchStartDist > 0) {
+            e.preventDefault();
+            const currentDist = Math.hypot(
+              e.touches[0].clientX - e.touches[1].clientX,
+              e.touches[0].clientY - e.touches[1].clientY,
+            );
+            const factor = currentDist / touchStartDist;
+            setZoom(touchStartZoom * factor);
+          }
+        }, { passive: false });
+
+        elements.viewport.addEventListener("touchend", () => {
+          touchStartDist = 0;
+        }, { passive: true });
 
         /* High-Performance Virtual Page Renderer */
         async function renderPageCanvas(pageNumber) {
@@ -2032,7 +2341,6 @@
                 if (entry.isIntersecting) {
                   const pNum = Number(entry.target.dataset.pageNumber);
                   renderPageCanvas(pNum);
-                  updatePageIndicator(pNum);
                 }
               });
             }, {
@@ -2087,6 +2395,7 @@
         });
 
         elements.undo.addEventListener("click", undo);
+        elements.redo.addEventListener("click", redo);
         elements.save.addEventListener("click", saveSharedAnnotations);
 
         // Auto-save toggle handler
@@ -2105,10 +2414,10 @@
         // Identity switch handler
         elements.userSelectorBtn.addEventListener("click", () => {
           const current = getActiveUser();
-          const next = prompt("Enter your name for notes & annotations:", current);
+          const next = prompt(`Your name on this ${currentDevice.label}:`, current);
           if (next && next.trim() && next.trim() !== current) {
             setActiveUser(next.trim());
-            setStatus("Switched active user to: " + next.trim(), "neutral");
+            setStatus("Active contributor: " + next.trim(), "neutral");
             renderAnnotations();
           }
         });
@@ -2125,12 +2434,28 @@
         elements.zoomInBtn.addEventListener("click", () => setZoom(currentZoomLevel + 0.15));
         elements.zoomOutBtn.addEventListener("click", () => setZoom(currentZoomLevel - 0.15));
 
-        // Drawer Listeners
+        // Drawer Listeners & Tab Switching
         elements.toggleNotesDrawerBtn.addEventListener("click", () => {
           elements.notesDrawer.classList.toggle("collapsed");
         });
         elements.closeDrawerBtn.addEventListener("click", () => {
           elements.notesDrawer.classList.add("collapsed");
+        });
+
+        elements.tabActiveNotes.addEventListener("click", () => {
+          currentDrawerTab = "active";
+          elements.tabActiveNotes.classList.add("active");
+          elements.tabTimeline.classList.remove("active");
+          elements.drawerNotesList.style.display = "flex";
+          elements.drawerTimelineList.style.display = "none";
+        });
+
+        elements.tabTimeline.addEventListener("click", () => {
+          currentDrawerTab = "timeline";
+          elements.tabTimeline.classList.add("active");
+          elements.tabActiveNotes.classList.remove("active");
+          elements.drawerTimelineList.style.display = "flex";
+          elements.drawerNotesList.style.display = "none";
         });
 
         // Popover Listeners
@@ -2151,20 +2476,39 @@
         document.addEventListener("pointermove", handleNoteDrag);
         document.addEventListener("pointerup", endNoteDrag);
 
+        // Keyboard Shortcuts (Ctrl+Z / Cmd+Z for Undo, Ctrl+Shift+Z / Cmd+Shift+Z / Ctrl+Y for Redo)
         document.addEventListener("keydown", (event) => {
           const tagName = document.activeElement && document.activeElement.tagName;
+          const isInput = tagName === "TEXTAREA" || tagName === "INPUT";
+
           if (event.key === "Escape") {
             closeNoteEditor();
             elements.notesDrawer.classList.add("collapsed");
           }
-          if ((event.key === "Delete" || event.key === "Backspace") && tagName !== "TEXTAREA" && tagName !== "INPUT") {
+
+          if ((event.key === "Delete" || event.key === "Backspace") && !isInput) {
             if (selectedAnnotationId) removeAnnotation(selectedAnnotationId);
           }
-          if ((event.metaKey || event.ctrlKey) && event.key.toLowerCase() === "s") {
-            event.preventDefault();
-            saveSharedAnnotations();
+
+          if ((event.metaKey || event.ctrlKey) && !isInput) {
+            const key = event.key.toLowerCase();
+            if (key === "z") {
+              event.preventDefault();
+              if (event.shiftKey) {
+                redo();
+              } else {
+                undo();
+              }
+            } else if (key === "y") {
+              event.preventDefault();
+              redo();
+            } else if (key === "s") {
+              event.preventDefault();
+              saveSharedAnnotations();
+            }
           }
-          if (tagName !== "TEXTAREA" && tagName !== "INPUT") {
+
+          if (!isInput) {
             if (event.key === "ArrowRight" || event.key === "PageDown") {
               if (currentPageNumber < totalPages) scrollToPage(currentPageNumber + 1);
             } else if (event.key === "ArrowLeft" || event.key === "PageUp") {

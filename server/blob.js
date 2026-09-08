@@ -76,10 +76,16 @@ function isBlobConflict(error) {
   return status === 409 || status === 412 || /conflict|precondition|if.?match/i.test(code);
 }
 
+async function listBlobs(prefix) {
+  const { list } = await getBlobModule();
+  return list({ prefix, access: "private" });
+}
+
 module.exports = {
   blobEtag,
   getJsonBlob,
   hasBlobToken,
   isBlobConflict,
+  listBlobs,
   putJsonBlob,
 };

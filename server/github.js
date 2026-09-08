@@ -498,6 +498,18 @@ function normalizeAnnotation(value, index) {
     if (value.title && typeof value.title === "string") {
       normalized.title = value.title.trim().slice(0, 100);
     }
+    if (value.status === "deleted" || value.status === "active") {
+      normalized.status = value.status;
+    }
+    if (value.deletedBy && typeof value.deletedBy === "string") {
+      normalized.deletedBy = value.deletedBy.trim().slice(0, 120);
+    }
+    if (value.deletedAt && typeof value.deletedAt === "string") {
+      normalized.deletedAt = value.deletedAt.trim().slice(0, 40);
+    }
+    if (value.deletedDevice && typeof value.deletedDevice === "string") {
+      normalized.deletedDevice = value.deletedDevice.trim().slice(0, 100);
+    }
     normalized.width = numberInRange(value.width, 0.01, 0.2)
       ? Number(value.width)
       : 0.06;

@@ -143,6 +143,41 @@ module.exports = async function handler(req, res) {
       throw error;
     }
 
+    try {
+      const summaryStored = await getJsonBlob("annotations/summary.json");
+      const summary = summaryStored && summaryStored.document && typeof summaryStored.document === "object"
+        ? summaryStored.document
+        : { papers: {}, notes: [] };
+      const activeNotes = annotations.filter((a) => a.type === "sticky-note" && a.status !== "deleted");
+      const authors = [...new Set(annotations.map((a) => a.createdBy).filter(Boolean))];
+      summary.papers = summary.papers || {};
+      summary.papers[identity.paperId] = {
+        count: activeNotes.length,
+        totalAnnotations: annotations.length,
+        authors,
+        updatedAt: nextDocument.updatedAt,
+      };
+      summary.notes = (summary.notes || []).filter((n) => String(n.paperId) !== String(identity.paperId));
+      for (const n of annotations) {
+        if (n.type === "sticky-note") {
+          summary.notes.push({
+            id: n.id,
+            paperId: identity.paperId,
+            page: n.page,
+            title: n.title,
+            text: n.text,
+            status: n.status || "active",
+            createdBy: n.createdBy,
+            createdAt: n.createdAt,
+            deletedBy: n.deletedBy,
+            deletedAt: n.deletedAt,
+          });
+        }
+      }
+      summary.generatedAt = new Date().toISOString();
+      await putJsonBlob("annotations/summary.json", summary);
+    } catch (_summaryErr) {}
+
     return json(res, currentRevision ? 200 : 201, {
       ...nextDocument,
       revision: blobEtag(result),
