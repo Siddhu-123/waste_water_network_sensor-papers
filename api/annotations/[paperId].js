@@ -1,7 +1,6 @@
 const {
   annotationPath,
   applyCors,
-  getCollaboratorPermission,
   json,
   normalizeAnnotations,
   parseBody,
@@ -14,8 +13,6 @@ const {
   isBlobConflict,
   putJsonBlob,
 } = require("../../server/blob");
-
-const WRITE_PERMISSIONS = new Set(["admin", "maintain", "push"]);
 
 function emptyDocument(paperId) {
   return {
@@ -89,22 +86,6 @@ module.exports = async function handler(req, res) {
       return json(res, 405, { error: "Method not allowed" });
     }
 
-    const session = readSession(req);
-    if (!session) {
-      return json(res, 401, {
-        error: "authentication_required",
-        message: "Sign in with GitHub before saving shared annotations.",
-      });
-    }
-
-    const permission = await getCollaboratorPermission(session.login, session.token);
-    if (!WRITE_PERMISSIONS.has(permission)) {
-      return json(res, 403, {
-        error: "write_access_required",
-        message: "Your GitHub account needs push access to this repository.",
-      });
-    }
-
     const body = parseBody(req);
     if (!body || (body.paperId && String(body.paperId) !== identity.paperId)) {
       return json(res, 400, { error: "paperId does not match the request path" });
@@ -135,11 +116,16 @@ module.exports = async function handler(req, res) {
       });
     }
 
+    const session = readSession(req);
+    const author = (body && typeof body.author === "string" && body.author.trim())
+      ? body.author.trim().slice(0, 50)
+      : (session && session.login) || "team";
+
     const nextDocument = {
       paperId: identity.paperId,
       version: 1,
       updatedAt: new Date().toISOString(),
-      updatedBy: session.login,
+      updatedBy: author,
       annotations,
     };
     let result;

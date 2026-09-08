@@ -53,30 +53,14 @@ The viewer has two modes:
 
 Share the GitHub Pages link above with the team. The Vercel URL is a direct alternative.
 
-### Vercel setup for shared saves
+### Shared saves with Vercel Blob
 
-Create a GitHub OAuth App at **GitHub → Settings → Developer settings → OAuth Apps**. Set its callback URL to:
+Shared annotations are saved directly to Vercel Blob via the Vercel API.
 
-```text
-https://YOUR-VERCEL-DOMAIN.vercel.app/api/auth/github/callback
-```
-
-Add these Vercel environment variables for Preview and Production:
-
-```text
-GITHUB_CLIENT_ID=your-oauth-client-id
-GITHUB_CLIENT_SECRET=your-oauth-client-secret
-GITHUB_REPOSITORY=Siddhu-123/waste_water_network_sensor-papers
-GITHUB_BRANCH=main
-GITHUB_CALLBACK_URL=https://YOUR-VERCEL-DOMAIN.vercel.app/api/auth/github/callback
-SESSION_SECRET=generate-a-random-secret-at-least-32-characters-long
-PUBLIC_APP_URL=https://YOUR-VERCEL-DOMAIN.vercel.app
-ALLOWED_ORIGINS=https://YOUR-VERCEL-DOMAIN.vercel.app,https://siddhu-123.github.io
-```
-
-The Vercel Blob connection automatically provides `BLOB_READ_WRITE_TOKEN` to the project. Keep the Blob store private. Only GitHub accounts with **push**, **maintain**, or **admin** permission on the repository can save. The backend keeps the OAuth token in an encrypted, HttpOnly session cookie and never sends it to the webpage. Each save uses the current Blob ETag, so a concurrent edit is rejected instead of silently overwriting someone else's annotations.
-
-Do not put `GITHUB_CLIENT_SECRET`, `SESSION_SECRET`, or a GitHub token in `index.html`, `pdf-viewer.html`, or `annotation-config.js`.
+- **Storage:** Vercel Blob stores one JSON object per paper under `annotations/paper-<paperId>.json`.
+- **Zero Login Friction:** Teammates can view, highlight, add sticker notes, and hit **Save shared annotations** without having to authenticate through GitHub OAuth. Notes are attributed using the active contributor context or author name.
+- **Concurrency Safety:** Each save checks the current Blob revision ETag (`ifMatch`), ensuring concurrent edits do not silently overwrite teammate notes.
+- **Vercel Requirement:** The Vercel project only requires the Vercel Blob store connected (which provides `BLOB_READ_WRITE_TOKEN`). GitHub OAuth app setup is completely optional.
 
 ## Registered contributors
 

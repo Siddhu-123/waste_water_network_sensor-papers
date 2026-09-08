@@ -15,17 +15,20 @@ module.exports = function handler(req, res) {
     return json(res, 405, { error: "Method not allowed" });
   }
 
-  const clientId = String(process.env.GITHUB_CLIENT_ID || "").trim();
-  if (!clientId) {
-    return json(res, 500, {
-      error: "oauth_not_configured",
-      message: "GITHUB_CLIENT_ID is not configured on Vercel.",
-    });
-  }
-
   let returnTo = req.query && req.query.returnTo;
   if (Array.isArray(returnTo)) returnTo = returnTo[0];
   returnTo = isAllowedReturnTo(returnTo, req);
+
+  const clientId = String(process.env.GITHUB_CLIENT_ID || "").trim();
+  if (!clientId) {
+    if (returnTo && (!req.headers.accept || !req.headers.accept.includes("application/json"))) {
+      return redirect(res, returnTo);
+    }
+    return json(res, 200, {
+      status: "direct_mode",
+      message: "GitHub OAuth is optional. Shared annotations are stored directly in Vercel Blob.",
+    });
+  }
 
   try {
     const state = crypto.randomBytes(24).toString("hex");

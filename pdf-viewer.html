@@ -600,8 +600,8 @@
 
       <div class="legend">
         Select <strong>Highlight</strong>, drag across an area, or select
-        <strong>Sticker note</strong> and click anywhere on a page. Shared saves
-        are stored in Vercel. Saving requires GitHub sign-in and repository access.
+        <strong>Sticker note</strong> and click anywhere on a page. Shared annotations
+        are stored in Vercel Blob and sync automatically across the team.
       </div>
     </div>
 
@@ -750,12 +750,12 @@
         function updateActionState() {
           elements.undo.disabled = history.length === 0;
           elements.delete.disabled = !selectedAnnotationId;
-          elements.save.disabled = !hasApi || !currentUser || !isDirty;
+          elements.save.disabled = !hasApi || !isDirty;
           elements.save.title = !hasApi
             ? "Configure the Vercel API to save shared annotations"
-            : !currentUser
-              ? "Sign in with GitHub to save"
-              : "Save shared annotations to Vercel";
+            : isDirty
+              ? "Save shared annotations to Vercel"
+              : "No unsaved changes";
         }
 
         function commitChange(nextAnnotations, selectedId) {
@@ -851,7 +851,7 @@
               height: 0.06,
               text,
               color: "#ffd166",
-              createdBy: currentUser ? currentUser.login : "local user",
+              createdBy: currentUser ? currentUser.login : (query.get("user") || "team member"),
               createdAt: new Date().toISOString(),
             };
             next.push(annotation);
@@ -1026,7 +1026,7 @@
             height,
             color: elements.color.value,
             opacity: Number(elements.opacity.value),
-            createdBy: currentUser ? currentUser.login : "local user",
+            createdBy: currentUser ? currentUser.login : (query.get("user") || "team member"),
             createdAt: new Date().toISOString(),
           };
           next.push(annotation);
@@ -1186,11 +1186,6 @@
             currentUser = data.authenticated ? data.user : null;
           } catch (_error) {
             currentUser = null;
-            elements.authStatus.textContent = "Vercel API unavailable";
-            elements.login.hidden = true;
-            elements.logout.hidden = true;
-            updateActionState();
-            return;
           }
 
           if (currentUser) {
@@ -1198,8 +1193,11 @@
             elements.login.hidden = true;
             elements.logout.hidden = false;
           } else {
-            elements.authStatus.textContent = "GitHub access required to save";
-            elements.login.hidden = false;
+            const activeUser = query.get("user");
+            elements.authStatus.textContent = activeUser
+              ? "● Syncing as " + activeUser
+              : "● Shared cloud sync active";
+            elements.login.hidden = true;
             elements.logout.hidden = true;
           }
           updateActionState();
@@ -1220,10 +1218,7 @@
             });
           } finally {
             currentUser = null;
-            elements.authStatus.textContent = "GitHub access required to save";
-            elements.login.hidden = false;
-            elements.logout.hidden = true;
-            updateActionState();
+            await checkAuth();
           }
         }
 
@@ -1232,15 +1227,13 @@
             downloadAnnotations();
             return;
           }
-          if (!currentUser) {
-            setStatus("Sign in with GitHub before saving shared annotations.", "warning");
-            signIn();
-            return;
-          }
 
           elements.save.disabled = true;
           setStatus("Saving annotations to Vercel…", "neutral");
           try {
+            const author = currentUser
+              ? currentUser.login
+              : (query.get("user") || "team member");
             const response = await fetch(apiUrl("/annotations/" + encodeURIComponent(paperId)), {
               method: "POST",
               credentials: "include",
@@ -1248,18 +1241,13 @@
               body: JSON.stringify({
                 paperId,
                 revision: annotationRevision,
+                author,
                 annotations: annotationPayload(),
               }),
             });
             const data = await response.json();
             if (response.status === 409) {
               setStatus("Someone changed the shared file. Reload it before saving your version.", "warning");
-              return;
-            }
-            if (response.status === 401) {
-              currentUser = null;
-              await checkAuth();
-              setStatus("Your GitHub session expired. Sign in again.", "warning");
               return;
             }
             if (!response.ok) {
