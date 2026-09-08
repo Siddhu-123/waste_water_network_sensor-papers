@@ -409,6 +409,7 @@
         position: sticky;
         top: 48px;
         flex-shrink: 0;
+        z-index: 20;
         transition: transform 200ms ease, width 200ms ease;
       }
 
@@ -515,7 +516,6 @@
         border-radius: 4px;
         background: #ffffff;
         box-shadow: 0 12px 36px rgba(0, 0, 0, 0.45);
-        content-visibility: auto;
       }
 
       .pdf-page::before {
@@ -578,17 +578,16 @@
       .pdf-internal-link {
         position: absolute;
         pointer-events: auto;
-        background: rgba(59, 130, 246, 0.08);
-        border-bottom: 1px dashed rgba(59, 130, 246, 0.5);
+        background: transparent;
+        border: none;
         border-radius: 2px;
         cursor: pointer;
-        transition: all 120ms ease;
+        transition: background-color 140ms ease;
       }
 
       .pdf-internal-link:hover {
-        background: rgba(59, 130, 246, 0.3);
-        border-bottom-color: #3b82f6;
-        box-shadow: 0 0 8px rgba(59, 130, 246, 0.4);
+        background: rgba(59, 130, 246, 0.22);
+        box-shadow: 0 0 0 1px rgba(59, 130, 246, 0.45);
       }
 
       /* Annotation Layer */
@@ -618,8 +617,8 @@
         border-radius: 2px;
         cursor: pointer;
         mix-blend-mode: multiply;
-        transition: opacity 120ms ease;
-        opacity: 0.42;
+        transition: opacity 120ms ease, box-shadow 120ms ease;
+        opacity: 0.40;
       }
 
       .highlight-annotation:hover {
@@ -627,9 +626,8 @@
       }
 
       .highlight-annotation.selected {
-        outline: 2px solid var(--accent);
-        outline-offset: 1px;
         opacity: 0.7;
+        box-shadow: 0 0 0 1.5px rgba(45, 212, 191, 0.9);
       }
 
       /* Sticky Note Pins on Canvas */
@@ -671,6 +669,7 @@
         position: sticky;
         top: 48px;
         flex-shrink: 0;
+        z-index: 20;
         transition: transform 200ms ease, width 200ms ease;
       }
 
@@ -1043,18 +1042,9 @@
         display: none;
       }
 
-      /* Mobile Backdrop for Sidebar & Drawer */
+      /* Mobile Backdrop for Sidebar & Drawer (STRICTLY MOBILE ONLY) */
       .mobile-backdrop {
-        display: none;
-        position: fixed;
-        inset: 0;
-        background: rgba(0, 0, 0, 0.65);
-        backdrop-filter: blur(2px);
-        z-index: 85;
-      }
-
-      .mobile-backdrop.active {
-        display: block;
+        display: none !important;
       }
 
       @media (max-width: 768px) {
@@ -1189,6 +1179,19 @@
           height: 100vh;
           z-index: 100;
           box-shadow: -10px 0 30px rgba(0, 0, 0, 0.6);
+        }
+
+        .mobile-backdrop {
+          display: none !important;
+          position: fixed;
+          inset: 0;
+          background: rgba(0, 0, 0, 0.65);
+          backdrop-filter: blur(2px);
+          z-index: 85;
+        }
+
+        .mobile-backdrop.active {
+          display: block !important;
         }
 
         .note-popover {
@@ -1974,6 +1977,40 @@
         }
 
         /* Real Text Highlighting on Mouse Up */
+        function mergeLineBoxes(rawBoxes) {
+          if (!rawBoxes || rawBoxes.length <= 1) return rawBoxes || [];
+
+          // Sort boxes primarily by vertical position (y), then horizontal (x)
+          const sorted = [...rawBoxes].sort((a, b) => {
+            if (Math.abs(a.y - b.y) > 0.005) {
+              return a.y - b.y;
+            }
+            return a.x - b.x;
+          });
+
+          const merged = [];
+          let current = { ...sorted[0] };
+
+          for (let i = 1; i < sorted.length; i++) {
+            const next = sorted[i];
+            const sameLine = Math.abs(current.y - next.y) < 0.006 && Math.abs(current.height - next.height) < 0.008;
+            const horizontallyAdjacent = next.x <= current.x + current.width + 0.015;
+
+            if (sameLine && horizontallyAdjacent) {
+              const right = Math.max(current.x + current.width, next.x + next.width);
+              current.width = right - current.x;
+              current.y = Math.min(current.y, next.y);
+              current.height = Math.max(current.height, next.height);
+            } else {
+              merged.push(current);
+              current = { ...next };
+            }
+          }
+          merged.push(current);
+          return merged;
+        }
+
+        /* Real Text Highlighting on Mouse Up */
         function handleTextSelection() {
           if (activeTool !== "highlight") return;
           const selection = window.getSelection();
@@ -1992,10 +2029,11 @@
           const clientRects = Array.from(range.getClientRects());
           if (!clientRects.length) return;
 
-          const boxes = [];
+          const rawBoxes = [];
           for (const cr of clientRects) {
-            if (cr.width < 3 || cr.height < 3) continue;
-            boxes.push({
+            // Ignore degenerate / tiny rects (artifacts, zero-dimension marks)
+            if (cr.width < 5 || cr.height < 5) continue;
+            rawBoxes.push({
               x: clamp((cr.left - pageRect.left) / pageRect.width, 0, 1),
               y: clamp((cr.top - pageRect.top) / pageRect.height, 0, 1),
               width: clamp(cr.width / pageRect.width, 0.001, 1),
@@ -2004,6 +2042,7 @@
           }
 
           selection.removeAllRanges();
+          const boxes = mergeLineBoxes(rawBoxes);
           if (!boxes.length) return;
 
           const next = snapshot();
@@ -2038,21 +2077,22 @@
           const pageAnns = annotations.filter((a) => Number(a.page) === pageNumber && validAnnotation(a) && a.status !== "deleted");
           pageAnns.forEach((annotation) => {
             if (annotation.type === "highlight") {
-              const boxes = annotation.boxes && annotation.boxes.length
+              const rawBoxes = annotation.boxes && annotation.boxes.length
                 ? annotation.boxes
                 : [{ x: annotation.x, y: annotation.y, width: annotation.width, height: annotation.height }];
+              const boxes = mergeLineBoxes(rawBoxes);
+              const isSelected = selectedAnnotationId === annotation.id;
 
               boxes.forEach((box) => {
                 const el = document.createElement("div");
-                el.className = "annotation highlight-annotation";
+                el.className = "annotation highlight-annotation" + (isSelected ? " selected" : "");
                 el.dataset.annotationId = annotation.id;
                 el.style.left = box.x * 100 + "%";
                 el.style.top = box.y * 100 + "%";
                 el.style.width = box.width * 100 + "%";
                 el.style.height = box.height * 100 + "%";
-                el.style.background = annotation.color || elements.color.value;
+                el.style.backgroundColor = annotation.color || elements.color.value;
                 el.title = `Highlighted by ${annotation.createdBy || "Contributor"}: "${annotation.text || ""}"`;
-                el.classList.toggle("selected", selectedAnnotationId === annotation.id);
 
                 el.addEventListener("click", (event) => {
                   event.stopPropagation();
@@ -2331,16 +2371,19 @@
           const pages = elements.pages.querySelectorAll(".pdf-page");
           if (!pages.length) return;
           const vpRect = elements.viewport.getBoundingClientRect();
-          const vpCenter = vpRect.top + vpRect.height / 2;
+          
           let bestPage = currentPageNumber;
-          let minDistance = Infinity;
+          let maxVisibleHeight = -1;
 
           pages.forEach((p) => {
             const rect = p.getBoundingClientRect();
-            const pCenter = rect.top + rect.height / 2;
-            const dist = Math.abs(pCenter - vpCenter);
-            if (dist < minDistance) {
-              minDistance = dist;
+            // Calculate vertical intersection between page and viewport
+            const visibleTop = Math.max(rect.top, vpRect.top);
+            const visibleBottom = Math.min(rect.bottom, vpRect.bottom);
+            const visibleHeight = Math.max(0, visibleBottom - visibleTop);
+            
+            if (visibleHeight > maxVisibleHeight) {
+              maxVisibleHeight = visibleHeight;
               bestPage = Number(p.dataset.pageNumber);
             }
           });
@@ -2381,13 +2424,35 @@
           if (currentPageNumber - 1 >= 1) renderPageCanvas(currentPageNumber - 1);
         }
 
-        // Two-Finger Trackpad Pinch-to-Zoom (wheel + ctrlKey)
+        // Two-Finger Trackpad Pinch-to-Zoom (wheel + ctrlKey) with smooth debounced re-renders
+        let targetPinchZoom = currentZoomLevel;
+        let pinchZoomRerenderTimer = null;
+
         elements.viewport.addEventListener("wheel", (event) => {
           if (event.ctrlKey) {
             event.preventDefault();
             const delta = -event.deltaY;
-            const step = delta > 0 ? 0.04 : -0.04;
-            setZoom(currentZoomLevel + step);
+            const factor = delta > 0 ? 1.03 : 0.97;
+            targetPinchZoom = clamp(targetPinchZoom * factor, 0.65, 2.0);
+
+            elements.zoomIndicator.textContent = Math.round(targetPinchZoom * 100) + "%";
+            elements.zoomOutBtn.disabled = targetPinchZoom <= 0.7;
+            elements.zoomInBtn.disabled = targetPinchZoom >= 1.95;
+
+            elements.pages.querySelectorAll(".pdf-page").forEach((el) => {
+              const width = Math.min(window.innerWidth - 30, Math.round(960 * targetPinchZoom));
+              el.style.width = width + "px";
+              el.style.minHeight = Math.round(width * basePageRatio) + "px";
+            });
+
+            clearTimeout(pinchZoomRerenderTimer);
+            pinchZoomRerenderTimer = setTimeout(() => {
+              currentZoomLevel = targetPinchZoom;
+              renderedPages.clear();
+              renderPageCanvas(currentPageNumber);
+              if (currentPageNumber + 1 <= totalPages) renderPageCanvas(currentPageNumber + 1);
+              if (currentPageNumber - 1 >= 1) renderPageCanvas(currentPageNumber - 1);
+            }, 120);
           }
         }, { passive: false });
 
@@ -2409,6 +2474,26 @@
           if (bestEl) bestEl.classList.add("active");
         }
 
+        /* Resolve PDF Destination to 1-based Page Number */
+        async function resolveDestinationPage(destRef) {
+          if (!destRef || !pdfDoc) return null;
+          try {
+            const dest = typeof destRef === "string" ? await pdfDoc.getDestination(destRef) : destRef;
+            if (!dest || !dest.length) return null;
+            const target = dest[0];
+            if (typeof target === "number") {
+              return target + 1;
+            }
+            if (target && typeof target === "object") {
+              const pageIdx = await pdfDoc.getPageIndex(target);
+              return typeof pageIdx === "number" ? pageIdx + 1 : null;
+            }
+          } catch (err) {
+            console.warn("Could not resolve destination:", destRef, err);
+          }
+          return null;
+        }
+
         async function loadDocumentOutline() {
           if (!pdfDoc) return;
           elements.outlineTree.innerHTML = "";
@@ -2428,19 +2513,10 @@
 
         async function renderOutlineItems(items, container, depth) {
           for (const item of items) {
-            let pageNum = null;
-            if (item.dest) {
-              try {
-                const dest = typeof item.dest === "string" ? await pdfDoc.getDestination(item.dest) : item.dest;
-                if (dest && dest[0]) {
-                  const pageIndex = await pdfDoc.getPageIndex(dest[0]);
-                  pageNum = pageIndex + 1;
-                }
-              } catch (_err) {}
-            }
+            const pageNum = await resolveDestinationPage(item.dest);
 
             const itemEl = document.createElement("div");
-            itemEl.className = `outline-item depth-${depth}`;
+            itemEl.className = `outline-item depth-${Math.min(depth, 3)}`;
             if (pageNum) itemEl.dataset.page = pageNum;
             itemEl.innerHTML = `
               <span class="outline-title-text" title="${escapeHtml(item.title)}">${escapeHtml(item.title)}</span>
@@ -2466,7 +2542,8 @@
         }
 
         async function scanAndRenderHeadings() {
-          const headingRegex = /^(\d+(\.\d+)*\s+[A-Z][A-Za-z\s]{2,40}|Abstract|References|Conclusions?|Methodology|Discussion|Introduction|Related Works?|Background)$/i;
+          const headingRegex = /^(?:(?:[IVXLCDM]+|[0-9]+(?:\.[0-9]+)*)\.?\s+[A-Z][A-Za-z0-9\s,\-–—:]{2,60}|Abstract|References|Conclusions?|Methodology|Discussion|Introduction|Related Works?|Background)$/i;
+          const excludeRegex = /volume\s+\d+|ieee\s+access|page\s+\d+|doi:|http|^\d+(\.\d+)?\s+(m|cm|mm|kg|s|ms|hz|khz|mhz|ghz|v|w|pa|kpa|%)/i;
           const found = [];
 
           for (let p = 1; p <= Math.min(pdfDoc.numPages, 35); p++) {
@@ -2475,8 +2552,9 @@
               const tc = await page.getTextContent();
               for (const item of tc.items) {
                 const str = item.str.trim();
-                if (str && item.height >= 10 && headingRegex.test(str)) {
-                  found.push({ title: str, page: p, depth: str.includes(".") ? 2 : 1 });
+                if (str && item.height >= 9.5 && headingRegex.test(str) && !excludeRegex.test(str)) {
+                  const isSub = str.includes(".") || /^[A-Z]\.\s+/.test(str);
+                  found.push({ title: str, page: p, depth: isSub ? 2 : 1 });
                 }
               }
             } catch (_err) {}
@@ -2522,28 +2600,34 @@
             const page = await pdfDoc.getPage(pageNumber);
             const baseViewport = page.getViewport({ scale: 1 });
             const containerWidth = pageElement.clientWidth || 960;
-            const scale = (containerWidth / baseViewport.width) * (window.devicePixelRatio > 1.5 ? 1.5 : 1);
-            const viewport = page.getViewport({ scale });
+            const cssScale = containerWidth / baseViewport.width;
+            const viewport = page.getViewport({ scale: cssScale });
+            const outputScale = window.devicePixelRatio || 1;
 
-            // 1. Render Canvas
+            // 1. Render Canvas with High-DPI Matrix Transform
             const canvas = pageElement.querySelector("canvas");
             const context = canvas.getContext("2d", {
               alpha: false,
               desynchronized: true,
               willReadFrequently: false,
             });
-            canvas.width = Math.ceil(viewport.width);
-            canvas.height = Math.ceil(viewport.height);
-            canvas.style.width = "100%";
-            canvas.style.height = "auto";
+            canvas.width = Math.floor(viewport.width * outputScale);
+            canvas.height = Math.floor(viewport.height * outputScale);
+            canvas.style.width = Math.floor(viewport.width) + "px";
+            canvas.style.height = Math.floor(viewport.height) + "px";
+            pageElement.style.width = Math.floor(viewport.width) + "px";
+            pageElement.style.height = Math.floor(viewport.height) + "px";
+
+            const transform = outputScale !== 1 ? [outputScale, 0, 0, outputScale, 0, 0] : null;
 
             await page.render({
               canvasContext: context,
+              transform,
               viewport,
               intent: "display",
             }).promise;
 
-            // 2. Render TextLayer (for native text selection & highlighting)
+            // 2. Render TextLayer (Pixel-Exact Matching for Text Selection & Highlights)
             let textLayerDiv = pageElement.querySelector(".textLayer");
             if (!textLayerDiv) {
               textLayerDiv = document.createElement("div");
@@ -2551,6 +2635,9 @@
               pageElement.appendChild(textLayerDiv);
             }
             textLayerDiv.innerHTML = "";
+            textLayerDiv.style.width = Math.floor(viewport.width) + "px";
+            textLayerDiv.style.height = Math.floor(viewport.height) + "px";
+            textLayerDiv.style.setProperty("--scale-factor", String(viewport.scale));
 
             const textContent = await page.getTextContent();
             if (typeof window.pdfjsLib.renderTextLayer === "function") {
@@ -2572,7 +2659,7 @@
 
             try {
               const annos = await page.getAnnotations({ intent: "display" });
-              annos.forEach((ann) => {
+              for (const ann of annos) {
                 if (ann.subtype === "Link" && ann.rect) {
                   const [vx1, vy1, vx2, vy2] = viewport.convertToViewportRectangle(ann.rect);
                   const linkEl = document.createElement("a");
@@ -2593,16 +2680,13 @@
                     linkEl.addEventListener("click", async (e) => {
                       e.preventDefault();
                       e.stopPropagation();
-                      const dest = typeof ann.dest === "string" ? await pdfDoc.getDestination(ann.dest) : ann.dest;
-                      if (dest && dest[0]) {
-                        const pageIdx = await pdfDoc.getPageIndex(dest[0]);
-                        scrollToPage(pageIdx + 1);
-                      }
+                      const targetPage = await resolveDestinationPage(ann.dest);
+                      if (targetPage) scrollToPage(targetPage);
                     });
                   }
                   linkLayerDiv.appendChild(linkEl);
                 }
-              });
+              }
             } catch (_linkErr) {}
 
             renderedPages.add(pageNumber);
@@ -2724,18 +2808,16 @@
           const isCollapsed = elements.outlineSidebar.classList.toggle("collapsed");
           if (!isCollapsed) {
             elements.notesDrawer.classList.add("collapsed");
-            if (elements.mobileBackdrop) elements.mobileBackdrop.classList.add("active");
-          } else {
-            if (elements.notesDrawer.classList.contains("collapsed") && elements.mobileBackdrop) {
-              elements.mobileBackdrop.classList.remove("active");
+            if (window.innerWidth <= 768 && elements.mobileBackdrop) {
+              elements.mobileBackdrop.classList.add("active");
             }
+          } else {
+            if (elements.mobileBackdrop) elements.mobileBackdrop.classList.remove("active");
           }
         });
         elements.closeOutlineBtn.addEventListener("click", () => {
           elements.outlineSidebar.classList.add("collapsed");
-          if (elements.notesDrawer.classList.contains("collapsed") && elements.mobileBackdrop) {
-            elements.mobileBackdrop.classList.remove("active");
-          }
+          if (elements.mobileBackdrop) elements.mobileBackdrop.classList.remove("active");
         });
 
         // Identity switch handler
@@ -2766,18 +2848,16 @@
           const isCollapsed = elements.notesDrawer.classList.toggle("collapsed");
           if (!isCollapsed) {
             elements.outlineSidebar.classList.add("collapsed");
-            if (elements.mobileBackdrop) elements.mobileBackdrop.classList.add("active");
-          } else {
-            if (elements.outlineSidebar.classList.contains("collapsed") && elements.mobileBackdrop) {
-              elements.mobileBackdrop.classList.remove("active");
+            if (window.innerWidth <= 768 && elements.mobileBackdrop) {
+              elements.mobileBackdrop.classList.add("active");
             }
+          } else {
+            if (elements.mobileBackdrop) elements.mobileBackdrop.classList.remove("active");
           }
         });
         elements.closeDrawerBtn.addEventListener("click", () => {
           elements.notesDrawer.classList.add("collapsed");
-          if (elements.outlineSidebar.classList.contains("collapsed") && elements.mobileBackdrop) {
-            elements.mobileBackdrop.classList.remove("active");
-          }
+          if (elements.mobileBackdrop) elements.mobileBackdrop.classList.remove("active");
         });
 
         if (elements.mobileBackdrop) {
