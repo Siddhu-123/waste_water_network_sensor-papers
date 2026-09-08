@@ -17,16 +17,20 @@
     <style>
       :root {
         color-scheme: dark;
-        --bg: #07111e;
-        --panel: #0e1b2b;
-        --panel-2: #13243a;
-        --line: rgba(148, 163, 184, 0.18);
-        --text: #e7edf6;
-        --muted: #9aabc0;
-        --accent: #63d3c2;
-        --accent-strong: #1ca58f;
-        --warning: #ffd166;
-        --danger: #ff8e8e;
+        --bg: #070d17;
+        --header-bg: rgba(11, 20, 36, 0.95);
+        --sidebar-bg: #0d182b;
+        --panel: #112038;
+        --panel-2: #162a4a;
+        --line: rgba(148, 163, 184, 0.16);
+        --line-strong: rgba(148, 163, 184, 0.28);
+        --text: #f1f5f9;
+        --muted: #94a3b8;
+        --accent: #2dd4bf;
+        --accent-strong: #0d9488;
+        --accent-bg: rgba(45, 212, 191, 0.14);
+        --warning: #fbbf24;
+        --danger: #f87171;
       }
 
       * {
@@ -36,11 +40,9 @@
       body {
         margin: 0;
         min-width: 320px;
-        background:
-          radial-gradient(circle at 15% -10%, rgba(40, 119, 155, 0.2), transparent 34rem),
-          var(--bg);
+        background: var(--bg);
         color: var(--text);
-        font-family: "DM Sans", system-ui, sans-serif;
+        font-family: "DM Sans", -apple-system, BlinkMacSystemFont, sans-serif;
         overflow-x: hidden;
       }
 
@@ -61,18 +63,18 @@
         flex-direction: column;
       }
 
-      /* Slim Unified Header - 48px */
+      /* 48px Pro Minimalist Toolbar */
       .app-header {
         position: sticky;
         top: 0;
-        z-index: 40;
+        z-index: 50;
         display: flex;
         align-items: center;
         justify-content: space-between;
-        gap: 12px;
+        gap: 8px;
         height: 48px;
-        padding: 0 14px;
-        background: rgba(8, 18, 32, 0.95);
+        padding: 0 12px;
+        background: var(--header-bg);
         border-bottom: 1px solid var(--line);
         backdrop-filter: blur(16px);
       }
@@ -82,7 +84,7 @@
       .header-right {
         display: flex;
         align-items: center;
-        gap: 8px;
+        gap: 6px;
       }
 
       .header-left {
@@ -101,28 +103,21 @@
         padding: 5px 8px;
         border-radius: 6px;
         white-space: nowrap;
-        background: rgba(99, 211, 194, 0.1);
-        transition: background 150ms ease, color 150ms ease;
+        background: var(--accent-bg);
+        transition: all 120ms ease;
       }
 
       .nav-back:hover {
-        background: rgba(99, 211, 194, 0.2);
-        color: #a2f4e8;
+        background: rgba(45, 212, 191, 0.22);
+        color: #5eead4;
       }
 
-      .header-divider {
+      .header-sep {
         width: 1px;
         height: 18px;
         background: var(--line);
         margin: 0 4px;
         flex-shrink: 0;
-      }
-
-      .doc-title-wrap {
-        min-width: 0;
-        display: flex;
-        align-items: center;
-        gap: 8px;
       }
 
       .doc-title {
@@ -132,26 +127,61 @@
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
-        max-width: clamp(140px, 24vw, 360px);
+        max-width: clamp(120px, 20vw, 280px);
         margin: 0;
       }
 
-      .doc-meta {
-        font-size: 11px;
-        color: var(--muted);
-        white-space: nowrap;
-        padding: 2px 6px;
-        background: rgba(148, 163, 184, 0.1);
-        border-radius: 4px;
+      /* Controls Segment (Page Nav & Zoom) */
+      .nav-group {
+        display: inline-flex;
+        align-items: center;
+        background: rgba(14, 26, 46, 0.85);
+        border: 1px solid var(--line);
+        border-radius: 6px;
+        padding: 2px;
+        gap: 2px;
       }
 
-      /* Segmented Tool Controls */
+      .nav-btn {
+        background: transparent;
+        border: none;
+        color: var(--muted);
+        cursor: pointer;
+        width: 24px;
+        height: 24px;
+        border-radius: 4px;
+        display: grid;
+        place-items: center;
+        font-size: 11px;
+        transition: all 120ms ease;
+      }
+
+      .nav-btn:hover:not(:disabled) {
+        color: var(--text);
+        background: rgba(255, 255, 255, 0.08);
+      }
+
+      .nav-btn:disabled {
+        opacity: 0.3;
+        cursor: not-allowed;
+      }
+
+      .page-indicator {
+        font-size: 11.5px;
+        font-weight: 600;
+        color: var(--text);
+        padding: 0 4px;
+        min-width: 52px;
+        text-align: center;
+      }
+
+      /* Tools Segment */
       .tools-segment {
         display: flex;
         align-items: center;
-        background: #0d1e33;
-        padding: 3px;
-        border-radius: 8px;
+        background: rgba(14, 26, 46, 0.85);
+        padding: 2px;
+        border-radius: 6px;
         border: 1px solid var(--line);
         gap: 2px;
       }
@@ -162,10 +192,10 @@
         color: var(--muted);
         cursor: pointer;
         font-size: 12px;
-        font-weight: 700;
-        height: 30px;
-        padding: 0 10px;
-        border-radius: 6px;
+        font-weight: 600;
+        height: 26px;
+        padding: 0 9px;
+        border-radius: 4px;
         display: inline-flex;
         align-items: center;
         gap: 5px;
@@ -174,13 +204,13 @@
 
       .tool-btn:hover {
         color: var(--text);
-        background: rgba(255, 255, 255, 0.05);
+        background: rgba(255, 255, 255, 0.06);
       }
 
       .tool-btn.active {
-        background: rgba(28, 165, 143, 0.25);
-        color: #79ffe9;
-        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+        background: var(--accent-bg);
+        color: var(--accent);
+        font-weight: 700;
       }
 
       .color-dot-control {
@@ -188,8 +218,7 @@
         display: inline-flex;
         align-items: center;
         justify-content: center;
-        margin-left: 2px;
-        margin-right: 4px;
+        margin: 0 2px;
       }
 
       .color-dot-control input[type="color"] {
@@ -201,35 +230,46 @@
       }
 
       .color-dot-preview {
-        width: 18px;
-        height: 18px;
+        width: 16px;
+        height: 16px;
         border-radius: 50%;
-        border: 2px solid rgba(255, 255, 255, 0.7);
-        box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.4);
+        border: 1.5px solid rgba(255, 255, 255, 0.85);
+        box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.5);
         background: #ffdf5d;
         pointer-events: none;
       }
 
       /* Right Actions */
-      .sync-badge {
+      .sync-pill {
         font-size: 11px;
         font-weight: 600;
-        color: #7ef2db;
+        color: #5eead4;
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
         padding: 4px 8px;
-        border-radius: 20px;
-        background: rgba(28, 165, 143, 0.15);
+        border-radius: 12px;
+        background: rgba(45, 212, 191, 0.1);
         white-space: nowrap;
+      }
+
+      .sync-pill::before {
+        content: "";
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        background: #2dd4bf;
       }
 
       .btn {
         border: 1px solid var(--line);
         border-radius: 6px;
-        background: var(--panel-2);
+        background: var(--panel);
         color: var(--text);
         cursor: pointer;
         font-size: 12px;
-        font-weight: 700;
-        height: 32px;
+        font-weight: 600;
+        height: 28px;
         padding: 0 10px;
         display: inline-flex;
         align-items: center;
@@ -239,41 +279,56 @@
       }
 
       .btn:hover:not(:disabled) {
-        border-color: rgba(99, 211, 194, 0.7);
-        background: #1a314c;
+        border-color: var(--line-strong);
+        background: var(--panel-2);
       }
 
       .btn:disabled {
         cursor: not-allowed;
-        opacity: 0.4;
+        opacity: 0.35;
       }
 
       .btn-icon {
-        width: 32px;
+        width: 28px;
         padding: 0;
-        font-size: 14px;
-      }
-
-      .btn-danger {
-        color: var(--danger);
+        font-size: 13px;
       }
 
       .btn-primary {
         border-color: transparent;
         background: var(--accent-strong);
-        color: #061511;
+        color: #ffffff;
         font-weight: 700;
         padding: 0 12px;
       }
 
       .btn-primary:hover:not(:disabled) {
-        background: var(--accent);
+        background: #0f766e;
+      }
+
+      .badge-count {
+        background: rgba(45, 212, 191, 0.25);
+        color: #5eead4;
+        font-size: 10px;
+        font-weight: 700;
+        padding: 1px 5px;
+        border-radius: 10px;
+      }
+
+      /* Main Layout (Viewer + Sidebar) */
+      .viewer-layout {
+        display: flex;
+        flex: 1;
+        position: relative;
+        overflow: hidden;
       }
 
       /* PDF Viewport */
       .pdf-viewport {
         flex: 1;
-        padding: 16px 10px 50px;
+        padding: 18px 10px 60px;
+        overflow-y: auto;
+        height: calc(100vh - 48px);
       }
 
       .pdf-pages {
@@ -284,28 +339,26 @@
         min-height: 250px;
       }
 
-      /* Virtual Placeholder for Lazy Rendering */
       .pdf-page {
-        width: min(100%, 980px);
+        width: min(100%, 960px);
         position: relative;
         overflow: hidden;
-        border: 1px solid rgba(255, 255, 255, 0.12);
         border-radius: 4px;
         background: #ffffff;
-        box-shadow: 0 16px 45px rgba(0, 0, 0, 0.35);
+        box-shadow: 0 12px 36px rgba(0, 0, 0, 0.45);
         content-visibility: auto;
       }
 
       .pdf-page::before {
-        content: "Page " attr(data-page-number);
+        content: "Loading page " attr(data-page-number) "…";
         position: absolute;
         top: 50%;
         left: 50%;
         transform: translate(-50%, -50%);
-        color: #cbd5e1;
-        font-size: 14px;
+        color: #94a3b8;
+        font-size: 13px;
         font-weight: 600;
-        letter-spacing: 0.05em;
+        letter-spacing: 0.03em;
         pointer-events: none;
       }
 
@@ -358,19 +411,19 @@
         mix-blend-mode: multiply;
       }
 
-      /* Sticky Notes */
+      /* Sticky Note Pins on Canvas */
       .sticky-note {
         display: flex;
         align-items: center;
         justify-content: center;
-        width: 32px;
-        height: 32px;
-        background: #ffd166;
+        width: 30px;
+        height: 30px;
+        background: #facc15;
         border: 2px solid #ffffff;
-        border-radius: 50% 50% 50% 4px;
-        box-shadow: 0 4px 14px rgba(0, 0, 0, 0.35);
+        border-radius: 50% 50% 50% 3px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.35);
         cursor: pointer;
-        font-size: 15px;
+        font-size: 14px;
         transition: transform 120ms ease, box-shadow 120ms ease;
         z-index: 10;
         user-select: none;
@@ -378,7 +431,7 @@
 
       .sticky-note:hover {
         transform: scale(1.15) translateY(-2px);
-        box-shadow: 0 6px 18px rgba(0, 0, 0, 0.45);
+        box-shadow: 0 6px 16px rgba(0, 0, 0, 0.45);
       }
 
       .sticky-note.selected {
@@ -386,53 +439,148 @@
         outline-offset: 2px;
       }
 
-      .annotation-delete {
-        position: absolute;
-        top: -8px;
-        right: -8px;
+      /* Notes Slide-Over Drawer */
+      .notes-drawer {
+        width: 320px;
+        background: var(--sidebar-bg);
+        border-left: 1px solid var(--line);
+        display: flex;
+        flex-direction: column;
+        height: calc(100vh - 48px);
+        position: sticky;
+        top: 48px;
+        flex-shrink: 0;
+        transition: transform 200ms ease, width 200ms ease;
+      }
+
+      .notes-drawer.collapsed {
         display: none;
-        place-items: center;
-        width: 18px;
-        height: 18px;
-        padding: 0;
-        border: 1px solid #fff;
-        border-radius: 50%;
-        background: #b91c1c;
-        color: white;
-        cursor: pointer;
-        font-size: 12px;
+      }
+
+      .drawer-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 12px 14px;
+        border-bottom: 1px solid var(--line);
+      }
+
+      .drawer-title {
+        font-size: 13px;
         font-weight: 700;
-        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
+        color: var(--text);
+        display: flex;
+        align-items: center;
+        gap: 6px;
       }
 
-      .annotation.selected .annotation-delete {
-        display: grid;
+      .drawer-close {
+        background: transparent;
+        border: none;
+        color: var(--muted);
+        cursor: pointer;
+        font-size: 15px;
+        padding: 2px 6px;
+        border-radius: 4px;
       }
 
-      /* Note Popover Card */
+      .drawer-close:hover {
+        color: var(--text);
+        background: rgba(255, 255, 255, 0.08);
+      }
+
+      .drawer-list {
+        flex: 1;
+        overflow-y: auto;
+        padding: 10px;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+      }
+
+      .drawer-empty {
+        text-align: center;
+        color: var(--muted);
+        font-size: 12px;
+        padding: 30px 10px;
+      }
+
+      .note-card-item {
+        background: var(--panel);
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        padding: 10px 12px;
+        cursor: pointer;
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+        transition: all 120ms ease;
+      }
+
+      .note-card-item:hover {
+        border-color: rgba(45, 212, 191, 0.4);
+        background: var(--panel-2);
+      }
+
+      .note-card-top {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        font-size: 11px;
+      }
+
+      .note-card-author {
+        font-weight: 700;
+        color: #5eead4;
+      }
+
+      .note-card-page {
+        color: var(--muted);
+        background: rgba(148, 163, 184, 0.12);
+        padding: 1px 5px;
+        border-radius: 4px;
+      }
+
+      .note-card-text {
+        font-size: 12.5px;
+        line-height: 1.45;
+        color: #e2e8f0;
+        white-space: pre-wrap;
+        word-break: break-word;
+      }
+
+      .note-card-actions {
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        gap: 6px;
+        margin-top: 4px;
+      }
+
+      /* Anchored Note Popover Modal */
       .note-popover {
         position: fixed;
-        z-index: 60;
+        z-index: 70;
         width: min(320px, calc(100vw - 28px));
-        background: #102238;
-        border: 1px solid rgba(99, 211, 194, 0.5);
-        border-radius: 12px;
+        background: #0f1c30;
+        border: 1px solid rgba(45, 212, 191, 0.45);
+        border-radius: 10px;
         box-shadow: 0 16px 40px rgba(0, 0, 0, 0.55), 0 0 0 1px rgba(0, 0, 0, 0.3);
-        padding: 14px;
+        padding: 12px 14px;
         display: flex;
         flex-direction: column;
         gap: 10px;
-        animation: popIn 140ms cubic-bezier(0.16, 1, 0.3, 1);
+        animation: popIn 120ms ease-out;
       }
 
       @keyframes popIn {
         from {
           opacity: 0;
-          transform: scale(0.94) translateY(4px);
+          transform: scale(0.95);
         }
         to {
           opacity: 1;
-          transform: scale(1) translateY(0);
+          transform: scale(1);
         }
       }
 
@@ -445,45 +593,26 @@
         align-items: center;
         justify-content: space-between;
         border-bottom: 1px solid var(--line);
-        padding-bottom: 8px;
+        padding-bottom: 6px;
       }
 
-      .note-popover-meta {
-        display: flex;
-        flex-direction: column;
-        gap: 2px;
-      }
-
-      .note-author {
+      .note-popover-author {
         font-size: 12px;
         font-weight: 700;
-        color: #79ffe9;
+        color: #5eead4;
       }
 
-      .note-date {
-        font-size: 10px;
-        color: var(--muted);
-      }
-
-      .note-popover-tools {
-        display: flex;
-        align-items: center;
-        gap: 4px;
-      }
-
-      .icon-btn {
+      .note-popover-close {
         background: transparent;
         border: none;
         color: var(--muted);
         cursor: pointer;
         font-size: 14px;
-        padding: 3px 6px;
+        padding: 2px 5px;
         border-radius: 4px;
-        display: grid;
-        place-items: center;
       }
 
-      .icon-btn:hover {
+      .note-popover-close:hover {
         color: var(--text);
         background: rgba(255, 255, 255, 0.1);
       }
@@ -491,26 +620,17 @@
       .note-view-body {
         display: flex;
         flex-direction: column;
-        gap: 10px;
+        gap: 8px;
       }
 
-      .note-content {
-        font-size: 13.5px;
+      .note-view-content {
+        font-size: 13px;
         line-height: 1.5;
         color: #e2e8f0;
         white-space: pre-wrap;
         word-break: break-word;
-        max-height: 240px;
+        max-height: 220px;
         overflow-y: auto;
-      }
-
-      .note-view-actions {
-        display: flex;
-        align-items: center;
-        justify-content: flex-end;
-        gap: 6px;
-        padding-top: 4px;
-        border-top: 1px solid rgba(148, 163, 184, 0.1);
       }
 
       .note-edit-body {
@@ -521,9 +641,9 @@
 
       .note-edit-body textarea {
         width: 100%;
-        min-height: 90px;
+        min-height: 85px;
         padding: 8px 10px;
-        background: #091727;
+        background: #08111d;
         border: 1px solid var(--line);
         border-radius: 6px;
         color: var(--text);
@@ -537,31 +657,24 @@
         outline: none;
       }
 
-      .note-edit-actions {
-        display: flex;
-        align-items: center;
-        justify-content: flex-end;
-        gap: 6px;
-      }
-
-      /* Floating Toast Notification */
+      /* Floating Toast */
       .status-toast {
         position: fixed;
         bottom: 24px;
         left: 50%;
         transform: translateX(-50%) translateY(20px);
-        background: rgba(14, 27, 43, 0.95);
+        background: rgba(13, 24, 43, 0.95);
         border: 1px solid var(--line);
         color: var(--text);
-        padding: 7px 16px;
-        border-radius: 30px;
+        padding: 6px 14px;
+        border-radius: 20px;
         font-size: 12px;
         font-weight: 600;
         box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
         z-index: 100;
         pointer-events: none;
         opacity: 0;
-        transition: opacity 180ms ease, transform 180ms ease;
+        transition: opacity 160ms ease, transform 160ms ease;
       }
 
       .status-toast.visible {
@@ -570,27 +683,27 @@
       }
 
       .status-toast[data-kind="success"] {
-        border-color: rgba(99, 211, 194, 0.6);
-        color: #a2f4e8;
+        border-color: rgba(45, 212, 191, 0.6);
+        color: #5eead4;
       }
 
       .status-toast[data-kind="warning"] {
-        border-color: rgba(255, 209, 102, 0.6);
+        border-color: rgba(251, 191, 36, 0.6);
         color: var(--warning);
       }
 
       .status-toast[data-kind="error"] {
-        border-color: rgba(255, 142, 142, 0.6);
+        border-color: rgba(248, 113, 113, 0.6);
         color: var(--danger);
       }
 
       .empty-state {
-        max-width: 540px;
+        max-width: 500px;
         margin: 60px auto;
         padding: 24px;
         border: 1px solid var(--line);
         border-radius: 10px;
-        background: rgba(14, 27, 43, 0.85);
+        background: var(--panel);
         color: var(--muted);
         text-align: center;
       }
@@ -603,8 +716,8 @@
         .app-header {
           height: auto;
           flex-wrap: wrap;
-          padding: 8px 10px;
-          gap: 8px;
+          padding: 6px 10px;
+          gap: 6px;
         }
 
         .header-left {
@@ -621,26 +734,42 @@
           margin-left: auto;
         }
 
-        .doc-meta {
-          display: none;
+        .notes-drawer {
+          position: fixed;
+          top: 0;
+          right: 0;
+          height: 100vh;
+          z-index: 100;
+          box-shadow: -10px 0 30px rgba(0,0,0,0.5);
         }
       }
     </style>
   </head>
   <body>
     <div class="app-shell">
-      <!-- Slim Unified Top Bar (48px) -->
+      <!-- 48px Pro Minimalist Header -->
       <header class="app-header">
         <div class="header-left">
-          <a class="nav-back" href="./index.html" title="Back to paper library">← Library</a>
-          <div class="header-divider"></div>
-          <div class="doc-title-wrap">
-            <h1 class="doc-title" id="paperTitle" title="Loading paper…">Loading paper…</h1>
-            <span class="doc-meta" id="paperMeta"></span>
-          </div>
+          <a class="nav-back" href="./index.html" title="Back to library">← Library</a>
+          <div class="header-sep"></div>
+          <h1 class="doc-title" id="paperTitle" title="Loading paper…">Loading paper…</h1>
         </div>
 
         <div class="header-center">
+          <!-- Page Jump & Zoom Controls -->
+          <div class="nav-group">
+            <button class="nav-btn" type="button" id="prevPageBtn" title="Previous page (Left arrow)">◀</button>
+            <span class="page-indicator" id="pageIndicator">1 / -</span>
+            <button class="nav-btn" type="button" id="nextPageBtn" title="Next page (Right arrow)">▶</button>
+          </div>
+
+          <div class="nav-group">
+            <button class="nav-btn" type="button" id="zoomOutBtn" title="Zoom out (−)">−</button>
+            <span class="page-indicator" id="zoomIndicator" style="min-width: 42px;">100%</span>
+            <button class="nav-btn" type="button" id="zoomInBtn" title="Zoom in (+)">+</button>
+          </div>
+
+          <!-- Annotation Tool Selection -->
           <div class="tools-segment" role="toolbar" aria-label="Annotation tools">
             <button class="tool-btn active" type="button" data-tool="pan" title="Select / scroll">
               ✋ Select
@@ -659,25 +788,41 @@
         </div>
 
         <div class="header-right">
-          <span class="sync-badge" id="authStatus">● Cloud sync active</span>
+          <button class="btn" type="button" id="toggleNotesDrawerBtn" title="Toggle notes list">
+            💬 Notes <span class="badge-count" id="notesCountBadge">0</span>
+          </button>
+          <span class="sync-pill" id="authStatus">Sync ready</span>
           <button class="btn btn-icon" type="button" id="undoButton" disabled title="Undo (Ctrl+Z)">↺</button>
-          <button class="btn btn-icon btn-danger" type="button" id="deleteButton" disabled title="Delete selected">🗑</button>
-          <button class="btn btn-icon" type="button" id="reloadButton" title="Reload shared notes">↻</button>
-          <button class="btn" type="button" id="downloadButton" title="Download backup JSON">⬇ JSON</button>
           <button class="btn btn-primary" type="button" id="saveButton" disabled title="Save shared annotations">
             Save
           </button>
         </div>
       </header>
 
-      <!-- Main PDF Viewport -->
-      <main class="pdf-viewport" id="pdfViewport">
-        <div class="pdf-pages" id="pdfPages"></div>
-        <div class="empty-state" id="emptyState" hidden>
-          <strong>PDF could not be opened.</strong>
-          <div id="emptyStateMessage"></div>
-        </div>
-      </main>
+      <!-- Main Layout -->
+      <div class="viewer-layout">
+        <!-- PDF Viewport -->
+        <main class="pdf-viewport" id="pdfViewport">
+          <div class="pdf-pages" id="pdfPages"></div>
+          <div class="empty-state" id="emptyState" hidden>
+            <strong>PDF could not be opened.</strong>
+            <div id="emptyStateMessage"></div>
+          </div>
+        </main>
+
+        <!-- Slide-Out Notes Drawer -->
+        <aside class="notes-drawer collapsed" id="notesDrawer">
+          <div class="drawer-header">
+            <div class="drawer-title">
+              💬 Paper Notes <span class="badge-count" id="drawerNotesCount">0</span>
+            </div>
+            <button class="drawer-close" type="button" id="closeDrawerBtn" title="Close sidebar">✕</button>
+          </div>
+          <div class="drawer-list" id="drawerNotesList">
+            <div class="drawer-empty">No notes yet.<br />Select 📌 Note and click on any page to add one.</div>
+          </div>
+        </aside>
+      </div>
 
       <!-- Floating Toast Status -->
       <div class="status-toast" id="statusBar" role="status" aria-live="polite">
@@ -685,23 +830,18 @@
       </div>
     </div>
 
-    <!-- Enhanced Sticky Note Popover -->
+    <!-- Anchored Note Popover Card -->
     <div class="note-popover" id="noteEditor" hidden>
       <div class="note-popover-header">
-        <div class="note-popover-meta">
-          <span class="note-author" id="noteAuthor">📌 Note</span>
-          <span class="note-date" id="noteDate"></span>
-        </div>
-        <div class="note-popover-tools">
-          <button class="icon-btn" type="button" id="closeNoteButton" title="Close note">✕</button>
-        </div>
+        <span class="note-popover-author" id="noteAuthor">📌 Note</span>
+        <button class="note-popover-close" type="button" id="closeNoteButton" title="Close">✕</button>
       </div>
 
       <!-- View Mode -->
       <div class="note-view-body" id="noteViewBody">
-        <div class="note-content" id="noteContentText"></div>
-        <div class="note-view-actions">
-          <button class="btn btn-danger btn-icon" type="button" id="deleteNoteDirectButton" title="Delete note">🗑</button>
+        <div class="note-view-content" id="noteContentText"></div>
+        <div style="display: flex; justify-content: flex-end; gap: 6px; margin-top: 4px;">
+          <button class="btn btn-icon" type="button" id="deleteNoteDirectButton" title="Delete note" style="color: var(--danger);">🗑</button>
           <button class="btn" type="button" id="editNoteButton">✏️ Edit</button>
         </div>
       </div>
@@ -709,9 +849,9 @@
       <!-- Edit Mode -->
       <form class="note-edit-body" id="noteEditBody" hidden>
         <textarea id="noteText" maxlength="2000" required placeholder="Write a note for the team…"></textarea>
-        <div class="note-edit-actions">
+        <div style="display: flex; justify-content: flex-end; gap: 6px;">
           <button class="btn" type="button" id="cancelNoteButton">Cancel</button>
-          <button class="btn btn-primary" type="submit" id="saveNoteSubmitButton">Place note</button>
+          <button class="btn btn-primary" type="submit" id="saveNoteSubmitButton">Save note</button>
         </div>
       </form>
     </div>
@@ -724,7 +864,6 @@
         const paperId = String(query.get("paper") || "").trim();
         const pdfParameter = query.get("pdf") || "";
         const paperTitle = query.get("title") || (paperId ? "Paper " + paperId : "PDF annotation workspace");
-        const paperMeta = [query.get("topic"), query.get("user")].filter(Boolean).join(" · ");
         const host = window.location.hostname;
         const configuredApi = String(
           window.ANNOTATION_API_BASE ||
@@ -742,22 +881,30 @@
 
         const elements = {
           title: document.getElementById("paperTitle"),
-          meta: document.getElementById("paperMeta"),
           authStatus: document.getElementById("authStatus"),
           status: document.getElementById("statusBar"),
+          viewport: document.getElementById("pdfViewport"),
           pages: document.getElementById("pdfPages"),
           empty: document.getElementById("emptyState"),
           emptyMessage: document.getElementById("emptyStateMessage"),
+          pageIndicator: document.getElementById("pageIndicator"),
+          prevPageBtn: document.getElementById("prevPageBtn"),
+          nextPageBtn: document.getElementById("nextPageBtn"),
+          zoomIndicator: document.getElementById("zoomIndicator"),
+          zoomInBtn: document.getElementById("zoomInBtn"),
+          zoomOutBtn: document.getElementById("zoomOutBtn"),
           color: document.getElementById("highlightColor"),
           colorPreview: document.getElementById("colorPreview"),
           undo: document.getElementById("undoButton"),
-          delete: document.getElementById("deleteButton"),
-          reload: document.getElementById("reloadButton"),
-          download: document.getElementById("downloadButton"),
           save: document.getElementById("saveButton"),
+          notesDrawer: document.getElementById("notesDrawer"),
+          toggleNotesDrawerBtn: document.getElementById("toggleNotesDrawerBtn"),
+          closeDrawerBtn: document.getElementById("closeDrawerBtn"),
+          notesCountBadge: document.getElementById("notesCountBadge"),
+          drawerNotesCount: document.getElementById("drawerNotesCount"),
+          drawerNotesList: document.getElementById("drawerNotesList"),
           noteEditor: document.getElementById("noteEditor"),
           noteAuthor: document.getElementById("noteAuthor"),
-          noteDate: document.getElementById("noteDate"),
           noteViewBody: document.getElementById("noteViewBody"),
           noteContentText: document.getElementById("noteContentText"),
           editNoteButton: document.getElementById("editNoteButton"),
@@ -771,7 +918,6 @@
 
         let annotations = [];
         let annotationRevision = null;
-        let currentUser = null;
         let selectedAnnotationId = null;
         let activeTool = "pan";
         let history = [];
@@ -782,12 +928,15 @@
         let isDirty = false;
         let toastTimeout = null;
 
-        // Virtual / Lazy Rendering state
+        // PDF state
         let pdfDoc = null;
+        let currentPageNumber = 1;
+        let totalPages = 1;
+        let currentZoomLevel = 1.0;
+        let basePageRatio = 1.414;
         let renderedPages = new Set();
         let renderingPages = new Set();
         let pageObserver = null;
-        let currentScale = 1;
 
         if (typeof window.pdfjsLib !== "undefined") {
           window.pdfjsLib.GlobalWorkerOptions.workerSrc =
@@ -796,11 +945,6 @@
 
         elements.title.textContent = paperTitle;
         elements.title.title = paperTitle;
-        if (paperMeta) {
-          elements.meta.textContent = paperMeta;
-        } else {
-          elements.meta.hidden = true;
-        }
 
         function apiUrl(path) {
           return (apiBase || "") + "/api" + path;
@@ -813,7 +957,7 @@
           if (toastTimeout) clearTimeout(toastTimeout);
           toastTimeout = setTimeout(() => {
             elements.status.classList.remove("visible");
-          }, 3200);
+          }, 2800);
         }
 
         function setEmpty(message) {
@@ -872,13 +1016,18 @@
 
         function updateActionState() {
           elements.undo.disabled = history.length === 0;
-          elements.delete.disabled = !selectedAnnotationId;
           elements.save.disabled = !hasApi || !isDirty;
           elements.save.title = !hasApi
             ? "Configure the Vercel API to save shared annotations"
             : isDirty
               ? "Save shared annotations to Vercel"
               : "No unsaved changes";
+
+          // Update notes count
+          const notesOnly = annotations.filter((a) => a.type === "sticky-note" && validAnnotation(a));
+          elements.notesCountBadge.textContent = String(notesOnly.length);
+          elements.drawerNotesCount.textContent = String(notesOnly.length);
+          updateNotesDrawerList(notesOnly);
         }
 
         function commitChange(nextAnnotations, selectedId) {
@@ -888,7 +1037,7 @@
           isDirty = true;
           renderAnnotations();
           updateActionState();
-          setStatus("Unsaved changes. Click 'Save' when ready.", "warning");
+          setStatus("Changes saved locally. Click 'Save' to sync.", "warning");
         }
 
         function removeAnnotation(id) {
@@ -897,10 +1046,6 @@
           const next = annotations.filter((annotation) => annotation.id !== id);
           if (next.length === annotations.length) return;
           commitChange(next, null);
-        }
-
-        function deleteSelected() {
-          removeAnnotation(selectedAnnotationId);
         }
 
         function undo() {
@@ -915,23 +1060,8 @@
           setStatus("Undo applied.", "neutral");
         }
 
-        function annotationDeleteButton(annotation) {
-          const button = document.createElement("button");
-          button.className = "annotation-delete";
-          button.type = "button";
-          button.textContent = "×";
-          button.title = "Delete annotation";
-          button.setAttribute("aria-label", "Delete annotation");
-          button.addEventListener("pointerdown", (event) => event.stopPropagation());
-          button.addEventListener("click", (event) => {
-            event.stopPropagation();
-            removeAnnotation(annotation.id);
-          });
-          return button;
-        }
-
-        /* Note Popover Handlers */
-        function showNoteEditor(draft, mode) {
+        /* Fixed, Robust Note Popover & Drawer */
+        function showNoteEditor(draft, mode, targetElement) {
           noteDraft = draft;
           elements.noteEditor.hidden = false;
 
@@ -940,22 +1070,6 @@
             ? draft.annotation.createdBy
             : (query.get("user") || "Team note");
           elements.noteAuthor.textContent = "📌 " + author;
-
-          if (isExisting && draft.annotation.createdAt) {
-            try {
-              const d = new Date(draft.annotation.createdAt);
-              elements.noteDate.textContent = d.toLocaleDateString(undefined, {
-                month: "short",
-                day: "numeric",
-                hour: "2-digit",
-                minute: "2-digit",
-              });
-            } catch (_e) {
-              elements.noteDate.textContent = "";
-            }
-          } else {
-            elements.noteDate.textContent = "Just now";
-          }
 
           if (mode === "edit" || !isExisting) {
             elements.noteViewBody.hidden = true;
@@ -969,11 +1083,21 @@
             elements.noteContentText.textContent = draft.annotation.text || "";
           }
 
+          // Positioning
           const width = Math.min(320, window.innerWidth - 28);
-          const clientX = draft.clientX ?? (window.innerWidth / 2);
-          const clientY = draft.clientY ?? 100;
-          const left = clamp(clientX + 14, 12, window.innerWidth - width - 14);
-          const top = clamp(clientY - 10, 60, window.innerHeight - 240);
+          let clientX = draft.clientX;
+          let clientY = draft.clientY;
+
+          if (targetElement) {
+            const rect = targetElement.getBoundingClientRect();
+            clientX = rect.right + 10;
+            clientY = rect.top;
+          }
+
+          clientX = clientX ?? (window.innerWidth / 2);
+          clientY = clientY ?? 100;
+          const left = clamp(clientX + 10, 12, window.innerWidth - width - 14);
+          const top = clamp(clientY - 10, 56, window.innerHeight - 240);
           elements.noteEditor.style.left = left + "px";
           elements.noteEditor.style.top = top + "px";
         }
@@ -1011,7 +1135,7 @@
               width: 0.05,
               height: 0.05,
               text,
-              color: "#ffd166",
+              color: "#facc15",
               createdBy: query.get("user") || "team member",
               createdAt: new Date().toISOString(),
             };
@@ -1021,17 +1145,62 @@
           closeNoteEditor();
         }
 
-        function openExistingNote(annotation, event, mode) {
-          if (event) event.stopPropagation();
-          const rect = event.currentTarget ? event.currentTarget.getBoundingClientRect() : null;
+        function openExistingNote(annotation, targetElement, mode) {
           showNoteEditor({
             annotation,
             page: annotation.page,
             x: annotation.x,
             y: annotation.y,
-            clientX: rect ? rect.right : (event.clientX || window.innerWidth / 2),
-            clientY: rect ? rect.top : (event.clientY || 120),
-          }, mode || "view");
+          }, mode || "view", targetElement);
+        }
+
+        function updateNotesDrawerList(notesList) {
+          if (!notesList.length) {
+            elements.drawerNotesList.innerHTML =
+              '<div class="drawer-empty">No notes yet.<br />Select 📌 Note and click on any page to add one.</div>';
+            return;
+          }
+
+          elements.drawerNotesList.innerHTML = "";
+          notesList.forEach((ann) => {
+            const card = document.createElement("div");
+            card.className = "note-card-item";
+            card.innerHTML = `
+              <div class="note-card-top">
+                <span class="note-card-author">📌 ${ann.createdBy || "Contributor"}</span>
+                <span class="note-card-page">Page ${ann.page}</span>
+              </div>
+              <div class="note-card-text">${escapeHtml(ann.text || "")}</div>
+              <div class="note-card-actions">
+                <button class="btn btn-icon" data-del="${ann.id}" title="Delete" style="width:24px;height:24px;font-size:11px;color:var(--danger)">🗑</button>
+              </div>
+            `;
+
+            card.addEventListener("click", (e) => {
+              if (e.target.closest("[data-del]")) {
+                e.stopPropagation();
+                removeAnnotation(ann.id);
+                return;
+              }
+              // Jump to page and select note
+              scrollToPage(Number(ann.page));
+              selectAnnotation(ann.id);
+              const el = elements.pages.querySelector(`[data-annotation-id="${ann.id}"]`);
+              openExistingNote(ann, el, "view");
+            });
+
+            elements.drawerNotesList.appendChild(card);
+          });
+        }
+
+        function escapeHtml(str) {
+          return str.replace(/[&<>'"]/g, (tag) => ({
+            "&": "&amp;",
+            "<": "&lt;",
+            ">": "&gt;",
+            "'": "&#39;",
+            '"': "&quot;",
+          }[tag] || tag));
         }
 
         /* Per-Page Annotation Rendering */
@@ -1049,8 +1218,8 @@
             element.dataset.annotationId = annotation.id;
             element.style.left = annotation.x * 100 + "%";
             element.style.top = annotation.y * 100 + "%";
-            element.style.width = annotation.type === "highlight" ? annotation.width * 100 + "%" : "32px";
-            element.style.height = annotation.type === "highlight" ? annotation.height * 100 + "%" : "32px";
+            element.style.width = annotation.type === "highlight" ? annotation.width * 100 + "%" : "30px";
+            element.style.height = annotation.type === "highlight" ? annotation.height * 100 + "%" : "30px";
             element.classList.toggle("selected", selectedAnnotationId === annotation.id);
 
             if (annotation.type === "highlight") {
@@ -1063,17 +1232,16 @@
               });
             } else {
               element.textContent = "📌";
-              element.title = annotation.text;
-              element.setAttribute("aria-label", "Sticker note: " + annotation.text);
+              element.title = (annotation.createdBy ? annotation.createdBy + ": " : "") + annotation.text;
+              element.setAttribute("aria-label", "Note: " + annotation.text);
 
+              // 100% reliable click + drag handler
               element.addEventListener("pointerdown", (event) => {
-                if (event.target.closest(".annotation-delete")) return;
                 event.stopPropagation();
                 beginNoteDrag(annotation, element, layer, event);
               });
             }
 
-            element.appendChild(annotationDeleteButton(annotation));
             layer.appendChild(element);
           });
         }
@@ -1100,10 +1268,9 @@
           };
           selectedAnnotationId = annotation.id;
           element.classList.add("selected");
-          updateActionState();
           try {
             layer.setPointerCapture(event.pointerId);
-          } catch (_error) {}
+          } catch (_e) {}
         }
 
         function handleNoteDrag(event) {
@@ -1135,9 +1302,10 @@
 
           if (moved) {
             renderAnnotationsForPage(Number(annotation.page));
-            setStatus("Note moved. Click Save to share.", "warning");
+            setStatus("Note moved. Click Save to sync.", "warning");
           } else {
-            openExistingNote(annotation, { currentTarget: element, clientX: event.clientX, clientY: event.clientY }, "view");
+            // Click: open note popover card!
+            openExistingNote(annotation, element, "view");
           }
         }
 
@@ -1159,7 +1327,7 @@
           layer.appendChild(highlightDraft.preview);
           try {
             layer.setPointerCapture(event.pointerId);
-          } catch (_error) {}
+          } catch (_e) {}
         }
 
         function updateHighlightPreview(current) {
@@ -1242,7 +1410,7 @@
           if (tool === "highlight") {
             setStatus("Drag across text to highlight.", "neutral");
           } else if (tool === "note") {
-            setStatus("Click anywhere on a page to place a note.", "neutral");
+            setStatus("Click anywhere on PDF to place note.", "neutral");
           } else {
             setStatus("Select tool active.", "neutral");
           }
@@ -1257,42 +1425,12 @@
             y: Number(annotation.y),
             width: Number(annotation.width || 0.05),
             height: Number(annotation.height || 0.05),
-            color: annotation.color || "#ffd166",
+            color: annotation.color || "#facc15",
             opacity: annotation.type === "highlight" ? 0.38 : undefined,
             text: annotation.text ? String(annotation.text).trim() : undefined,
             createdBy: annotation.createdBy || (query.get("user") || "team member"),
             createdAt: annotation.createdAt || new Date().toISOString(),
           }));
-        }
-
-        function downloadAnnotations() {
-          const payload = {
-            paperId,
-            version: 1,
-            exportedAt: new Date().toISOString(),
-            annotations: annotationPayload(),
-          };
-          const blob = new Blob([JSON.stringify(payload, null, 2) + "\n"], { type: "application/json" });
-          const url = URL.createObjectURL(blob);
-          const link = document.createElement("a");
-          link.href = url;
-          link.download = (paperId ? "paper-" + paperId : "annotations") + ".json";
-          document.body.appendChild(link);
-          link.click();
-          link.remove();
-          URL.revokeObjectURL(url);
-          setStatus("Annotations downloaded as JSON backup.", "success");
-        }
-
-        async function loadLocalAnnotations() {
-          if (!localAnnotationUrl) return null;
-          try {
-            const response = await fetch(localAnnotationUrl, { cache: "no-store" });
-            if (!response.ok) return null;
-            return await response.json();
-          } catch (_error) {
-            return null;
-          }
         }
 
         async function loadAnnotations() {
@@ -1308,11 +1446,16 @@
               documentData = await response.json();
               loadedFromApi = true;
             } catch (_error) {
-              setStatus("Cloud storage unavailable; checking local fallback.", "warning");
+              // fallback
             }
           }
 
-          if (!documentData) documentData = await loadLocalAnnotations();
+          if (!documentData && localAnnotationUrl) {
+            try {
+              const res = await fetch(localAnnotationUrl, { cache: "no-store" });
+              if (res.ok) documentData = await res.json();
+            } catch (_e) {}
+          }
 
           if (documentData && Array.isArray(documentData.annotations)) {
             annotations = documentData.annotations.filter(validAnnotation);
@@ -1331,33 +1474,20 @@
             const count = annotations.length;
             setStatus(
               count
-                ? count + " shared annotation" + (count === 1 ? "" : "s") + " synced."
-                : "No annotations yet. Ready to highlight or add notes.",
+                ? count + " annotation" + (count === 1 ? "" : "s") + " loaded."
+                : "Ready to highlight or add notes.",
               "success",
             );
           }
         }
 
-        async function checkAuth() {
-          const activeUser = query.get("user");
-          elements.authStatus.textContent = activeUser
-            ? "● Syncing as " + activeUser
-            : "● Shared sync active";
-          updateActionState();
-        }
-
         async function saveSharedAnnotations() {
-          if (!hasApi) {
-            downloadAnnotations();
-            return;
-          }
+          if (!hasApi) return;
 
           elements.save.disabled = true;
           setStatus("Saving to Vercel…", "neutral");
           try {
-            const author = currentUser
-              ? currentUser.login
-              : (query.get("user") || "team member");
+            const author = query.get("user") || "team member";
             const response = await fetch(apiUrl("/annotations/" + encodeURIComponent(paperId)), {
               method: "POST",
               headers: { "Content-Type": "application/json" },
@@ -1370,16 +1500,15 @@
             });
             const data = await response.json();
             if (response.status === 409) {
-              setStatus("Annotations changed remotely. Reload before saving.", "warning");
+              setStatus("Annotations changed remotely. Reload page.", "warning");
               return;
             }
-            if (!response.ok) {
-              throw new Error(data.message || data.error || "Save failed");
-            }
+            if (!response.ok) throw new Error(data.message || data.error || "Save failed");
+
             annotationRevision = data.revision || annotationRevision;
             isDirty = false;
             history = [];
-            setStatus("Saved! Annotations are synced for everyone.", "success");
+            setStatus("Saved! Annotations synced to cloud.", "success");
           } catch (error) {
             setStatus(error.message || "Save failed.", "error");
           } finally {
@@ -1387,13 +1516,44 @@
           }
         }
 
-        async function reloadShared() {
-          if (isDirty && !window.confirm("Discard unsaved changes and reload?")) return;
-          await loadAnnotations();
-          setStatus("Reloaded shared annotations.", "neutral");
+        /* Page Jump and Navigation */
+        function scrollToPage(pageNum) {
+          const pageElement = elements.pages.querySelector(`[data-page-number="${pageNum}"]`);
+          if (pageElement) {
+            pageElement.scrollIntoView({ behavior: "smooth", block: "start" });
+            updatePageIndicator(pageNum);
+          }
         }
 
-        /* Lightning-Fast Virtual Page Rendering */
+        function updatePageIndicator(pageNum) {
+          currentPageNumber = pageNum;
+          elements.pageIndicator.textContent = `${pageNum} / ${totalPages}`;
+          elements.prevPageBtn.disabled = pageNum <= 1;
+          elements.nextPageBtn.disabled = pageNum >= totalPages;
+        }
+
+        /* Zoom Controls */
+        function setZoom(factor) {
+          currentZoomLevel = clamp(factor, 0.7, 1.8);
+          elements.zoomIndicator.textContent = Math.round(currentZoomLevel * 100) + "%";
+          elements.zoomOutBtn.disabled = currentZoomLevel <= 0.75;
+          elements.zoomInBtn.disabled = currentZoomLevel >= 1.75;
+
+          // Re-render visible pages with new zoom
+          renderedPages.clear();
+          elements.pages.querySelectorAll(".pdf-page").forEach((el) => {
+            el.classList.remove("rendered");
+            const width = Math.min(window.innerWidth - 30, Math.round(960 * currentZoomLevel));
+            el.style.width = width + "px";
+            el.style.minHeight = Math.round(width * basePageRatio) + "px";
+          });
+
+          // Trigger re-render of current page
+          renderPageCanvas(currentPageNumber);
+          if (currentPageNumber + 1 <= totalPages) renderPageCanvas(currentPageNumber + 1);
+        }
+
+        /* High-Performance Virtual Page Renderer */
         async function renderPageCanvas(pageNumber) {
           if (!pdfDoc || renderedPages.has(pageNumber) || renderingPages.has(pageNumber)) return;
           renderingPages.add(pageNumber);
@@ -1407,9 +1567,8 @@
           try {
             const page = await pdfDoc.getPage(pageNumber);
             const baseViewport = page.getViewport({ scale: 1 });
-            const availableWidth = Math.max(320, Math.min(980, elements.pages.clientWidth || 980));
-            const scale = Math.min(1.65, availableWidth / baseViewport.width);
-            currentScale = scale;
+            const containerWidth = pageElement.clientWidth || 960;
+            const scale = (containerWidth / baseViewport.width) * (window.devicePixelRatio > 1.5 ? 1.5 : 1);
             const viewport = page.getViewport({ scale });
 
             const canvas = pageElement.querySelector("canvas");
@@ -1428,13 +1587,12 @@
               viewport,
               intent: "display",
             }).promise;
+
             renderedPages.add(pageNumber);
             pageElement.classList.add("rendered");
-
-            // Attach annotations for this page immediately!
             renderAnnotationsForPage(pageNumber);
           } catch (error) {
-            console.error("Error rendering page " + pageNumber, error);
+            console.error("Page render error:", error);
           } finally {
             renderingPages.delete(pageNumber);
           }
@@ -1442,15 +1600,14 @@
 
         async function renderPdf() {
           if (!pdfUrl) {
-            setEmpty("No PDF path was provided.");
-            setStatus("Missing PDF URL.", "error");
+            setEmpty("No PDF file provided.");
             return;
           }
           if (typeof window.pdfjsLib === "undefined") {
-            setEmpty("PDF viewer library did not load. Check network connection.");
-            setStatus("PDF.js not loaded.", "error");
+            setEmpty("PDF viewer library not loaded.");
             return;
           }
+
           try {
             setStatus("Loading PDF…", "neutral");
             const loadingTask = window.pdfjsLib.getDocument({
@@ -1465,26 +1622,22 @@
               isEvalSupported: true,
             });
 
-            loadingTask.onProgress = (progress) => {
-              if (progress.total > 0) {
-                const pct = Math.round((progress.loaded / progress.total) * 100);
-                setStatus("Loading document " + pct + "%…", "neutral");
-              }
-            };
-
             pdfDoc = await loadingTask.promise;
             clearEmpty();
             elements.pages.innerHTML = "";
             pageLayers = new Map();
             renderedPages = new Set();
             renderingPages = new Set();
+            totalPages = pdfDoc.numPages;
 
-            // Calculate exact placeholder aspect ratio from page 1
+            // Compute aspect ratio from Page 1
             const firstPage = await pdfDoc.getPage(1);
             const firstVp = firstPage.getViewport({ scale: 1 });
-            const aspectRatio = firstVp.height / firstVp.width;
-            const availableWidth = Math.max(320, Math.min(980, elements.pages.clientWidth || 980));
-            const placeholderHeight = Math.round(availableWidth * aspectRatio);
+            basePageRatio = firstVp.height / firstVp.width;
+            const baseWidth = Math.min(elements.viewport.clientWidth - 30, 960);
+            const placeholderHeight = Math.round(baseWidth * basePageRatio);
+
+            updatePageIndicator(1);
 
             // Virtual IntersectionObserver - renders pages as you scroll near them
             if (pageObserver) pageObserver.disconnect();
@@ -1493,13 +1646,15 @@
                 if (entry.isIntersecting) {
                   const pNum = Number(entry.target.dataset.pageNumber);
                   renderPageCanvas(pNum);
+                  updatePageIndicator(pNum);
                 }
               });
             }, {
-              rootMargin: "600px 0px", // prefetch 600px before page appears
+              root: elements.viewport,
+              rootMargin: "500px 0px",
             });
 
-            // Build all page placeholder frames in < 5ms!
+            // Instant page container generation (< 5ms)
             for (let pageNumber = 1; pageNumber <= pdfDoc.numPages; pageNumber += 1) {
               const pageElement = document.createElement("section");
               pageElement.className = "pdf-page";
@@ -1523,7 +1678,7 @@
               pageObserver.observe(pageElement);
             }
 
-            // Priority: Render Page 1 (and Page 2) IMMEDIATELY!
+            // Priority: Render Page 1 and Page 2 immediately
             await renderPageCanvas(1);
             if (pdfDoc.numPages >= 2) {
               renderPageCanvas(2);
@@ -1532,29 +1687,45 @@
             setStatus("PDF ready (" + pdfDoc.numPages + " pages).", "success");
           } catch (error) {
             console.error(error);
-            setEmpty("The PDF could not be loaded: " + (error.message || "unknown error"));
+            setEmpty("PDF could not be loaded: " + (error.message || "network error"));
             setStatus("Could not open PDF.", "error");
           }
         }
 
-        // Tool listeners
-        document.querySelectorAll("[data-tool]").forEach((button) => {
-          button.addEventListener("click", () => setTool(button.dataset.tool));
+        // Event Listeners
+        document.querySelectorAll("[data-tool]").forEach((btn) => {
+          btn.addEventListener("click", () => setTool(btn.dataset.tool));
         });
 
-        // Color picker preview
         elements.color.addEventListener("input", (e) => {
           elements.colorPreview.style.background = e.target.value;
           renderAnnotations();
         });
 
         elements.undo.addEventListener("click", undo);
-        elements.delete.addEventListener("click", deleteSelected);
-        elements.reload.addEventListener("click", reloadShared);
-        elements.download.addEventListener("click", downloadAnnotations);
         elements.save.addEventListener("click", saveSharedAnnotations);
 
-        // Note popover listeners
+        // Page Jump Listeners
+        elements.prevPageBtn.addEventListener("click", () => {
+          if (currentPageNumber > 1) scrollToPage(currentPageNumber - 1);
+        });
+        elements.nextPageBtn.addEventListener("click", () => {
+          if (currentPageNumber < totalPages) scrollToPage(currentPageNumber + 1);
+        });
+
+        // Zoom Listeners
+        elements.zoomInBtn.addEventListener("click", () => setZoom(currentZoomLevel + 0.15));
+        elements.zoomOutBtn.addEventListener("click", () => setZoom(currentZoomLevel - 0.15));
+
+        // Drawer Listeners
+        elements.toggleNotesDrawerBtn.addEventListener("click", () => {
+          elements.notesDrawer.classList.toggle("collapsed");
+        });
+        elements.closeDrawerBtn.addEventListener("click", () => {
+          elements.notesDrawer.classList.add("collapsed");
+        });
+
+        // Popover Listeners
         elements.noteEditBody.addEventListener("submit", saveNote);
         elements.cancelNoteButton.addEventListener("click", closeNoteEditor);
         elements.closeNoteButton.addEventListener("click", closeNoteEditor);
@@ -1574,18 +1745,30 @@
 
         document.addEventListener("keydown", (event) => {
           const tagName = document.activeElement && document.activeElement.tagName;
-          if (event.key === "Escape") closeNoteEditor();
+          if (event.key === "Escape") {
+            closeNoteEditor();
+            elements.notesDrawer.classList.add("collapsed");
+          }
           if ((event.key === "Delete" || event.key === "Backspace") && tagName !== "TEXTAREA" && tagName !== "INPUT") {
-            deleteSelected();
+            if (selectedAnnotationId) removeAnnotation(selectedAnnotationId);
           }
           if ((event.metaKey || event.ctrlKey) && event.key.toLowerCase() === "s") {
             event.preventDefault();
             saveSharedAnnotations();
           }
+          if (tagName !== "TEXTAREA" && tagName !== "INPUT") {
+            if (event.key === "ArrowRight" || event.key === "PageDown") {
+              if (currentPageNumber < totalPages) scrollToPage(currentPageNumber + 1);
+            } else if (event.key === "ArrowLeft" || event.key === "PageUp") {
+              if (currentPageNumber > 1) scrollToPage(currentPageNumber - 1);
+            }
+          }
         });
 
-        updateActionState();
-        checkAuth();
+        // Startup
+        const activeUser = query.get("user");
+        elements.authStatus.textContent = activeUser ? "● " + activeUser : "● Cloud synced";
+
         loadAnnotations();
         renderPdf();
       })();
