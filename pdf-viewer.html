@@ -59,7 +59,7 @@
         flex-direction: column;
       }
 
-      /* Slim Unified Header - Takes only 48px! */
+      /* Slim Unified Header - 48px */
       .app-header {
         position: sticky;
         top: 0;
@@ -268,7 +268,7 @@
         background: var(--accent);
       }
 
-      /* PDF Viewport - Starts right below the 48px header! */
+      /* PDF Viewport */
       .pdf-viewport {
         flex: 1;
         padding: 16px 10px 50px;
@@ -282,14 +282,33 @@
         min-height: 250px;
       }
 
+      /* Virtual Placeholder for Lazy Rendering */
       .pdf-page {
         width: min(100%, 980px);
         position: relative;
         overflow: hidden;
         border: 1px solid rgba(255, 255, 255, 0.12);
         border-radius: 4px;
-        background: white;
+        background: #ffffff;
         box-shadow: 0 16px 45px rgba(0, 0, 0, 0.35);
+        content-visibility: auto;
+      }
+
+      .pdf-page::before {
+        content: "Page " attr(data-page-number);
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        color: #cbd5e1;
+        font-size: 14px;
+        font-weight: 600;
+        letter-spacing: 0.05em;
+        pointer-events: none;
+      }
+
+      .pdf-page.rendered::before {
+        display: none;
       }
 
       .pdf-page canvas {
@@ -316,7 +335,7 @@
         user-select: none;
       }
 
-      /* Highlights - Crisp, fixed opacity */
+      /* Highlights */
       .highlight-annotation {
         border: 1px solid rgba(125, 91, 0, 0.4);
         border-radius: 2px;
@@ -337,7 +356,7 @@
         mix-blend-mode: multiply;
       }
 
-      /* Sticky Notes on Page - Sleek Pin Badge */
+      /* Sticky Notes */
       .sticky-note {
         display: flex;
         align-items: center;
@@ -608,7 +627,7 @@
   </head>
   <body>
     <div class="app-shell">
-      <!-- Slim Unified Top Bar (Replaces all the old stacked headers) -->
+      <!-- Slim Unified Top Bar (48px) -->
       <header class="app-header">
         <div class="header-left">
           <a class="nav-back" href="./index.html" title="Back to paper library">← Library</a>
@@ -761,6 +780,13 @@
         let isDirty = false;
         let toastTimeout = null;
 
+        // Virtual / Lazy Rendering state
+        let pdfDoc = null;
+        let renderedPages = new Set();
+        let renderingPages = new Set();
+        let pageObserver = null;
+        let currentScale = 1;
+
         if (typeof window.pdfjsLib !== "undefined") {
           window.pdfjsLib.GlobalWorkerOptions.workerSrc =
             "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
@@ -836,10 +862,6 @@
           return String(annotation.text || "").trim().length > 0;
         }
 
-        function annotationForId(id) {
-          return annotations.find((annotation) => annotation.id === id) || null;
-        }
-
         function selectAnnotation(id) {
           selectedAnnotationId = id || null;
           renderAnnotations();
@@ -906,7 +928,7 @@
           return button;
         }
 
-        /* Upgraded Note Popover Handlers */
+        /* Note Popover Handlers */
         function showNoteEditor(draft, mode) {
           noteDraft = draft;
           elements.noteEditor.hidden = false;
@@ -934,20 +956,17 @@
           }
 
           if (mode === "edit" || !isExisting) {
-            // Edit Mode
             elements.noteViewBody.hidden = true;
             elements.noteEditBody.hidden = false;
             elements.noteText.value = isExisting ? draft.annotation.text || "" : "";
             elements.saveNoteSubmitButton.textContent = isExisting ? "Update note" : "Place note";
             window.setTimeout(() => elements.noteText.focus(), 50);
           } else {
-            // View Mode
             elements.noteViewBody.hidden = false;
             elements.noteEditBody.hidden = true;
             elements.noteContentText.textContent = draft.annotation.text || "";
           }
 
-          // Anchor popover beside client position
           const width = Math.min(320, window.innerWidth - 28);
           const clientX = draft.clientX ?? (window.innerWidth / 2);
           const clientY = draft.clientY ?? 100;
@@ -1013,16 +1032,16 @@
           }, mode || "view");
         }
 
-        function renderAnnotations() {
-          pageLayers.forEach((layer) => {
-            layer.querySelectorAll(".annotation, .annotation-draft").forEach((node) => node.remove());
-            layer.classList.toggle("tool-highlight", activeTool === "highlight");
-            layer.classList.toggle("tool-note", activeTool === "note");
-          });
+        /* Per-Page Annotation Rendering */
+        function renderAnnotationsForPage(pageNumber) {
+          const layer = pageLayers.get(pageNumber);
+          if (!layer) return;
+          layer.querySelectorAll(".annotation, .annotation-draft").forEach((node) => node.remove());
+          layer.classList.toggle("tool-highlight", activeTool === "highlight");
+          layer.classList.toggle("tool-note", activeTool === "note");
 
-          annotations.filter(validAnnotation).forEach((annotation) => {
-            const layer = pageLayers.get(Number(annotation.page));
-            if (!layer) return;
+          const pageAnns = annotations.filter((a) => Number(a.page) === pageNumber && validAnnotation(a));
+          pageAnns.forEach((annotation) => {
             const element = document.createElement("div");
             element.className = "annotation " + (annotation.type === "highlight" ? "highlight-annotation" : "sticky-note");
             element.dataset.annotationId = annotation.id;
@@ -1045,7 +1064,6 @@
               element.title = annotation.text;
               element.setAttribute("aria-label", "Sticker note: " + annotation.text);
 
-              // Reliable Click + Drag Handler
               element.addEventListener("pointerdown", (event) => {
                 if (event.target.closest(".annotation-delete")) return;
                 event.stopPropagation();
@@ -1055,6 +1073,12 @@
 
             element.appendChild(annotationDeleteButton(annotation));
             layer.appendChild(element);
+          });
+        }
+
+        function renderAnnotations() {
+          pageLayers.forEach((_, pageNumber) => {
+            renderAnnotationsForPage(pageNumber);
           });
           updateActionState();
         }
@@ -1108,10 +1132,9 @@
           draggingNote = null;
 
           if (moved) {
-            renderAnnotations();
+            renderAnnotationsForPage(Number(annotation.page));
             setStatus("Note moved. Click Save to share.", "warning");
           } else {
-            // It was a click! Open note popover
             openExistingNote(annotation, { currentTarget: element, clientX: event.clientX, clientY: event.clientY }, "view");
           }
         }
@@ -1210,7 +1233,10 @@
           document.querySelectorAll("[data-tool]").forEach((button) => {
             button.classList.toggle("active", button.dataset.tool === tool);
           });
-          renderAnnotations();
+          pageLayers.forEach((layer) => {
+            layer.classList.toggle("tool-highlight", tool === "highlight");
+            layer.classList.toggle("tool-note", tool === "note");
+          });
           if (tool === "highlight") {
             setStatus("Drag across text to highlight.", "neutral");
           } else if (tool === "note") {
@@ -1244,8 +1270,7 @@
             exportedAt: new Date().toISOString(),
             annotations: annotationPayload(),
           };
-          const blob = new Blob([JSON.stringify(payload, null, 2) + "
-"], { type: "application/json" });
+          const blob = new Blob([JSON.stringify(payload, null, 2) + "\n"], { type: "application/json" });
           const url = URL.createObjectURL(blob);
           const link = document.createElement("a");
           link.href = url;
@@ -1366,6 +1391,45 @@
           setStatus("Reloaded shared annotations.", "neutral");
         }
 
+        /* Lightning-Fast Virtual Page Rendering */
+        async function renderPageCanvas(pageNumber) {
+          if (!pdfDoc || renderedPages.has(pageNumber) || renderingPages.has(pageNumber)) return;
+          renderingPages.add(pageNumber);
+
+          const pageElement = elements.pages.querySelector(`[data-page-number="${pageNumber}"]`);
+          if (!pageElement) {
+            renderingPages.delete(pageNumber);
+            return;
+          }
+
+          try {
+            const page = await pdfDoc.getPage(pageNumber);
+            const baseViewport = page.getViewport({ scale: 1 });
+            const availableWidth = Math.max(320, Math.min(980, elements.pages.clientWidth || 980));
+            const scale = Math.min(1.65, availableWidth / baseViewport.width);
+            currentScale = scale;
+            const viewport = page.getViewport({ scale });
+
+            const canvas = pageElement.querySelector("canvas");
+            const context = canvas.getContext("2d", { alpha: false });
+            canvas.width = Math.ceil(viewport.width);
+            canvas.height = Math.ceil(viewport.height);
+            canvas.style.width = "100%";
+            canvas.style.height = "auto";
+
+            await page.render({ canvasContext: context, viewport }).promise;
+            renderedPages.add(pageNumber);
+            pageElement.classList.add("rendered");
+
+            // Attach annotations for this page immediately!
+            renderAnnotationsForPage(pageNumber);
+          } catch (error) {
+            console.error("Error rendering page " + pageNumber, error);
+          } finally {
+            renderingPages.delete(pageNumber);
+          }
+        }
+
         async function renderPdf() {
           if (!pdfUrl) {
             setEmpty("No PDF path was provided.");
@@ -1382,40 +1446,76 @@
             const loadingTask = window.pdfjsLib.getDocument({
               url: pdfUrl,
               withCredentials: false,
+              cMapUrl: "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/cmaps/",
+              cMapPacked: true,
+              enableXfa: false,
             });
-            const pdf = await loadingTask.promise;
+
+            loadingTask.onProgress = (progress) => {
+              if (progress.total > 0) {
+                const pct = Math.round((progress.loaded / progress.total) * 100);
+                setStatus("Loading document " + pct + "%…", "neutral");
+              }
+            };
+
+            pdfDoc = await loadingTask.promise;
             clearEmpty();
             elements.pages.innerHTML = "";
             pageLayers = new Map();
+            renderedPages = new Set();
+            renderingPages = new Set();
 
-            for (let pageNumber = 1; pageNumber <= pdf.numPages; pageNumber += 1) {
-              const page = await pdf.getPage(pageNumber);
-              const baseViewport = page.getViewport({ scale: 1 });
-              const availableWidth = Math.max(320, Math.min(980, elements.pages.clientWidth || 980));
-              const scale = Math.min(1.65, availableWidth / baseViewport.width);
-              const viewport = page.getViewport({ scale });
+            // Calculate exact placeholder aspect ratio from page 1
+            const firstPage = await pdfDoc.getPage(1);
+            const firstVp = firstPage.getViewport({ scale: 1 });
+            const aspectRatio = firstVp.height / firstVp.width;
+            const availableWidth = Math.max(320, Math.min(980, elements.pages.clientWidth || 980));
+            const placeholderHeight = Math.round(availableWidth * aspectRatio);
+
+            // Virtual IntersectionObserver - renders pages as you scroll near them
+            if (pageObserver) pageObserver.disconnect();
+            pageObserver = new IntersectionObserver((entries) => {
+              entries.forEach((entry) => {
+                if (entry.isIntersecting) {
+                  const pNum = Number(entry.target.dataset.pageNumber);
+                  renderPageCanvas(pNum);
+                }
+              });
+            }, {
+              rootMargin: "600px 0px", // prefetch 600px before page appears
+            });
+
+            // Build all page placeholder frames in < 5ms!
+            for (let pageNumber = 1; pageNumber <= pdfDoc.numPages; pageNumber += 1) {
               const pageElement = document.createElement("section");
               pageElement.className = "pdf-page";
               pageElement.dataset.pageNumber = String(pageNumber);
+              pageElement.style.minHeight = placeholderHeight + "px";
+
               const canvas = document.createElement("canvas");
-              const context = canvas.getContext("2d", { alpha: false });
-              canvas.width = Math.ceil(viewport.width);
-              canvas.height = Math.ceil(viewport.height);
               pageElement.appendChild(canvas);
+
               const layer = document.createElement("div");
               layer.className = "annotation-layer";
               pageElement.appendChild(layer);
-              elements.pages.appendChild(pageElement);
               pageLayers.set(pageNumber, layer);
+
               layer.addEventListener("pointerdown", handleLayerPointerDown);
               layer.addEventListener("pointermove", handleLayerPointerMove);
               layer.addEventListener("pointerup", finishHighlight);
               layer.addEventListener("pointercancel", finishHighlight);
-              await page.render({ canvasContext: context, viewport }).promise;
+
+              elements.pages.appendChild(pageElement);
+              pageObserver.observe(pageElement);
             }
 
-            renderAnnotations();
-            setStatus("PDF loaded successfully.", "success");
+            // Priority: Render Page 1 (and Page 2) IMMEDIATELY!
+            await renderPageCanvas(1);
+            if (pdfDoc.numPages >= 2) {
+              renderPageCanvas(2);
+            }
+
+            setStatus("PDF ready (" + pdfDoc.numPages + " pages).", "success");
           } catch (error) {
             console.error(error);
             setEmpty("The PDF could not be loaded: " + (error.message || "unknown error"));
