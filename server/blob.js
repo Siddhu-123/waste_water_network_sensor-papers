@@ -7,9 +7,16 @@ function getBlobModule() {
   return blobModulePromise;
 }
 
+function cleanEtag(val) {
+  if (!val) return null;
+  const str = String(val).trim();
+  const unquoted = str.replace(/^W\//i, "").trim().replace(/^"+|"+$/g, "").trim();
+  return unquoted ? `"${unquoted}"` : null;
+}
+
 function blobEtag(result) {
   const value = result && (result.etag || (result.blob && result.blob.etag));
-  return value ? String(value) : null;
+  return cleanEtag(value);
 }
 
 async function streamToText(stream) {
@@ -92,9 +99,11 @@ function hasBlobToken() {
 }
 
 function isBlobConflict(error) {
-  const status = Number(error && (error.status || error.statusCode));
-  const code = String(error && (error.code || error.name || error.message) || "");
-  return status === 409 || status === 412 || /conflict|precondition|if.?match/i.test(code);
+  if (!error) return false;
+  const status = Number(error.status || error.statusCode);
+  if (status === 409 || status === 412) return true;
+  const fullText = `${error.code || ""} ${error.name || ""} ${error.message || ""}`;
+  return /conflict|precondition|if.?match|etag mismatch|BlobPreconditionFailed/i.test(fullText);
 }
 
 async function listBlobs(prefix) {
@@ -104,6 +113,7 @@ async function listBlobs(prefix) {
 
 module.exports = {
   blobEtag,
+  cleanEtag,
   getJsonBlob,
   hasBlobToken,
   isBlobConflict,

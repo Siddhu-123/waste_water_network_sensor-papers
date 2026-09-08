@@ -8,6 +8,7 @@ const {
 } = require("../../server/github");
 const {
   blobEtag,
+  cleanEtag,
   getJsonBlob,
   hasBlobToken,
   isBlobConflict,
@@ -99,11 +100,13 @@ module.exports = async function handler(req, res) {
     }
 
     const currentStored = await getJsonBlob(identity.path);
-    const currentRevision = currentStored ? currentStored.revision : null;
+    const currentRevision = currentStored ? cleanEtag(currentStored.revision) : null;
     const hasExpectedRevision = Object.prototype.hasOwnProperty.call(body, "revision");
-    const expectedRevision = body.revision ? String(body.revision) : null;
+    const expectedRevision = cleanEtag(body.revision);
     if (
-      (hasExpectedRevision || currentRevision) &&
+      hasExpectedRevision &&
+      expectedRevision &&
+      currentRevision &&
       currentRevision !== expectedRevision
     ) {
       const current = currentStored
@@ -135,9 +138,14 @@ module.exports = async function handler(req, res) {
         : {});
     } catch (error) {
       if (isBlobConflict(error)) {
+        let latestDoc = null;
+        try {
+          latestDoc = await readCurrentDocument(identity.path, identity.paperId);
+        } catch (_e) {}
         return json(res, 409, {
           error: "annotation_conflict",
-          message: "Another person saved changes while this was being saved. Reload and try again.",
+          message: "Another person saved changes while this was being saved. Reload to get the latest version.",
+          ...(latestDoc || {}),
         });
       }
       throw error;

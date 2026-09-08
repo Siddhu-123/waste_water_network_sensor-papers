@@ -2328,13 +2328,16 @@
               }),
             });
 
-            const data = await response.json();
+            const data = await response.json().catch(() => ({}));
             if (response.status === 409) {
+              if (data && data.revision) {
+                annotationRevision = data.revision;
+              }
               setSyncStatus("dirty", "Conflict");
-              setStatus("Annotations modified remotely. Reload to get latest.", "warning");
+              setStatus("Annotations modified remotely. Click 💾 Save again to overwrite with your edits, or reload.", "warning");
               return;
             }
-            if (!response.ok) throw new Error(data.message || data.error || "Save failed");
+            if (!response.ok) throw new Error(data.message || data.error || `Save failed (HTTP ${response.status})`);
 
             annotationRevision = data.revision || annotationRevision;
             isDirty = false;
