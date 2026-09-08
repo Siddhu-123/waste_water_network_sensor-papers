@@ -10,7 +10,7 @@
       href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600&display=swap"
       rel="stylesheet"
     />
-    <script src="./annotation-config.js?v=shared-api"></script>
+    <script src="./annotation-config.js?v=remote-api-1"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
     <style>
       :root {
@@ -623,8 +623,13 @@
         const pdfParameter = query.get("pdf") || "";
         const paperTitle = query.get("title") || (paperId ? "Paper " + paperId : "PDF annotation workspace");
         const paperMeta = [query.get("topic"), query.get("user")].filter(Boolean).join(" · ");
-        const configuredApi = String(window.ANNOTATION_API_BASE || "").trim().replace(/\/+$/, "");
         const host = window.location.hostname;
+        const configuredApi = String(
+          window.ANNOTATION_API_BASE ||
+            (host === "siddhu-123.github.io"
+              ? "https://waste-water-network-sensor-papers-two.vercel.app"
+              : ""),
+        ).trim().replace(/\/+$/, "");
         const sameOriginApi = host === "localhost" || host === "127.0.0.1" || host.endsWith(".vercel.app");
         const apiBase = configuredApi || (sameOriginApi ? "" : null);
         const hasApi = apiBase !== null;
