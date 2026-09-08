@@ -495,6 +495,9 @@ function normalizeAnnotation(value, index) {
       throw new Error("Annotation " + (index + 1) + " has invalid note text");
     }
     normalized.text = text;
+    if (value.title && typeof value.title === "string") {
+      normalized.title = value.title.trim().slice(0, 100);
+    }
     normalized.width = numberInRange(value.width, 0.01, 0.2)
       ? Number(value.width)
       : 0.06;

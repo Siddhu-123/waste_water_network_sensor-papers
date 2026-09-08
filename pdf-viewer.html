@@ -239,26 +239,164 @@
         pointer-events: none;
       }
 
-      /* Right Actions */
+      /* User Contributor Badge (Clickable to switch identity) */
+      .user-pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 3px 8px;
+        border-radius: 12px;
+        background: rgba(14, 26, 46, 0.9);
+        border: 1px solid var(--line);
+        font-size: 11px;
+        font-weight: 600;
+        color: var(--text);
+        cursor: pointer;
+        transition: all 120ms ease;
+        max-width: 150px;
+      }
+
+      .user-pill:hover {
+        border-color: var(--accent);
+        background: rgba(45, 212, 191, 0.08);
+      }
+
+      .user-pill-name {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+
+      .user-dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        flex-shrink: 0;
+      }
+
+      /* Auto-Save Toggle */
+      .autosave-group {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+      }
+
+      .toggle-control {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        cursor: pointer;
+        font-size: 11.5px;
+        font-weight: 600;
+        color: var(--muted);
+        user-select: none;
+        padding: 3px 7px;
+        border-radius: 6px;
+        background: rgba(14, 26, 46, 0.85);
+        border: 1px solid var(--line);
+        transition: all 120ms ease;
+      }
+
+      .toggle-control:hover {
+        color: var(--text);
+        border-color: var(--line-strong);
+      }
+
+      .toggle-switch {
+        position: relative;
+        width: 26px;
+        height: 15px;
+        background: rgba(148, 163, 184, 0.3);
+        border-radius: 8px;
+        transition: background 150ms ease;
+      }
+
+      .toggle-control input {
+        position: absolute;
+        opacity: 0;
+        width: 0;
+        height: 0;
+      }
+
+      .toggle-thumb {
+        position: absolute;
+        top: 2px;
+        left: 2px;
+        width: 11px;
+        height: 11px;
+        background: #ffffff;
+        border-radius: 50%;
+        transition: transform 150ms ease;
+      }
+
+      .toggle-control input:checked + .toggle-switch {
+        background: var(--accent);
+      }
+
+      .toggle-control input:checked + .toggle-switch .toggle-thumb {
+        transform: translateX(11px);
+      }
+
+      .toggle-control input:checked ~ .toggle-text {
+        color: #5eead4;
+      }
+
+      /* Sync Status Pill */
       .sync-pill {
         font-size: 11px;
         font-weight: 600;
-        color: #5eead4;
+        color: #94a3b8;
         display: inline-flex;
         align-items: center;
         gap: 5px;
         padding: 4px 8px;
         border-radius: 12px;
-        background: rgba(45, 212, 191, 0.1);
+        background: rgba(14, 26, 46, 0.85);
+        border: 1px solid var(--line);
         white-space: nowrap;
+        transition: all 120ms ease;
       }
 
-      .sync-pill::before {
-        content: "";
+      .sync-dot {
         width: 6px;
         height: 6px;
         border-radius: 50%;
+        background: #94a3b8;
+        transition: background 150ms ease, box-shadow 150ms ease;
+      }
+
+      .sync-pill.synced {
+        color: #5eead4;
+        border-color: rgba(45, 212, 191, 0.3);
+        background: rgba(45, 212, 191, 0.1);
+      }
+      .sync-pill.synced .sync-dot {
         background: #2dd4bf;
+        box-shadow: 0 0 6px rgba(45, 212, 191, 0.5);
+      }
+
+      .sync-pill.syncing {
+        color: #fbbf24;
+        border-color: rgba(251, 191, 36, 0.3);
+        background: rgba(251, 191, 36, 0.1);
+      }
+      .sync-pill.syncing .sync-dot {
+        background: #fbbf24;
+        animation: pulseDot 900ms infinite ease-in-out;
+      }
+
+      .sync-pill.error {
+        color: #f87171;
+        border-color: rgba(248, 113, 113, 0.3);
+        background: rgba(248, 113, 113, 0.1);
+      }
+      .sync-pill.error .sync-dot {
+        background: #f87171;
+      }
+
+      @keyframes pulseDot {
+        0%, 100% { opacity: 1; transform: scale(1); }
+        50% { opacity: 0.3; transform: scale(0.65); }
       }
 
       .btn {
@@ -411,7 +549,7 @@
         mix-blend-mode: multiply;
       }
 
-      /* Sticky Note Pins on Canvas */
+      /* Sticky Note Pins on Canvas - Person's unique color */
       .sticky-note {
         display: flex;
         align-items: center;
@@ -421,7 +559,7 @@
         background: #facc15;
         border: 2px solid #ffffff;
         border-radius: 50% 50% 50% 3px;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.35);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.38);
         cursor: pointer;
         font-size: 14px;
         transition: transform 120ms ease, box-shadow 120ms ease;
@@ -430,18 +568,18 @@
       }
 
       .sticky-note:hover {
-        transform: scale(1.15) translateY(-2px);
-        box-shadow: 0 6px 16px rgba(0, 0, 0, 0.45);
+        transform: scale(1.18) translateY(-2px);
+        box-shadow: 0 8px 18px rgba(0, 0, 0, 0.5);
       }
 
       .sticky-note.selected {
-        outline: 3px solid var(--accent);
+        outline: 3px solid #ffffff;
         outline-offset: 2px;
       }
 
       /* Notes Slide-Over Drawer */
       .notes-drawer {
-        width: 320px;
+        width: 330px;
         background: var(--sidebar-bg);
         border-left: 1px solid var(--line);
         display: flex;
@@ -505,6 +643,7 @@
         padding: 30px 10px;
       }
 
+      /* Note Card in Drawer with Note Name in Short & Unique Person Accent */
       .note-card-item {
         background: var(--panel);
         border: 1px solid var(--line);
@@ -515,38 +654,77 @@
         flex-direction: column;
         gap: 6px;
         transition: all 120ms ease;
+        position: relative;
+        overflow: hidden;
       }
 
       .note-card-item:hover {
         border-color: rgba(45, 212, 191, 0.4);
         background: var(--panel-2);
+        transform: translateY(-1px);
       }
 
-      .note-card-top {
+      .note-card-header {
         display: flex;
-        align-items: center;
+        align-items: flex-start;
         justify-content: space-between;
-        font-size: 11px;
+        gap: 8px;
       }
 
-      .note-card-author {
+      .note-card-title {
+        font-size: 12.5px;
         font-weight: 700;
-        color: #5eead4;
+        color: #ffffff;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        flex: 1;
       }
 
       .note-card-page {
+        font-size: 10.5px;
+        font-weight: 600;
         color: var(--muted);
         background: rgba(148, 163, 184, 0.12);
-        padding: 1px 5px;
+        padding: 1px 6px;
         border-radius: 4px;
+        white-space: nowrap;
+      }
+
+      .note-card-meta {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+      }
+
+      .author-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+        font-size: 10.5px;
+        font-weight: 600;
+        padding: 2px 7px;
+        border-radius: 10px;
+      }
+
+      .author-badge-dot {
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
       }
 
       .note-card-text {
-        font-size: 12.5px;
+        font-size: 12px;
         line-height: 1.45;
-        color: #e2e8f0;
+        color: #cbd5e1;
         white-space: pre-wrap;
         word-break: break-word;
+        max-height: 70px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: -webkit-box;
+        -webkit-line-clamp: 3;
+        -webkit-box-orient: vertical;
       }
 
       .note-card-actions {
@@ -554,14 +732,13 @@
         align-items: center;
         justify-content: flex-end;
         gap: 6px;
-        margin-top: 4px;
       }
 
       /* Anchored Note Popover Modal */
       .note-popover {
         position: fixed;
         z-index: 70;
-        width: min(320px, calc(100vw - 28px));
+        width: min(330px, calc(100vw - 28px));
         background: #0f1c30;
         border: 1px solid rgba(45, 212, 191, 0.45);
         border-radius: 10px;
@@ -599,7 +776,9 @@
       .note-popover-author {
         font-size: 12px;
         font-weight: 700;
-        color: #5eead4;
+        display: flex;
+        align-items: center;
+        gap: 6px;
       }
 
       .note-popover-close {
@@ -623,6 +802,12 @@
         gap: 8px;
       }
 
+      .note-view-title {
+        font-size: 13.5px;
+        font-weight: 700;
+        color: #ffffff;
+      }
+
       .note-view-content {
         font-size: 13px;
         line-height: 1.5;
@@ -637,6 +822,22 @@
         display: flex;
         flex-direction: column;
         gap: 8px;
+      }
+
+      .note-title-input {
+        width: 100%;
+        padding: 7px 10px;
+        background: #08111d;
+        border: 1px solid var(--line);
+        border-radius: 6px;
+        color: var(--text);
+        font-size: 12.5px;
+        font-weight: 600;
+      }
+
+      .note-title-input:focus {
+        border-color: var(--accent);
+        outline: none;
       }
 
       .note-edit-body textarea {
@@ -788,14 +989,37 @@
         </div>
 
         <div class="header-right">
+          <!-- Active Contributor Badge (Click to edit identity) -->
+          <button class="user-pill" type="button" id="userSelectorBtn" title="Your contributor name (click to change)">
+            <span class="user-dot" id="activeUserDot"></span>
+            <span class="user-pill-name" id="activeUserName">Team</span>
+          </button>
+
           <button class="btn" type="button" id="toggleNotesDrawerBtn" title="Toggle notes list">
             💬 Notes <span class="badge-count" id="notesCountBadge">0</span>
           </button>
-          <span class="sync-pill" id="authStatus">Sync ready</span>
+
+          <!-- Auto-save Toggle -->
+          <div class="autosave-group">
+            <label class="toggle-control" title="Toggle automatic cloud saving">
+              <input type="checkbox" id="autoSaveToggle" checked />
+              <span class="toggle-switch"><span class="toggle-thumb"></span></span>
+              <span class="toggle-text">Auto-save</span>
+            </label>
+
+            <!-- Sync Status Indicator -->
+            <span class="sync-pill" id="syncPill" title="Cloud sync status">
+              <span class="sync-dot" id="syncDot"></span>
+              <span id="syncText">Sync ready</span>
+            </span>
+
+            <!-- Manual Save button (shows only if Auto-save is toggled OFF) -->
+            <button class="btn btn-primary" type="button" id="saveButton" style="display: none;" title="Save annotations now">
+              Save
+            </button>
+          </div>
+
           <button class="btn btn-icon" type="button" id="undoButton" disabled title="Undo (Ctrl+Z)">↺</button>
-          <button class="btn btn-primary" type="button" id="saveButton" disabled title="Save shared annotations">
-            Save
-          </button>
         </div>
       </header>
 
@@ -839,6 +1063,7 @@
 
       <!-- View Mode -->
       <div class="note-view-body" id="noteViewBody">
+        <div class="note-view-title" id="noteViewTitle"></div>
         <div class="note-view-content" id="noteContentText"></div>
         <div style="display: flex; justify-content: flex-end; gap: 6px; margin-top: 4px;">
           <button class="btn btn-icon" type="button" id="deleteNoteDirectButton" title="Delete note" style="color: var(--danger);">🗑</button>
@@ -848,6 +1073,7 @@
 
       <!-- Edit Mode -->
       <form class="note-edit-body" id="noteEditBody" hidden>
+        <input type="text" id="noteTitleInput" class="note-title-input" placeholder="Note name (optional, e.g. Radar Accuracy)" maxlength="70" />
         <textarea id="noteText" maxlength="2000" required placeholder="Write a note for the team…"></textarea>
         <div style="display: flex; justify-content: flex-end; gap: 6px;">
           <button class="btn" type="button" id="cancelNoteButton">Cancel</button>
@@ -859,6 +1085,30 @@
     <script>
       (() => {
         "use strict";
+
+        // Unique Color Palettes for Contributors
+        const USER_PALETTES = [
+          { id: "teal", bg: "#0d9488", light: "#2dd4bf", darkBg: "rgba(45, 212, 191, 0.16)", border: "#14b8a6" },
+          { id: "amber", bg: "#d97706", light: "#fbbf24", darkBg: "rgba(251, 191, 36, 0.16)", border: "#f59e0b" },
+          { id: "indigo", bg: "#4f46e5", light: "#818cf8", darkBg: "rgba(129, 140, 248, 0.16)", border: "#6366f1" },
+          { id: "rose", bg: "#e11d48", light: "#fb7185", darkBg: "rgba(251, 113, 133, 0.16)", border: "#f43f5e" },
+          { id: "emerald", bg: "#059669", light: "#34d399", darkBg: "rgba(52, 211, 153, 0.16)", border: "#10b981" },
+          { id: "purple", bg: "#9333ea", light: "#c084fc", darkBg: "rgba(192, 132, 252, 0.16)", border: "#a855f7" },
+          { id: "orange", bg: "#ea580c", light: "#fb923c", darkBg: "rgba(251, 146, 60, 0.16)", border: "#f97316" },
+          { id: "sky", bg: "#0284c7", light: "#38bdf8", darkBg: "rgba(56, 189, 248, 0.16)", border: "#0ea5e9" },
+          { id: "pink", bg: "#db2777", light: "#f472b6", darkBg: "rgba(244, 114, 182, 0.16)", border: "#ec4899" },
+          { id: "lime", bg: "#65a30d", light: "#a3e635", darkBg: "rgba(163, 230, 53, 0.16)", border: "#84cc16" },
+        ];
+
+        function getPersonPalette(name) {
+          const key = String(name || "contributor").trim().toLowerCase();
+          let hash = 0;
+          for (let i = 0; i < key.length; i++) {
+            hash = (hash << 5) - hash + key.charCodeAt(i);
+            hash |= 0;
+          }
+          return USER_PALETTES[Math.abs(hash) % USER_PALETTES.length];
+        }
 
         const query = new URLSearchParams(window.location.search);
         const paperId = String(query.get("paper") || "").trim();
@@ -879,9 +1129,30 @@
           ? new URL("./annotations/paper-" + encodeURIComponent(paperId) + ".json", window.location.href).href
           : "";
 
+        // Identity Management
+        function getActiveUser() {
+          return (
+            localStorage.getItem("pdf_active_user") ||
+            query.get("user") ||
+            "Contributor"
+          );
+        }
+
+        function setActiveUser(name) {
+          const clean = String(name || "").trim() || "Contributor";
+          localStorage.setItem("pdf_active_user", clean);
+          updateUserDisplay();
+        }
+
         const elements = {
           title: document.getElementById("paperTitle"),
-          authStatus: document.getElementById("authStatus"),
+          userSelectorBtn: document.getElementById("userSelectorBtn"),
+          activeUserDot: document.getElementById("activeUserDot"),
+          activeUserName: document.getElementById("activeUserName"),
+          autoSaveToggle: document.getElementById("autoSaveToggle"),
+          syncPill: document.getElementById("syncPill"),
+          syncDot: document.getElementById("syncDot"),
+          syncText: document.getElementById("syncText"),
           status: document.getElementById("statusBar"),
           viewport: document.getElementById("pdfViewport"),
           pages: document.getElementById("pdfPages"),
@@ -906,11 +1177,13 @@
           noteEditor: document.getElementById("noteEditor"),
           noteAuthor: document.getElementById("noteAuthor"),
           noteViewBody: document.getElementById("noteViewBody"),
+          noteViewTitle: document.getElementById("noteViewTitle"),
           noteContentText: document.getElementById("noteContentText"),
           editNoteButton: document.getElementById("editNoteButton"),
           deleteNoteDirectButton: document.getElementById("deleteNoteDirectButton"),
           closeNoteButton: document.getElementById("closeNoteButton"),
           noteEditBody: document.getElementById("noteEditBody"),
+          noteTitleInput: document.getElementById("noteTitleInput"),
           noteText: document.getElementById("noteText"),
           saveNoteSubmitButton: document.getElementById("saveNoteSubmitButton"),
           cancelNoteButton: document.getElementById("cancelNoteButton"),
@@ -927,6 +1200,13 @@
         let pageLayers = new Map();
         let isDirty = false;
         let toastTimeout = null;
+
+        // Auto-save state
+        let autoSaveTimer = null;
+        let isSaving = false;
+        let savePending = false;
+        let autoSaveEnabled = localStorage.getItem("pdf_viewer_autosave") !== "false";
+        elements.autoSaveToggle.checked = autoSaveEnabled;
 
         // PDF state
         let pdfDoc = null;
@@ -946,6 +1226,14 @@
         elements.title.textContent = paperTitle;
         elements.title.title = paperTitle;
 
+        function updateUserDisplay() {
+          const user = getActiveUser();
+          const palette = getPersonPalette(user);
+          elements.activeUserName.textContent = user;
+          elements.activeUserDot.style.background = palette.light;
+          elements.userSelectorBtn.style.borderColor = palette.border;
+        }
+
         function apiUrl(path) {
           return (apiBase || "") + "/api" + path;
         }
@@ -957,7 +1245,13 @@
           if (toastTimeout) clearTimeout(toastTimeout);
           toastTimeout = setTimeout(() => {
             elements.status.classList.remove("visible");
-          }, 2800);
+          }, 2600);
+        }
+
+        function setSyncStatus(state, message) {
+          elements.syncPill.className = "sync-pill " + state;
+          elements.syncText.textContent = message;
+          elements.syncPill.title = message;
         }
 
         function setEmpty(message) {
@@ -1008,6 +1302,19 @@
           return String(annotation.text || "").trim().length > 0;
         }
 
+        function getShortNoteTitle(annotation) {
+          if (annotation.title && String(annotation.title).trim()) {
+            return String(annotation.title).trim();
+          }
+          const text = String(annotation.text || "").trim();
+          if (!text) return "Untitled Note";
+          const firstLine = text.split("\n")[0].trim();
+          if (firstLine.length <= 28) return firstLine;
+          const cut = firstLine.slice(0, 26);
+          const lastSpace = cut.lastIndexOf(" ");
+          return (lastSpace > 10 ? cut.slice(0, lastSpace) : cut) + "…";
+        }
+
         function selectAnnotation(id) {
           selectedAnnotationId = id || null;
           renderAnnotations();
@@ -1016,18 +1323,33 @@
 
         function updateActionState() {
           elements.undo.disabled = history.length === 0;
-          elements.save.disabled = !hasApi || !isDirty;
-          elements.save.title = !hasApi
-            ? "Configure the Vercel API to save shared annotations"
-            : isDirty
-              ? "Save shared annotations to Vercel"
-              : "No unsaved changes";
 
-          // Update notes count
+          if (autoSaveEnabled) {
+            elements.save.style.display = "none";
+          } else {
+            elements.save.style.display = "inline-flex";
+            elements.save.disabled = !hasApi || !isDirty;
+            elements.save.title = !hasApi
+              ? "Configure Vercel API to save"
+              : isDirty
+                ? "Save changes to cloud"
+                : "No unsaved changes";
+          }
+
+          // Update notes count & drawer
           const notesOnly = annotations.filter((a) => a.type === "sticky-note" && validAnnotation(a));
           elements.notesCountBadge.textContent = String(notesOnly.length);
           elements.drawerNotesCount.textContent = String(notesOnly.length);
           updateNotesDrawerList(notesOnly);
+        }
+
+        function scheduleAutoSave() {
+          if (!autoSaveEnabled || !hasApi || !isDirty) return;
+          if (autoSaveTimer) clearTimeout(autoSaveTimer);
+          setSyncStatus("syncing", "Saving soon…");
+          autoSaveTimer = setTimeout(() => {
+            saveSharedAnnotations();
+          }, 800);
         }
 
         function commitChange(nextAnnotations, selectedId) {
@@ -1037,7 +1359,13 @@
           isDirty = true;
           renderAnnotations();
           updateActionState();
-          setStatus("Changes saved locally. Click 'Save' to sync.", "warning");
+
+          if (autoSaveEnabled) {
+            scheduleAutoSave();
+          } else {
+            setSyncStatus("warning", "Unsaved changes");
+            setStatus("Changes stored locally. Click Save to sync.", "warning");
+          }
         }
 
         function removeAnnotation(id) {
@@ -1058,9 +1386,10 @@
           renderAnnotations();
           updateActionState();
           setStatus("Undo applied.", "neutral");
+          if (autoSaveEnabled) scheduleAutoSave();
         }
 
-        /* Fixed, Robust Note Popover & Drawer */
+        /* Note Popover & Drawer with Unique Colors and Short Title */
         function showNoteEditor(draft, mode, targetElement) {
           noteDraft = draft;
           elements.noteEditor.hidden = false;
@@ -1068,23 +1397,39 @@
           const isExisting = Boolean(draft.annotation);
           const author = isExisting && draft.annotation.createdBy
             ? draft.annotation.createdBy
-            : (query.get("user") || "Team note");
-          elements.noteAuthor.textContent = "📌 " + author;
+            : getActiveUser();
+          const palette = getPersonPalette(author);
+
+          // Note header styling
+          elements.noteAuthor.innerHTML = `
+            <span class="user-dot" style="background:${palette.light}"></span>
+            <span style="color:${palette.light}">${escapeHtml(author)}</span>
+          `;
+          elements.noteEditor.style.borderTop = `3px solid ${palette.light}`;
 
           if (mode === "edit" || !isExisting) {
             elements.noteViewBody.hidden = true;
             elements.noteEditBody.hidden = false;
+            elements.noteTitleInput.value = isExisting ? draft.annotation.title || "" : "";
             elements.noteText.value = isExisting ? draft.annotation.text || "" : "";
             elements.saveNoteSubmitButton.textContent = isExisting ? "Update note" : "Place note";
-            window.setTimeout(() => elements.noteText.focus(), 50);
+            window.setTimeout(() => {
+              if (!elements.noteTitleInput.value) {
+                elements.noteTitleInput.focus();
+              } else {
+                elements.noteText.focus();
+              }
+            }, 50);
           } else {
             elements.noteViewBody.hidden = false;
             elements.noteEditBody.hidden = true;
+            const shortName = getShortNoteTitle(draft.annotation);
+            elements.noteViewTitle.textContent = shortName;
             elements.noteContentText.textContent = draft.annotation.text || "";
           }
 
-          // Positioning
-          const width = Math.min(320, window.innerWidth - 28);
+          // Positioning relative to target pin
+          const width = Math.min(330, window.innerWidth - 28);
           let clientX = draft.clientX;
           let clientY = draft.clientY;
 
@@ -1097,7 +1442,7 @@
           clientX = clientX ?? (window.innerWidth / 2);
           clientY = clientY ?? 100;
           const left = clamp(clientX + 10, 12, window.innerWidth - width - 14);
-          const top = clamp(clientY - 10, 56, window.innerHeight - 240);
+          const top = clamp(clientY - 10, 56, window.innerHeight - 250);
           elements.noteEditor.style.left = left + "px";
           elements.noteEditor.style.top = top + "px";
         }
@@ -1106,21 +1451,27 @@
           noteDraft = null;
           elements.noteEditor.hidden = true;
           elements.noteText.value = "";
+          elements.noteTitleInput.value = "";
         }
 
         function saveNote(event) {
           event.preventDefault();
           if (!noteDraft) return;
+          const title = elements.noteTitleInput.value.trim();
           const text = elements.noteText.value.trim();
           if (!text) {
             elements.noteText.focus();
             return;
           }
 
+          const author = getActiveUser();
+          const palette = getPersonPalette(author);
+
           if (noteDraft.annotation) {
             const next = snapshot();
             const target = next.find((annotation) => annotation.id === noteDraft.annotation.id);
             if (target) {
+              target.title = title || undefined;
               target.text = text;
               commitChange(next, target.id);
             }
@@ -1134,9 +1485,10 @@
               y: noteDraft.y,
               width: 0.05,
               height: 0.05,
+              title: title || undefined,
               text,
-              color: "#facc15",
-              createdBy: query.get("user") || "team member",
+              color: palette.light,
+              createdBy: author,
               createdAt: new Date().toISOString(),
             };
             next.push(annotation);
@@ -1163,12 +1515,24 @@
 
           elements.drawerNotesList.innerHTML = "";
           notesList.forEach((ann) => {
+            const author = ann.createdBy || "Contributor";
+            const palette = getPersonPalette(author);
+            const shortTitle = getShortNoteTitle(ann);
+
             const card = document.createElement("div");
             card.className = "note-card-item";
+            card.style.borderLeft = `4px solid ${palette.light}`;
+
             card.innerHTML = `
-              <div class="note-card-top">
-                <span class="note-card-author">📌 ${ann.createdBy || "Contributor"}</span>
+              <div class="note-card-header">
+                <span class="note-card-title" title="${escapeHtml(shortTitle)}">${escapeHtml(shortTitle)}</span>
                 <span class="note-card-page">Page ${ann.page}</span>
+              </div>
+              <div class="note-card-meta">
+                <span class="author-badge" style="background:${palette.darkBg}; color:${palette.light}; border:1px solid ${palette.border};">
+                  <span class="author-badge-dot" style="background:${palette.light};"></span>
+                  ${escapeHtml(author)}
+                </span>
               </div>
               <div class="note-card-text">${escapeHtml(ann.text || "")}</div>
               <div class="note-card-actions">
@@ -1182,7 +1546,6 @@
                 removeAnnotation(ann.id);
                 return;
               }
-              // Jump to page and select note
               scrollToPage(Number(ann.page));
               selectAnnotation(ann.id);
               const el = elements.pages.querySelector(`[data-annotation-id="${ann.id}"]`);
@@ -1194,7 +1557,7 @@
         }
 
         function escapeHtml(str) {
-          return str.replace(/[&<>'"]/g, (tag) => ({
+          return String(str || "").replace(/[&<>'"]/g, (tag) => ({
             "&": "&amp;",
             "<": "&lt;",
             ">": "&gt;",
@@ -1203,7 +1566,7 @@
           }[tag] || tag));
         }
 
-        /* Per-Page Annotation Rendering */
+        /* Per-Page Annotation Rendering with Unique Person Colors */
         function renderAnnotationsForPage(pageNumber) {
           const layer = pageLayers.get(pageNumber);
           if (!layer) return;
@@ -1231,11 +1594,15 @@
                 selectAnnotation(annotation.id);
               });
             } else {
-              element.textContent = "📌";
-              element.title = (annotation.createdBy ? annotation.createdBy + ": " : "") + annotation.text;
-              element.setAttribute("aria-label", "Note: " + annotation.text);
+              const author = annotation.createdBy || "Contributor";
+              const palette = getPersonPalette(author);
+              const shortTitle = getShortNoteTitle(annotation);
 
-              // 100% reliable click + drag handler
+              element.textContent = "📌";
+              element.style.background = palette.light;
+              element.title = `${shortTitle} (${author}): ${annotation.text}`;
+              element.setAttribute("aria-label", `Note: ${shortTitle}`);
+
               element.addEventListener("pointerdown", (event) => {
                 event.stopPropagation();
                 beginNoteDrag(annotation, element, layer, event);
@@ -1302,9 +1669,9 @@
 
           if (moved) {
             renderAnnotationsForPage(Number(annotation.page));
-            setStatus("Note moved. Click Save to sync.", "warning");
+            if (autoSaveEnabled) scheduleAutoSave();
+            else setStatus("Note moved. Click Save to sync.", "warning");
           } else {
-            // Click: open note popover card!
             openExistingNote(annotation, element, "view");
           }
         }
@@ -1366,7 +1733,7 @@
             height,
             color: elements.color.value,
             opacity: 0.38,
-            createdBy: query.get("user") || "team member",
+            createdBy: getActiveUser(),
             createdAt: new Date().toISOString(),
           };
           next.push(annotation);
@@ -1417,20 +1784,25 @@
         }
 
         function annotationPayload() {
-          return annotations.filter(validAnnotation).map((annotation) => ({
-            id: annotation.id,
-            type: annotation.type,
-            page: Number(annotation.page),
-            x: Number(annotation.x),
-            y: Number(annotation.y),
-            width: Number(annotation.width || 0.05),
-            height: Number(annotation.height || 0.05),
-            color: annotation.color || "#facc15",
-            opacity: annotation.type === "highlight" ? 0.38 : undefined,
-            text: annotation.text ? String(annotation.text).trim() : undefined,
-            createdBy: annotation.createdBy || (query.get("user") || "team member"),
-            createdAt: annotation.createdAt || new Date().toISOString(),
-          }));
+          return annotations.filter(validAnnotation).map((annotation) => {
+            const author = annotation.createdBy || getActiveUser();
+            const palette = getPersonPalette(author);
+            return {
+              id: annotation.id,
+              type: annotation.type,
+              page: Number(annotation.page),
+              x: Number(annotation.x),
+              y: Number(annotation.y),
+              width: Number(annotation.width || 0.05),
+              height: Number(annotation.height || 0.05),
+              color: annotation.type === "sticky-note" ? palette.light : (annotation.color || "#ffdf5d"),
+              opacity: annotation.type === "highlight" ? 0.38 : undefined,
+              title: annotation.title ? String(annotation.title).trim() : undefined,
+              text: annotation.text ? String(annotation.text).trim() : undefined,
+              createdBy: author,
+              createdAt: annotation.createdAt || new Date().toISOString(),
+            };
+          });
         }
 
         async function loadAnnotations() {
@@ -1446,7 +1818,7 @@
               documentData = await response.json();
               loadedFromApi = true;
             } catch (_error) {
-              // fallback
+              // fallback to static file if available
             }
           }
 
@@ -1471,6 +1843,7 @@
           updateActionState();
 
           if (loadedFromApi) {
+            setSyncStatus("synced", "Synced with cloud");
             const count = annotations.length;
             setStatus(
               count
@@ -1478,16 +1851,24 @@
                 : "Ready to highlight or add notes.",
               "success",
             );
+          } else {
+            setSyncStatus("neutral", "Sync ready");
           }
         }
 
         async function saveSharedAnnotations() {
           if (!hasApi) return;
+          if (isSaving) {
+            savePending = true;
+            return;
+          }
 
-          elements.save.disabled = true;
-          setStatus("Saving to Vercel…", "neutral");
+          isSaving = true;
+          savePending = false;
+          setSyncStatus("syncing", "Saving…");
+
           try {
-            const author = query.get("user") || "team member";
+            const author = getActiveUser();
             const response = await fetch(apiUrl("/annotations/" + encodeURIComponent(paperId)), {
               method: "POST",
               headers: { "Content-Type": "application/json" },
@@ -1498,21 +1879,30 @@
                 annotations: annotationPayload(),
               }),
             });
+
             const data = await response.json();
             if (response.status === 409) {
-              setStatus("Annotations changed remotely. Reload page.", "warning");
+              setSyncStatus("error", "Remote conflict");
+              setStatus("Annotations modified remotely. Reload to get latest.", "warning");
               return;
             }
             if (!response.ok) throw new Error(data.message || data.error || "Save failed");
 
             annotationRevision = data.revision || annotationRevision;
             isDirty = false;
-            history = [];
+            setSyncStatus("synced", "All saved");
             setStatus("Saved! Annotations synced to cloud.", "success");
           } catch (error) {
+            console.error("Save error:", error);
+            setSyncStatus("error", "Sync failed");
             setStatus(error.message || "Save failed.", "error");
           } finally {
+            isSaving = false;
             updateActionState();
+            if (savePending) {
+              savePending = false;
+              saveSharedAnnotations();
+            }
           }
         }
 
@@ -1539,7 +1929,6 @@
           elements.zoomOutBtn.disabled = currentZoomLevel <= 0.75;
           elements.zoomInBtn.disabled = currentZoomLevel >= 1.75;
 
-          // Re-render visible pages with new zoom
           renderedPages.clear();
           elements.pages.querySelectorAll(".pdf-page").forEach((el) => {
             el.classList.remove("rendered");
@@ -1548,7 +1937,6 @@
             el.style.minHeight = Math.round(width * basePageRatio) + "px";
           });
 
-          // Trigger re-render of current page
           renderPageCanvas(currentPageNumber);
           if (currentPageNumber + 1 <= totalPages) renderPageCanvas(currentPageNumber + 1);
         }
@@ -1630,7 +2018,6 @@
             renderingPages = new Set();
             totalPages = pdfDoc.numPages;
 
-            // Compute aspect ratio from Page 1
             const firstPage = await pdfDoc.getPage(1);
             const firstVp = firstPage.getViewport({ scale: 1 });
             basePageRatio = firstVp.height / firstVp.width;
@@ -1639,7 +2026,6 @@
 
             updatePageIndicator(1);
 
-            // Virtual IntersectionObserver - renders pages as you scroll near them
             if (pageObserver) pageObserver.disconnect();
             pageObserver = new IntersectionObserver((entries) => {
               entries.forEach((entry) => {
@@ -1654,7 +2040,6 @@
               rootMargin: "500px 0px",
             });
 
-            // Instant page container generation (< 5ms)
             for (let pageNumber = 1; pageNumber <= pdfDoc.numPages; pageNumber += 1) {
               const pageElement = document.createElement("section");
               pageElement.className = "pdf-page";
@@ -1678,7 +2063,6 @@
               pageObserver.observe(pageElement);
             }
 
-            // Priority: Render Page 1 and Page 2 immediately
             await renderPageCanvas(1);
             if (pdfDoc.numPages >= 2) {
               renderPageCanvas(2);
@@ -1704,6 +2088,30 @@
 
         elements.undo.addEventListener("click", undo);
         elements.save.addEventListener("click", saveSharedAnnotations);
+
+        // Auto-save toggle handler
+        elements.autoSaveToggle.addEventListener("change", () => {
+          autoSaveEnabled = elements.autoSaveToggle.checked;
+          localStorage.setItem("pdf_viewer_autosave", autoSaveEnabled ? "true" : "false");
+          updateActionState();
+          if (autoSaveEnabled) {
+            setStatus("Auto-save enabled.", "neutral");
+            if (isDirty) saveSharedAnnotations();
+          } else {
+            setStatus("Auto-save disabled. Manual save active.", "neutral");
+          }
+        });
+
+        // Identity switch handler
+        elements.userSelectorBtn.addEventListener("click", () => {
+          const current = getActiveUser();
+          const next = prompt("Enter your name for notes & annotations:", current);
+          if (next && next.trim() && next.trim() !== current) {
+            setActiveUser(next.trim());
+            setStatus("Switched active user to: " + next.trim(), "neutral");
+            renderAnnotations();
+          }
+        });
 
         // Page Jump Listeners
         elements.prevPageBtn.addEventListener("click", () => {
@@ -1766,9 +2174,7 @@
         });
 
         // Startup
-        const activeUser = query.get("user");
-        elements.authStatus.textContent = activeUser ? "● " + activeUser : "● Cloud synced";
-
+        updateUserDisplay();
         loadAnnotations();
         renderPdf();
       })();
