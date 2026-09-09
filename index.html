@@ -179,6 +179,48 @@
         box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.15);
       }
 
+      .filter-panel {
+        background: rgba(19, 27, 46, 0.5);
+        border: 1px solid var(--border-color);
+        border-radius: 12px;
+        margin-top: 20px;
+        padding: 12px 14px 2px;
+      }
+
+      .filter-panel-header {
+        align-items: center;
+        display: flex;
+        gap: 12px;
+        justify-content: space-between;
+        margin-bottom: 8px;
+      }
+
+      .filter-panel-kicker {
+        color: var(--accent-blue);
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+      }
+
+      .filter-panel-summary {
+        color: var(--text-muted);
+        font-size: 12px;
+        margin-top: 2px;
+      }
+
+      .filter-panel.is-squeezed {
+        padding-bottom: 12px;
+      }
+
+      .filter-panel.is-squeezed .filter-panel-header {
+        margin-bottom: 0;
+      }
+
+      .filter-panel.is-squeezed .controls-bar {
+        display: none;
+      }
+
       /* Table & Responsive Container */
       .table-container {
         background: var(--bg-card);
@@ -232,6 +274,20 @@
         line-height: 1.4;
       }
 
+      .duplicate-indicator {
+        display: inline-block;
+        margin-left: 8px;
+        padding: 2px 6px;
+        border: 1px solid rgba(251, 191, 36, 0.35);
+        border-radius: 5px;
+        background: rgba(245, 158, 11, 0.12);
+        color: #fcd34d;
+        font-size: 10px;
+        font-weight: 700;
+        letter-spacing: 0.02em;
+        vertical-align: middle;
+      }
+
       .paper-meta {
         font-size: 12px;
         color: var(--text-secondary);
@@ -261,6 +317,12 @@
         background: rgba(245, 158, 11, 0.1);
         border-color: rgba(251, 191, 36, 0.22);
         color: #fcd34d;
+      }
+
+      .paper-meta .meta-chip.info-chip {
+        background: rgba(148, 163, 184, 0.1);
+        border-color: rgba(148, 163, 184, 0.22);
+        color: #cbd5e1;
       }
 
       .filter-help {
@@ -666,6 +728,87 @@
 
       /* Mobile & Small Tablet Card Layout (< 768px) */
       @media (max-width: 768px) {
+        body {
+          padding-left: max(12px, env(safe-area-inset-left));
+          padding-right: max(12px, env(safe-area-inset-right));
+        }
+
+        .header-top {
+          gap: 12px;
+        }
+
+        .header-actions {
+          justify-content: stretch;
+          width: 100%;
+        }
+
+        .header-actions .btn-action {
+          flex: 1 1 220px;
+        }
+
+        .filter-panel {
+          margin-top: 16px;
+          padding: 12px;
+        }
+
+        .filter-panel-header {
+          align-items: flex-start;
+        }
+
+        .controls-bar {
+          align-items: stretch;
+          gap: 10px;
+        }
+
+        .search-box {
+          flex-basis: 100%;
+          min-width: 100%;
+        }
+
+        .filter-select {
+          flex: 1 1 220px;
+          min-width: 0;
+        }
+
+        .filter-group {
+          width: 100%;
+        }
+
+        .filter-btn {
+          flex: 1 1 auto;
+          min-height: 36px;
+          white-space: normal;
+        }
+
+        .filter-help {
+          line-height: 1.45;
+        }
+
+        .compiled-papers-header {
+          align-items: flex-start;
+          flex-wrap: wrap;
+        }
+
+        .compiled-header-actions {
+          margin-left: auto;
+        }
+
+        .compiled-papers-grid {
+          grid-template-columns: minmax(0, 1fr);
+        }
+
+        .compiled-paper-card {
+          min-width: 0;
+        }
+
+        .paper-title {
+          overflow-wrap: anywhere;
+        }
+
+        .duplicate-indicator {
+          margin: 6px 0 0;
+        }
+
         table {
           min-width: 100%;
         }
@@ -742,16 +885,79 @@
 
         .mobile-actions {
           display: grid;
-          grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
-          gap: 8px;
+          grid-template-columns: repeat(3, 1fr);
+          gap: 6px;
           border-top: 1px solid rgba(35, 49, 79, 0.6);
-          padding-top: 12px;
+          padding-top: 10px;
         }
 
         .btn-action {
-          padding: 9px 8px;
-          font-size: 12px;
+          padding: 8px 4px;
+          font-size: 11.5px;
           justify-content: center;
+          white-space: nowrap;
+        }
+
+        .header-top {
+          flex-direction: row;
+          justify-content: space-between;
+          align-items: center;
+          gap: 8px;
+        }
+
+        .header-top h1 {
+          font-size: 18px;
+          line-height: 1.25;
+        }
+
+        .header-actions {
+          width: auto;
+          gap: 6px;
+        }
+
+        .btn-profile-pill {
+          padding: 5px 10px;
+          font-size: 12px;
+        }
+
+        .welcome-contributor-banner {
+          flex-direction: column;
+          align-items: flex-start;
+          gap: 8px;
+          padding: 10px 14px;
+        }
+
+        .welcome-banner-title {
+          font-size: 12px;
+        }
+
+        .welcome-chip {
+          font-size: 11.5px;
+          padding: 3px 8px;
+        }
+
+        .profile-modal-card {
+          width: 95vw;
+          max-width: 95vw;
+          margin: 10px auto;
+          padding: 16px;
+        }
+
+        .profile-stats-grid {
+          grid-template-columns: repeat(3, 1fr);
+          gap: 6px;
+        }
+
+        .profile-stat-box {
+          padding: 8px 6px;
+        }
+
+        .profile-stat-number {
+          font-size: 18px;
+        }
+
+        .profile-stat-label {
+          font-size: 9.5px;
         }
 
         .step-item {
@@ -768,15 +974,39 @@
 
       /* Extra Small Screen Optimization (< 480px) */
       @media (max-width: 480px) {
+        .filter-panel-header {
+          align-items: stretch;
+          flex-direction: column;
+        }
+
+        .filter-panel-header .btn-squeeze-toggle {
+          align-self: flex-start;
+        }
+
+        .filter-select {
+          flex-basis: 100%;
+          width: 100%;
+        }
+
+        .filter-btn {
+          flex-basis: calc(50% - 4px);
+        }
+
+        .compiled-header-actions {
+          justify-content: space-between;
+          margin-left: 0;
+          width: 100%;
+        }
+
         .mobile-actions {
-          grid-template-columns: 1fr;
-          gap: 8px;
+          grid-template-columns: repeat(3, 1fr);
+          gap: 4px;
         }
 
         .btn-action {
           width: 100%;
-          padding: 10px;
-          font-size: 13px;
+          padding: 7px 2px;
+          font-size: 11px;
         }
 
         .step-item {
@@ -793,17 +1023,277 @@
           margin-right: 0;
         }
       }
+
+      /* Contributor Profile & Welcome Banner */
+      .btn-profile-pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        background: rgba(14, 26, 46, 0.9);
+        border: 1px solid var(--border-color);
+        border-radius: 20px;
+        padding: 6px 14px;
+        color: var(--text-color);
+        font-size: 13px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 150ms ease;
+      }
+
+      .btn-profile-pill:hover {
+        border-color: #2dd4bf;
+        background: rgba(45, 212, 191, 0.08);
+        transform: translateY(-1px);
+      }
+
+      .user-dot-indicator {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: #2dd4bf;
+        flex-shrink: 0;
+      }
+
+      /* First-Visit Welcome Banner */
+      .welcome-contributor-banner {
+        background: linear-gradient(135deg, rgba(14, 26, 46, 0.98), rgba(20, 36, 62, 0.95));
+        border-bottom: 1px solid rgba(45, 212, 191, 0.3);
+        padding: 10px 20px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+        animation: modalFadeIn 0.2s ease-out;
+      }
+
+      .welcome-banner-content {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        flex-wrap: wrap;
+      }
+
+      .welcome-banner-title {
+        font-size: 13px;
+        color: var(--text-color);
+      }
+
+      .welcome-chip-list {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        flex-wrap: wrap;
+      }
+
+      .welcome-chip {
+        background: rgba(17, 32, 56, 0.9);
+        border: 1px solid var(--border-color);
+        color: var(--text-color);
+        font-size: 12px;
+        font-weight: 600;
+        padding: 4px 10px;
+        border-radius: 14px;
+        cursor: pointer;
+        transition: all 120ms ease;
+      }
+
+      .welcome-chip:hover {
+        border-color: #2dd4bf;
+        background: rgba(45, 212, 191, 0.15);
+        color: #5eead4;
+      }
+
+      .welcome-banner-close {
+        background: transparent;
+        border: none;
+        color: var(--text-muted);
+        cursor: pointer;
+        font-size: 16px;
+        padding: 4px 8px;
+        border-radius: 4px;
+      }
+
+      .welcome-banner-close:hover {
+        color: var(--text-color);
+      }
+
+      /* Inline Notes Count Pill on PDF button */
+      .notes-count-pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 2px;
+        background: rgba(45, 212, 191, 0.22);
+        color: #5eead4;
+        font-size: 10px;
+        font-weight: 700;
+        padding: 1px 5px;
+        border-radius: 8px;
+        margin-left: 4px;
+        border: 1px solid rgba(45, 212, 191, 0.4);
+      }
+
+      /* Contributor Profile Modal */
+      .profile-modal-card {
+        max-width: 680px;
+      }
+
+      .profile-stats-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+        gap: 12px;
+        margin-bottom: 20px;
+      }
+
+      .profile-stat-box {
+        background: rgba(11, 20, 36, 0.8);
+        border: 1px solid var(--border-color);
+        border-radius: 8px;
+        padding: 12px 14px;
+        text-align: center;
+      }
+
+      .profile-stat-number {
+        font-size: 24px;
+        font-weight: 700;
+        margin-bottom: 2px;
+      }
+
+      .profile-stat-label {
+        font-size: 11px;
+        color: var(--text-muted);
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+      }
+
+      .profile-section-title {
+        font-size: 13px;
+        font-weight: 700;
+        color: var(--text-color);
+        margin: 16px 0 10px;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+      }
+
+      .profile-paper-list {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        max-height: 200px;
+        overflow-y: auto;
+      }
+
+      .profile-paper-item {
+        background: rgba(11, 20, 36, 0.6);
+        border: 1px solid var(--border-color);
+        border-radius: 6px;
+        padding: 8px 12px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
+      }
+
+      .profile-paper-info strong {
+        display: block;
+        font-size: 12.5px;
+        color: var(--text-color);
+      }
+
+      .profile-paper-sub {
+        font-size: 11px;
+        color: var(--text-muted);
+      }
+
+      .profile-notes-feed {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        max-height: 220px;
+        overflow-y: auto;
+      }
+
+      .profile-note-card {
+        background: rgba(11, 20, 36, 0.6);
+        border: 1px solid var(--border-color);
+        border-left: 3px solid #2dd4bf;
+        border-radius: 6px;
+        padding: 8px 12px;
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+      }
+
+      .profile-note-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        font-size: 11.5px;
+      }
+
+      .profile-note-tag {
+        color: var(--text-muted);
+        font-size: 11px;
+      }
+
+      .profile-note-snippet {
+        font-size: 12px;
+        color: #cbd5e1;
+        line-height: 1.4;
+      }
+
+      .profile-note-link {
+        font-size: 11px;
+        color: #2dd4bf;
+        text-decoration: none;
+        align-self: flex-end;
+      }
+
+      .profile-note-link:hover {
+        text-decoration: underline;
+      }
+
+      .profile-empty-msg {
+        font-size: 12px;
+        color: var(--text-muted);
+        padding: 14px;
+        text-align: center;
+        border: 1px dashed var(--border-color);
+        border-radius: 6px;
+      }
+
     </style>
   </head>
   <body>
+    <div class="welcome-contributor-banner" id="welcomeBanner" style="display: none;">
+      <div class="welcome-banner-content">
+        <span class="welcome-banner-title">
+          👋 Welcome! Select your name to track your reviews & notes:
+        </span>
+        <div class="welcome-chip-list">
+          <button class="welcome-chip" type="button" onclick="selectWelcomeUser('Satya Siddhartha')">Satya Siddhartha</button>
+          <button class="welcome-chip" type="button" onclick="selectWelcomeUser('Abraham')">Abraham</button>
+          <button class="welcome-chip" type="button" onclick="selectWelcomeUser('Ashis Jose')">Ashis Jose</button>
+          <button class="welcome-chip" type="button" onclick="selectWelcomeUser('Rijoy John')">Rijoy John</button>
+          <button class="welcome-chip" type="button" onclick="selectWelcomeUser('Wimukthi')">Wimukthi</button>
+          <button class="welcome-chip" type="button" onclick="promptSwitchUser()">+ Other</button>
+        </div>
+      </div>
+      <button class="welcome-banner-close" type="button" onclick="dismissWelcomeBanner()" title="Dismiss">✕</button>
+    </div>
     <header>
       <div class="header-top">
         <div>
           <h1>Wastewater Research Library</h1>
         </div>
         <div class="header-actions">
+          <button class="btn-profile-pill" id="headerProfileBtn" type="button" onclick="openProfileModal()" title="View my contributor profile & reviewed papers">
+            <span class="user-dot-indicator" id="headerProfileDot"></span>
+            <span id="headerProfileName">Unknown User</span>
+          </button>
+
           <a
-            href="https://abrahampaulj.github.io/gravity-sewer-osp/osp_sandbox.html#sandbox"
+            href="https://abrahampaulj.github.io/gravity-sewer-osp/"
             target="_blank"
             rel="noopener"
             class="btn-action btn-scholar"
@@ -823,53 +1313,75 @@
         </div>
       </div>
 
-      <div class="controls-bar" style="margin-top: 20px">
-        <div class="search-box">
-          <svg
-            class="search-icon"
-            width="16"
-            height="16"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
+      <div class="filter-panel" id="filterPanel">
+        <div class="filter-panel-header">
+          <div>
+            <div class="filter-panel-kicker">Research filters</div>
+            <div class="filter-panel-summary" id="filterPanelSummary">
+              All topics · All users · All categories
+            </div>
+          </div>
+          <button
+            type="button"
+            id="toggleFiltersBtn"
+            class="btn-squeeze-toggle"
+            onclick="toggleFilterSection()"
+            aria-controls="filterControls"
+            aria-expanded="true"
+            title="Squeeze or expand research filters"
           >
-            <circle cx="11" cy="11" r="8"></circle>
-            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-          </svg>
-          <input
-            type="text"
-            id="searchInput"
-            placeholder="Search by paper title, author, topic, or sensor type..."
-            onkeyup="filterTable()"
-          />
+            <span id="filterSqueezeIcon">▲</span>
+            <span id="filterSqueezeText">Squeeze filters</span>
+          </button>
         </div>
-        <select
-          id="topicFilter"
-          class="filter-select"
-          aria-label="Filter papers by research topic"
-          onchange="setTopic(this.value)"
-        >
-          <option value="all">Topic: All</option>
-        </select>
-        <select
-          id="userFilter"
-          class="filter-select"
-          aria-label="Filter papers by assigned user"
-          onchange="filterTable()"
-        >
-          <option value="all">User: All</option>
-        </select>
-        <div class="filter-group" id="nestedFilterGroup"></div>
-        <p class="filter-help">
-          Select a topic first. The user and category filters then show only
-          values used by that topic. Define <code>topic</code>,
-          <code>filterCategory</code>, and <code>assignedTo</code> in each
-          contributor's <code>papers.json</code>; keep the same metadata in
-          <code>summaries.json</code> for shared summaries.
-        </p>
+        <div class="controls-bar" id="filterControls">
+          <div class="search-box">
+            <svg
+              class="search-icon"
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <circle cx="11" cy="11" r="8"></circle>
+              <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+            </svg>
+            <input
+              type="text"
+              id="searchInput"
+              placeholder="Search by paper title, author, topic, or sensor type..."
+              onkeyup="filterTable()"
+            />
+          </div>
+          <select
+            id="topicFilter"
+            class="filter-select"
+            aria-label="Filter papers by research topic"
+            onchange="setTopic(this.value)"
+          >
+            <option value="all">Topic: All</option>
+          </select>
+          <select
+            id="userFilter"
+            class="filter-select"
+            aria-label="Filter papers by assigned user"
+            onchange="filterTable()"
+          >
+            <option value="all">User: All</option>
+          </select>
+          <div class="filter-group" id="nestedFilterGroup"></div>
+          <p class="filter-help">
+            Select a topic first. The user and category filters then show only
+            values used by that topic. Define <code>topic</code>,
+            <code>filterCategory</code>, and <code>assignedTo</code> in each
+            contributor's <code>papers.json</code>; keep the same metadata in
+            <code>summaries.json</code> for shared summaries.
+          </p>
+        </div>
       </div>
     </header>
 
@@ -919,6 +1431,34 @@
       </table>
     </div>
 
+    <!-- Contributor Profile Modal -->
+    <div
+      class="modal-overlay"
+      id="profileModal"
+      style="display: none;"
+      onclick="closeProfileModalOnOverlay(event)"
+    >
+      <div class="modal-card profile-modal-card">
+        <div class="modal-header">
+          <div style="display: flex; align-items: center; gap: 12px;">
+            <div style="width: 38px; height: 38px; border-radius: 50%; background: #2dd4bf; display: flex; align-items: center; justify-content: center; font-weight: 700; color: #070d17; font-size: 15px;" id="modalProfileAvatar">U</div>
+            <div>
+              <div class="modal-title" id="modalProfileName">Contributor Profile</div>
+              <div class="modal-meta" id="modalProfileDevice" style="font-size: 11px; opacity: 0.65; color: var(--text-muted);">Device</div>
+            </div>
+          </div>
+          <button class="modal-close" type="button" onclick="closeProfileModal()">&times;</button>
+        </div>
+        <div class="modal-body" id="modalProfileBody" style="max-height: 70vh; overflow-y: auto;">
+          <!-- Injected via JavaScript -->
+        </div>
+        <div class="modal-footer">
+          <button class="btn-action btn-scholar" type="button" onclick="promptSwitchUser()">Change Name</button>
+          <button class="btn-action btn-summary" type="button" onclick="closeProfileModal()">Close</button>
+        </div>
+      </div>
+    </div>
+
     <!-- 8-Step Annotated Summary Modal -->
     <div
       class="modal-overlay"
@@ -953,8 +1493,9 @@
               id="modalPdfLink"
               href="#"
               target="_blank"
+              rel="noopener"
               class="btn-action btn-pdf"
-              >📄 Open Full-Text PDF</a
+              >📄 Open PDF + Notes</a
             >
             <button class="btn-action btn-scholar" onclick="closeModal()">
               Close
@@ -1034,13 +1575,18 @@
       function findDuplicateResearchPaper(paper, id) {
         const identityKey = getPaperIdentityKey(paper);
         if (!identityKey) return null;
-        return (
-          papersData.find(
-            (candidate) =>
-              Number(candidate.id) !== id &&
-              getPaperIdentityKey(candidate) === identityKey,
-          ) || null
+        const existing = papersData.find(
+          (candidate) =>
+            Number(candidate.id) !== id &&
+            getPaperIdentityKey(candidate) === identityKey,
         );
+        if (!existing) return null;
+        return {
+          paper: existing,
+          matchType: identityKey.startsWith("doi:")
+            ? "DOI"
+            : "title, first author, and year",
+        };
       }
 
       function mergeContributorPapers(records) {
@@ -1084,27 +1630,40 @@
           }
 
           const duplicate = findDuplicateResearchPaper(rawPaper, id);
+          const paperRecord = duplicate
+            ? {
+                ...rawPaper,
+                duplicateOf: {
+                  id: duplicate.paper.id,
+                  assignedTo:
+                    duplicate.paper.assignedTo ||
+                    duplicate.paper.user ||
+                    "Unknown contributor",
+                  matchType: duplicate.matchType,
+                },
+              }
+            : rawPaper;
+
           if (duplicate) {
             console.warn(
-              `Skipped duplicate research paper ${id}; it matches paper ${duplicate.id} by DOI or title/author/year.`,
+              `Possible duplicate research paper ${id}; it matches paper ${duplicate.paper.id} by ${duplicate.matchType}.`,
             );
-            return;
           }
 
           const paper = {
-            ...rawPaper,
+            ...paperRecord,
             id,
-            title: rawPaper.title,
-            authors: rawPaper.authors || "Authors not provided",
-            journal: rawPaper.journal || "Publication details not provided",
-            categoryKey: rawPaper.categoryKey || "other",
+            title: paperRecord.title,
+            authors: paperRecord.authors || "Authors not provided",
+            journal: paperRecord.journal || "Publication details not provided",
+            categoryKey: paperRecord.categoryKey || "other",
             categoryLabel:
-              rawPaper.categoryLabel || rawPaper.filterCategory || "Other",
-            size: rawPaper.size || "",
-            pages: rawPaper.pages || "",
-            pdfUrl: rawPaper.pdfUrl || "#",
-            scholarUrl: rawPaper.scholarUrl || "#",
-            steps: rawPaper.steps || {},
+              paperRecord.categoryLabel || paperRecord.filterCategory || "Other",
+            size: paperRecord.size || "",
+            pages: paperRecord.pages || "",
+            pdfUrl: paperRecord.pdfUrl || "#",
+            scholarUrl: paperRecord.scholarUrl || "#",
+            steps: paperRecord.steps || {},
           };
 
           papersData.push(paper);
@@ -1187,7 +1746,7 @@
                                 <span class="badge-tag">${paper.categoryLabel}</span>
                             </div>
                         </div>
-                        <div class="paper-title">${paper.title}</div>
+                        <div class="paper-title">${paper.title}${duplicateIndicatorHtml(paper)}</div>
                         <div class="paper-meta">
                             <span>${paper.authors}</span> &bull; 
                             <span><em>${paper.journal}</em></span>
@@ -1196,14 +1755,16 @@
                             <span class="meta-chip">User: ${escapeHtml(paper.assignedTo)}</span>
                             <span class="meta-chip topic-chip">Topic: ${escapeHtml(paper.topic)}</span>
                             <span class="meta-chip filter-chip">Filter: ${escapeHtml(paper.filterCategory)}</span>
+                            ${paper.pages ? `<span class="meta-chip info-chip">📄 ${paper.pages}p</span>` : ""}
+                            ${paper.size ? `<span class="meta-chip info-chip">💾 ${escapeHtml(paper.size)}</span>` : ""}
                         </div>
                     </td>
                     <td class="col-cat"><span class="badge-tag">${paper.categoryLabel}</span></td>
                     <td class="col-actions">
                         <div class="action-btns mobile-actions">
-                            <button class="btn-action btn-summary" onclick="openSummary(${paper.id})">📝 8-Step Summary</button>
-                            <a class="btn-action btn-pdf" href="${paper.pdfUrl}" target="_blank">📄 PDF</a>
-                            <a class="btn-action btn-scholar" href="${paper.scholarUrl}" target="_blank">🔍 Scholar</a>
+                            <button class="btn-action btn-summary" onclick="openSummary(${paper.id})" title="View 8-Step Research Summary">📝 Summary</button>
+                            <a class="btn-action btn-pdf" id="paper-pdf-btn-${paper.id}" href="${escapeHtml(getPdfViewerUrl(paper))}" target="_blank" rel="noopener" title="Read paper and annotations">📄 PDF <span class="notes-count-pill" id="paper-badge-${paper.id}" style="display:none;"></span></a>
+                            <a class="btn-action btn-scholar" href="${paper.scholarUrl}" target="_blank" rel="noopener" title="Search on Google Scholar">🔍 Scholar</a>
                         </div>
                     </td>
                 `;
@@ -1245,6 +1806,44 @@
           .replaceAll(">", "&gt;")
           .replaceAll('"', "&quot;")
           .replaceAll("'", "&#039;");
+      }
+
+      function getPdfViewerUrl(paper) {
+        const viewerUrl = new URL("./pdf-viewer.html", window.location.href);
+        viewerUrl.searchParams.set("paper", String(paper.id));
+        viewerUrl.searchParams.set("pdf", paper.pdfUrl || "");
+        if (paper.title) viewerUrl.searchParams.set("title", paper.title);
+        if (paper.topic) viewerUrl.searchParams.set("topic", paper.topic);
+        const activeUser = typeof getActiveUser === "function" ? getActiveUser() : null;
+        if (activeUser) {
+          viewerUrl.searchParams.set("user", activeUser);
+        } else if (paper.assignedTo) {
+          viewerUrl.searchParams.set(
+            "user",
+            contributorDisplayName(paper.assignedTo),
+          );
+        }
+        return viewerUrl.href;
+      }
+
+      function contributorDisplayName(value) {
+        return Array.isArray(value)
+          ? value.join(", ")
+          : String(value || "Unknown contributor");
+      }
+
+      function duplicateIndicatorHtml(paper) {
+        if (!paper.duplicateOf) return "";
+
+        const existingId = paper.duplicateOf.id ?? "?";
+        const uploader = contributorDisplayName(
+          paper.duplicateOf.assignedTo || paper.duplicateOf.user,
+        );
+        const matchType = paper.duplicateOf.matchType || "paper metadata";
+        const label = `⚠ Possible duplicate · Existing paper #${existingId} · Uploaded by ${uploader}`;
+        const title = `Possible duplicate matched by ${matchType}. Existing paper #${existingId} was uploaded by ${uploader}.`;
+
+        return `<span class="duplicate-indicator" title="${escapeHtml(title)}">${escapeHtml(label)}</span>`;
       }
 
       let currentTopic = "all";
@@ -1364,14 +1963,16 @@
                 paper.filterCategory
                   ? ` · ${escapeHtml(paper.filterCategory)}`
                   : ""
+              }${paper.pages ? ` · 📄 ${paper.pages}p` : ""}${
+                paper.size ? ` · 💾 ${escapeHtml(paper.size)}` : ""
               }
             </div>
             <p class="compiled-paper-description">${escapeHtml(
               paper.description || "Compiled paper for this topic.",
             )}</p>
             <a class="btn-action btn-pdf" href="${escapeHtml(
-              paper.pdfUrl,
-            )}" target="_blank" rel="noopener">📄 Open compiled PDF</a>
+              getPdfViewerUrl(paper),
+            )}" target="_blank" rel="noopener">📄 PDF</a>
           </article>
         `;
       }
@@ -1491,6 +2092,47 @@
           if (icon) icon.textContent = "▲";
           if (text) text.textContent = "Squeeze";
         }
+      }
+
+      let isFiltersSqueezed = false;
+
+      function toggleFilterSection() {
+        isFiltersSqueezed = !isFiltersSqueezed;
+        updateFilterSqueezeState();
+      }
+
+      function updateFilterSqueezeState() {
+        const panel = document.getElementById("filterPanel");
+        const icon = document.getElementById("filterSqueezeIcon");
+        const text = document.getElementById("filterSqueezeText");
+        const button = document.getElementById("toggleFiltersBtn");
+        if (!panel) return;
+
+        panel.classList.toggle("is-squeezed", isFiltersSqueezed);
+        if (icon) icon.textContent = isFiltersSqueezed ? "▼" : "▲";
+        if (text) {
+          text.textContent = isFiltersSqueezed
+            ? "Expand filters"
+            : "Squeeze filters";
+        }
+        if (button) {
+          button.setAttribute("aria-expanded", String(!isFiltersSqueezed));
+        }
+      }
+
+      function updateFilterSummary() {
+        const summary = document.getElementById("filterPanelSummary");
+        const userFilter = document.getElementById("userFilter");
+        if (!summary) return;
+
+        const selectedUser = userFilter?.value || "all";
+        const topicLabel = currentTopic === "all" ? "All topics" : currentTopic;
+        const userLabel = selectedUser === "all" ? "All users" : selectedUser;
+        const categoryLabel =
+          currentFilterCategory === "all"
+            ? "All categories"
+            : currentFilterCategory;
+        summary.textContent = `${topicLabel} · ${userLabel} · ${categoryLabel}`;
       }
 
       function makeFilterButton(label, category) {
@@ -1715,7 +2357,7 @@
         document.getElementById("modalPaperTitle").innerText = paper.title;
         document.getElementById("modalPaperMeta").innerText =
           `${paper.authors} — ${paper.journal}`;
-        document.getElementById("modalPdfLink").href = paper.pdfUrl;
+        document.getElementById("modalPdfLink").href = getPdfViewerUrl(paper);
         renderSummary();
         document.getElementById("summaryStatus").innerText =
           sharedSummaryLoadState === "loaded"
@@ -1788,15 +2430,300 @@
           }
         });
 
+        updateFilterSummary();
         renderCompiledPapers();
       }
 
       // Initialize table on load
       refreshNestedFilters();
       renderTable();
+      updateFilterSqueezeState();
+      updateFilterSummary();
+
+      // Unique Contributor Palettes
+      const USER_PALETTES = [
+        { id: "teal", bg: "#0d9488", light: "#2dd4bf" },
+        { id: "amber", bg: "#d97706", light: "#fbbf24" },
+        { id: "indigo", bg: "#4f46e5", light: "#818cf8" },
+        { id: "rose", bg: "#e11d48", light: "#fb7185" },
+        { id: "emerald", bg: "#059669", light: "#34d399" },
+        { id: "purple", bg: "#9333ea", light: "#c084fc" },
+        { id: "orange", bg: "#ea580c", light: "#fb923c" },
+        { id: "sky", bg: "#0284c7", light: "#38bdf8" },
+        { id: "pink", bg: "#db2777", light: "#f472b6" },
+        { id: "lime", bg: "#65a30d", light: "#a3e635" },
+      ];
+
+      function getPersonPalette(name) {
+        const key = String(name || "Unknown User").trim();
+        if (key.toLowerCase() === "unknown user" || key.toLowerCase() === "contributor") {
+          return { id: "slate", bg: "#475569", light: "#94a3b8" };
+        }
+        let hash = 0;
+        for (let i = 0; i < key.length; i++) {
+          hash = (hash << 5) - hash + key.charCodeAt(i);
+          hash |= 0;
+        }
+        return USER_PALETTES[Math.abs(hash) % USER_PALETTES.length];
+      }
+
+      // Method 1: Device Detection
+      function detectDevice() {
+        let id = localStorage.getItem("capstone_device_id");
+        if (!id) {
+          id = "dev_" + (window.crypto && typeof window.crypto.randomUUID === "function"
+            ? window.crypto.randomUUID().slice(0, 8)
+            : Math.random().toString(36).slice(2, 10));
+          localStorage.setItem("capstone_device_id", id);
+        }
+
+        const ua = navigator.userAgent || "";
+        let platform = "Device";
+        if (/Macintosh|Mac OS X/i.test(ua)) platform = "MacBook / Mac";
+        else if (/Windows/i.test(ua)) platform = "Windows PC";
+        else if (/iPhone/i.test(ua)) platform = "iPhone";
+        else if (/iPad/i.test(ua)) platform = "iPad";
+        else if (/Android/i.test(ua)) platform = "Android";
+        else if (/Linux/i.test(ua)) platform = "Linux PC";
+
+        let browser = "Browser";
+        if (/Edg\//i.test(ua)) browser = "Edge";
+        else if (/Chrome\//i.test(ua) && !/Edg\//i.test(ua)) browser = "Chrome";
+        else if (/Safari\//i.test(ua) && !/Chrome\//i.test(ua)) browser = "Safari";
+        else if (/Firefox\//i.test(ua)) browser = "Firefox";
+
+        const label = `${platform} (${browser})`;
+        localStorage.setItem("capstone_device_label", label);
+        return { id, label };
+      }
+
+      const currentDevice = detectDevice();
+
+      function getActiveUser() {
+        return (
+          localStorage.getItem("capstone_user_name") ||
+          localStorage.getItem("pdf_active_user") ||
+          "Unknown User"
+        );
+      }
+
+      function setActiveUser(name) {
+        const clean = String(name || "").trim() || "Unknown User";
+        localStorage.setItem("capstone_user_name", clean);
+        localStorage.setItem("pdf_active_user", clean);
+        updateProfileHeader();
+      }
+
+      function updateProfileHeader() {
+        const user = getActiveUser();
+        const palette = getPersonPalette(user);
+        const nameEl = document.getElementById("headerProfileName");
+        const dotEl = document.getElementById("headerProfileDot");
+        if (nameEl) nameEl.textContent = user;
+        if (dotEl) dotEl.style.background = palette.light;
+      }
+
+      function selectWelcomeUser(name) {
+        setActiveUser(name);
+        dismissWelcomeBanner();
+      }
+
+      function dismissWelcomeBanner() {
+        const banner = document.getElementById("welcomeBanner");
+        if (banner) banner.style.display = "none";
+        localStorage.setItem("capstone_welcome_dismissed", "true");
+      }
+
+      function checkWelcomeBanner() {
+        const saved = localStorage.getItem("capstone_user_name");
+        const dismissed = localStorage.getItem("capstone_welcome_dismissed");
+        if (!saved && !dismissed) {
+          const banner = document.getElementById("welcomeBanner");
+          if (banner) banner.style.display = "flex";
+        }
+      }
+
+      function promptSwitchUser() {
+        const current = getActiveUser();
+        const next = prompt("Enter your contributor name:", current === "Unknown User" ? "" : current);
+        if (next && next.trim()) {
+          setActiveUser(next.trim());
+          if (document.getElementById("profileModal").style.display === "flex") {
+            openProfileModal();
+          }
+        }
+      }
+
+      // Profile Modal
+      function openProfileModal() {
+        const user = getActiveUser();
+        const palette = getPersonPalette(user);
+        document.getElementById("modalProfileName").textContent = user;
+        const devEl = document.getElementById("modalProfileDevice");
+        if (devEl) {
+          devEl.textContent = `Device: ${currentDevice.label}`;
+        }
+
+        const avatar = document.getElementById("modalProfileAvatar");
+        if (avatar) {
+          avatar.textContent = user.split(" ").map((n) => n[0]).join("").slice(0, 2).toUpperCase() || "U";
+          avatar.style.background = palette.light;
+        }
+
+        const allNotes = (annotationsSummary && annotationsSummary.notes) || [];
+        const myNotes = allNotes.filter((n) => n.createdBy && n.createdBy.toLowerCase() === user.toLowerCase() && n.status !== "deleted");
+        const reviewedPaperIds = [...new Set(myNotes.map((n) => String(n.paperId)))];
+        const totalPapers = papersData.length || 23;
+
+        let bodyHtml = `
+          <div class="profile-stats-grid">
+            <div class="profile-stat-box">
+              <div class="profile-stat-number" style="color: ${palette.light}">${reviewedPaperIds.length}</div>
+              <div class="profile-stat-label">Papers Reviewed</div>
+            </div>
+            <div class="profile-stat-box">
+              <div class="profile-stat-number" style="color: ${palette.light}">${myNotes.length}</div>
+              <div class="profile-stat-label">Notes Written</div>
+            </div>
+            <div class="profile-stat-box">
+              <div class="profile-stat-number" style="color: #94a3b8">${totalPapers}</div>
+              <div class="profile-stat-label">Total Corpus Papers</div>
+            </div>
+          </div>
+
+          <div class="profile-section-title">📄 Papers Reviewed by ${escapeHtml(user)}</div>
+          <div class="profile-paper-list">
+        `;
+
+        if (!reviewedPaperIds.length) {
+          bodyHtml += `<div class="profile-empty-msg">No reviewed papers found for ${escapeHtml(user)} yet. Open any paper to add your notes!</div>`;
+        } else {
+          reviewedPaperIds.forEach((pid) => {
+            const pObj = papersData.find((p) => String(p.id) === String(pid));
+            const pTitle = pObj ? pObj.title : `Paper ${pid}`;
+            const pNotes = myNotes.filter((n) => String(n.paperId) === String(pid));
+            bodyHtml += `
+              <div class="profile-paper-item">
+                <div class="profile-paper-info">
+                  <strong>${escapeHtml(pTitle)}</strong>
+                  <span class="profile-paper-sub">${pNotes.length} note${pNotes.length === 1 ? "" : "s"} added by you</span>
+                </div>
+                <a class="btn-action btn-pdf" href="./pdf-viewer.html?paper=${encodeURIComponent(pid)}&user=${encodeURIComponent(user)}" target="_blank" rel="noopener">Open Notes</a>
+              </div>
+            `;
+          });
+        }
+        bodyHtml += `</div>`;
+
+        bodyHtml += `
+          <div class="profile-section-title" style="margin-top: 20px;">📌 My Notes & Activity</div>
+          <div class="profile-notes-feed">
+        `;
+
+        if (!myNotes.length) {
+          bodyHtml += `<div class="profile-empty-msg">No sticky notes created yet. Click 📌 Note on any PDF page to create one!</div>`;
+        } else {
+          const sorted = [...myNotes].sort((a, b) => new Date(b.createdAt || 0) - new Date(a.createdAt || 0));
+          sorted.forEach((n) => {
+            const pObj = papersData.find((p) => String(p.id) === String(n.paperId));
+            const pTitle = pObj ? pObj.title : `Paper ${n.paperId}`;
+            bodyHtml += `
+              <div class="profile-note-card">
+                <div class="profile-note-header">
+                  <span style="font-weight: 700; color: #ffffff;">${escapeHtml(n.title || "Note")}</span>
+                  <span class="profile-note-tag">P. ${n.page} · ${escapeHtml(pTitle).slice(0, 30)}…</span>
+                </div>
+                <div class="profile-note-snippet">${escapeHtml(n.text || "")}</div>
+                <a class="profile-note-link" href="./pdf-viewer.html?paper=${encodeURIComponent(n.paperId)}&user=${encodeURIComponent(user)}" target="_blank" rel="noopener">Jump to note in PDF →</a>
+              </div>
+            `;
+          });
+        }
+        bodyHtml += `</div>`;
+
+        document.getElementById("modalProfileBody").innerHTML = bodyHtml;
+        document.getElementById("profileModal").style.display = "flex";
+      }
+
+      function closeProfileModal() {
+        document.getElementById("profileModal").style.display = "none";
+      }
+
+      function closeProfileModalOnOverlay(e) {
+        if (e.target.id === "profileModal") {
+          closeProfileModal();
+        }
+      }
+
+      // Shared Annotations Summary for live table badges
+      let annotationsSummary = null;
+
+      async function loadAnnotationsSummary() {
+        const host = window.location.hostname;
+        const configuredApi = String(
+          window.ANNOTATION_API_BASE ||
+            (host === "siddhu-123.github.io"
+              ? "https://waste-water-network-sensor-papers-two.vercel.app"
+              : ""),
+        ).trim().replace(/\/+$/, "");
+        const sameOriginApi = host === "localhost" || host === "127.0.0.1" || host.endsWith(".vercel.app");
+        const apiBase = configuredApi || (sameOriginApi ? "" : null);
+
+        // Instant local cache
+        try {
+          const cached = localStorage.getItem("capstone_annotations_cache");
+          if (cached) {
+            annotationsSummary = JSON.parse(cached);
+            updateAllPaperBadges();
+          }
+        } catch (_e) {}
+
+        if (apiBase !== null) {
+          try {
+            const res = await fetch(apiBase + "/api/annotations", { cache: "no-store" });
+            if (res.ok) {
+              const data = await res.json();
+              if (data && typeof data === "object") {
+                annotationsSummary = data;
+                localStorage.setItem("capstone_annotations_cache", JSON.stringify(data));
+                updateAllPaperBadges();
+              }
+            }
+          } catch (_err) {}
+        }
+      }
+
+      function updateAllPaperBadges() {
+        if (!annotationsSummary || !annotationsSummary.papers) return;
+        Object.keys(annotationsSummary.papers).forEach((pid) => {
+          const info = annotationsSummary.papers[pid];
+          const badge = document.getElementById(`paper-badge-${pid}`);
+          const pdfBtn = document.getElementById(`paper-pdf-btn-${pid}`);
+          if (badge) {
+            const count = info.count || 0;
+            if (count > 0) {
+              badge.style.display = "inline-flex";
+              badge.textContent = `💬 ${count}`;
+              const authorsList = info.authors && info.authors.length ? info.authors.join(", ") : "Team";
+              if (pdfBtn) {
+                pdfBtn.title = `Read PDF (${count} note${count === 1 ? "" : "s"} by ${authorsList})`;
+              }
+            } else {
+              badge.style.display = "none";
+              if (pdfBtn) {
+                pdfBtn.title = "Read paper & annotate PDF";
+              }
+            }
+          }
+        });
+      }
+
       renderCompiledPapers();
       loadSharedSummaries();
       loadContributorPapers();
+      updateProfileHeader();
+      checkWelcomeBanner();
+      loadAnnotationsSummary();
     </script>
   </body>
 </html>

@@ -7,7 +7,9 @@
     "filterCategory": "Compiled Review",
     "assignedTo": "Team",
     "description": "Team's compiled literature review on Optimal Sensor Placement for Wastewater Network Monitoring.",
-    "pdfUrl": "./contributors/team_compiled_paper.pdf"
+    "pdfUrl": "./contributors/team_compiled_paper.pdf",
+    "pages": 28,
+    "size": "430 KB"
   },
   "contributors": [
     {

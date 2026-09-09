@@ -9,7 +9,13 @@ Open [`index.html`](./index.html) to use the viewer.
 ```text
 sensor_papers/
 ├── index.html                         Dynamic viewer with nested filters & squeeze toggle
+├── pdf-viewer.html                    PDF.js viewer with shared highlights & sticker notes
+├── annotation-config.js               Optional Vercel API URL for GitHub Pages
+├── package.json                        Vercel Blob dependency for the API
 ├── summaries.json                     Shared 8-step summaries
+├── annotations/                       Optional committed fallback annotations
+├── api/                               Vercel OAuth and annotation API routes
+├── server/                            Server-only GitHub/OAuth and Blob helpers
 ├── scripts/
 │   └── validate_repo.py               Automated repository consistency validator
 ├── contributors/
@@ -26,6 +32,35 @@ sensor_papers/
 The 23 initial research papers and the individual [compiled Paper 1 PDF](./contributors/satya-siddhartha/compiled-papers/paper-1.pdf) are stored in [`contributors/satya-siddhartha/`](./contributors/satya-siddhartha/). They remain assigned to **Satya Siddhartha**.
 
 All paper records across contributors are loaded dynamically from their respective JSON files. `index.html` contains no hardcoded paper data.
+
+## Shared PDF highlights and sticker notes
+
+Click **PDF + Notes** beside any paper. The viewer supports rectangular highlights and draggable sticker notes. Annotation positions are stored as normalized coordinates, so they remain aligned when the PDF is viewed on a different screen size.
+
+The recommended shared library link is:
+
+```text
+https://siddhu-123.github.io/waste_water_network_sensor-papers/index.html
+```
+
+GitHub Pages hosts this public library, while Vercel hosts the API and stores one small private JSON object per paper in Vercel Blob. The viewer fetches that object whenever someone opens the PDF, so annotations are shared without adding JSON files or PDF copies to GitHub. The direct Vercel site is also available at `https://waste-water-network-sensor-papers-two.vercel.app/`.
+
+The viewer has two modes:
+
+- **GitHub Pages mode:** the public viewer calls the Vercel API through [`annotation-config.js`](./annotation-config.js), so shared annotations work from the library link above.
+- **Vercel mode:** the viewer and API use the same Vercel origin. Shared annotations are loaded from Vercel Blob.
+- **Local preview:** the viewer can load an optional committed JSON fallback and download a local backup. Shared saving is disabled on `file://` pages.
+
+Share the GitHub Pages link above with the team. The Vercel URL is a direct alternative.
+
+### Shared saves with Vercel Blob
+
+Shared annotations are saved directly to Vercel Blob via the Vercel API.
+
+- **Storage:** Vercel Blob stores one JSON object per paper under `annotations/paper-<paperId>.json`.
+- **Zero Login Friction:** Teammates can view, highlight, add sticker notes, and hit **Save shared annotations** without having to authenticate through GitHub OAuth. Notes are attributed using the active contributor context or author name.
+- **Concurrency Safety:** Each save checks the current Blob revision ETag (`ifMatch`), ensuring concurrent edits do not silently overwrite teammate notes.
+- **Vercel Requirement:** The Vercel project only requires the Vercel Blob store connected (which provides `BLOB_READ_WRITE_TOKEN`). GitHub OAuth app setup is completely optional.
 
 ## Registered contributors
 
@@ -150,6 +185,8 @@ When two or three teammates collaborate on a compiled paper, `assignedTo` can be
 - **Topic:** Shows topics found in research papers and compiled papers. Selecting a topic dynamically refines the user dropdown and category pills.
 - **User:** Shows registered contributors with material matching the selected topic.
 - **Category buttons:** Filter research papers by specific subcategories within the active topic.
+- **Squeeze filters:** Click **Squeeze filters** to hide the search, topic, user, and category controls while keeping the current selection summary visible. Click **Expand filters** to restore them.
+- **Mobile layout:** On small screens, filters stack vertically, category buttons wrap, compiled-paper cards use one column, and research papers become readable cards with full-width actions.
 - **Layered Compiled Papers Shelves:**
   - **When "User: All" is selected:**
     - **Top Shelf (`👥 Team Compiled Paper`):** Displays the collaborative team review across the top.
@@ -161,6 +198,12 @@ When two or three teammates collaborate on a compiled paper, `assignedTo` can be
   - Click the **Squeeze** button in the compiled papers header to minimize the section into a slim ~48px strip (`All topics compiled papers · X available [▼ Expand]`).
   - This immediately pulls the research papers table front-and-center so users can inspect research papers on first glance.
   - Click **Expand** to restore the stacked shelves at any time.
+
+## Possible duplicate uploads
+
+The viewer keeps suspected duplicates visible. It first compares DOI values; when no DOI is available, it compares the normalized title, first author, and year. The later upload receives a small warning badge beside its title showing the existing paper ID and earlier uploader. Review the badge before deleting or replacing either record.
+
+Research-paper IDs must still be unique. Duplicate DOI or title/author/year matches are reported as validation warnings so contributors can review them without blocking a valid upload.
 
 ## Shared summaries
 
@@ -184,8 +227,8 @@ Check that:
 - the JSON files are valid;
 - every PDF path points to an existing file in the repository;
 - the research-paper ID is unique;
-- the DOI is valid and not already used;
-- papers without a DOI do not repeat the same title, first author, and year;
+- the DOI is valid; review any duplicate-identity warnings;
+- papers without a DOI are reviewed for repeated title, first author, and year;
 - compiled-paper IDs are unique;
 - contributor names match the manifest exactly;
 - co-authored `assignedTo` lists contain valid registered contributors;
