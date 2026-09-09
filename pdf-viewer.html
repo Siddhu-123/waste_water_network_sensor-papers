@@ -535,6 +535,10 @@
         display: none;
       }
 
+      .pdf-page.rendered {
+        overflow: visible;
+      }
+
       .pdf-page canvas {
         display: block;
         width: 100%;
@@ -1861,7 +1865,9 @@
           if (annotation.type === "sticky-note") {
             const x = Number(annotation.x);
             const y = Number(annotation.y);
-            return Number.isFinite(x) && Number.isFinite(y) && String(annotation.text || "").trim().length > 0;
+            if (!Number.isFinite(x) || !Number.isFinite(y)) return false;
+            if (annotation.id === activeExpandedNoteId || annotation.isDraftNew) return true;
+            return String(annotation.text || "").trim().length > 0;
           }
           return true; // highlight can have boxes
         }
@@ -2327,7 +2333,12 @@
           layer.querySelectorAll(".annotation").forEach((node) => node.remove());
           layer.classList.toggle("tool-note", activeTool === "note");
 
-          const pageAnns = annotations.filter((a) => Number(a.page) === pageNumber && validAnnotation(a) && a.status !== "deleted");
+          const pageAnns = annotations.filter((a) => {
+            if (Number(a.page) !== pageNumber) return false;
+            if (a.status === "deleted") return false;
+            if (a.id === activeExpandedNoteId) return true;
+            return validAnnotation(a);
+          });
           pageAnns.forEach((annotation) => {
             if (annotation.type === "highlight") {
               const rawBoxes = annotation.boxes && annotation.boxes.length
