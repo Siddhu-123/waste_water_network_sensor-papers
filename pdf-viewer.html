@@ -630,32 +630,298 @@
         box-shadow: 0 0 0 1.5px rgba(45, 212, 191, 0.9);
       }
 
-      /* Sticky Note Pins on Canvas */
+      /* Sticky Note Minimized Sticker on Canvas */
       .sticky-note {
+        position: absolute;
+        width: 44px;
+        height: 44px;
+        background: linear-gradient(145deg, #fff9a6 0%, #fef08a 100%);
+        border-radius: 2px 2px 4px 2px;
+        box-shadow: 0 6px 14px rgba(0, 0, 0, 0.28), 0 2px 4px rgba(0, 0, 0, 0.16);
+        cursor: grab;
+        z-index: 25;
+        user-select: none;
+        touch-action: none;
+        transform: rotate(-1.5deg);
+        transition: transform 140ms ease, box-shadow 140ms ease, opacity 140ms ease;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        padding: 10px 5px 4px 5px;
+        box-sizing: border-box;
+      }
+
+      /* Translucent Scotch Tape on top of Sticky Note */
+      .sticky-note::before {
+        content: "";
+        position: absolute;
+        top: -8px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 22px;
+        height: 12px;
+        background: rgba(254, 243, 199, 0.78);
+        border-left: 1px dashed rgba(217, 119, 6, 0.35);
+        border-right: 1px dashed rgba(217, 119, 6, 0.35);
+        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.14);
+        backdrop-filter: blur(1px);
+        z-index: 2;
+        pointer-events: none;
+      }
+
+      /* Note text preview lines inside minimized sticker */
+      .sticky-note .sticker-lines {
+        display: flex;
+        flex-direction: column;
+        gap: 3px;
+        width: 100%;
+        opacity: 0.55;
+        pointer-events: none;
+      }
+
+      .sticky-note .sticker-line {
+        height: 2px;
+        background: #854d0e;
+        border-radius: 1px;
+        width: 100%;
+      }
+      .sticky-note .sticker-line:nth-child(2) { width: 75%; }
+      .sticky-note .sticker-line:nth-child(3) { width: 50%; }
+
+      .sticky-note .sticker-footer {
         display: flex;
         align-items: center;
-        justify-content: center;
-        width: 30px;
-        height: 30px;
-        background: #facc15;
-        border: 2px solid #ffffff;
-        border-radius: 50% 50% 50% 3px;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.38);
-        cursor: pointer;
-        font-size: 14px;
-        transition: transform 120ms ease, box-shadow 120ms ease;
-        z-index: 15;
-        user-select: none;
+        justify-content: space-between;
+        width: 100%;
+        pointer-events: none;
+      }
+
+      .sticky-note .sticker-author-dot {
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        background: #0d9488;
+        box-shadow: 0 0 2px rgba(0, 0, 0, 0.3);
+      }
+
+      .sticky-note .sticker-icon {
+        font-size: 9px;
+        line-height: 1;
+        opacity: 0.7;
       }
 
       .sticky-note:hover {
-        transform: scale(1.18) translateY(-2px);
-        box-shadow: 0 8px 18px rgba(0, 0, 0, 0.5);
+        transform: rotate(-0.5deg) scale(1.12) translateY(-2px);
+        box-shadow: 0 10px 22px rgba(0, 0, 0, 0.38), 0 3px 6px rgba(0, 0, 0, 0.2);
+        z-index: 35;
       }
 
       .sticky-note.selected {
-        outline: 3px solid #ffffff;
+        outline: 2px solid #0284c7;
         outline-offset: 2px;
+      }
+
+      .sticky-note.dragging {
+        transform: rotate(3deg) scale(1.18);
+        box-shadow: 0 16px 32px rgba(0, 0, 0, 0.5);
+        opacity: 0.95;
+        cursor: grabbing !important;
+        z-index: 1000 !important;
+      }
+
+      .sticky-note.dragging.over-dustbin {
+        transform: scale(0.55) rotate(15deg);
+        opacity: 0.5;
+        filter: drop-shadow(0 0 12px rgba(239, 68, 68, 0.9));
+      }
+
+      /* Expanded Sticky Note on Canvas */
+      .sticky-note-expanded {
+        position: absolute;
+        width: 220px;
+        min-height: 160px;
+        background: linear-gradient(155deg, #fffbeb 0%, #fef08a 100%);
+        border-radius: 3px 3px 5px 3px;
+        box-shadow: 0 16px 38px rgba(0, 0, 0, 0.45), 0 3px 8px rgba(0, 0, 0, 0.25);
+        z-index: 85;
+        user-select: text;
+        transform: rotate(-0.8deg);
+        display: flex;
+        flex-direction: column;
+        padding: 14px 12px 10px 12px;
+        box-sizing: border-box;
+        animation: notePopIn 160ms cubic-bezier(0.16, 1, 0.3, 1);
+      }
+
+      @keyframes notePopIn {
+        0% { transform: scale(0.85) rotate(-3deg); opacity: 0; }
+        100% { transform: scale(1) rotate(-0.8deg); opacity: 1; }
+      }
+
+      /* Tape for expanded note */
+      .sticky-note-expanded::before {
+        content: "";
+        position: absolute;
+        top: -12px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 52px;
+        height: 18px;
+        background: rgba(254, 243, 199, 0.85);
+        border-left: 1px dashed rgba(217, 119, 6, 0.38);
+        border-right: 1px dashed rgba(217, 119, 6, 0.38);
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
+        backdrop-filter: blur(1px);
+        z-index: 2;
+        pointer-events: none;
+      }
+
+      .sticky-note-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 6px;
+        font-size: 11.5px;
+        font-weight: 600;
+        color: #78350f;
+        user-select: none;
+      }
+
+      .sticky-note-author-tag {
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+      }
+
+      .sticky-note-author-dot {
+        width: 7px;
+        height: 7px;
+        border-radius: 50%;
+      }
+
+      .sticky-note-close-btn {
+        background: transparent;
+        border: none;
+        color: #92400e;
+        font-size: 13px;
+        cursor: pointer;
+        padding: 1px 5px;
+        border-radius: 3px;
+        opacity: 0.7;
+        transition: opacity 120ms ease;
+      }
+
+      .sticky-note-close-btn:hover {
+        opacity: 1;
+        background: rgba(146, 64, 14, 0.12);
+      }
+
+      .sticky-note-textarea {
+        flex: 1;
+        width: 100%;
+        min-height: 90px;
+        background: transparent;
+        border: none;
+        outline: none;
+        resize: none;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        font-size: 13px;
+        line-height: 1.5;
+        color: #1c1917;
+        padding: 0;
+        margin: 0;
+        box-sizing: border-box;
+      }
+
+      .sticky-note-textarea::placeholder {
+        color: rgba(120, 53, 15, 0.45);
+        font-style: italic;
+      }
+
+      .sticky-note-footer {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-top: 6px;
+        padding-top: 4px;
+        border-top: 1px dashed rgba(180, 83, 9, 0.25);
+        font-size: 10px;
+        color: #92400e;
+        opacity: 0.85;
+        user-select: none;
+      }
+
+      /* Red Dustbin Drop Zone (Appears on Long-Press / Drag to the Right) */
+      .red-dustbin-zone {
+        position: fixed;
+        right: 24px;
+        top: 50%;
+        transform: translateY(-50%) translateX(160px);
+        opacity: 0;
+        pointer-events: none;
+        width: 140px;
+        height: 160px;
+        background: linear-gradient(145deg, #dc2626, #991b1b);
+        border: 2px dashed rgba(254, 202, 202, 0.75);
+        border-radius: 20px;
+        box-shadow: 0 16px 40px rgba(220, 38, 38, 0.45), 0 0 0 1px rgba(255, 255, 255, 0.15);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        color: #ffffff;
+        z-index: 100000;
+        transition: transform 260ms cubic-bezier(0.16, 1, 0.3, 1), opacity 260ms ease, background 160ms ease, box-shadow 160ms ease;
+        user-select: none;
+      }
+
+      .red-dustbin-zone.visible {
+        opacity: 1;
+        pointer-events: auto;
+        transform: translateY(-50%) translateX(0);
+      }
+
+      .red-dustbin-zone.hover-over {
+        background: linear-gradient(145deg, #ef4444, #b91c1c);
+        border: 2px solid #ffffff;
+        transform: translateY(-50%) scale(1.12);
+        box-shadow: 0 20px 50px rgba(239, 68, 68, 0.75), 0 0 30px rgba(239, 68, 68, 0.6);
+      }
+
+      .dustbin-icon {
+        font-size: 38px;
+        transition: transform 180ms ease;
+        filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.3));
+      }
+
+      .red-dustbin-zone.hover-over .dustbin-icon {
+        animation: dustbinShake 400ms infinite alternate ease-in-out;
+      }
+
+      @keyframes dustbinShake {
+        0% { transform: scale(1.25) rotate(-12deg); }
+        100% { transform: scale(1.25) rotate(12deg); }
+      }
+
+      .dustbin-title {
+        font-size: 13.5px;
+        font-weight: 700;
+        letter-spacing: 0.02em;
+        text-transform: uppercase;
+      }
+
+      .dustbin-subtitle {
+        font-size: 10.5px;
+        color: rgba(255, 255, 255, 0.85);
+        text-align: center;
+        padding: 0 8px;
+        line-height: 1.25;
+      }
+
+      .red-dustbin-zone.hover-over .dustbin-subtitle {
+        color: #fef08a;
+        font-weight: 600;
       }
 
       /* Notes Slide-Over Drawer with Dual Tabs */
@@ -1332,8 +1598,8 @@
       </div>
     </div>
 
-    <!-- Anchored Note Popover Card -->
-    <div class="note-popover" id="noteEditor" hidden>
+    <!-- Legacy Anchored Note Popover Card (Replaced by in-place sticky note UI) -->
+    <div class="note-popover" id="noteEditor" hidden style="display: none !important;">
       <div class="note-popover-header">
         <span class="note-popover-author" id="noteAuthor">📌 Note</span>
         <button class="note-popover-close" type="button" id="closeNoteButton" title="Close">✕</button>
@@ -1358,6 +1624,13 @@
           <button class="btn btn-primary" type="submit" id="saveNoteSubmitButton">Save note</button>
         </div>
       </form>
+    </div>
+
+    <!-- Red Dustbin Drop Zone (Appears on Long-Press / Drag to the Right) -->
+    <div class="red-dustbin-zone" id="redDustbinZone" aria-hidden="true">
+      <div class="dustbin-icon">🗑️</div>
+      <div class="dustbin-title">Dustbin</div>
+      <div class="dustbin-subtitle">Throw here to delete</div>
     </div>
 
     <script>
@@ -1478,6 +1751,7 @@
           noteText: document.getElementById("noteText"),
           saveNoteSubmitButton: document.getElementById("saveNoteSubmitButton"),
           cancelNoteButton: document.getElementById("cancelNoteButton"),
+          redDustbinZone: document.getElementById("redDustbinZone"),
         };
 
         let annotations = [];
@@ -1488,6 +1762,9 @@
         let redoHistory = [];
         let noteDraft = null;
         let draggingNote = null;
+        let activeExpandedNoteId = null;
+        let activeLongPressTimer = null;
+        let dragNoteSession = null;
         let pageLayers = new Map();
         let pageTextLayers = new Map();
         let isDirty = false;
@@ -1717,121 +1994,100 @@
           setStatus("Redo applied.", "neutral");
         }
 
-        /* Note Popover & Drawer */
-        function showNoteEditor(draft, mode, targetElement) {
-          noteDraft = draft;
-          elements.noteEditor.hidden = false;
+        /* Sticky Note Operations (In-Place Simple UI) */
+        function openStickyNote(annotation, pageNumber) {
+          if (activeExpandedNoteId && activeExpandedNoteId !== annotation.id) {
+            minimizeExpandedNote();
+          }
+          activeExpandedNoteId = annotation.id;
+          selectedAnnotationId = annotation.id;
+          renderAnnotationsForPage(pageNumber);
 
-          const isExisting = Boolean(draft.annotation);
-          const author = isExisting && draft.annotation.createdBy
-            ? draft.annotation.createdBy
-            : getActiveUser();
-          const palette = getPersonPalette(author);
-
-          elements.noteAuthor.innerHTML = `
-            <span class="user-dot" style="background:${palette.light}"></span>
-            <span style="color:${palette.light}">${escapeHtml(author)}</span>
-          `;
-          elements.noteEditor.style.borderTop = `3px solid ${palette.light}`;
-
-          if (mode === "edit" || !isExisting) {
-            elements.noteViewBody.hidden = true;
-            elements.noteEditBody.hidden = false;
-            elements.noteTitleInput.value = isExisting ? draft.annotation.title || "" : "";
-            elements.noteText.value = isExisting ? draft.annotation.text || "" : "";
-            elements.saveNoteSubmitButton.textContent = isExisting ? "Update note" : "Place note";
-            window.setTimeout(() => {
-              if (!elements.noteTitleInput.value) {
-                elements.noteTitleInput.focus();
-              } else {
-                elements.noteText.focus();
+          requestAnimationFrame(() => {
+            const layer = pageLayers.get(pageNumber);
+            if (!layer) return;
+            const expandedEl = layer.querySelector(`.sticky-note-expanded[data-annotation-id="${annotation.id}"]`);
+            if (expandedEl) {
+              const ta = expandedEl.querySelector(".sticky-note-textarea");
+              if (ta) {
+                ta.focus();
+                ta.selectionStart = ta.selectionEnd = ta.value.length;
               }
-            }, 50);
-          } else {
-            elements.noteViewBody.hidden = false;
-            elements.noteEditBody.hidden = true;
-            const shortName = getShortNoteTitle(draft.annotation);
-            elements.noteViewTitle.textContent = shortName;
-            elements.noteContentText.textContent = draft.annotation.text || "";
-          }
-
-          const width = Math.min(330, window.innerWidth - 28);
-          let clientX = draft.clientX;
-          let clientY = draft.clientY;
-
-          if (targetElement) {
-            const rect = targetElement.getBoundingClientRect();
-            clientX = rect.right + 10;
-            clientY = rect.top;
-          }
-
-          clientX = clientX ?? (window.innerWidth / 2);
-          clientY = clientY ?? 100;
-          const left = clamp(clientX + 10, 12, window.innerWidth - width - 14);
-          const top = clamp(clientY - 10, 56, window.innerHeight - 250);
-          elements.noteEditor.style.left = left + "px";
-          elements.noteEditor.style.top = top + "px";
+            }
+          });
         }
 
-        function closeNoteEditor() {
-          noteDraft = null;
-          elements.noteEditor.hidden = true;
-          elements.noteText.value = "";
-          elements.noteTitleInput.value = "";
-        }
+        function minimizeExpandedNote() {
+          if (!activeExpandedNoteId) return;
+          const targetId = activeExpandedNoteId;
+          activeExpandedNoteId = null;
 
-        function saveNote(event) {
-          event.preventDefault();
-          if (!noteDraft) return;
-          const title = elements.noteTitleInput.value.trim();
-          const text = elements.noteText.value.trim();
-          if (!text) {
-            elements.noteText.focus();
+          const targetNote = annotations.find((a) => a.id === targetId);
+          if (!targetNote) {
+            renderAnnotations();
             return;
           }
 
-          const author = getActiveUser();
-          const palette = getPersonPalette(author);
-
-          if (noteDraft.annotation) {
-            const next = snapshot();
-            const target = next.find((annotation) => annotation.id === noteDraft.annotation.id);
-            if (target) {
-              target.title = title || undefined;
-              target.text = text;
-              target.status = "active";
-              commitChange(next, target.id);
+          const pageNum = Number(targetNote.page);
+          const layer = pageLayers.get(pageNum);
+          if (layer) {
+            const expandedEl = layer.querySelector(`.sticky-note-expanded[data-annotation-id="${targetId}"]`);
+            if (expandedEl) {
+              const ta = expandedEl.querySelector(".sticky-note-textarea");
+              if (ta) {
+                targetNote.text = ta.value.trim();
+              }
             }
-          } else {
-            const next = snapshot();
-            const annotation = {
-              id: newId("note"),
-              type: "sticky-note",
-              page: noteDraft.page,
-              x: noteDraft.x,
-              y: noteDraft.y,
-              width: 0.05,
-              height: 0.05,
-              title: title || undefined,
-              text,
-              status: "active",
-              color: palette.light,
-              createdBy: author,
-              createdAt: new Date().toISOString(),
-            };
-            next.push(annotation);
-            commitChange(next, annotation.id);
           }
-          closeNoteEditor();
+
+          if (targetNote.isDraftNew && !targetNote.text) {
+            // Discard empty newly placed note
+            annotations = annotations.filter((a) => a.id !== targetId);
+            setStatus("Empty note discarded.", "neutral");
+          } else if (!targetNote.text) {
+            // Existing note cleared completely
+            removeAnnotation(targetId);
+            return;
+          } else {
+            delete targetNote.isDraftNew;
+            commitChange(snapshot(), targetId);
+            setStatus("Note saved.", "success");
+          }
+
+          renderAnnotationsForPage(pageNum);
+        }
+
+        function closeNoteEditor() {
+          minimizeExpandedNote();
+          if (elements.noteEditor) elements.noteEditor.hidden = true;
+        }
+
+        function showNoteEditor(draft, mode, targetElement) {
+          if (draft && draft.annotation) {
+            openStickyNote(draft.annotation, Number(draft.annotation.page));
+          }
         }
 
         function openExistingNote(annotation, targetElement, mode) {
-          showNoteEditor({
-            annotation,
-            page: annotation.page,
-            x: annotation.x,
-            y: annotation.y,
-          }, mode || "view", targetElement);
+          if (!annotation) return;
+          openStickyNote(annotation, Number(annotation.page));
+        }
+
+        function saveNote(event) {
+          if (event) event.preventDefault();
+          minimizeExpandedNote();
+        }
+
+        function showRedDustbin() {
+          if (elements.redDustbinZone) {
+            elements.redDustbinZone.classList.add("visible");
+          }
+        }
+
+        function hideRedDustbin() {
+          if (elements.redDustbinZone) {
+            elements.redDustbinZone.classList.remove("visible", "hover-over");
+          }
         }
 
         function updateNotesDrawerList(activeNotes, allNotes) {
@@ -2105,23 +2361,90 @@
               const palette = getPersonPalette(author);
               const shortTitle = getShortNoteTitle(annotation);
 
-              const element = document.createElement("div");
-              element.className = "annotation sticky-note";
-              element.dataset.annotationId = annotation.id;
-              element.style.left = annotation.x * 100 + "%";
-              element.style.top = annotation.y * 100 + "%";
-              element.classList.toggle("selected", selectedAnnotationId === annotation.id);
-              element.textContent = "📌";
-              element.style.background = palette.light;
-              element.title = `${shortTitle} (${author}): ${annotation.text}`;
-              element.setAttribute("aria-label", `Note: ${shortTitle}`);
+              const isExpanded = annotation.id === activeExpandedNoteId;
+              if (isExpanded) {
+                const expanded = document.createElement("div");
+                expanded.className = "annotation sticky-note-expanded";
+                expanded.dataset.annotationId = annotation.id;
+                expanded.style.left = (annotation.x * 100) + "%";
+                expanded.style.top = (annotation.y * 100) + "%";
 
-              element.addEventListener("pointerdown", (event) => {
-                event.stopPropagation();
-                beginNoteDrag(annotation, element, layer, event);
-              });
+                let transformStr = "rotate(-0.8deg)";
+                if (annotation.x > 0.62 && annotation.y > 0.68) {
+                  transformStr = "translate(-85%, -85%) rotate(-0.8deg)";
+                } else if (annotation.x > 0.62) {
+                  transformStr = "translate(-85%, 0) rotate(-0.8deg)";
+                } else if (annotation.y > 0.68) {
+                  transformStr = "translate(0, -85%) rotate(-0.8deg)";
+                }
+                expanded.style.transform = transformStr;
 
-              layer.appendChild(element);
+                expanded.innerHTML = `
+                  <div class="sticky-note-header">
+                    <span class="sticky-note-author-tag">
+                      <span class="sticky-note-author-dot" style="background:${palette.light}"></span>
+                      <span>${escapeHtml(author)}</span>
+                    </span>
+                    <button class="sticky-note-close-btn" type="button" title="Minimize (Enter)">✕</button>
+                  </div>
+                  <textarea class="sticky-note-textarea" placeholder="Type your note here…" maxlength="2000">${escapeHtml(annotation.text || "")}</textarea>
+                  <div class="sticky-note-footer">
+                    <span>⏎ Enter to minimize</span>
+                    <span>Shift+Enter newline</span>
+                  </div>
+                `;
+
+                const ta = expanded.querySelector(".sticky-note-textarea");
+                const closeBtn = expanded.querySelector(".sticky-note-close-btn");
+
+                closeBtn.addEventListener("click", (e) => {
+                  e.stopPropagation();
+                  minimizeExpandedNote();
+                });
+
+                ta.addEventListener("keydown", (e) => {
+                  if (e.key === "Enter" && !e.shiftKey) {
+                    e.preventDefault();
+                    minimizeExpandedNote();
+                  } else if (e.key === "Escape") {
+                    e.preventDefault();
+                    minimizeExpandedNote();
+                  }
+                });
+
+                expanded.addEventListener("pointerdown", (e) => {
+                  e.stopPropagation();
+                });
+
+                layer.appendChild(expanded);
+              } else {
+                const element = document.createElement("div");
+                element.className = "annotation sticky-note" + (selectedAnnotationId === annotation.id ? " selected" : "");
+                element.dataset.annotationId = annotation.id;
+                element.style.left = (annotation.x * 100) + "%";
+                element.style.top = (annotation.y * 100) + "%";
+                element.title = `${shortTitle} (${author}): ${annotation.text}`;
+                element.setAttribute("aria-label", `Sticky Note: ${shortTitle}`);
+
+                element.innerHTML = `
+                  <div class="sticker-lines">
+                    <span class="sticker-line"></span>
+                    <span class="sticker-line"></span>
+                    <span class="sticker-line"></span>
+                  </div>
+                  <div class="sticker-footer">
+                    <span class="sticker-author-dot" style="background:${palette.light}"></span>
+                    <span class="sticker-icon">📌</span>
+                  </div>
+                `;
+
+                element.addEventListener("pointerdown", (event) => {
+                  event.stopPropagation();
+                  beginNoteStickerInteraction(annotation, element, layer, event);
+                });
+
+                layer.appendChild(element);
+              }
             }
           });
         }
@@ -2133,77 +2456,186 @@
           updateActionState();
         }
 
-        function beginNoteDrag(annotation, element, layer, event) {
+        function beginNoteStickerInteraction(annotation, element, layer, event) {
+          if (activeExpandedNoteId && activeExpandedNoteId !== annotation.id) {
+            minimizeExpandedNote();
+          }
+
+          selectAnnotation(annotation.id);
+
           const point = getPoint(event, layer);
-          draggingNote = {
+          const startClientX = event.clientX;
+          const startClientY = event.clientY;
+
+          dragNoteSession = {
             annotation,
             element,
             layer,
             pointerId: event.pointerId,
-            startClientX: event.clientX,
-            startClientY: event.clientY,
+            startClientX,
+            startClientY,
             offsetX: point.x - annotation.x,
             offsetY: point.y - annotation.y,
-            moved: false,
+            isLongPressed: false,
+            isDragging: false,
+            hasMoved: false,
           };
-          selectedAnnotationId = annotation.id;
-          element.classList.add("selected");
+
           try {
-            layer.setPointerCapture(event.pointerId);
-          } catch (_e) {}
-        }
+            element.setPointerCapture(event.pointerId);
+          } catch (_) {}
 
-        function handleNoteDrag(event) {
-          if (!draggingNote || event.pointerId !== draggingNote.pointerId) return;
-          const dist = Math.hypot(event.clientX - draggingNote.startClientX, event.clientY - draggingNote.startClientY);
-          if (dist > 5) {
-            if (!draggingNote.moved) {
-              undoHistory.push(snapshot());
-              redoHistory = [];
-              isDirty = true;
-              draggingNote.moved = true;
+          clearTimeout(activeLongPressTimer);
+          activeLongPressTimer = setTimeout(() => {
+            if (!dragNoteSession || dragNoteSession.annotation.id !== annotation.id) return;
+            dragNoteSession.isLongPressed = true;
+            dragNoteSession.isDragging = true;
+            element.classList.add("dragging");
+            showRedDustbin();
+            if (navigator.vibrate) {
+              try { navigator.vibrate(40); } catch (_) {}
             }
-            const point = getPoint(event, draggingNote.layer);
-            const nextX = clamp(point.x - draggingNote.offsetX, 0, 0.95);
-            const nextY = clamp(point.y - draggingNote.offsetY, 0, 0.95);
-            draggingNote.annotation.x = nextX;
-            draggingNote.annotation.y = nextY;
-            draggingNote.element.style.left = nextX * 100 + "%";
-            draggingNote.element.style.top = nextY * 100 + "%";
-            updateActionState();
+          }, 300);
+        }
+
+        function handleGlobalPointerMove(event) {
+          if (!dragNoteSession || event.pointerId !== dragNoteSession.pointerId) return;
+
+          const dist = Math.hypot(event.clientX - dragNoteSession.startClientX, event.clientY - dragNoteSession.startClientY);
+
+          if (dist > 5) {
+            dragNoteSession.hasMoved = true;
+            dragNoteSession.isDragging = true;
+            dragNoteSession.element.classList.add("dragging");
+
+            showRedDustbin();
+
+            const currentPoint = getPoint(event, dragNoteSession.layer);
+            const nextX = clamp(currentPoint.x - dragNoteSession.offsetX, 0, 0.94);
+            const nextY = clamp(currentPoint.y - dragNoteSession.offsetY, 0, 0.94);
+
+            dragNoteSession.annotation.x = nextX;
+            dragNoteSession.annotation.y = nextY;
+            dragNoteSession.element.style.left = (nextX * 100) + "%";
+            dragNoteSession.element.style.top = (nextY * 100) + "%";
+
+            if (elements.redDustbinZone) {
+              const rect = elements.redDustbinZone.getBoundingClientRect();
+              const isOver = (
+                event.clientX >= rect.left &&
+                event.clientX <= rect.right &&
+                event.clientY >= rect.top &&
+                event.clientY <= rect.bottom
+              );
+              elements.redDustbinZone.classList.toggle("hover-over", isOver);
+              dragNoteSession.element.classList.toggle("over-dustbin", isOver);
+            }
           }
         }
 
-        function endNoteDrag(event) {
-          if (!draggingNote || event.pointerId !== draggingNote.pointerId) return;
-          const moved = draggingNote.moved;
-          const annotation = draggingNote.annotation;
-          const element = draggingNote.element;
-          draggingNote = null;
+        function handleGlobalPointerUp(event) {
+          if (!dragNoteSession || event.pointerId !== dragNoteSession.pointerId) return;
 
-          if (moved) {
-            renderAnnotationsForPage(Number(annotation.page));
-            setStatus("Note moved. Click Save Changes to sync.", "warning");
-          } else {
-            openExistingNote(annotation, element, "view");
+          clearTimeout(activeLongPressTimer);
+          const session = dragNoteSession;
+          dragNoteSession = null;
+
+          try {
+            session.element.releasePointerCapture(event.pointerId);
+          } catch (_) {}
+
+          let isOverDustbin = false;
+          if (elements.redDustbinZone && session.isDragging) {
+            const rect = elements.redDustbinZone.getBoundingClientRect();
+            isOverDustbin = (
+              event.clientX >= rect.left &&
+              event.clientX <= rect.right &&
+              event.clientY >= rect.top &&
+              event.clientY <= rect.bottom
+            );
           }
+
+          hideRedDustbin();
+          session.element.classList.remove("dragging", "over-dustbin");
+
+          if (isOverDustbin) {
+            session.element.style.transition = "transform 200ms ease, opacity 200ms ease";
+            session.element.style.transform = "scale(0) rotate(45deg)";
+            session.element.style.opacity = "0";
+            setTimeout(() => {
+              removeAnnotation(session.annotation.id);
+              setStatus("Note thrown in dustbin 🗑️", "neutral");
+            }, 180);
+            return;
+          }
+
+          if (session.hasMoved) {
+            commitChange(snapshot(), session.annotation.id);
+            setStatus("Note moved.", "neutral");
+            renderAnnotationsForPage(Number(session.annotation.page));
+          } else {
+            openStickyNote(session.annotation, Number(session.annotation.page));
+          }
+        }
+
+        function handleGlobalPointerCancel(event) {
+          if (!dragNoteSession || event.pointerId !== dragNoteSession.pointerId) return;
+          clearTimeout(activeLongPressTimer);
+          hideRedDustbin();
+          if (dragNoteSession.element) {
+            dragNoteSession.element.classList.remove("dragging", "over-dustbin");
+          }
+          dragNoteSession = null;
         }
 
         function handleLayerPointerDown(event) {
-          if (event.target.closest(".annotation") || event.target.closest(".note-popover")) return;
-          closeNoteEditor();
+          if (event.target.closest(".annotation") || event.target.closest(".sticky-note-expanded")) return;
+
+          if (activeExpandedNoteId) {
+            minimizeExpandedNote();
+          }
 
           if (activeTool === "note") {
             event.preventDefault();
             const layer = event.currentTarget;
+            const pageEl = layer.closest(".pdf-page");
+            const pageNumber = Number(pageEl.dataset.pageNumber);
             const point = getPoint(event, layer);
-            showNoteEditor({
-              page: Number(layer.closest(".pdf-page").dataset.pageNumber),
-              x: point.x,
-              y: point.y,
-              clientX: event.clientX,
-              clientY: event.clientY,
-            }, "edit");
+            const author = getActiveUser();
+            const palette = getPersonPalette(author);
+
+            const newNote = {
+              id: newId("note"),
+              type: "sticky-note",
+              page: pageNumber,
+              x: clamp(point.x - 0.02, 0, 0.92),
+              y: clamp(point.y - 0.02, 0, 0.92),
+              width: 0.05,
+              height: 0.05,
+              text: "",
+              status: "active",
+              color: palette.light,
+              createdBy: author,
+              createdAt: new Date().toISOString(),
+              isDraftNew: true,
+            };
+
+            annotations.push(newNote);
+            activeExpandedNoteId = newNote.id;
+            selectedAnnotationId = newNote.id;
+
+            renderAnnotationsForPage(pageNumber);
+
+            requestAnimationFrame(() => {
+              const expandedEl = layer.querySelector(`.sticky-note-expanded[data-annotation-id="${newNote.id}"]`);
+              if (expandedEl) {
+                const ta = expandedEl.querySelector(".sticky-note-textarea");
+                if (ta) ta.focus();
+              }
+            });
+
+            setTool("pan");
+            setStatus("Type your note. Press Enter or click outside to minimize.", "neutral");
           }
         }
 
@@ -2902,8 +3334,17 @@
           removeAnnotation(noteDraft.annotation.id);
         });
 
-        document.addEventListener("pointermove", handleNoteDrag);
-        document.addEventListener("pointerup", endNoteDrag);
+        document.addEventListener("pointermove", handleGlobalPointerMove);
+        document.addEventListener("pointerup", handleGlobalPointerUp);
+        document.addEventListener("pointercancel", handleGlobalPointerCancel);
+
+        // Click outside of expanded sticky note minimizes it
+        document.addEventListener("pointerdown", (event) => {
+          if (!activeExpandedNoteId) return;
+          if (event.target.closest(".sticky-note-expanded")) return;
+          if (event.target.closest("[data-tool='note']")) return;
+          minimizeExpandedNote();
+        });
 
         // Keyboard Shortcuts (Ctrl+Z / Cmd+Z for Undo, Ctrl+Shift+Z / Cmd+Shift+Z / Ctrl+Y for Redo, Ctrl+S for Save)
         document.addEventListener("keydown", (event) => {
