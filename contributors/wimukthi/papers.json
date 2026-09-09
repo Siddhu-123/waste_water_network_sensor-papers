@@ -5,7 +5,7 @@
       "id": 32,
       "title": "Two different approaches for monitoring planning in sewer networks: topological vs. deterministic optimization",
       "authors": "Antonietta Simone, Alessandra Cesaro, Cristiana Di Cristo, Oreste Fecarotta, Maria Cristina Morani",
-      "journal": "Journal of Hydroinformatics, Vol. 25, No. 6, pp. 2323\u20132337 (2023)",
+      "journal": "Journal of Hydroinformatics, Vol. 25, No. 6, pp. 2323–2337 (2023)",
       "categoryKey": "sensor-placement",
       "categoryLabel": "Sensor Placement Optimization",
       "topic": "OSP",
@@ -77,7 +77,9 @@
       "assignedTo": "Wimukthi",
       "doi": "10.48550/arXiv.2608.21182",
       "pdfUrl": "./contributors/wimukthi/papers/Chen_2026_MATCHING-URBAN-FLOOD-SENSOR-PLACEMENT.pdf",
-      "scholarUrl": "https://scholar.google.com/scholar_lookup?arxiv_id=2608.21182"
+      "scholarUrl": "https://scholar.google.com/scholar_lookup?arxiv_id=2608.21182",
+      "pages": 23,
+      "size": "14.9 MB"
     },
     {
       "id": 41,
@@ -91,7 +93,9 @@
       "assignedTo": "Wimukthi",
       "doi": "",
       "pdfUrl": "./contributors/wimukthi/papers/Drenoyanis_2022_Detecting-Wastewater-Blockages-with-Digital-Water-Meters.pdf",
-      "scholarUrl": "https://scholar.google.com/scholar?q=Detecting+Wastewater+Blockages+with+Digital+Water+Meters+Sydney+Water"
+      "scholarUrl": "https://scholar.google.com/scholar?q=Detecting+Wastewater+Blockages+with+Digital+Water+Meters+Sydney+Water",
+      "pages": 2,
+      "size": "4.3 MB"
     },
     {
       "id": 42,
@@ -105,7 +109,9 @@
       "assignedTo": "Wimukthi",
       "doi": "10.3390/pr11010161",
       "pdfUrl": "./contributors/wimukthi/papers/Ning_2023_Real-Time-Identification-and-Positioning-of-Sewer-Blockage-Based.pdf",
-      "scholarUrl": "https://scholar.google.com/scholar?q=Real-Time+Identification+and+Positioning+of+Sewer+Blockage+Based+on+Liquid+Level+Analysis+in+Rural+Area"
+      "scholarUrl": "https://scholar.google.com/scholar?q=Real-Time+Identification+and+Positioning+of+Sewer+Blockage+Based+on+Liquid+Level+Analysis+in+Rural+Area",
+      "pages": 16,
+      "size": "4.7 MB"
     },
     {
       "id": 43,
@@ -119,7 +125,9 @@
       "assignedTo": "Wimukthi",
       "doi": "10.1016/j.watres.2025.123135",
       "pdfUrl": "./contributors/wimukthi/papers/Ruozhou_2025_A-low-cost-soft-sensor-for-sewer-flow-monitoring.pdf",
-      "scholarUrl": "https://scholar.google.com/scholar?q=A+low-cost+soft+sensor+for+sewer+flow+monitoring+learning+from+water+level+measurements+in+manholes"
+      "scholarUrl": "https://scholar.google.com/scholar?q=A+low-cost+soft+sensor+for+sewer+flow+monitoring+learning+from+water+level+measurements+in+manholes",
+      "pages": 10,
+      "size": "3.4 MB"
     },
     {
       "id": 44,
@@ -133,7 +141,9 @@
       "assignedTo": "Wimukthi",
       "doi": "10.1016/j.wroa.2025.100415",
       "pdfUrl": "./contributors/wimukthi/papers/Ruozhou_2025_Low-cost,-data-efficient,-on-device-soft-sensors-for-sewer-flow-monitoring.pdf",
-      "scholarUrl": "https://scholar.google.com/scholar?q=Low-cost+data-efficient+on-device+soft+sensors+for+sewer+flow+monitoring+adjacent+water+level+sensors"
+      "scholarUrl": "https://scholar.google.com/scholar?q=Low-cost+data-efficient+on-device+soft+sensors+for+sewer+flow+monitoring+adjacent+water+level+sensors",
+      "pages": 10,
+      "size": "3.8 MB"
     },
     {
       "id": 45,
@@ -147,7 +157,9 @@
       "assignedTo": "Wimukthi",
       "doi": "10.2166/wst.2024.115",
       "pdfUrl": "./contributors/wimukthi/papers/Yong_2024_Assessment-of-rainfall-derived-inflow-and-infilteration.pdf",
-      "scholarUrl": "https://scholar.google.com/scholar?q=Assessment+of+rainfall-derived+inflow+and+infiltration+in+sewer+systems+with+machine+learning+approaches"
+      "scholarUrl": "https://scholar.google.com/scholar?q=Assessment+of+rainfall-derived+inflow+and+infiltration+in+sewer+systems+with+machine+learning+approaches",
+      "pages": 18,
+      "size": "1.2 MB"
     },
     {
       "id": 46,
@@ -161,8 +173,22 @@
       "assignedTo": "Wimukthi",
       "doi": "10.3390/su12156254",
       "pdfUrl": "./contributors/wimukthi/papers/Zhe_2020_Comparative-Study-of-AI-Based-Methods.pdf",
-      "scholarUrl": "https://scholar.google.com/scholar?q=Comparative+Study+of+AI-Based+Methods+Analyzing+Inflow+and+Infiltration+in+Sanitary+Sewer+Subcatchments"
+      "scholarUrl": "https://scholar.google.com/scholar?q=Comparative+Study+of+AI-Based+Methods+Analyzing+Inflow+and+Infiltration+in+Sanitary+Sewer+Subcatchments",
+      "pages": 15,
+      "size": "3.1 MB"
     }
   ],
-  "compiledPapers": []
+  "compiledPapers": [
+    {
+      "id": "wimukthi-osp-condition-review",
+      "title": "Optimal Sensor Placement for Wastewater Network Monitoring",
+      "topic": "OSP",
+      "filterCategory": "Compiled Review",
+      "assignedTo": "Wimukthi",
+      "description": "Wimukthi's compiled review synthesising six studies on sewer condition assessment, deterioration factors and sensor placement.",
+      "pdfUrl": "./contributors/wimukthi/compiled-papers/paper.pdf",
+      "pages": 3,
+      "size": "40 KB"
+    }
+  ]
 }
