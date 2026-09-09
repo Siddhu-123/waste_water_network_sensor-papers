@@ -1765,6 +1765,7 @@
         let activeExpandedNoteId = null;
         let activeLongPressTimer = null;
         let dragNoteSession = null;
+        let noteInteractionTimestamp = 0;
         let pageLayers = new Map();
         let pageTextLayers = new Map();
         let isDirty = false;
@@ -2001,12 +2002,11 @@
           }
           activeExpandedNoteId = annotation.id;
           selectedAnnotationId = annotation.id;
+          noteInteractionTimestamp = Date.now();
           renderAnnotationsForPage(pageNumber);
 
-          requestAnimationFrame(() => {
-            const layer = pageLayers.get(pageNumber);
-            if (!layer) return;
-            const expandedEl = layer.querySelector(`.sticky-note-expanded[data-annotation-id="${annotation.id}"]`);
+          window.setTimeout(() => {
+            const expandedEl = document.querySelector(`.sticky-note-expanded[data-annotation-id="${annotation.id}"]`);
             if (expandedEl) {
               const ta = expandedEl.querySelector(".sticky-note-textarea");
               if (ta) {
@@ -2014,7 +2014,7 @@
                 ta.selectionStart = ta.selectionEnd = ta.value.length;
               }
             }
-          });
+          }, 30);
         }
 
         function minimizeExpandedNote() {
@@ -2028,18 +2028,15 @@
             return;
           }
 
-          const pageNum = Number(targetNote.page);
-          const layer = pageLayers.get(pageNum);
-          if (layer) {
-            const expandedEl = layer.querySelector(`.sticky-note-expanded[data-annotation-id="${targetId}"]`);
-            if (expandedEl) {
-              const ta = expandedEl.querySelector(".sticky-note-textarea");
-              if (ta) {
-                targetNote.text = ta.value.trim();
-              }
+          const expandedEl = document.querySelector(`.sticky-note-expanded[data-annotation-id="${targetId}"]`);
+          if (expandedEl) {
+            const ta = expandedEl.querySelector(".sticky-note-textarea");
+            if (ta) {
+              targetNote.text = ta.value.trim();
             }
           }
 
+          const pageNum = Number(targetNote.page);
           if (targetNote.isDraftNew && !targetNote.text) {
             // Discard empty newly placed note
             annotations = annotations.filter((a) => a.id !== targetId);
@@ -2415,6 +2412,12 @@
                 expanded.addEventListener("pointerdown", (e) => {
                   e.stopPropagation();
                 });
+                expanded.addEventListener("mousedown", (e) => {
+                  e.stopPropagation();
+                });
+                expanded.addEventListener("click", (e) => {
+                  e.stopPropagation();
+                });
 
                 layer.appendChild(expanded);
               } else {
@@ -2592,11 +2595,14 @@
           if (event.target.closest(".annotation") || event.target.closest(".sticky-note-expanded")) return;
 
           if (activeExpandedNoteId) {
+            if (Date.now() - noteInteractionTimestamp < 400) return;
             minimizeExpandedNote();
+            return;
           }
 
           if (activeTool === "note") {
             event.preventDefault();
+            event.stopPropagation();
             const layer = event.currentTarget;
             const pageEl = layer.closest(".pdf-page");
             const pageNumber = Number(pageEl.dataset.pageNumber);
@@ -2623,19 +2629,20 @@
             annotations.push(newNote);
             activeExpandedNoteId = newNote.id;
             selectedAnnotationId = newNote.id;
+            noteInteractionTimestamp = Date.now();
 
             renderAnnotationsForPage(pageNumber);
 
-            requestAnimationFrame(() => {
-              const expandedEl = layer.querySelector(`.sticky-note-expanded[data-annotation-id="${newNote.id}"]`);
+            setTool("pan");
+            setStatus("Type your note. Press Enter or click outside to minimize.", "neutral");
+
+            window.setTimeout(() => {
+              const expandedEl = document.querySelector(`.sticky-note-expanded[data-annotation-id="${newNote.id}"]`);
               if (expandedEl) {
                 const ta = expandedEl.querySelector(".sticky-note-textarea");
                 if (ta) ta.focus();
               }
-            });
-
-            setTool("pan");
-            setStatus("Type your note. Press Enter or click outside to minimize.", "neutral");
+            }, 40);
           }
         }
 
@@ -3341,6 +3348,7 @@
         // Click outside of expanded sticky note minimizes it
         document.addEventListener("pointerdown", (event) => {
           if (!activeExpandedNoteId) return;
+          if (Date.now() - noteInteractionTimestamp < 400) return;
           if (event.target.closest(".sticky-note-expanded")) return;
           if (event.target.closest("[data-tool='note']")) return;
           minimizeExpandedNote();
