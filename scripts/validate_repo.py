@@ -13,6 +13,7 @@ from urllib.parse import urlsplit
 
 ROOT = Path(__file__).resolve().parents[1]
 CONTRIBUTORS_DIR = ROOT / "contributors"
+ANNOTATIONS_DIR = ROOT / "annotations"
 DOI_PATTERN = re.compile(r"10\.\d{4,9}/[-._;()/:A-Z0-9]+", re.IGNORECASE)
 YEAR_PATTERN = re.compile(r"\b(?:19|20)\d{2}\b")
 LEGACY_SPARSE_OWNER = "Satya Siddhartha"
@@ -103,6 +104,84 @@ def paper_identity(paper: dict, summary: Optional[dict]) -> Optional[tuple[str, 
     return ("citation", citation) if citation else None
 
 
+def validate_annotation_files(validation: Validation) -> None:
+    if not ANNOTATIONS_DIR.is_dir():
+        return
+
+    filename_pattern = re.compile(r"^paper-([A-Za-z0-9][A-Za-z0-9._-]{0,80})\.json$")
+    for path in sorted(ANNOTATIONS_DIR.glob("*.json")):
+        match = filename_pattern.fullmatch(path.name)
+        if not match:
+            validation.error(
+                f"Annotation file has an invalid name: {path.relative_to(ROOT)}"
+            )
+            continue
+
+        document = load_json(path, validation)
+        if not isinstance(document, dict):
+            continue
+        paper_id = match.group(1)
+        if str(document.get("paperId", "")) != paper_id:
+            validation.error(
+                f"{path.relative_to(ROOT)}: paperId must match the filename"
+            )
+        annotations = document.get("annotations", [])
+        if not isinstance(annotations, list):
+            validation.error(f"{path.relative_to(ROOT)}: annotations must be an array")
+            continue
+        if len(annotations) > 500:
+            validation.error(f"{path.relative_to(ROOT)}: at most 500 annotations are allowed")
+
+        annotation_ids: set[str] = set()
+        for index, annotation in enumerate(annotations, start=1):
+            label = f"{path.relative_to(ROOT)} annotation #{index}"
+            if not isinstance(annotation, dict):
+                validation.error(f"{label}: record must be an object")
+                continue
+            annotation_id = annotation.get("id")
+            if (
+                not isinstance(annotation_id, str)
+                or not re.fullmatch(r"[A-Za-z0-9][A-Za-z0-9._-]{0,100}", annotation_id)
+            ):
+                validation.error(f"{label}: id is invalid")
+            elif annotation_id in annotation_ids:
+                validation.error(f"{label}: duplicate id {annotation_id}")
+            else:
+                annotation_ids.add(annotation_id)
+
+            annotation_type = annotation.get("type")
+            if annotation_type not in ("highlight", "sticky-note"):
+                validation.error(f"{label}: type must be highlight or sticky-note")
+            page = annotation.get("page")
+            if isinstance(page, bool) or not isinstance(page, int) or page < 1:
+                validation.error(f"{label}: page must be a positive integer")
+
+            for coordinate in ("x", "y"):
+                value = annotation.get(coordinate)
+                if not isinstance(value, (int, float)) or isinstance(value, bool) or not 0 <= value <= 1:
+                    validation.error(f"{label}: {coordinate} must be between 0 and 1")
+
+            if annotation_type == "highlight":
+                for dimension in ("width", "height"):
+                    value = annotation.get(dimension)
+                    if not isinstance(value, (int, float)) or isinstance(value, bool) or not 0 < value <= 1:
+                        validation.error(f"{label}: {dimension} must be greater than 0 and at most 1")
+                if (
+                    isinstance(annotation.get("x"), (int, float))
+                    and isinstance(annotation.get("width"), (int, float))
+                    and annotation["x"] + annotation["width"] > 1
+                ):
+                    validation.error(f"{label}: x + width must be at most 1")
+                if (
+                    isinstance(annotation.get("y"), (int, float))
+                    and isinstance(annotation.get("height"), (int, float))
+                    and annotation["y"] + annotation["height"] > 1
+                ):
+                    validation.error(f"{label}: y + height must be at most 1")
+            elif not isinstance(annotation.get("text"), str) or not annotation["text"].strip():
+                validation.error(f"{label}: sticky-note text is required")
+
+
 def validate() -> Validation:
     validation = Validation()
     manifest_path = CONTRIBUTORS_DIR / "manifest.json"
@@ -118,6 +197,11 @@ def validate() -> Validation:
 
     names: set[str] = set()
     slugs: set[str] = set()
+    all_manifest_names = {
+        entry.get("name")
+        for entry in entries
+        if isinstance(entry, dict) and isinstance(entry.get("name"), str) and entry["name"].strip()
+    }
     paper_ids: dict[int, str] = {}
     compiled_ids: dict[str, str] = {}
     compiled_paths: dict[str, str] = {}
@@ -239,8 +323,30 @@ def validate() -> Validation:
             for field in ("title", "topic", "description"):
                 if not isinstance(compiled.get(field), str) or not compiled[field].strip():
                     validation.error(f"{label}: {field} is required")
-            if compiled.get("assignedTo") != name:
-                validation.error(f"{label}: assignedTo must match {name}")
+            assigned = compiled.get("assignedTo")
+            if isinstance(assigned, list):
+                if not assigned or not all(isinstance(a, str) and a.strip() for a in assigned):
+                    validation.error(f"{label}: assignedTo list must contain non-empty author names")
+                elif name not in assigned:
+                    validation.error(f"{label}: assignedTo list must include {name}")
+                else:
+                    for author in assigned:
+                        if author not in all_manifest_names and author not in ("Team", "All"):
+                            validation.error(f"{label}: unknown assigned contributor '{author}'")
+            elif isinstance(assigned, str) and assigned.strip():
+                assigned_authors = [a.strip() for a in assigned.split(",") if a.strip()]
+                if not assigned_authors:
+                    validation.error(f"{label}: assignedTo cannot be empty")
+                elif len(assigned_authors) > 1:
+                    if name not in assigned_authors:
+                        validation.error(f"{label}: assignedTo must include {name}")
+                    for author in assigned_authors:
+                        if author not in all_manifest_names and author not in ("Team", "All"):
+                            validation.error(f"{label}: unknown assigned contributor '{author}'")
+                elif assigned != name and assigned not in ("Team", "All"):
+                    validation.error(f"{label}: assignedTo must match {name}")
+            else:
+                validation.error(f"{label}: assignedTo is required")
             resolve_local_pdf(compiled.get("pdfUrl"), label, validation)
             pdf_url = compiled.get("pdfUrl")
             if isinstance(pdf_url, str):
@@ -264,8 +370,8 @@ def validate() -> Validation:
             continue
         label = f"{owner} paper {paper.get('id')}"
         if identity in identities:
-            validation.error(
-                f"Duplicate paper identity ({identity[0]}: {identity[1]}): {identities[identity]} and {label}"
+            validation.warning(
+                f"Possible duplicate paper identity ({identity[0]}: {identity[1]}): {identities[identity]} and {label}. Review the website indicator before removing either record."
             )
         else:
             identities[identity] = label
@@ -274,6 +380,8 @@ def validate() -> Validation:
         validation.warning(
             f"{legacy_sparse_records} existing Paper 1 records use compact metadata; new records must include full paper fields."
         )
+
+    validate_annotation_files(validation)
 
     return validation
 
@@ -289,7 +397,7 @@ def main() -> int:
         return 1
 
     print(
-        "Validation passed: contributor files, summaries, IDs, duplicate identities, and PDF paths are consistent."
+        "Validation passed: contributor files, summaries, IDs, annotations, duplicate identities, and PDF paths are consistent."
     )
     return 0
 

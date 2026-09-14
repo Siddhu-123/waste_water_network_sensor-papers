@@ -1,5 +1,66 @@
 {
   "contributor": "Abraham",
-  "papers": [],
-  "compiledPapers": []
+  "papers": [
+    {
+      "id": 30,
+      "title": "Optimal Sensor Placement in Smart Sewer Systems Using Network Topology and Elevation",
+      "authors": "Ninh, T.H.D., Do, N.C., Zeng, W & Lambert, M.F (2025)",
+      "journal": "Journal of Water Resources Planning and Management, vol. 151, no. 7, p. 04025016",
+      "categoryKey": "osp",
+      "categoryLabel": "Sensor Placement",
+      "topic": "OSP",
+      "filterCategory": "Topology-Based Placement",
+      "assignedTo": "Abraham",
+      "doi": "10.1061/JWRMD5.WRENG-6660",
+      "pdfUrl": "./contributors/abraham/papers/2025_Ninh_topology-elevation-sensor-placement.pdf",
+      "scholarUrl": "https://scholar.google.com/scholar?q=Optimal+Sensor+Placement+in+Smart+Sewer+Systems+Using+Network+Topology+and+Elevation",
+      "pages": 12,
+      "size": "1.7 MB"
+    },
+    {
+      "id": 31,
+      "title": "Proactive Detection of Wastewater Overflows for Smart Sanitary Sewer Systems: Case Study in South Australia",
+      "authors": "Do, N.C., Dix, L., Lambert, M.F & Stephens, M.L (2023)",
+      "journal": "Journal of Water Resources Planning and Management, vol. 149, no. 1, p. 05022016",
+      "categoryKey": "osp",
+      "categoryLabel": "Overflow Detection Case Study",
+      "topic": "OSP",
+      "filterCategory": "South Australia Case Study",
+      "assignedTo": "Abraham",
+      "doi": "10.1061/JWRMD5.WRENG-5589",
+      "pdfUrl": "./contributors/abraham/papers/2023_Do_Stonyfell-SA-overflow-detection.pdf",
+      "scholarUrl": "https://scholar.google.com/scholar?q=Proactive+Detection+of+Wastewater+Overflows+for+Smart+Sanitary+Sewer+Systems+South+Australia",
+      "pages": 15,
+      "size": "4.1 MB"
+    },
+    {
+      "id": 39,
+      "title": "Proactive blockage detection in sewer pipes using paired acoustic sensors: An experimental study",
+      "authors": "Ninh, T.H.D., Zeng, W., Lambert, M.F., Do, N.C. & Yin, C. (2026)",
+      "journal": "Applied Acoustics, vol. 246, article 111244",
+      "categoryKey": "sensors",
+      "categoryLabel": "Acoustic Blockage Detection",
+      "topic": "Sensors",
+      "filterCategory": "Pipe & Acoustic",
+      "assignedTo": "Abraham",
+      "doi": "10.1016/j.apacoust.2026.111244",
+      "pdfUrl": "./contributors/abraham/papers/2026_Ninh_paired-acoustic-blockage-detection.pdf",
+      "scholarUrl": "https://scholar.google.com/scholar?q=Proactive+blockage+detection+in+sewer+pipes+using+paired+acoustic+sensors",
+      "pages": 12,
+      "size": "6.3 MB"
+    }
+  ],
+  "compiledPapers": [
+    {
+      "id": "abraham-sa-wastewater-data",
+      "title": "Public Wastewater Network Data in South Australia",
+      "topic": "OSP",
+      "filterCategory": "Compiled Review",
+      "assignedTo": "Abraham",
+      "description": "Abraham's compiled review on public wastewater network data in South Australia.",
+      "pdfUrl": "./contributors/abraham/compiled-papers/Public Wastewater Network Data in South Australia.pdf",
+      "pages": 7,
+      "size": "55 KB"
+    }
+  ]
 }
