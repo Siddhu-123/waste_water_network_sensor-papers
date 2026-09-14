@@ -47,19 +47,19 @@
       "id": 27,
       "title": "Advancing sensor network optimization and data analytics for smart wastewater and stormwater collection systems: An overview",
       "authors": "Moradi, M, Najafi, M, Lin, Z & Pan, H (2025)",
-      "journal": "Proceedings of the Pipelines 2025 Conference, pp. 463\u2013474",
+      "journal": "Proceedings of the Pipelines 2025 Conference, pp. 463–474",
       "categoryKey": "smart_wastewater_management",
       "categoryLabel": "Smart Wastewater Management",
       "topic": "OSP",
       "filterCategory": "Smart Wastewater Management",
       "assignedTo": "Rijoy John",
-      "doi": "",
+      "doi": "10.1061/9780784486375.050",
       "pdfUrl": "./contributors/rijoy-john/papers/Moradi_2025_Overview_of_Smart_wastewater_management.pdf",
       "scholarUrl": "https://scholar.google.com/scholar?q=%22Advancing+sensor+network+optimization+and+data+analytics%22"
     },
     {
       "id": 28,
-      "title": "Risk-Driven Sensor Placement in Sewer Networks: A Descriptive\u2013Predictive\u2013Prescriptive Framework",
+      "title": "Risk-Driven Sensor Placement in Sewer Networks: A Descriptive–Predictive–Prescriptive Framework",
       "authors": "Moradi, M & Najafi, M (2026)",
       "journal": "Water, vol. 18, no. 15, p. 1901",
       "categoryKey": "risk_based_sensor_placement",
@@ -71,7 +71,7 @@
       "pdfUrl": "./contributors/rijoy-john/papers/Moradi_2026_Risk_based_DPP-SP_framework_for_sewer_OSP.pdf",
       "scholarUrl": "https://scholar.google.com/scholar?q=%22Risk-Driven+Sensor+Placement+in+Sewer+Networks%22"
     },
-	{
+    {
       "id": 47,
       "title": "A Novel Machine Learning Based Cluster-Then-Forecast Framework for Sensor Placement Optimization and Water Level Prediction in LID Stormwater Systems",
       "authors": "Chen, E & Yu, X (2025)",
@@ -109,7 +109,7 @@
       "topic": "OSP",
       "filterCategory": "GNN-based State Estimation",
       "assignedTo": "Rijoy John",
-      "doi": "",
+      "doi": "10.1016/j.jhydrol.2025.132681",
       "pdfUrl": "./contributors/rijoy-john/papers/2025_Li He_Spatiotemporal graph convolutional network using sparse monitoring data.pdf",
       "scholarUrl": "https://scholar.google.com/scholar?q=%22Spatiotemporal+graph+convolutional+network+using+sparse+monitoring+data%22"
     },
@@ -123,7 +123,7 @@
       "topic": "OSP",
       "filterCategory": "Sewer Level Monitoring",
       "assignedTo": "Rijoy John",
-      "doi": "",
+      "doi": "10.1061/JWRMD5.WRENG-6660",
       "pdfUrl": "./contributors/rijoy-john/papers/2025_Thi Hai Duong Ninh_Optimal Sensor Placement in Smart Sewer Systems Using.pdf",
       "scholarUrl": "https://scholar.google.com/scholar?q=%22Optimal+Sensor+Placement+in+Smart+Sewer+Systems+Using%22"
     },
@@ -165,7 +165,7 @@
       "topic": "OSP",
       "filterCategory": "Flow Reconstruction",
       "assignedTo": "Rijoy John",
-      "doi": "arXiv:2511.04556",
+      "doi": "10.48550/arXiv.2511.04556",
       "pdfUrl": "./contributors/rijoy-john/papers/2025_Zihang Ding_Manuscript-Optimizing Sensor Placement for Flow Reconstruction in Urban Drainage Networks A.pdf",
       "scholarUrl": "https://scholar.google.com/scholar?q=%22Optimizing+Sensor+Placement+for+Flow+Reconstruction+in+Urban+Drainage+Networks%22"
     },
@@ -179,7 +179,7 @@
       "topic": "OSP",
       "filterCategory": "Inflow & Infiltration Detection",
       "assignedTo": "Rijoy John",
-      "doi": "",
+      "doi": "10.1016/j.watres.2026.126140",
       "pdfUrl": "./contributors/rijoy-john/papers/2026_Haipei Wang_A topology-derived flow inference approach to optimize sensor placement.pdf",
       "scholarUrl": "https://scholar.google.com/scholar?q=%22A+topology-derived+flow+inference+approach+to+optimize+sensor+placement%22"
     },
@@ -193,7 +193,7 @@
       "topic": "OSP",
       "filterCategory": "Demand-driven Sensor Placement",
       "assignedTo": "Rijoy John",
-      "doi": "",
+      "doi": "10.1016/j.watres.2026.126713",
       "pdfUrl": "./contributors/rijoy-john/papers/2026_Li He_A topology-first and demand-driven sensor placement framework for.pdf",
       "scholarUrl": "https://scholar.google.com/scholar?q=%22A+topology-first+and+demand-driven+sensor+placement+framework+for%22"
     }
