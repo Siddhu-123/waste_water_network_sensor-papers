@@ -597,6 +597,7 @@
     "conclusions": "Both AI models produced similar inflow and infiltration patterns and both subcatchments were found to experience inflow and infiltration, with Subcatchment 1 showing the higher inflow level. The ANFIS model had overall higher performance than the MLPNN for modelling the I/I situation. Using a different rainfall threshold only slightly affected the dry-weather curves but significantly affected the wet-weather ones. The infiltration finding rests on normalised minimal dry weather flows being above zero in both subcatchments, again more so in Subcatchment 1, and the authors recommend further study of Subcatchment 1 to identify the causes of its high inflow and infiltration. The diurnal pattern was consistent with domestic use: minimum flow around 03:00, a rapid rise to a peak near 07:00 and a second peak near 20:00.",
     "reflection": "The honest assessment is that the ANFIS-versus-MLPNN comparison is the least interesting part of this paper and I would not build anything on it — with two stations and a small wet-weather sample, the performance ordering is not a result I would trust to generalise. What I would take is the workflow: delineate subcatchments with a watershed algorithm, pull radar rainfall where gauges are sparse, split by rainfall threshold, and use minimum dry weather flow as the infiltration screen. That is reproducible with public data and existing SCADA, and it is the kind of preliminary analysis that could justify where to instrument next. It also reinforces something the Sydney Water and Ningbo papers both suggest: a lot of useful monitoring intelligence is already sitting in pumping-station data that utilities have kept for years, and our project may add more value by showing how to read it than by proposing new hardware."
   },
+{
   "47": {
     "assignedTo": "Rijoy John",
     "topic": "OSP",
@@ -665,19 +666,6 @@
   "52": {
     "assignedTo": "Rijoy John",
     "topic": "OSP",
-    "filterCategory": "Review / Overview",
-    "citation": "Ma, Y., Guo, J., & Wang, Z. (2025). Optimal arrangement strategy of IoT sensors in urban drainage networks: A review. Applied Sciences, 15(9), 4976. https://doi.org/10.3390/app15094976",
-    "intro": "A systematic review (96 studies screened from 189 found via Web of Science, literature through 31 December 2024) surveying IoT sensor placement strategies across urban drainage networks, motivated by the observation that the field lacks a unified strategy and a consistent way to evaluate whether a given sensor layout is actually good.",
-    "methods": "Proposes a three-stage general framework for reading the field: (1) object classification — define monitoring objectives; (2) method selection — pick an optimisation theory; (3) quantitative evaluation — assess the resulting scheme. Classifies monitoring objectives into (A) pipeline operational status (hydraulic parameters, model calibration) and (B) identifying abnormal states, split into pollutant/source tracing (including wastewater-based epidemiology) and flood/overflow hotspot monitoring. Classifies optimisation methods into five families: engineering-experience-based; information theory (entropy-based); statistical theory (cluster analysis); complex network theory (topology-only, no hydraulic simulation needed); and observability theory (minimum sensors to estimate unmonitored-area state).",
-    "scope": "The full landscape of IoT/hydraulic sensor placement research in urban drainage networks up to end-2024, covering both stormwater/hydraulic monitoring and water-quality/pollutant-tracing objectives — i.e., it is the one paper in this set that explicitly spans both the stormwater and sewage sides of the field rather than picking one.",
-    "usefulness": "This is the map for the rest of the set. Every other paper here can be located within its five method families: e.g., paper 51 (Qi) and papers 48/49/56 (He group) sit under statistical/GCN-based approaches the review doesn't fully anticipate (its literature cutoff is end-2024, so 2025–2026 GNN work postdates it); paper 55 (Wang, topology-derived) sits under complex network theory; paper 53 (Huang, Bayesian calibration) sits under a calibration-linked variant of objective (A). Its central critique — that quantitative evaluation is inconsistent across studies, with some papers not evaluating their layout at all — is directly testable against the other nine papers in this set, which do in fact use nine largely incomparable metrics (NSE, reconstruction %, water-level error in metres, coverage %, detection thresholds, etc.).",
-    "limitations": "As the authors themselves note: no universal/unified layout strategy exists across the reviewed literature; quantitative evaluation is inconsistent (some studies skip it); existing layout methods 'may not be optimal' and need further study. On the review's own limitations: literature cutoff is end-2024, so it misses several 2025–2026 papers in our own set (48, 49, 51, 53, 55, 56); and as a review, it cannot offer primary-study-level detail on any single method's performance.",
-    "conclusions": "No universal placement strategy exists; evaluation practices are inconsistent across the field; entropy-based (information theory) methods tend to push sensors toward area boundaries and ignore practical/socio-geographic factors; cluster-analysis methods can't pinpoint a specific location within a cluster; observability theory remains understudied specifically for UDNs. Recommends future work move toward dynamic optimisation via phased deployment and feedback iteration — placing sensors at critical nodes first, then adjusting later phases based on information gain from earlier data — rather than solving placement as a single static one-shot problem.",
-    "reflection": "The most structurally useful paper in the set for organising our own review, precisely because it is not proposing a new method but categorising everyone else's. Its phased-deployment recommendation is also a good practical framing to offer SA Water: rather than trying to solve one 'optimal' static layout up front, deploy iteratively and let early data inform later placement decisions."
-  },
-  "53": {
-    "assignedTo": "Rijoy John",
-    "topic": "OSP",
     "filterCategory": "Sensor Placement & Model Calibration",
     "citation": "Huang, Y., Xiong, Y., Zhang, C., Zheng, F., Ji, W., & Gupta, H. (2025). A robust method to simultaneously place sensors and calibrate parameters for urban drainage pipe system models using Bayesian decision theory. Engineering Applications of Computational Fluid Mechanics, 19(1), 2473992. https://doi.org/10.1080/19942060.2025.2473992",
     "intro": "Every other placement paper in this set answers 'where do I get the most useful data?'; this one answers 'where do I get the most useful data for calibrating my hydraulic model's parameters?' — treating placement and model calibration as a joint problem rather than solving placement first and calibrating separately afterward.",
@@ -688,7 +676,7 @@
     "conclusions": "The joint placement-and-calibration method outperformed both empirical baselines (even spacing, flood-hotspot placement), producing more accurate and less uncertain water-level/flood predictions across the tested scenarios.",
     "reflection": "Conceptually the most different paper in the set from the rest — it questions whether 'placement' is even the right unit of analysis on its own, given that a badly calibrated model undermines the value of data from even a well-placed sensor. Worth a direct PDF read given how load-bearing the 0.048 m figure might be if we want to cite it precisely."
   },
-  "54": {
+  "53": {
     "assignedTo": "Rijoy John",
     "topic": "OSP",
     "filterCategory": "Flow Reconstruction",
@@ -701,7 +689,7 @@
     "conclusions": "Just 3 of 77 candidate sensors achieved mean system-level NSE of 0.949 across observed storms; performance became nearly stationary (>0.982) by 5 sensors for observed events and by just 2 sensors for the extreme 200-year event. The method is robust to measurement noise and mostly robust to single-sensor dropout, though certain 'critical' sensors (identifiable via modal loading) can still cause a drop of up to 0.367 NSE if lost. Sensor selections stayed largely stable across 9 alternative SWMM parameterisations, though more so at higher sensor counts.",
     "reflection": "The benchmark paper to compare everything else in this set against, precisely because it reports exhaustive-search-optimum comparisons and explicit failure modes rather than just headline accuracy. Its own stated limitation — poor performance at threshold-driven overflow nodes — is a natural complement to papers like Ninh et al. (50) and Moradi & Najafi (from the earlier list), which specifically target overflow/blockage detection; a combined approach playing to each method's strength (DSS for continuous flow, threshold-aware methods for overflow events) seems like an obvious next step worth raising in our review."
   },
-  "55": {
+  "54": {
     "assignedTo": "Rijoy John",
     "topic": "OSP",
     "filterCategory": "Inflow & Infiltration Detection",
@@ -714,7 +702,7 @@
     "conclusions": "Not independently verifiable beyond the stated method and the high-building-density placement heuristic, without full-text access.",
     "reflection": "High priority for direct PDF verification, both because of the citation discrepancy noted above and because I&I detection is a distinct enough objective from the stormwater/flood-monitoring focus of most of the rest of this set that it deserves to be read carefully rather than summarised at arm's length."
   },
-  "56": {
+  "55": {
     "assignedTo": "Rijoy John",
     "topic": "OSP",
     "filterCategory": "Demand-driven Sensor Placement",

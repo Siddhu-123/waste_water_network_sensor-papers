@@ -75,7 +75,7 @@
       "id": 47,
       "title": "A Novel Machine Learning Based Cluster-Then-Forecast Framework for Sensor Placement Optimization and Water Level Prediction in LID Stormwater Systems",
       "authors": "Chen, E & Yu, X (2025)",
-      "journal": "ACS ES&T Water, vol. 5, pp. 3729\u20133738",
+      "journal": "ACS ES&T Water, vol. 5, pp. 3729–3738",
       "categoryKey": "stormwater_forecasting",
       "categoryLabel": "Stormwater Level Forecasting",
       "topic": "OSP",
@@ -143,20 +143,6 @@
     },
     {
       "id": 52,
-      "title": "Optimal Arrangement Strategy of IoT Sensors in Urban Drainage Networks: A Review",
-      "authors": "Ma, Y, Guo, J & Wang, Z (2025)",
-      "journal": "Applied Sciences, vol. 15, no. 9, p. 4976",
-      "categoryKey": "review",
-      "categoryLabel": "Review / Overview",
-      "topic": "OSP",
-      "filterCategory": "Review / Overview",
-      "assignedTo": "Rijoy John",
-      "doi": "10.3390/app15094976",
-      "pdfUrl": "./contributors/rijoy-john/papers/2025_Yiyi_Ma_Optimal_Arrangement_Strategy_of_IoT_Sensors_in_Urban_Drainage.pdf",
-      "scholarUrl": "https://scholar.google.com/scholar?q=%22Optimal+Arrangement+Strategy+of+IoT+Sensors+in+Urban+Drainage%22"
-    },
-    {
-      "id": 53,
       "title": "A robust method to simultaneously place sensors and calibrate parameters for urban drainage pipe system models using Bayesian decision theory",
       "authors": "Huang, Y, Xiong, Y, Zhang, C, Zheng, F, Ji, W & Gupta, H (2025)",
       "journal": "Engineering Applications of Computational Fluid Mechanics, vol. 19, no. 1, p. 2473992",
@@ -170,7 +156,7 @@
       "scholarUrl": "https://scholar.google.com/scholar?q=%22A+robust+method+to+simultaneously+place+sensors+and+calibrate+parameters%22"
     },
     {
-      "id": 54,
+      "id": 53,
       "title": "Optimizing Sensor Placement for Flow Reconstruction in Urban Drainage Networks: A Digital-Twin Sparse Sensing Approach",
       "authors": "Ding, Z, Kumar, P, Islam, S, Montezuma, R, Zhang, X & Zhang, Y (2025)",
       "journal": "arXiv:2511.04556 (submitted to Water Research)",
@@ -184,9 +170,9 @@
       "scholarUrl": "https://scholar.google.com/scholar?q=%22Optimizing+Sensor+Placement+for+Flow+Reconstruction+in+Urban+Drainage+Networks%22"
     },
     {
-      "id": 55,
+      "id": 54,
       "title": "A topology-derived flow inference approach to optimize sensor placement for inflow and infiltration detection",
-      "authors": "Wang, H, Du, K, Zheng, F, Liang, S, Lu, Y, Kapelan, Z & Savi\u0107, D (2026)",
+      "authors": "Wang, H, Du, K, Zheng, F, Liang, S, Lu, Y, Kapelan, Z & Savić, D (2026)",
       "journal": "Water Research, vol. 302, p. 122718",
       "categoryKey": "inflow_infiltration",
       "categoryLabel": "Inflow & Infiltration Detection",
@@ -198,7 +184,7 @@
       "scholarUrl": "https://scholar.google.com/scholar?q=%22A+topology-derived+flow+inference+approach+to+optimize+sensor+placement%22"
     },
     {
-      "id": 56,
+      "id": 55,
       "title": "A topology-first and demand-driven sensor placement framework for urban drainage networks",
       "authors": "He, L et al. (2026)",
       "journal": "Water Research, vol. 307, p. 126713",
