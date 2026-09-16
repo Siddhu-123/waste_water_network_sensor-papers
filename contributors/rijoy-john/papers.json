@@ -198,5 +198,17 @@
       "scholarUrl": "https://scholar.google.com/scholar?q=%22A+topology-first+and+demand-driven+sensor+placement+framework+for%22"
     }
   ],
-  "compiledPapers": []
+  "compiledPapers": [
+    {
+      "id": "compiled-paper-algorithms",
+      "title": "Optimal Sensor Placement in Sewerage Networks: A Literature Review",
+      "topic": "Algorithm",
+      "filterCategory": "Compiled Review",
+      "assignedTo": "Rijoy John",
+      "description": "Rijoy John's compiled Paper 2 literature review.",
+      "pdfUrl": "./contributors/rijoy-john/compiled-papers/Sewer_OSP_Algorithms_Literature_Review_V1.pdf",
+      "pages": 16,
+      "size": "130 KB"
+    }
+  ]
 }
