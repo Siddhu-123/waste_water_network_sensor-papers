@@ -12,6 +12,8 @@
       "filterCategory": "Network optimisation",
       "assignedTo": "Your Name",
       "doi": "10.1234/example-doi",
+      "pages": 12,
+      "size": "1.4 MB",
       "pdfUrl": "./contributors/your-name/papers/paper.pdf",
       "scholarUrl": "https://scholar.google.com/"
     }
@@ -24,6 +26,8 @@
       "filterCategory": "Compiled Review",
       "assignedTo": "Your Name",
       "description": "One-sentence description of the compiled paper.",
+      "pages": 24,
+      "size": "850 KB",
       "pdfUrl": "./contributors/your-name/compiled-papers/topic-review-v1.pdf"
     }
   ]

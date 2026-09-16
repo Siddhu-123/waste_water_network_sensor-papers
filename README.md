@@ -101,7 +101,7 @@ Do not rename a contributor folder or change the registered name without updatin
 2. Copy the structure from [`contributors/_template/papers.json`](./contributors/_template/papers.json).
 3. Choose a unique numeric paper ID. Check the latest papers across all contributors to ensure your ID is unique (e.g. 24, 25, ...).
 4. Place the PDF in your contributor's `papers/` folder.
-5. Add the record to `papers.json`. Use a PDF path beginning with `./contributors/`.
+5. Add the record to `papers.json`. Include `pages` (integer page count) and `size` (human-readable file size, e.g. `"1.2 MB"`). Use a PDF path beginning with `./contributors/`.
 6. Add the matching 8-step entry to [`summaries.json`](./summaries.json) using the same numeric ID.
 
 Template for `summaries.json`:
@@ -139,6 +139,8 @@ Template for `papers.json`:
   "filterCategory": "Network optimisation",
   "assignedTo": "Abraham",
   "doi": "10.1234/example-doi",
+  "pages": 15,
+  "size": "1.2 MB",
   "pdfUrl": "./contributors/abraham/papers/paper-24.pdf",
   "scholarUrl": "https://scholar.google.com/"
 }
@@ -159,6 +161,8 @@ The team compiled paper is the collaborative review authored together by the ent
     "filterCategory": "Compiled Review",
     "assignedTo": "Team",
     "description": "Team's compiled literature review on Optimal Sensor Placement for Wastewater Network Monitoring.",
+    "pages": 32,
+    "size": "465 KB",
     "pdfUrl": "./contributors/team_compiled_paper.pdf"
   }
   ```
@@ -171,7 +175,7 @@ A contributor compiled paper is a review, report, or thesis document written by 
 1. Put the PDF in `contributors/<your-slug>/compiled-papers/`.
 2. Name the file `<first-author-first-name>_<published-year>_<paper-name>.pdf`, using the paper title as the paper name and underscores between every word.
 3. Add an entry to the `compiledPapers` array in your `papers.json`.
-4. Set `id`, `title`, `topic`, `filterCategory`, `assignedTo`, `description`, and `pdfUrl`.
+4. Set `id`, `title`, `topic`, `filterCategory`, `assignedTo`, `description`, `pages`, `size`, and `pdfUrl`.
 
 ### Single-author compiled paper:
 ```json
@@ -182,6 +186,8 @@ A contributor compiled paper is a review, report, or thesis document written by 
   "filterCategory": "Compiled Review",
   "assignedTo": "Abraham",
   "description": "Abraham's compiled review on public wastewater network data in South Australia.",
+  "pages": 13,
+  "size": "330 KB",
   "pdfUrl": "./contributors/abraham/compiled-papers/Public Wastewater Network Data in South Australia.pdf"
 }
 ```
