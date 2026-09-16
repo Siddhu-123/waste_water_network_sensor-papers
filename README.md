@@ -29,8 +29,6 @@ sensor_papers/
 │       └── compiled-papers/           Topic-level compiled-paper PDFs
 ```
 
-The 23 initial research papers and the individual [compiled Paper 1 PDF](./contributors/satya-siddhartha/compiled-papers/paper-1.pdf) are stored in [`contributors/satya-siddhartha/`](./contributors/satya-siddhartha/). They remain assigned to **Satya Siddhartha**.
-
 All paper records across contributors are loaded dynamically from their respective JSON files. `index.html` contains no hardcoded paper data.
 
 ## Shared PDF highlights and sticker notes
