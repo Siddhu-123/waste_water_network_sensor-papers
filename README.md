@@ -9,6 +9,10 @@ Open [`index.html`](./index.html) to use the viewer.
 ```text
 sensor_papers/
 ├── index.html                         Dynamic viewer with nested filters & squeeze toggle
+├── css/
+│   └── style.css                      Styles for the research library viewer
+├── js/
+│   └── app.js                         Dynamic viewer logic, filtering, and data loading
 ├── pdf-viewer.html                    PDF.js viewer with shared highlights & sticker notes
 ├── annotation-config.js               Optional Vercel API URL for GitHub Pages
 ├── package.json                        Vercel Blob dependency for the API
