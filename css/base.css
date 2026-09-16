@@ -1,0 +1,104 @@
+/* ==========================================
+ * Base Styles: Tokens, Reset & Typography
+ * ========================================== */
+
+:root {
+  --bg-primary: #090d16;
+  --bg-secondary: #131b2e;
+  --bg-card: rgba(26, 36, 61, 0.75);
+  --border-color: #23314f;
+  --border-hover: #38bdf8;
+  --text-primary: #f8fafc;
+  --text-secondary: #94a3b8;
+  --text-muted: #64748b;
+  --accent-blue: #38bdf8;
+  --accent-indigo: #6366f1;
+  --accent-emerald: #10b981;
+  --accent-amber: #f59e0b;
+  --key-yellow: #eab308;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family:
+    "Inter",
+    -apple-system,
+    BlinkMacSystemFont,
+    sans-serif;
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  padding: clamp(16px, 3vw, 40px) max(14px, env(safe-area-inset-right))
+    clamp(24px, 4vw, 48px) max(14px, env(safe-area-inset-left));
+  max-width: 1450px;
+  margin: 0 auto;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  min-height: 100vh;
+}
+
+header {
+  margin-bottom: clamp(20px, 3vw, 0px);
+  padding-bottom: clamp(16px, 2.5vw, 0px);
+  border-bottom: 1px solid var(--border-color);
+}
+
+.header-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.header-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+h1 {
+  font-size: clamp(22px, 3vw, 30px);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  background: linear-gradient(135deg, #38bdf8 0%, #818cf8 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin-bottom: 8px;
+  line-height: 1.25;
+}
+
+/* Contributor Profile & Welcome Banner */
+.btn-profile-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(14, 26, 46, 0.9);
+  border: 1px solid var(--border-color);
+  border-radius: 20px;
+  padding: 6px 14px;
+  color: var(--text-color);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 150ms ease;
+}
+
+.btn-profile-pill:hover {
+  border-color: #2dd4bf;
+  background: rgba(45, 212, 191, 0.08);
+  transform: translateY(-1px);
+}
+
+.user-dot-indicator {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #2dd4bf;
+  flex-shrink: 0;
+}

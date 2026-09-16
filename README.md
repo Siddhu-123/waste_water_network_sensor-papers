@@ -1,6 +1,6 @@
 # Wastewater Research Corpus
 
-This repository contains the Paper 1 wastewater-sensor literature viewer. It stores research-paper PDFs, 8-step summaries, contributor metadata, and topic-level compiled papers.
+This repository contains the Paper 1 wastewater-sensor literature viewer. It stores research-paper PDFs, 8-step summaries, contributor metadata, and topic-level compiled papers across **55 research papers**, **4 contributor compiled reviews**, and **1 team-wide compiled paper** (60 total documents).
 
 Open [`index.html`](./index.html) to use the viewer.
 
@@ -10,9 +10,19 @@ Open [`index.html`](./index.html) to use the viewer.
 sensor_papers/
 ├── index.html                         Dynamic viewer with nested filters & squeeze toggle
 ├── css/
-│   └── style.css                      Styles for the research library viewer
+│   ├── base.css                       Design tokens, typography, and reset
+│   ├── controls.css                   Search bar, topic/category filters & squeeze toggle
+│   ├── papers.css                     Papers table, responsive cards & compiled papers
+│   ├── modals.css                     8-step summary modal & contributor profile modal
+│   └── style.css                      Master stylesheet importing all modules
 ├── js/
-│   └── app.js                         Dynamic viewer logic, filtering, and data loading
+│   ├── data.js                        State, normalization, duplicate detection & loaders
+│   ├── filters.js                     Filter controls, dropdowns, pills & table filter logic
+│   ├── papers.js                      Table and compiled papers DOM rendering
+│   ├── modals.js                      8-step research summary dialog controller
+│   ├── profile.js                     Contributor profile dashboard, device & welcome banner
+│   ├── annotations.js                 Annotation counts and live table badges
+│   └── main.js                        Bootstrap and lifecycle initialization
 ├── pdf-viewer.html                    PDF.js viewer with shared highlights & sticker notes
 ├── annotation-config.js               Optional Vercel API URL for GitHub Pages
 ├── package.json                        Vercel Blob dependency for the API
@@ -34,6 +44,15 @@ sensor_papers/
 ```
 
 All paper records across contributors are loaded dynamically from their respective JSON files. `index.html` contains no hardcoded paper data.
+
+## PDF Viewer: Table of Contents & Accurate Page Labels
+
+Click **PDF + Notes** beside any paper to open the workspace in [`pdf-viewer.html`](./pdf-viewer.html):
+
+- **Table of Contents Sidebar (📑):** Displays the full document structure and headings. Click any heading to jump smoothly to that section.
+- **True Page Label Synchronization:** When papers have publisher front matter (e.g. Roman numerals `i–iv` followed by Arabic `1–28`), the Table of Contents and toolbar display the publisher's true page label (e.g. `Page 1 (5 of 32)`) matching the printed page numbers in the document.
+- **Click-to-Jump Navigation:** Click on the page indicator in the toolbar to jump directly to any page number or publisher page label (e.g. typing `iv` or `1`).
+- **Automated Heading Extraction:** For papers without embedded PDF bookmarks, the viewer automatically reconstructs full text lines using baseline clustering and font metrics to detect and present section headings.
 
 ## Shared PDF highlights and sticker notes
 

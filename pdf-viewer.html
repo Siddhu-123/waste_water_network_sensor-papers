@@ -1780,6 +1780,7 @@
         let pdfDoc = null;
         let currentPageNumber = 1;
         let totalPages = 1;
+        let docPageLabels = null;
         let currentZoomLevel = 1.0;
         let basePageRatio = 1.414;
         let renderedPages = new Set();
@@ -2813,9 +2814,34 @@
           }
         }
 
+        function getPageLabel(pageNum) {
+          if (docPageLabels && docPageLabels[pageNum - 1]) {
+            const lbl = String(docPageLabels[pageNum - 1]).trim();
+            if (lbl && lbl !== "0") return lbl;
+            if (lbl === "0") return "Cover";
+          }
+          return String(pageNum);
+        }
+
+        function resolveTargetPageInput(input) {
+          if (!input) return null;
+          const clean = input.trim().toLowerCase();
+          if (docPageLabels) {
+            const idx = docPageLabels.findIndex((lbl) => String(lbl).trim().toLowerCase() === clean);
+            if (idx !== -1) return idx + 1;
+          }
+          const num = parseInt(clean, 10);
+          return isNaN(num) ? null : num;
+        }
+
         function updatePageIndicator(pageNum) {
           currentPageNumber = pageNum;
-          elements.pageIndicator.textContent = `${pageNum} / ${totalPages}`;
+          const label = getPageLabel(pageNum);
+          if (label && label !== String(pageNum)) {
+            elements.pageIndicator.textContent = `Page ${label} (${pageNum} of ${totalPages})`;
+          } else {
+            elements.pageIndicator.textContent = `${pageNum} / ${totalPages}`;
+          }
           elements.prevPageBtn.disabled = pageNum <= 1;
           elements.nextPageBtn.disabled = pageNum >= totalPages;
         }
@@ -2967,13 +2993,14 @@
         async function renderOutlineItems(items, container, depth) {
           for (const item of items) {
             const pageNum = await resolveDestinationPage(item.dest);
+            const pageLabel = pageNum ? getPageLabel(pageNum) : "";
 
             const itemEl = document.createElement("div");
             itemEl.className = `outline-item depth-${Math.min(depth, 3)}`;
             if (pageNum) itemEl.dataset.page = pageNum;
             itemEl.innerHTML = `
               <span class="outline-title-text" title="${escapeHtml(item.title)}">${escapeHtml(item.title)}</span>
-              ${pageNum ? `<span class="outline-page-num">${pageNum}</span>` : ""}
+              ${pageNum ? `<span class="outline-page-num" title="Go to Page ${pageLabel} (p. ${pageNum})">${pageLabel}</span>` : ""}
             `;
 
             if (pageNum) {
@@ -2995,37 +3022,77 @@
         }
 
         async function scanAndRenderHeadings() {
-          const headingRegex = /^(?:(?:[IVXLCDM]+|[0-9]+(?:\.[0-9]+)*)\.?\s+[A-Z][A-Za-z0-9\s,\-–—:]{2,60}|Abstract|References|Conclusions?|Methodology|Discussion|Introduction|Related Works?|Background)$/i;
-          const excludeRegex = /volume\s+\d+|ieee\s+access|page\s+\d+|doi:|http|^\d+(\.\d+)?\s+(m|cm|mm|kg|s|ms|hz|khz|mhz|ghz|v|w|pa|kpa|%)/i;
+          const headingRegex = /^(?:(?:(?:SECTION\s+)?[0-9]+(?:\.[0-9]+)*|[IVXLCDM]+|[A-Z]\.)\s+[A-Z0-9][A-Za-z0-9\s,\-–—:()/'"&]{1,90}|Abstract|References|Conclusions?|Methodology|Discussion|Introduction|Related Works?|Background|Case Study|Experimental Results?)$/i;
+          const excludeRegex = /^(?:volume\s+\d+|ieee\s+access|page\s+\d+|doi:|https?:|copyright|all\s+rights|received|accepted|published|authors?|editor|issn|isbn|table\s+\d+|fig(?:ure)?\.?\s+\d+)/i;
           const found = [];
+          const seenTitles = new Set();
 
-          for (let p = 1; p <= Math.min(pdfDoc.numPages, 35); p++) {
+          const maxPages = Math.min(pdfDoc.numPages, 60);
+          for (let p = 1; p <= maxPages; p++) {
             try {
               const page = await pdfDoc.getPage(p);
               const tc = await page.getTextContent();
+              if (!tc || !tc.items || !tc.items.length) continue;
+
+              // Cluster text items by vertical baseline
+              const lineBuckets = new Map();
               for (const item of tc.items) {
-                const str = item.str.trim();
-                if (str && item.height >= 9.5 && headingRegex.test(str) && !excludeRegex.test(str)) {
-                  const isSub = str.includes(".") || /^[A-Z]\.\s+/.test(str);
-                  found.push({ title: str, page: p, depth: isSub ? 2 : 1 });
+                const str = (item.str || "").trim();
+                if (!str) continue;
+                const y = Math.round(item.transform[5] / 2.5) * 2.5;
+                if (!lineBuckets.has(y)) {
+                  lineBuckets.set(y, []);
+                }
+                const fontSize = Math.abs(item.transform[0]) || item.height || 10;
+                lineBuckets.get(y).push({
+                  str: item.str,
+                  x: item.transform[4],
+                  fontSize,
+                  fontName: item.fontName || ""
+                });
+              }
+
+              const sortedY = Array.from(lineBuckets.keys()).sort((a, b) => b - a);
+
+              for (const y of sortedY) {
+                const items = lineBuckets.get(y).sort((a, b) => a.x - b.x);
+                const fullLine = items.map((it) => it.str).join(" ").replace(/\s+/g, " ").trim();
+                if (!fullLine || fullLine.length < 3 || fullLine.length > 95) continue;
+                if (excludeRegex.test(fullLine)) continue;
+
+                const maxFontSize = Math.max(...items.map((it) => it.fontSize));
+                const isBold = items.some((it) => /bold|black|heavy|medium/i.test(it.fontName));
+
+                if (headingRegex.test(fullLine) || (isBold && maxFontSize >= 11 && /^[A-Z][A-Za-z0-9\s,\-–—:]{2,50}$/.test(fullLine))) {
+                  const norm = fullLine.toLowerCase();
+                  if (!seenTitles.has(norm)) {
+                    seenTitles.add(norm);
+                    const isSub = /^(?:[0-9]+\.[0-9]+|[A-Z]\.)/.test(fullLine);
+                    found.push({
+                      title: fullLine,
+                      page: p,
+                      depth: isSub ? 2 : 1
+                    });
+                  }
                 }
               }
             } catch (_err) {}
           }
 
           if (!found.length) {
-            elements.outlineTree.innerHTML = '<div class="outline-item" style="color:var(--muted)">No outline detected.</div>';
+            elements.outlineTree.innerHTML = '<div class="outline-item" style="color:var(--muted)">No outline detected in this paper.</div>';
             return;
           }
 
           elements.outlineTree.innerHTML = "";
           found.forEach((h) => {
+            const pageLabel = getPageLabel(h.page);
             const itemEl = document.createElement("div");
             itemEl.className = `outline-item depth-${h.depth}`;
             itemEl.dataset.page = h.page;
             itemEl.innerHTML = `
               <span class="outline-title-text" title="${escapeHtml(h.title)}">${escapeHtml(h.title)}</span>
-              <span class="outline-page-num">${h.page}</span>
+              <span class="outline-page-num" title="Page ${pageLabel}">${pageLabel}</span>
             `;
             itemEl.addEventListener("click", () => {
               scrollToPage(h.page);
@@ -3184,6 +3251,12 @@
             renderingPages = new Set();
             totalPages = pdfDoc.numPages;
 
+            try {
+              docPageLabels = await pdfDoc.getPageLabels();
+            } catch (_e) {
+              docPageLabels = null;
+            }
+
             const firstPage = await pdfDoc.getPage(1);
             const firstVp = firstPage.getViewport({ scale: 1 });
             basePageRatio = firstVp.height / firstVp.width;
@@ -3290,6 +3363,19 @@
         });
         elements.nextPageBtn.addEventListener("click", () => {
           if (currentPageNumber < totalPages) scrollToPage(currentPageNumber + 1);
+        });
+        elements.pageIndicator.style.cursor = "pointer";
+        elements.pageIndicator.title = "Click to jump to page or label";
+        elements.pageIndicator.addEventListener("click", () => {
+          const currentLabel = getPageLabel(currentPageNumber);
+          const input = prompt(`Jump to page (1-${totalPages} or page label e.g. "${currentLabel}"):`, currentLabel);
+          if (!input) return;
+          const targetPage = resolveTargetPageInput(input.trim());
+          if (targetPage && targetPage >= 1 && targetPage <= totalPages) {
+            scrollToPage(targetPage);
+          } else {
+            alert(`Invalid page. Please enter a page number between 1 and ${totalPages}, or a valid page label.`);
+          }
         });
 
         // Zoom Listeners
