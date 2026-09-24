@@ -80,6 +80,18 @@ function getCountryFlag(country) {
 // Data Loader: Fetches grey-literature catalog from manifest
 // -------------------------------------------------------------
 async function loadGreyLiterature() {
+  // 1. Immediately hydrate from bundled data if available
+  if (window.__BUNDLED_DATA__ && Array.isArray(window.__BUNDLED_DATA__.greyLiterature) && greyLitData.length === 0) {
+    greyLitData = [...window.__BUNDLED_DATA__.greyLiterature];
+    const tabCountEl = document.getElementById("greyLitTabCount");
+    if (tabCountEl) {
+      tabCountEl.innerText = greyLitData.length;
+    }
+    populateGreyLitFilters();
+    filterAndRenderGreyLit();
+  }
+
+  // 2. Fetch live data if served via HTTP / HTTPS
   try {
     const manifestResponse = await fetch("./contributors/manifest.json", { cache: "no-store" });
     if (!manifestResponse.ok) return;
@@ -109,18 +121,23 @@ async function loadGreyLiterature() {
     }
 
     const results = await Promise.all(fetchPromises);
-    greyLitData = results.flat();
-
-    // Update Tab count
-    const tabCountEl = document.getElementById("greyLitTabCount");
-    if (tabCountEl) {
-      tabCountEl.innerText = greyLitData.length;
+    const liveData = results.flat();
+    if (liveData.length > 0) {
+      greyLitData = liveData;
+      const tabCountEl = document.getElementById("greyLitTabCount");
+      if (tabCountEl) {
+        tabCountEl.innerText = greyLitData.length;
+      }
+      populateGreyLitFilters();
+      filterAndRenderGreyLit();
     }
-
-    populateGreyLitFilters();
-    filterAndRenderGreyLit();
   } catch (err) {
-    console.error("Error loading grey literature:", err);
+    console.warn("Could not fetch live grey literature (using bundled data):", err);
+    if (greyLitData.length === 0 && window.__BUNDLED_DATA__ && Array.isArray(window.__BUNDLED_DATA__.greyLiterature)) {
+      greyLitData = [...window.__BUNDLED_DATA__.greyLiterature];
+      populateGreyLitFilters();
+      filterAndRenderGreyLit();
+    }
   }
 }
 
@@ -540,30 +557,30 @@ async function openFindingsModal() {
   document.body.style.overflow = "hidden";
 
   if (!findingsMarkdownCache) {
-    bodyContent.innerHTML = `
-      <div style="padding: 40px; text-align: center; color: var(--text-secondary);">
-        <div class="loading-spinner" style="margin: 0 auto 16px;"></div>
-        <p>Loading full synthesis report from <code>GREY_LITERATURE_FINDINGS.md</code>...</p>
-      </div>
-    `;
+    if (window.__BUNDLED_DATA__ && window.__BUNDLED_DATA__.findingsMarkdown) {
+      findingsMarkdownCache = window.__BUNDLED_DATA__.findingsMarkdown;
+    }
 
     try {
       const res = await fetch("./contributors/rijoy-john/compiled-papers/GREY_LITERATURE_FINDINGS.md", { cache: "no-store" });
-      if (!res.ok) throw new Error(`HTTP ${res.status}`);
-      findingsMarkdownCache = await res.text();
+      if (res.ok) {
+        findingsMarkdownCache = await res.text();
+      }
     } catch (err) {
-      console.error("Could not load findings markdown:", err);
-      bodyContent.innerHTML = `
-        <div style="padding: 30px; color: #f87171;">
-          <h3>Failed to load findings document</h3>
-          <p>${escapeHtml(err.message)}</p>
-        </div>
-      `;
-      return;
+      console.warn("Could not fetch live findings markdown (using bundled):", err);
     }
   }
 
-  bodyContent.innerHTML = renderMarkdownToHtml(findingsMarkdownCache);
+  if (findingsMarkdownCache) {
+    bodyContent.innerHTML = renderMarkdownToHtml(findingsMarkdownCache);
+  } else {
+    bodyContent.innerHTML = `
+      <div style="padding: 30px; color: #f87171;">
+        <h3>Failed to load findings document</h3>
+        <p>Could not retrieve synthesis document.</p>
+      </div>
+    `;
+  }
 }
 
 function closeFindingsModal() {

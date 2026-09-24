@@ -305,6 +305,14 @@ function formatAuthors(paper) {
 }
 
 async function loadSharedSummaries() {
+  if (window.__BUNDLED_DATA__ && window.__BUNDLED_DATA__.summaries) {
+    sharedSummaryData = window.__BUNDLED_DATA__.summaries;
+    applyPaperMetadata(sharedSummaryData);
+    refreshNestedFilters();
+    renderTable();
+    filterTable();
+  }
+
   try {
     const response = await fetch("./summaries.json", {
       cache: "no-store",
@@ -345,6 +353,19 @@ async function loadSharedSummaries() {
 }
 
 async function loadContributorPapers() {
+  if (window.__BUNDLED_DATA__) {
+    if (Array.isArray(window.__BUNDLED_DATA__.papers)) {
+      mergeContributorPapers(window.__BUNDLED_DATA__.papers);
+    }
+    if (Array.isArray(window.__BUNDLED_DATA__.compiledPapers)) {
+      mergeCompiledPapers(window.__BUNDLED_DATA__.compiledPapers);
+    }
+    applyPaperMetadata(sharedSummaryData);
+    refreshNestedFilters();
+    renderTable();
+    filterTable();
+  }
+
   try {
     const manifestResponse = await fetch(CONTRIBUTOR_MANIFEST_URL, {
       cache: "no-store",
