@@ -1,0 +1,16 @@
+name = "wastewater-annotations-api"
+main = "src/index.js"
+compatibility_date = "2024-09-01"
+
+# Cloudflare KV Namespace configuration for annotations storage
+# To link your KV namespace:
+# 1. Run: npx wrangler kv:namespace create ANNOTATIONS_KV
+# 2. Copy the returned ID and replace YOUR_KV_NAMESPACE_ID below.
+#
+# [[kv_namespaces]]
+# binding = "ANNOTATIONS_KV"
+# id = "YOUR_KV_NAMESPACE_ID"
+# preview_id = "YOUR_PREVIEW_KV_NAMESPACE_ID"
+
+[observability]
+enabled = true

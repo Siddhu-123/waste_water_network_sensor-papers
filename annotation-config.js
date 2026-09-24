@@ -1,6 +1,31 @@
-// GitHub Pages hosts the public library, while Vercel hosts the shared API.
-// Keep the Vercel-hosted viewer same-origin and route only GitHub Pages through
-// the Vercel API.
-window.ANNOTATION_API_BASE = window.location.hostname === "siddhu-123.github.io"
-  ? "https://waste-water-network-sensor-papers-two.vercel.app"
-  : "";
+// Annotation API Configuration
+// Supports Cloudflare Workers (recommended) and Vercel/local fallbacks.
+
+// 1. If you have deployed the Cloudflare Worker, specify its URL here:
+// Example: window.CLOUDFLARE_WORKER_URL = "https://wastewater-annotations.YOUR_SUBDOMAIN.workers.dev";
+window.CLOUDFLARE_WORKER_URL = "";
+
+// 2. Computed API Base with priority:
+// Query Param (?api=...) > LocalStorage > Cloudflare Worker > Vercel fallback > Same origin
+window.ANNOTATION_API_BASE = (function () {
+  try {
+    const urlParams = new URLSearchParams(window.location.search);
+    const queryApi = urlParams.get("api");
+    if (queryApi) return queryApi.trim().replace(/\/+$/, "");
+  } catch (_e) {}
+
+  try {
+    const custom = localStorage.getItem("custom_annotation_api_base");
+    if (custom) return custom.trim().replace(/\/+$/, "");
+  } catch (_e) {}
+
+  if (window.CLOUDFLARE_WORKER_URL && String(window.CLOUDFLARE_WORKER_URL).trim()) {
+    return String(window.CLOUDFLARE_WORKER_URL).trim().replace(/\/+$/, "");
+  }
+
+  if (window.location.hostname === "siddhu-123.github.io") {
+    return "https://waste-water-network-sensor-papers-two.vercel.app";
+  }
+
+  return "";
+})();

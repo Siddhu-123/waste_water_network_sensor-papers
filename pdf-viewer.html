@@ -2305,6 +2305,11 @@
           const boxes = mergeLineBoxes(rawBoxes);
           if (!boxes.length) return;
 
+          const minX = Math.min(...boxes.map((b) => b.x));
+          const minY = Math.min(...boxes.map((b) => b.y));
+          const maxX = Math.max(...boxes.map((b) => b.x + b.width));
+          const maxY = Math.max(...boxes.map((b) => b.y + b.height));
+
           const next = snapshot();
           const annotation = {
             id: newId("highlight"),
@@ -2312,10 +2317,10 @@
             page: pageNumber,
             text: text,
             boxes: boxes,
-            x: boxes[0].x,
-            y: boxes[0].y,
-            width: boxes[0].width,
-            height: boxes[0].height,
+            x: clamp(minX, 0, 1),
+            y: clamp(minY, 0, 1),
+            width: clamp(maxX - minX, 0.001, 1),
+            height: clamp(maxY - minY, 0.001, 1),
             color: elements.color.value,
             createdBy: getActiveUser(),
             createdAt: new Date().toISOString(),
@@ -2729,9 +2734,24 @@
             } catch (_e) {}
           }
 
+          // Local storage fallback for offline / resiliency
+          if (!documentData && paperId) {
+            try {
+              const cached = localStorage.getItem("capstone_annotations_paper_" + paperId);
+              if (cached) {
+                documentData = JSON.parse(cached);
+              }
+            } catch (_e) {}
+          }
+
           if (documentData && Array.isArray(documentData.annotations)) {
             annotations = documentData.annotations.filter(validAnnotation);
             annotationRevision = documentData.revision || null;
+            if (paperId) {
+              try {
+                localStorage.setItem("capstone_annotations_paper_" + paperId, JSON.stringify(documentData));
+              } catch (_e) {}
+            }
           } else {
             annotations = [];
             annotationRevision = null;
@@ -2759,15 +2779,42 @@
 
         /* Solid Manual Save to Cloud */
         async function saveSharedAnnotations() {
-          if (!hasApi || isSaving) return;
+          if (isSaving) return;
+
+          const author = getActiveUser();
+          const currentPayload = annotationPayload();
+
+          // Resilient local backup: store immediately so changes are never lost
+          if (paperId) {
+            try {
+              localStorage.setItem(
+                "capstone_annotations_paper_" + paperId,
+                JSON.stringify({
+                  paperId,
+                  version: 1,
+                  revision: annotationRevision || "local-" + Date.now(),
+                  updatedAt: new Date().toISOString(),
+                  updatedBy: author,
+                  annotations: currentPayload,
+                })
+              );
+            } catch (_e) {}
+          }
+
+          if (!hasApi) {
+            isDirty = false;
+            setSyncStatus("synced", "Saved locally");
+            setStatus("Annotations saved to browser storage (offline mode).", "success");
+            updateActionState();
+            return;
+          }
 
           isSaving = true;
           elements.save.disabled = true;
           setSyncStatus("dirty", "Saving to cloud…");
-          setStatus("Saving annotations to Vercel…", "neutral");
+          setStatus("Saving annotations to backend…", "neutral");
 
           try {
-            const author = getActiveUser();
             const response = await fetch(apiUrl("/annotations/" + encodeURIComponent(paperId)), {
               method: "POST",
               headers: { "Content-Type": "application/json" },
@@ -2775,7 +2822,7 @@
                 paperId,
                 revision: annotationRevision,
                 author,
-                annotations: annotationPayload(),
+                annotations: currentPayload,
               }),
             });
 
@@ -2791,13 +2838,18 @@
             if (!response.ok) throw new Error(data.message || data.error || `Save failed (HTTP ${response.status})`);
 
             annotationRevision = data.revision || annotationRevision;
+            if (paperId && data.annotations) {
+              try {
+                localStorage.setItem("capstone_annotations_paper_" + paperId, JSON.stringify(data));
+              } catch (_e) {}
+            }
             isDirty = false;
             setSyncStatus("synced", "All saved");
             setStatus("Saved! Annotations synced to cloud.", "success");
           } catch (error) {
             console.error("Save error:", error);
             setSyncStatus("dirty", "Save failed");
-            setStatus(error.message || "Save failed. Check Vercel.", "error");
+            setStatus(error.message || "Save failed. Check backend configuration.", "error");
           } finally {
             isSaving = false;
             updateActionState();

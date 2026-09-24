@@ -472,12 +472,12 @@ function normalizeAnnotation(value, index) {
     const width = Number(value.width);
     const height = Number(value.height);
     const color = String(value.color || "#ffdf5d");
-    const opacity = Number(value.opacity ?? 0.4);
+    const opacity = Number(value.opacity ?? 0.42);
     if (
-      !numberInRange(width, 0.001, 1) ||
-      !numberInRange(height, 0.001, 1) ||
-      x + width > 1 ||
-      y + height > 1 ||
+      !numberInRange(width, 0.0001, 1) ||
+      !numberInRange(height, 0.0001, 1) ||
+      x + width > 1.05 ||
+      y + height > 1.05 ||
       !/^#[0-9a-f]{6}$/i.test(color) ||
       !numberInRange(opacity, 0.05, 1)
     ) {
@@ -485,10 +485,26 @@ function normalizeAnnotation(value, index) {
         "Annotation " + (index + 1) + " has invalid highlight data",
       );
     }
-    normalized.width = width;
-    normalized.height = height;
+    normalized.width = Math.min(width, 1);
+    normalized.height = Math.min(height, 1);
     normalized.color = color;
     normalized.opacity = opacity;
+    if (typeof value.text === "string" && value.text.trim()) {
+      normalized.text = value.text.trim().slice(0, 2000);
+    }
+    if (Array.isArray(value.boxes) && value.boxes.length > 0) {
+      normalized.boxes = value.boxes.slice(0, 100).map((b) => ({
+        x: Number(b.x),
+        y: Number(b.y),
+        width: Number(b.width),
+        height: Number(b.height),
+      })).filter((b) =>
+        numberInRange(b.x, 0, 1) &&
+        numberInRange(b.y, 0, 1) &&
+        numberInRange(b.width, 0.0001, 1) &&
+        numberInRange(b.height, 0.0001, 1)
+      );
+    }
   } else {
     const text = String(value.text || "").trim();
     if (!text || text.length > 2000) {
