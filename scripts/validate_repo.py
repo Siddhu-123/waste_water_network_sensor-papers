@@ -356,6 +356,30 @@ def validate() -> Validation:
                     )
                 compiled_paths[pdf_url] = label
 
+        grey_lit_file = entry.get("greyLiteratureFile")
+        if grey_lit_file:
+            grey_path = (manifest_path.parent / grey_lit_file).resolve()
+            grey_data = load_json(grey_path, validation)
+            if isinstance(grey_data, dict):
+                items = grey_data.get("greyLiterature", [])
+                if not isinstance(items, list):
+                    validation.error(f"{name}: greyLiterature must be an array")
+                for idx, item in enumerate(items, start=1):
+                    g_label = f"{name} grey literature #{idx} ({item.get('id', '?')})"
+                    if not item.get("title"):
+                        validation.error(f"{g_label}: title is required")
+                    if not item.get("organization"):
+                        validation.error(f"{g_label}: organization is required")
+                    pdf = item.get("pdfUrl")
+                    if pdf and pdf.startswith("."):
+                        resolve_local_pdf(pdf, g_label, validation)
+
+        findings_doc = entry.get("findingsDocument")
+        if findings_doc:
+            doc_path = (manifest_path.parent / findings_doc).resolve()
+            if not doc_path.is_file():
+                validation.error(f"{name}: findingsDocument does not exist: {findings_doc}")
+
     summary_ids = {key for key in summaries if re.fullmatch(r"\d+", str(key))}
     paper_id_strings = {str(paper_id) for paper_id in paper_ids}
     for missing in sorted(summary_ids - paper_id_strings, key=int):

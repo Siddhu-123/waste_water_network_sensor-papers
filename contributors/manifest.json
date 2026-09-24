@@ -15,7 +15,8 @@
     {
       "name": "Satya Siddhartha",
       "slug": "satya-siddhartha",
-      "file": "./satya-siddhartha/papers.json"
+      "file": "./satya-siddhartha/papers.json",
+      "greyLiteratureFile": "./satya-siddhartha/grey-literature.json"
     },
     {
       "name": "Abraham",
@@ -30,7 +31,9 @@
     {
       "name": "Rijoy John",
       "slug": "rijoy-john",
-      "file": "./rijoy-john/papers.json"
+      "file": "./rijoy-john/papers.json",
+      "greyLiteratureFile": "./rijoy-john/grey-literature.json",
+      "findingsDocument": "./rijoy-john/compiled-papers/GREY_LITERATURE_FINDINGS.md"
     },
     {
       "name": "Wimukthi",

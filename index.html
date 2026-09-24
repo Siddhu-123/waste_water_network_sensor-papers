@@ -120,123 +120,264 @@
         </div>
       </div>
 
-      <div class="filter-panel" id="filterPanel">
-        <div class="filter-panel-header">
-          <div>
-            <div class="filter-panel-kicker">Research filters</div>
-            <div class="filter-panel-summary" id="filterPanelSummary">
-              All topics · All users · All categories
-            </div>
-          </div>
-          <button
-            type="button"
-            id="toggleFiltersBtn"
-            class="btn-squeeze-toggle"
-            onclick="toggleFilterSection()"
-            aria-controls="filterControls"
-            aria-expanded="true"
-            title="Squeeze or expand research filters"
-          >
-            <span id="filterSqueezeIcon">▲</span>
-            <span id="filterSqueezeText">Squeeze filters</span>
-          </button>
-        </div>
-        <div class="controls-bar" id="filterControls">
-          <div class="search-box">
-            <svg
-              class="search-icon"
-              width="16"
-              height="16"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            >
-              <circle cx="11" cy="11" r="8"></circle>
-              <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-            </svg>
-            <input
-              type="text"
-              id="searchInput"
-              placeholder="Search by paper title, author, topic, or sensor type..."
-              onkeyup="filterTable()"
-            />
-          </div>
-          <select
-            id="topicFilter"
-            class="filter-select"
-            aria-label="Filter papers by research topic"
-            onchange="setTopic(this.value)"
-          >
-            <option value="all">Topic: All</option>
-          </select>
-          <select
-            id="userFilter"
-            class="filter-select"
-            aria-label="Filter papers by assigned user"
-            onchange="filterTable()"
-          >
-            <option value="all">User: All</option>
-          </select>
-          <div class="filter-group" id="nestedFilterGroup"></div>
-          <p class="filter-help">
-            Select a topic first. The user and category filters then show only
-            values used by that topic. Define <code>topic</code>,
-            <code>filterCategory</code>, and <code>assignedTo</code> in each
-            contributor's <code>papers.json</code>; keep the same metadata in
-            <code>summaries.json</code> for shared summaries.
-          </p>
-        </div>
-      </div>
+      <!-- Library Navigation Tabs: Academic vs Grey Literature -->
+      <nav class="library-nav-tabs" role="tablist" aria-label="Library View Switcher">
+        <button
+          class="library-tab active"
+          id="tabAcademic"
+          role="tab"
+          aria-selected="true"
+          aria-controls="academicSection"
+          onclick="switchLibraryTab('academic')"
+        >
+          <span class="tab-icon">📚</span>
+          <span class="tab-label">Peer-Reviewed Papers</span>
+          <span class="tab-count" id="academicTabCount">55</span>
+        </button>
+        <button
+          class="library-tab"
+          id="tabGreyLit"
+          role="tab"
+          aria-selected="false"
+          aria-controls="greyLitSection"
+          onclick="switchLibraryTab('grey-literature')"
+        >
+          <span class="tab-icon">🏢</span>
+          <span class="tab-label">Grey Literature & Utility Reports</span>
+          <span class="tab-count" id="greyLitTabCount">83</span>
+        </button>
+      </nav>
     </header>
 
-    <section
-      class="compiled-papers-panel"
-      id="compiledPapersPanel"
-      aria-labelledby="compiledPapersTitle"
-      hidden
-    >
-      <div class="compiled-papers-header">
-        <div>
-          <div class="compiled-papers-kicker">Compiled papers</div>
-          <h2 class="compiled-papers-title" id="compiledPapersTitle">
-            Compiled papers
-          </h2>
+    <main id="mainLibraryContent">
+      <!-- ========================================== -->
+      <!-- SECTION 1: Academic Literature             -->
+      <!-- ========================================== -->
+      <section id="academicSection" aria-label="Peer-Reviewed Academic Literature">
+        <div class="filter-panel" id="filterPanel">
+          <div class="filter-panel-header">
+            <div>
+              <div class="filter-panel-kicker">Research filters</div>
+              <div class="filter-panel-summary" id="filterPanelSummary">
+                All topics · All users · All categories
+              </div>
+            </div>
+            <button
+              type="button"
+              id="toggleFiltersBtn"
+              class="btn-squeeze-toggle"
+              onclick="toggleFilterSection()"
+              aria-controls="filterControls"
+              aria-expanded="true"
+              title="Squeeze or expand research filters"
+            >
+              <span id="filterSqueezeIcon">▲</span>
+              <span id="filterSqueezeText">Squeeze filters</span>
+            </button>
+          </div>
+          <div class="controls-bar" id="filterControls">
+            <div class="search-box">
+              <svg
+                class="search-icon"
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <circle cx="11" cy="11" r="8"></circle>
+                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+              </svg>
+              <input
+                type="text"
+                id="searchInput"
+                placeholder="Search by paper title, author, topic, or sensor type..."
+                onkeyup="filterTable()"
+              />
+            </div>
+            <select
+              id="topicFilter"
+              class="filter-select"
+              aria-label="Filter papers by research topic"
+              onchange="setTopic(this.value)"
+            >
+              <option value="all">Topic: All</option>
+            </select>
+            <select
+              id="userFilter"
+              class="filter-select"
+              aria-label="Filter papers by assigned user"
+              onchange="filterTable()"
+            >
+              <option value="all">User: All</option>
+            </select>
+            <div class="filter-group" id="nestedFilterGroup"></div>
+            <p class="filter-help">
+              Select a topic first. The user and category filters then show only
+              values used by that topic. Define <code>topic</code>,
+              <code>filterCategory</code>, and <code>assignedTo</code> in each
+              contributor's <code>papers.json</code>; keep the same metadata in
+              <code>summaries.json</code> for shared summaries.
+            </p>
+          </div>
         </div>
-        <div class="compiled-header-actions">
-          <div class="compiled-papers-count" id="compiledPapersCount"></div>
+
+        <section
+          class="compiled-papers-panel"
+          id="compiledPapersPanel"
+          aria-labelledby="compiledPapersTitle"
+          hidden
+        >
+          <div class="compiled-papers-header">
+            <div>
+              <div class="compiled-papers-kicker">Compiled papers</div>
+              <h2 class="compiled-papers-title" id="compiledPapersTitle">
+                Compiled papers
+              </h2>
+            </div>
+            <div class="compiled-header-actions">
+              <div class="compiled-papers-count" id="compiledPapersCount"></div>
+              <button
+                type="button"
+                id="toggleCompiledBtn"
+                class="btn-squeeze-toggle"
+                onclick="toggleCompiledSection()"
+                title="Squeeze or expand compiled papers panel"
+              >
+                <span id="squeezeIcon">▲</span>
+                <span id="squeezeText">Squeeze</span>
+              </button>
+            </div>
+          </div>
+          <div class="compiled-shelves-container" id="compiledPapersList"></div>
+        </section>
+
+        <div class="table-container">
+          <table id="papersTable">
+            <thead>
+              <tr>
+                <th style="width: 50px">#</th>
+                <th>Research Paper & Authors</th>
+                <th style="width: 180px">Category</th>
+                <th style="width: 320px">Interactive Actions</th>
+              </tr>
+            </thead>
+            <tbody id="tableBody">
+              <!-- Dynamically Populated / Statically Listed -->
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- ========================================== -->
+      <!-- SECTION 2: Grey Literature & Utility Reports-->
+      <!-- ========================================== -->
+      <section id="greyLitSection" style="display: none;" aria-label="Grey Literature and Utility Reports">
+        <div class="grey-lit-hero" id="greyLitHero">
+          <div class="grey-lit-hero-text">
+            <h2>🏢 Water Utility Practice & Grey Literature</h2>
+            <p>
+              Industry reports, design standards (ASCE MOP 60, WSA 02), regulatory guidelines, and wet-weather overflow mitigation case studies from Sydney Water, SA Water, WSAA, US EPA, Water UK, Tokyo BoS, and global water authorities.
+            </p>
+          </div>
           <button
             type="button"
-            id="toggleCompiledBtn"
-            class="btn-squeeze-toggle"
-            onclick="toggleCompiledSection()"
-            title="Squeeze or expand compiled papers panel"
+            class="btn-findings-reader"
+            onclick="openFindingsModal()"
+            title="Read 12-section cross-utility synthesis"
           >
-            <span id="squeezeIcon">▲</span>
-            <span id="squeezeText">Squeeze</span>
+            📖 Executive Findings (12-Section Synthesis)
           </button>
         </div>
-      </div>
-      <div class="compiled-shelves-container" id="compiledPapersList"></div>
-    </section>
 
-    <div class="table-container">
-      <table id="papersTable">
-        <thead>
-          <tr>
-            <th style="width: 50px">#</th>
-            <th>Research Paper & Authors</th>
-            <th style="width: 180px">Category</th>
-            <th style="width: 320px">Interactive Actions</th>
-          </tr>
-        </thead>
-        <tbody id="tableBody">
-          <!-- Dynamically Populated / Statically Listed -->
-        </tbody>
-      </table>
-    </div>
+        <div class="filter-panel" id="greyLitFilterPanel">
+          <div class="filter-panel-header">
+            <div>
+              <div class="filter-panel-kicker">Industry & Utility filters</div>
+              <div class="filter-panel-summary">
+                Filter by water authority, jurisdiction, or document type
+              </div>
+            </div>
+          </div>
+          <div class="controls-bar" style="margin-top: 10px;">
+            <div class="search-box">
+              <svg
+                class="search-icon"
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <circle cx="11" cy="11" r="8"></circle>
+                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+              </svg>
+              <input
+                type="text"
+                id="greyLitSearchInput"
+                placeholder="Search report titles, utilities, key findings, topics..."
+                onkeyup="filterAndRenderGreyLit()"
+              />
+            </div>
+            <select
+              id="greyLitContributorFilter"
+              class="filter-select"
+              aria-label="Filter by Contributor"
+              onchange="filterAndRenderGreyLit()"
+            >
+              <option value="all">Contributor: All</option>
+            </select>
+            <select
+              id="greyLitOrgFilter"
+              class="filter-select"
+              aria-label="Filter by Water Utility / Organization"
+              onchange="filterAndRenderGreyLit()"
+            >
+              <option value="all">Utility: All Organizations</option>
+            </select>
+            <select
+              id="greyLitRegionFilter"
+              class="filter-select"
+              aria-label="Filter by Region / Country"
+              onchange="filterAndRenderGreyLit()"
+            >
+              <option value="all">Region: All Jurisdictions</option>
+            </select>
+            <select
+              id="greyLitDocTypeFilter"
+              class="filter-select"
+              aria-label="Filter by Document Type"
+              onchange="filterAndRenderGreyLit()"
+            >
+              <option value="all">Type: All Document Types</option>
+            </select>
+            <button
+              type="button"
+              class="btn-action btn-scholar"
+              onclick="resetGreyLitFilters()"
+              style="padding: 8px 14px; font-size: 13px;"
+            >
+              Reset
+            </button>
+          </div>
+        </div>
+
+        <div class="grey-lit-count-bar" id="greyLitResultsCount">
+          Loading reports...
+        </div>
+
+        <div class="grey-lit-grid" id="greyLitGrid">
+          <!-- Populated dynamically via js/grey-literature.js -->
+        </div>
+      </section>
+    </main>
+
 
     <!-- Contributor Profile Modal -->
     <div
@@ -335,6 +476,7 @@
           </div>
           <div class="modal-footer-actions">
             <a
+              id="modalEditGithubLink"
               href="https://github.com/Siddhu-123/waste_water_network_sensor-papers/edit/main/summaries.json"
               target="_blank"
               rel="noopener"
@@ -358,12 +500,60 @@
       </div>
     </div>
 
+    <!-- Executive Findings (Synthesis Report) Modal -->
+    <div
+      class="modal-overlay"
+      id="findingsModal"
+      style="display: none"
+      onclick="closeFindingsOnOverlay(event)"
+    >
+      <div class="modal-card findings-modal-card">
+        <div class="modal-header">
+          <div>
+            <div class="modal-title">Executive Findings: Grey Literature Review</div>
+            <div class="modal-meta">
+              Synthesis of Global Water Utility Practice: Overflows, Capacity, I&amp;I &amp; OSP (SA Water Context)
+            </div>
+          </div>
+          <button
+            class="modal-close"
+            type="button"
+            onclick="closeFindingsModal()"
+            title="Close modal"
+          >
+            &times;
+          </button>
+        </div>
+        <div
+          class="modal-body findings-markdown"
+          id="findingsModalBody"
+          style="max-height: 75vh; overflow-y: auto; padding: 24px 32px;"
+        >
+          <!-- Injected via JavaScript from GREY_LITERATURE_FINDINGS.md -->
+        </div>
+        <div class="modal-footer">
+          <div class="summary-status">
+            Source: <code>contributors/rijoy-john/compiled-papers/GREY_LITERATURE_FINDINGS.md</code>
+          </div>
+          <button
+            class="btn-action btn-summary"
+            type="button"
+            onclick="closeFindingsModal()"
+          >
+            Close
+          </button>
+        </div>
+      </div>
+    </div>
+
     <script src="js/data.js"></script>
     <script src="js/filters.js"></script>
     <script src="js/papers.js"></script>
     <script src="js/modals.js"></script>
     <script src="js/profile.js"></script>
     <script src="js/annotations.js"></script>
+    <script src="js/grey-literature.js"></script>
     <script src="js/main.js"></script>
   </body>
 </html>
+

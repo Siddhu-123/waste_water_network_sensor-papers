@@ -48,7 +48,17 @@ function openSummary(id) {
   document.getElementById("modalPaperTitle").innerText = paper.title;
   document.getElementById("modalPaperMeta").innerText =
     `${paper.authors} — ${paper.journal}`;
-  document.getElementById("modalPdfLink").href = getPdfViewerUrl(paper);
+  const pdfLink = document.getElementById("modalPdfLink");
+  if (pdfLink) {
+    pdfLink.href = getPdfViewerUrl(paper);
+    pdfLink.style.display = "inline-flex";
+    pdfLink.innerHTML = "📄 Open PDF + Notes";
+  }
+  const editGithubLink = document.getElementById("modalEditGithubLink");
+  if (editGithubLink) {
+    editGithubLink.href = "https://github.com/Siddhu-123/waste_water_network_sensor-papers/edit/main/summaries.json";
+    editGithubLink.style.display = "inline-flex";
+  }
   renderSummary();
   document.getElementById("summaryStatus").innerText =
     sharedSummaryLoadState === "loaded"

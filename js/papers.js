@@ -6,6 +6,11 @@ function renderTable() {
   const tbody = document.getElementById("tableBody");
   tbody.innerHTML = "";
 
+  const academicTabCountEl = document.getElementById("academicTabCount");
+  if (academicTabCountEl) {
+    academicTabCountEl.innerText = papersData.length;
+  }
+
   papersData.forEach((paper) => {
     const tr = document.createElement("tr");
     tr.dataset.user = paper.assignedTo;

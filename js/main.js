@@ -8,3 +8,4 @@ loadContributorPapers();
 updateProfileHeader();
 checkWelcomeBanner();
 loadAnnotationsSummary();
+loadGreyLiterature();
