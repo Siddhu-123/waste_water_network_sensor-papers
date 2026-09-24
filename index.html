@@ -345,6 +345,14 @@
                   onkeyup="filterAndRenderGreyLit()"
                 />
               </div>
+              <select
+                id="greyLitContributorFilter"
+                class="filter-select grey-lit-contributor-select"
+                aria-label="Filter by Contributor"
+                onchange="filterAndRenderGreyLit()"
+              >
+                <option value="all">Contributor: All Contributors</option>
+              </select>
               <button
                 type="button"
                 class="btn-action btn-scholar"
@@ -353,24 +361,6 @@
               >
                 Reset Filters
               </button>
-            </div>
-            <div class="grey-lit-filters-row">
-              <select
-                id="greyLitContributorFilter"
-                class="filter-select"
-                aria-label="Filter by Contributor"
-                onchange="filterAndRenderGreyLit()"
-              >
-                <option value="all">Contributor: All Contributors</option>
-              </select>
-              <select
-                id="greyLitCategoryFilter"
-                class="filter-select"
-                aria-label="Filter by Category"
-                onchange="onGreyLitCategoryChange()"
-              >
-                <option value="all">Category: All Categories</option>
-              </select>
             </div>
             <div class="grey-lit-category-pills" id="greyLitCategoryPills" aria-label="Category quick filter pills"></div>
           </div>

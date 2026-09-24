@@ -144,7 +144,6 @@ async function loadGreyLiterature() {
 // -------------------------------------------------------------
 function populateGreyLitFilters() {
   const contributorSelect = document.getElementById("greyLitContributorFilter");
-  const categorySelect = document.getElementById("greyLitCategoryFilter");
 
   const contributors = new Set();
   const categories = new Set();
@@ -167,22 +166,6 @@ function populateGreyLitFilters() {
     });
     if (prevVal && (prevVal === "all" || contributors.has(prevVal))) {
       contributorSelect.value = prevVal;
-    }
-  }
-
-  // Populate category dropdown
-  if (categorySelect) {
-    const prevCat = categorySelect.value;
-    categorySelect.innerHTML = '<option value="all">Category: All Categories</option>';
-    Array.from(categories).sort().forEach((cat) => {
-      const opt = document.createElement("option");
-      opt.value = cat;
-      const count = greyLitData.filter((g) => g.category === cat).length;
-      opt.textContent = `${cat} (${count})`;
-      categorySelect.appendChild(opt);
-    });
-    if (prevCat && (prevCat === "all" || categories.has(prevCat))) {
-      categorySelect.value = prevCat;
     }
   }
 
@@ -218,21 +201,8 @@ function renderGreyLitCategoryPills(categorySet) {
 
 function setGreyLitCategory(cat) {
   activeCategoryFilter = cat;
-  const categorySelect = document.getElementById("greyLitCategoryFilter");
-  if (categorySelect) {
-    categorySelect.value = cat;
-  }
   updateGreyLitCategoryPills();
   filterAndRenderGreyLit();
-}
-
-function onGreyLitCategoryChange() {
-  const categorySelect = document.getElementById("greyLitCategoryFilter");
-  if (categorySelect) {
-    activeCategoryFilter = categorySelect.value;
-    updateGreyLitCategoryPills();
-    filterAndRenderGreyLit();
-  }
 }
 
 function updateGreyLitCategoryPills() {
@@ -260,11 +230,6 @@ function filterAndRenderGreyLit() {
 
   const contributorSelect = document.getElementById("greyLitContributorFilter");
   activeContributorFilter = contributorSelect ? contributorSelect.value : "all";
-
-  const categorySelect = document.getElementById("greyLitCategoryFilter");
-  if (categorySelect && categorySelect.value !== activeCategoryFilter && activeCategoryFilter === "all") {
-    activeCategoryFilter = categorySelect.value;
-  }
 
   filteredGreyLitData = greyLitData.filter((item) => {
     // Contributor filter
@@ -311,8 +276,6 @@ function resetGreyLitFilters() {
   if (searchInput) searchInput.value = "";
   const contributorSelect = document.getElementById("greyLitContributorFilter");
   if (contributorSelect) contributorSelect.value = "all";
-  const categorySelect = document.getElementById("greyLitCategoryFilter");
-  if (categorySelect) categorySelect.value = "all";
   activeContributorFilter = "all";
   activeCategoryFilter = "all";
   updateGreyLitCategoryPills();
@@ -826,12 +789,14 @@ function switchLibraryTab(tabName) {
   }
 }
 
-// Check URL Hash on load
+// Check URL Hash or Param on load
 window.addEventListener("DOMContentLoaded", () => {
+  const urlParams = new URLSearchParams(window.location.search);
+  const tabParam = urlParams.get("tab") || "";
   const hash = window.location.hash || "";
-  if (hash === "#grey-literature" || hash === "#grey-lit") {
+  if (hash === "#grey-literature" || hash === "#grey-lit" || tabParam === "grey-literature" || tabParam === "grey-lit") {
     switchLibraryTab("grey-literature");
-  } else if (hash.startsWith("#instructor")) {
+  } else if (hash.startsWith("#instructor") || tabParam === "instructor") {
     const activeUser = typeof getActiveUser === "function" ? getActiveUser() : "";
     if (typeof isInstructorUser === "function" && !isInstructorUser(activeUser)) {
       switchLibraryTab("academic");
