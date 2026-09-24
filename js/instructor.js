@@ -74,12 +74,12 @@ function getStudentStats(studentName) {
     ? new Set(allNotes.map((n) => n.paperId)).size
     : assignedPapers.filter((p) => reviewedPaperIds.has(p.id)).length;
 
-  // Compiled papers
+  // Compiled papers authored by this researcher
   const compiled = isAll
     ? allCompiled
     : allCompiled.filter((cp) => {
         const auth = Array.isArray(cp.assignedTo) ? cp.assignedTo.join(" ") : String(cp.assignedTo || "");
-        return auth.toLowerCase().includes(studentName.toLowerCase()) || (typeof isTeamPaper === "function" ? isTeamPaper(cp) : false);
+        return auth.toLowerCase().includes(studentName.toLowerCase());
       });
 
   // Grey literature items
