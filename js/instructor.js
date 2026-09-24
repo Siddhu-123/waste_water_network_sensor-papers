@@ -164,7 +164,7 @@ function getStudentStats(studentName) {
     ? allCompiled
     : allCompiled.filter((cp) => {
         const auth = Array.isArray(cp.assignedTo) ? cp.assignedTo.join(" ") : String(cp.assignedTo || "");
-        return auth.toLowerCase().includes(studentName.toLowerCase()) || isTeamPaper(cp);
+        return auth.toLowerCase().includes(studentName.toLowerCase()) || (typeof isTeamPaper === "function" ? isTeamPaper(cp) : false);
       });
 
   // Grey literature items
@@ -464,6 +464,11 @@ function setInstructorStudent(studentName) {
   currentInstructorStudent = studentName;
   updateInstructorPills();
   renderInstructorDashboard();
+  if (studentName === "all") {
+    history.replaceState(null, "", "#instructor");
+  } else {
+    history.replaceState(null, "", `#instructor?student=${encodeURIComponent(studentName)}`);
+  }
 }
 
 function updateInstructorPills() {

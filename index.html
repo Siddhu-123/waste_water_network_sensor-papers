@@ -99,6 +99,15 @@
             <span id="headerProfileName">Unknown User</span>
           </button>
 
+          <button
+            type="button"
+            class="btn-action btn-scholar"
+            onclick="switchLibraryTab('instructor')"
+            style="padding: 10px 16px; font-size: 13px"
+            title="Open Instructor Dashboard & Team Performance"
+          >
+            🎓 Instructor Mode
+          </button>
           <a
             href="https://abrahampaulj.github.io/gravity-sewer-osp/"
             target="_blank"
@@ -120,7 +129,7 @@
         </div>
       </div>
 
-      <!-- Library Navigation Tabs: Academic vs Grey Literature -->
+      <!-- Library Navigation Tabs: Academic vs Grey Literature vs Instructor Mode -->
       <nav class="library-nav-tabs" role="tablist" aria-label="Library View Switcher">
         <button
           class="library-tab active"
@@ -145,6 +154,18 @@
           <span class="tab-icon">🏢</span>
           <span class="tab-label">Grey Literature & Utility Reports</span>
           <span class="tab-count" id="greyLitTabCount">83</span>
+        </button>
+        <button
+          class="library-tab"
+          id="tabInstructor"
+          role="tab"
+          aria-selected="false"
+          aria-controls="instructorSection"
+          onclick="switchLibraryTab('instructor')"
+        >
+          <span class="tab-icon">🎓</span>
+          <span class="tab-label">Instructor Mode</span>
+          <span class="tab-count" style="background: rgba(16, 185, 129, 0.2); color: #34d399; border-color: rgba(52, 211, 153, 0.3);">Live</span>
         </button>
       </nav>
     </header>
@@ -298,7 +319,7 @@
             <div>
               <div class="filter-panel-kicker">Industry & Utility filters</div>
               <div class="filter-panel-summary">
-                Filter by water authority, jurisdiction, or document type
+                Filter by research category or team contributor
               </div>
             </div>
           </div>
@@ -335,40 +356,25 @@
                 Reset Filters
               </button>
             </div>
-            <div class="grey-lit-dropdowns-row">
+            <div class="grey-lit-filters-row">
               <select
                 id="greyLitContributorFilter"
                 class="filter-select"
                 aria-label="Filter by Contributor"
                 onchange="filterAndRenderGreyLit()"
               >
-                <option value="all">Contributor: All</option>
+                <option value="all">Contributor: All Contributors</option>
               </select>
               <select
-                id="greyLitOrgFilter"
+                id="greyLitCategoryFilter"
                 class="filter-select"
-                aria-label="Filter by Water Utility / Organization"
-                onchange="filterAndRenderGreyLit()"
+                aria-label="Filter by Category"
+                onchange="onGreyLitCategoryChange()"
               >
-                <option value="all">Utility: All Organizations</option>
-              </select>
-              <select
-                id="greyLitRegionFilter"
-                class="filter-select"
-                aria-label="Filter by Region / Country"
-                onchange="filterAndRenderGreyLit()"
-              >
-                <option value="all">Region: All Jurisdictions</option>
-              </select>
-              <select
-                id="greyLitDocTypeFilter"
-                class="filter-select"
-                aria-label="Filter by Document Type"
-                onchange="filterAndRenderGreyLit()"
-              >
-                <option value="all">Type: All Document Types</option>
+                <option value="all">Category: All Categories</option>
               </select>
             </div>
+            <div class="grey-lit-category-pills" id="greyLitCategoryPills" aria-label="Category quick filter pills"></div>
           </div>
         </div>
 
@@ -378,6 +384,36 @@
 
         <div class="grey-lit-grid" id="greyLitGrid">
           <!-- Populated dynamically via js/grey-literature.js -->
+        </div>
+      </section>
+
+      <!-- ========================================== -->
+      <!-- SECTION 3: Instructor Mode & Supervision   -->
+      <!-- ========================================== -->
+      <section id="instructorSection" style="display: none;" aria-label="Instructor Mode & Supervision">
+        <div class="instructor-hero">
+          <div class="instructor-hero-text">
+            <h2>🎓 Instructor & Research Supervision Dashboard</h2>
+            <p>
+              Track team sprint progress, peer-review completion, sticky notes activity feed, and latest compiled review papers across all graduate researchers in real-time.
+            </p>
+          </div>
+          <div class="instructor-hero-badge">
+            <span class="pulse-indicator"></span> Jira Sprint & Coverage Sync
+          </div>
+        </div>
+
+        <!-- Student Selector Filter Bar (Pills) -->
+        <div class="instructor-controls-bar">
+          <div class="instructor-controls-label">Select Researcher / View:</div>
+          <div class="instructor-pills-row" id="instructorStudentPills">
+            <!-- Dynamically populated pills -->
+          </div>
+        </div>
+
+        <!-- Instructor Content: KPI Cards, Matrix, Spotlight, Activity Feed -->
+        <div id="instructorDashboardContent">
+          <!-- Populated by renderInstructorDashboard() -->
         </div>
       </section>
     </main>
@@ -558,6 +594,7 @@
     <script src="js/profile.js"></script>
     <script src="js/annotations.js"></script>
     <script src="js/grey-literature.js"></script>
+    <script src="js/instructor.js"></script>
     <script src="js/main.js"></script>
   </body>
 </html>

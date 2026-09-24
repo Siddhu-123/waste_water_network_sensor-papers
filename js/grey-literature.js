@@ -4,10 +4,8 @@
 
 let greyLitData = [];
 let filteredGreyLitData = [];
-let activeOrgFilter = "all";
-let activeRegionFilter = "all";
-let activeDocTypeFilter = "all";
 let activeContributorFilter = "all";
+let activeCategoryFilter = "all";
 let greyLitSearchQuery = "";
 let findingsMarkdownCache = "";
 
@@ -142,26 +140,18 @@ async function loadGreyLiterature() {
 }
 
 // -------------------------------------------------------------
-// Populate Filter Dropdowns dynamically based on data
+// Populate Filter Controls & Category Pills
 // -------------------------------------------------------------
 function populateGreyLitFilters() {
   const contributorSelect = document.getElementById("greyLitContributorFilter");
-  const orgSelect = document.getElementById("greyLitOrgFilter");
-  const regionSelect = document.getElementById("greyLitRegionFilter");
-  const docTypeSelect = document.getElementById("greyLitDocTypeFilter");
-
-  if (!orgSelect || !regionSelect || !docTypeSelect) return;
+  const categorySelect = document.getElementById("greyLitCategoryFilter");
 
   const contributors = new Set();
-  const orgs = new Set();
-  const regions = new Set();
-  const docTypes = new Set();
+  const categories = new Set();
 
   greyLitData.forEach((item) => {
     if (item.assignedTo) contributors.add(item.assignedTo);
-    if (item.organization) orgs.add(item.organization);
-    if (item.region || item.country) regions.add(item.region || item.country);
-    if (item.docType) docTypes.add(item.docType);
+    if (item.category) categories.add(item.category);
   });
 
   // Populate contributor dropdown
@@ -180,29 +170,84 @@ function populateGreyLitFilters() {
     }
   }
 
-  // Keep first "All" option and re-populate
-  orgSelect.innerHTML = '<option value="all">Utility: All Organizations</option>';
-  Array.from(orgs).sort().forEach((org) => {
-    const opt = document.createElement("option");
-    opt.value = org;
-    opt.textContent = org;
-    orgSelect.appendChild(opt);
+  // Populate category dropdown
+  if (categorySelect) {
+    const prevCat = categorySelect.value;
+    categorySelect.innerHTML = '<option value="all">Category: All Categories</option>';
+    Array.from(categories).sort().forEach((cat) => {
+      const opt = document.createElement("option");
+      opt.value = cat;
+      const count = greyLitData.filter((g) => g.category === cat).length;
+      opt.textContent = `${cat} (${count})`;
+      categorySelect.appendChild(opt);
+    });
+    if (prevCat && (prevCat === "all" || categories.has(prevCat))) {
+      categorySelect.value = prevCat;
+    }
+  }
+
+  renderGreyLitCategoryPills(categories);
+}
+
+function renderGreyLitCategoryPills(categorySet) {
+  const container = document.getElementById("greyLitCategoryPills");
+  if (!container) return;
+
+  const categories = categorySet && categorySet.size > 0
+    ? Array.from(categorySet).sort()
+    : Array.from(new Set(greyLitData.map((g) => g.category).filter(Boolean))).sort();
+
+  let html = `
+    <button type="button" class="grey-lit-category-pill ${activeCategoryFilter === 'all' ? 'active' : ''}" onclick="setGreyLitCategory('all')">
+      All <span class="pill-count">${greyLitData.length}</span>
+    </button>
+  `;
+
+  categories.forEach((cat) => {
+    const count = greyLitData.filter((g) => g.category === cat).length;
+    const isActive = activeCategoryFilter === cat;
+    html += `
+      <button type="button" class="grey-lit-category-pill ${isActive ? 'active' : ''}" onclick="setGreyLitCategory('${escapeHtml(cat)}')">
+        ${escapeHtml(cat)} <span class="pill-count">${count}</span>
+      </button>
+    `;
   });
 
-  regionSelect.innerHTML = '<option value="all">Region: All Jurisdictions</option>';
-  Array.from(regions).sort().forEach((reg) => {
-    const opt = document.createElement("option");
-    opt.value = reg;
-    opt.textContent = reg;
-    regionSelect.appendChild(opt);
-  });
+  container.innerHTML = html;
+}
 
-  docTypeSelect.innerHTML = '<option value="all">Type: All Document Types</option>';
-  Array.from(docTypes).sort().forEach((dt) => {
-    const opt = document.createElement("option");
-    opt.value = dt;
-    opt.textContent = dt;
-    docTypeSelect.appendChild(opt);
+function setGreyLitCategory(cat) {
+  activeCategoryFilter = cat;
+  const categorySelect = document.getElementById("greyLitCategoryFilter");
+  if (categorySelect) {
+    categorySelect.value = cat;
+  }
+  updateGreyLitCategoryPills();
+  filterAndRenderGreyLit();
+}
+
+function onGreyLitCategoryChange() {
+  const categorySelect = document.getElementById("greyLitCategoryFilter");
+  if (categorySelect) {
+    activeCategoryFilter = categorySelect.value;
+    updateGreyLitCategoryPills();
+    filterAndRenderGreyLit();
+  }
+}
+
+function updateGreyLitCategoryPills() {
+  const container = document.getElementById("greyLitCategoryPills");
+  if (!container) return;
+  const pills = container.querySelectorAll(".grey-lit-category-pill");
+  pills.forEach((pill) => {
+    const pillText = pill.textContent || "";
+    if (activeCategoryFilter === "all" && pillText.trim().startsWith("All")) {
+      pill.classList.add("active");
+    } else if (activeCategoryFilter !== "all" && pillText.includes(activeCategoryFilter)) {
+      pill.classList.add("active");
+    } else {
+      pill.classList.remove("active");
+    }
   });
 }
 
@@ -216,18 +261,19 @@ function filterAndRenderGreyLit() {
   const contributorSelect = document.getElementById("greyLitContributorFilter");
   activeContributorFilter = contributorSelect ? contributorSelect.value : "all";
 
-  const orgSelect = document.getElementById("greyLitOrgFilter");
-  activeOrgFilter = orgSelect ? orgSelect.value : "all";
-
-  const regionSelect = document.getElementById("greyLitRegionFilter");
-  activeRegionFilter = regionSelect ? regionSelect.value : "all";
-
-  const docTypeSelect = document.getElementById("greyLitDocTypeFilter");
-  activeDocTypeFilter = docTypeSelect ? docTypeSelect.value : "all";
+  const categorySelect = document.getElementById("greyLitCategoryFilter");
+  if (categorySelect && categorySelect.value !== activeCategoryFilter && activeCategoryFilter === "all") {
+    activeCategoryFilter = categorySelect.value;
+  }
 
   filteredGreyLitData = greyLitData.filter((item) => {
     // Contributor filter
     if (activeContributorFilter !== "all" && item.assignedTo !== activeContributorFilter) {
+      return false;
+    }
+
+    // Category filter
+    if (activeCategoryFilter !== "all" && item.category !== activeCategoryFilter) {
       return false;
     }
 
@@ -236,33 +282,16 @@ function filterAndRenderGreyLit() {
       const matchText = [
         item.title || "",
         item.organization || "",
-        item.country || "",
-        item.region || "",
-        item.docType || "",
-        item.topic || "",
+        item.category || "",
         item.summary || "",
         item.assignedTo || "",
-        Array.isArray(item.keyTakeaways) ? item.keyTakeaways.join(" ") : ""
+        Array.isArray(item.keyTakeaways) ? item.keyTakeaways.join(" ") : "",
+        item.steps ? Object.values(item.steps).join(" ") : ""
       ].join(" ").toLowerCase();
 
       if (!matchText.includes(greyLitSearchQuery)) {
         return false;
       }
-    }
-
-    // Org filter
-    if (activeOrgFilter !== "all" && item.organization !== activeOrgFilter) {
-      return false;
-    }
-
-    // Region filter
-    if (activeRegionFilter !== "all" && (item.region !== activeRegionFilter && item.country !== activeRegionFilter)) {
-      return false;
-    }
-
-    // Doc type filter
-    if (activeDocTypeFilter !== "all" && item.docType !== activeDocTypeFilter) {
-      return false;
     }
 
     return true;
@@ -282,12 +311,11 @@ function resetGreyLitFilters() {
   if (searchInput) searchInput.value = "";
   const contributorSelect = document.getElementById("greyLitContributorFilter");
   if (contributorSelect) contributorSelect.value = "all";
-  const orgSelect = document.getElementById("greyLitOrgFilter");
-  if (orgSelect) orgSelect.value = "all";
-  const regionSelect = document.getElementById("greyLitRegionFilter");
-  if (regionSelect) regionSelect.value = "all";
-  const docTypeSelect = document.getElementById("greyLitDocTypeFilter");
-  if (docTypeSelect) docTypeSelect.value = "all";
+  const categorySelect = document.getElementById("greyLitCategoryFilter");
+  if (categorySelect) categorySelect.value = "all";
+  activeContributorFilter = "all";
+  activeCategoryFilter = "all";
+  updateGreyLitCategoryPills();
   filterAndRenderGreyLit();
 }
 
@@ -303,7 +331,7 @@ function renderGreyLitCards() {
       <div class="grey-lit-empty">
         <div style="font-size: 32px; margin-bottom: 12px;">🔍</div>
         <h3>No matching grey literature found</h3>
-        <p>Try clearing your search query or adjusting your filters.</p>
+        <p>Try clearing your search query or selecting a different category.</p>
         <button class="btn-action btn-scholar" style="margin-top: 14px;" onclick="resetGreyLitFilters()">Reset Filters</button>
       </div>
     `;
@@ -313,9 +341,9 @@ function renderGreyLitCards() {
   let html = "";
   filteredGreyLitData.forEach((item) => {
     const theme = getUtilityTheme(item.organization || "");
-    const flag = getCountryFlag(item.country || item.region || "");
-    const isPdf = item.mediaType === "pdf" && item.pdfUrl;
-    const hasExternal = Boolean(item.externalUrl);
+    const isPdf = Boolean(item.pdfUrl && item.pdfUrl !== "#");
+    const externalLink = item.url || item.externalUrl;
+    const hasExternal = Boolean(externalLink);
     const hasTakeaways = Array.isArray(item.keyTakeaways) && item.keyTakeaways.length > 0;
     const hasSteps = Boolean(item.steps && (item.steps.citation || item.steps.intro || item.steps.methods || item.steps.usefulness));
 
@@ -328,21 +356,15 @@ function renderGreyLitCards() {
         <div class="grey-lit-header">
           <div class="grey-lit-badges">
             <span class="org-badge" style="background: ${theme.bg}; border-color: ${theme.border}; color: ${theme.text};">
-              ${escapeHtml(item.organization || "Utility")}
-            </span>
-            <span class="region-badge" title="${escapeHtml(item.country || item.region || '')}">
-              ${flag} ${escapeHtml(item.region || item.country || "Global")}
+              ${escapeHtml(item.organization || "Industry Body")}
             </span>
             <span class="year-badge">${item.year || "Report"}</span>
+            <span class="category-tag">📂 ${escapeHtml(item.category || "General")}</span>
           </div>
-          <span class="doctype-pill">${escapeHtml(item.docType || "Report")}</span>
+          <span class="doctype-pill" style="opacity: 0.85;">👤 ${escapeHtml(item.assignedTo || "Contributor")}</span>
         </div>
 
         <h3 class="grey-lit-title">${escapeHtml(item.title)}</h3>
-
-        <div class="grey-lit-topic">
-          <span>🎯 <strong>Focus:</strong> ${escapeHtml(item.topic || "Network Planning & Overflows")}</span>
-        </div>
 
         <p class="grey-lit-summary">${escapeHtml(item.summary || "")}</p>
 
@@ -351,7 +373,7 @@ function renderGreyLitCards() {
             ? `
           <div class="grey-lit-takeaways-container" id="takeaways-${item.id}">
             <div class="takeaways-header">
-              <span class="takeaways-label">💡 Key Empirical Findings & Takeaways:</span>
+              <span class="takeaways-label">💡 Key Takeaways:</span>
             </div>
             <ul class="takeaways-list">
               ${item.keyTakeaways.map((t) => `<li>${escapeHtml(t)}</li>`).join("")}
@@ -363,9 +385,8 @@ function renderGreyLitCards() {
 
         <div class="grey-lit-footer">
           <div class="grey-lit-meta">
-            ${item.pages ? `<span>📄 ${item.pages} ${item.pages === 1 ? 'page' : 'pages'}</span>` : ""}
-            ${item.size ? `<span>💾 ${escapeHtml(item.size)}</span>` : ""}
-            <span style="opacity: 0.7;">👤 ${escapeHtml(item.assignedTo || "Contributor")}</span>
+            <span>ID: <code>${escapeHtml(item.id)}</code></span>
+            ${item.pages ? `<span>📄 ${item.pages}p</span>` : ""}
           </div>
           <div class="grey-lit-actions">
             ${
@@ -377,12 +398,12 @@ function renderGreyLitCards() {
             }
             ${
               hasExternal
-                ? `<a href="${escapeHtml(item.externalUrl)}" target="_blank" rel="noopener" class="btn-action btn-scholar" title="Visit Agency Source Portal">
+                ? `<a href="${escapeHtml(externalLink)}" target="_blank" rel="noopener" class="btn-action btn-scholar" title="Visit Agency Source Portal">
                     🔗 Agency Portal
                    </a>`
                 : ""
             }
-            <button type="button" class="btn-action btn-summary" onclick="openGreyLitSummary('${item.id}')" title="Open Detailed 8-Step Summary">
+            <button type="button" class="btn-action btn-summary" onclick="openGreyLitSummary('${item.id}')" title="Open Detailed Summary">
               📝 ${hasSteps ? "8-Step Summary" : "Summary"}
             </button>
             ${
@@ -430,20 +451,21 @@ function openGreyLitSummary(id) {
 
   if (titleEl) titleEl.innerText = item.title;
   if (metaEl) {
-    metaEl.innerText = `${item.organization} (${item.year || 'Report'}) — ${item.region || item.country || 'Global'} — ${item.docType || 'Grey Literature'}`;
+    metaEl.innerText = `${item.organization || 'Industry Body'} (${item.year || 'Report'}) — Category: ${item.category || 'General'} — Contributor: ${item.assignedTo || 'Team'}`;
   }
 
   // Handle PDF / external link
+  const isPdf = Boolean(item.pdfUrl && item.pdfUrl !== "#");
+  const externalLink = item.url || item.externalUrl;
   if (pdfLink) {
-    const isPdf = item.mediaType === "pdf" && item.pdfUrl && item.pdfUrl !== "#";
     if (isPdf) {
       pdfLink.href = item.pdfUrl.startsWith("./")
         ? `./pdf-viewer.html?paper=${encodeURIComponent(item.id)}&pdf=${encodeURIComponent(item.pdfUrl)}&title=${encodeURIComponent(item.title)}&topic=Grey%20Literature`
         : item.pdfUrl;
       pdfLink.style.display = "inline-flex";
       pdfLink.innerHTML = "📄 Open PDF + Notes";
-    } else if (item.externalUrl) {
-      pdfLink.href = item.externalUrl;
+    } else if (externalLink) {
+      pdfLink.href = externalLink;
       pdfLink.style.display = "inline-flex";
       pdfLink.innerHTML = "🔗 Agency Portal";
     } else {
@@ -738,38 +760,81 @@ function formatInlineMarkdown(text) {
 }
 
 // -------------------------------------------------------------
-// Tab Switching: Academic vs Grey Literature
+// Tab Switching: Academic vs Grey Literature vs Instructor Mode
 // -------------------------------------------------------------
 function switchLibraryTab(tabName) {
   const academicSection = document.getElementById("academicSection");
   const greyLitSection = document.getElementById("greyLitSection");
+  const instructorSection = document.getElementById("instructorSection");
+
   const tabAcademic = document.getElementById("tabAcademic");
   const tabGreyLit = document.getElementById("tabGreyLit");
+  const tabInstructor = document.getElementById("tabInstructor");
 
-  if (!academicSection || !greyLitSection || !tabAcademic || !tabGreyLit) return;
+  if (!academicSection || !greyLitSection) return;
 
-  if (tabName === "grey-literature" || tabName === "grey-lit") {
-    academicSection.style.display = "none";
-    greyLitSection.style.display = "block";
+  // Reset all tabs & sections
+  academicSection.style.display = "none";
+  greyLitSection.style.display = "none";
+  if (instructorSection) instructorSection.style.display = "none";
+
+  if (tabAcademic) {
     tabAcademic.classList.remove("active");
     tabAcademic.setAttribute("aria-selected", "false");
-    tabGreyLit.classList.add("active");
-    tabGreyLit.setAttribute("aria-selected", "true");
-    history.replaceState(null, "", "#grey-literature");
-  } else {
-    greyLitSection.style.display = "none";
-    academicSection.style.display = "block";
+  }
+  if (tabGreyLit) {
     tabGreyLit.classList.remove("active");
     tabGreyLit.setAttribute("aria-selected", "false");
-    tabAcademic.classList.add("active");
-    tabAcademic.setAttribute("aria-selected", "true");
+  }
+  if (tabInstructor) {
+    tabInstructor.classList.remove("active");
+    tabInstructor.setAttribute("aria-selected", "false");
+  }
+
+  if (tabName === "grey-literature" || tabName === "grey-lit") {
+    greyLitSection.style.display = "block";
+    if (tabGreyLit) {
+      tabGreyLit.classList.add("active");
+      tabGreyLit.setAttribute("aria-selected", "true");
+    }
+    history.replaceState(null, "", "#grey-literature");
+  } else if (tabName === "instructor") {
+    if (instructorSection) instructorSection.style.display = "block";
+    if (tabInstructor) {
+      tabInstructor.classList.add("active");
+      tabInstructor.setAttribute("aria-selected", "true");
+    }
+    if (typeof updateInstructorPills === "function") {
+      updateInstructorPills();
+    }
+    if (typeof renderInstructorDashboard === "function") {
+      renderInstructorDashboard();
+    }
+    history.replaceState(null, "", "#instructor");
+  } else {
+    academicSection.style.display = "block";
+    if (tabAcademic) {
+      tabAcademic.classList.add("active");
+      tabAcademic.setAttribute("aria-selected", "true");
+    }
     history.replaceState(null, "", "#academic");
   }
 }
 
 // Check URL Hash on load
 window.addEventListener("DOMContentLoaded", () => {
-  if (window.location.hash === "#grey-literature" || window.location.hash === "#grey-lit") {
+  const hash = window.location.hash || "";
+  if (hash === "#grey-literature" || hash === "#grey-lit") {
     switchLibraryTab("grey-literature");
+  } else if (hash.startsWith("#instructor")) {
+    if (hash.includes("?")) {
+      const q = new URLSearchParams(hash.split("?")[1] || "");
+      const s = q.get("student");
+      if (s) {
+        currentInstructorStudent = s;
+      }
+    }
+    switchLibraryTab("instructor");
   }
 });
+
