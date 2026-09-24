@@ -1,108 +1,32 @@
 // ===============================================================
-// Instructor Mode: Team Research Performance & Progress Tracking
+// Instructor Mode: Contributor Review Progress & Research Supervision
 // ===============================================================
 
 let currentInstructorStudent = "all";
 
 const RESEARCH_STUDENTS = [
-  { name: "Satya Siddhartha", role: "Graduate Researcher", focus: "Dynamic-Wave Surcharging & Radar Level Sensing" },
-  { name: "Abraham", role: "Graduate Researcher", focus: "Overflow Anomaly Detection & Stonyfell SA Catchment" },
-  { name: "Ashis Jose", role: "Graduate Researcher", focus: "Acoustic Sizing & Pipe Condition Assessment" },
-  { name: "Rijoy John", role: "Graduate Researcher", focus: "Utility Policy, I&I Containment & Large-Scale Sensor Rollouts" },
-  { name: "Wimukthi", role: "Graduate Researcher", focus: "State Estimation & Graph Neural Networks in Sewers" }
+  { name: "Satya Siddhartha", role: "Graduate Researcher" },
+  { name: "Abraham", role: "Graduate Researcher" },
+  { name: "Ashis Jose", role: "Graduate Researcher" },
+  { name: "Rijoy John", role: "Graduate Researcher" },
+  { name: "Wimukthi", role: "Graduate Researcher" }
 ];
 
-// Baseline curated activity notes for offline / instant demonstration
-const BASELINE_STUDENT_NOTES = [
-  {
-    student: "Satya Siddhartha",
-    paperId: 1,
-    page: 4,
-    date: "2026-09-23",
-    title: "Sensor Beam Angle vs Manhole Benching",
-    text: "Verified that narrow 2° beam 80 GHz radar avoids false echoes from benching and ladder rungs in standard SA Water manholes."
-  },
-  {
-    student: "Satya Siddhartha",
-    paperId: 2,
-    page: 6,
-    date: "2026-09-22",
-    title: "Preissmann Slot Surcharging",
-    text: "Manning's equation breaks down once water level hits the pipe crown. SWMM dynamic wave routing required for high hydraulic grade lines."
-  },
-  {
-    student: "Satya Siddhartha",
-    paperId: 5,
-    page: 8,
-    date: "2026-09-20",
-    title: "Urban Water Observatory Benchmark",
-    text: "UWO dataset validates hydraulic model calibration errors within ±4.2% across wet-weather surcharge events."
-  },
-  {
-    student: "Abraham",
-    paperId: 24,
-    page: 3,
-    date: "2026-09-23",
-    title: "Stonyfell Overflow Detection",
-    text: "Evaluated smart catchment spill alarms in Stonyfell SA. 15-minute sampling interval caught 94% of dry-weather overflow precursors."
-  },
-  {
-    student: "Abraham",
-    paperId: 25,
-    page: 5,
-    date: "2026-09-21",
-    title: "Dry-Weather Flow Diurnal Cycle",
-    text: "Baseflow diurnal curves need 3-week moving average calibration to avoid false alarms during public holiday mornings."
-  },
-  {
-    student: "Ashis Jose",
-    paperId: 31,
-    page: 7,
-    date: "2026-09-22",
-    title: "SL-RAT Acoustic Attenuation",
-    text: "Acoustic inspection scores (ASTM F3220-17) correlate with CCTV blockage grades 4 and 5 in vitrified clay pipes."
-  },
-  {
-    student: "Ashis Jose",
-    paperId: 32,
-    page: 4,
-    date: "2026-09-19",
-    title: "FOG Detection & Ultrasonic Deadband",
-    text: "Ensure 200 mm deadband clearance above peak water line when mounting Pulsar dBi 6 transducers under manhole covers."
-  },
-  {
-    student: "Rijoy John",
-    paperId: 36,
-    page: 12,
-    date: "2026-09-24",
-    title: "Sydney Water Source Control Cost Model",
-    text: "WWOM synthesis indicates source control I&I remediation is 17x cheaper than building massive underground detention tanks."
-  },
-  {
-    student: "Rijoy John",
-    paperId: 37,
-    page: 5,
-    date: "2026-09-23",
-    title: "Icon Water Containment Standards",
-    text: "Adopted 1-in-10 year ARI containment standard. Multi-criteria risk assessment saved ~A$173M in avoided pipe upsizing."
-  },
-  {
-    student: "Wimukthi",
-    paperId: 51,
-    page: 9,
-    date: "2026-09-22",
-    title: "GNN Topology for Sparse Networks",
-    text: "Graph neural network state estimation reconstructs hydraulic heads at unmonitored junctions with 89% accuracy."
-  },
-  {
-    student: "Wimukthi",
-    paperId: 52,
-    page: 3,
-    date: "2026-09-20",
-    title: "Sparse Sensor Observability Matrix",
-    text: "Optimal placement rank matches dynamic-wave reach backwater propagation zones rather than static degree centrality."
+function getStudentAssignedTopics(studentName) {
+  const allPapers = typeof papersData !== "undefined" ? papersData : [];
+  const assigned = allPapers.filter((p) => {
+    const auth = String(p.assignedTo || "").toLowerCase();
+    return auth.includes(studentName.toLowerCase());
+  });
+  const topics = new Set();
+  assigned.forEach((p) => {
+    if (p.topic) topics.add(p.topic);
+  });
+  if (topics.size > 0) {
+    return Array.from(topics).join(" · ");
   }
-];
+  return "Wastewater Network Sensing";
+}
 
 function getAllStudentNotes() {
   const liveNotes = [];
@@ -110,26 +34,17 @@ function getAllStudentNotes() {
     annotationsSummary.notes.forEach((n) => {
       if (n.status !== "deleted" && n.text) {
         liveNotes.push({
-          student: n.createdBy || "Satya Siddhartha",
+          student: n.createdBy || "Contributor",
           paperId: Number(n.paperId) || 1,
           page: n.page || 1,
           date: n.createdAt ? n.createdAt.slice(0, 10) : "Recent",
-          title: n.title || "Sticky Note",
+          title: n.title || "Note",
           text: n.text
         });
       }
     });
   }
-
-  // Combine live notes with baseline notes (deduplicating by text)
-  const combined = [...liveNotes];
-  const liveTexts = new Set(liveNotes.map((n) => n.text));
-  BASELINE_STUDENT_NOTES.forEach((bn) => {
-    if (!liveTexts.has(bn.text)) {
-      combined.push(bn);
-    }
-  });
-  return combined;
+  return liveNotes;
 }
 
 function getStudentStats(studentName) {
@@ -173,7 +88,7 @@ function getStudentStats(studentName) {
     : allGrey.filter((g) => String(g.assignedTo || "").toLowerCase().includes(studentName.toLowerCase())).length;
 
   const totalAssigned = assignedPapers.length || (isAll ? 55 : 1);
-  const progressPct = Math.min(100, Math.round((papersReviewedCount / totalAssigned) * 100));
+  const progressPct = totalAssigned > 0 ? Math.min(100, Math.round((papersReviewedCount / totalAssigned) * 100)) : 0;
 
   // Latest worked paper (from most recent note)
   let latestWorkedPaper = null;
@@ -197,8 +112,7 @@ function getStudentStats(studentName) {
     progressPct,
     notes: studentNotes,
     latestWorkedPaper,
-    latestCompiled,
-    status: progressPct >= 80 ? "On Track" : progressPct >= 40 ? "In Progress" : "Review Starting"
+    latestCompiled
   };
 }
 
@@ -213,13 +127,13 @@ function renderInstructorDashboard() {
   const stats = getStudentStats(currentInstructorStudent);
 
   let html = `
-    <!-- Top KPI Row (Jira Sprint Style) -->
+    <!-- Summary KPI Row -->
     <div class="instructor-kpi-grid">
       <div class="instructor-kpi-card">
         <div class="kpi-icon">📋</div>
         <div class="kpi-content">
           <div class="kpi-value">${stats.assignedCount}</div>
-          <div class="kpi-label">${isAll ? "Total Papers in Corpus" : "Assigned Research Papers"}</div>
+          <div class="kpi-label">${isAll ? "Total Papers in Corpus" : "Assigned Papers"}</div>
         </div>
       </div>
 
@@ -227,7 +141,7 @@ function renderInstructorDashboard() {
         <div class="kpi-icon">📝</div>
         <div class="kpi-content">
           <div class="kpi-value" style="color: #2dd4bf;">${stats.reviewedCount} <span style="font-size: 14px; opacity: 0.7;">/ ${stats.assignedCount}</span></div>
-          <div class="kpi-label">Papers Reviewed with Notes</div>
+          <div class="kpi-label">Papers with Notes</div>
         </div>
       </div>
 
@@ -235,7 +149,7 @@ function renderInstructorDashboard() {
         <div class="kpi-icon">📌</div>
         <div class="kpi-content">
           <div class="kpi-value" style="color: #38bdf8;">${stats.totalNotesCount}</div>
-          <div class="kpi-label">Sticky Notes & Annotations</div>
+          <div class="kpi-label">Total Notes Logged</div>
         </div>
       </div>
 
@@ -254,23 +168,13 @@ function renderInstructorDashboard() {
           <div class="kpi-label">Grey Literature Reviews</div>
         </div>
       </div>
-
-      <div class="instructor-kpi-card">
-        <div class="kpi-icon">⚡</div>
-        <div class="kpi-content">
-          <div class="kpi-value" style="font-size: 20px; color: ${stats.progressPct >= 50 ? '#34d399' : '#f59e0b'};">
-            ${stats.status}
-          </div>
-          <div class="kpi-label">Sprint Progress (${stats.progressPct}%)</div>
-        </div>
-      </div>
     </div>
 
     <!-- Progress Bar -->
     <div class="instructor-progress-wrap">
       <div class="instructor-progress-header">
-        <span><strong>${isAll ? "Team Research Progress" : `${currentInstructorStudent}'s Review Coverage`}</strong>: ${stats.reviewedCount} of ${stats.assignedCount} papers annotated</span>
-        <span class="instructor-progress-pct">${stats.progressPct}% Complete</span>
+        <span><strong>${isAll ? "Overall Review Coverage" : `${currentInstructorStudent}'s Review Coverage`}</strong>: ${stats.reviewedCount} of ${stats.assignedCount} papers annotated</span>
+        <span class="instructor-progress-pct">${stats.progressPct}%</span>
       </div>
       <div class="instructor-progress-bar">
         <div class="instructor-progress-fill" style="width: ${stats.progressPct}%;"></div>
@@ -282,16 +186,16 @@ function renderInstructorDashboard() {
     // Team Leaderboard Matrix
     html += `
       <div class="instructor-section-title" style="margin-top: 28px;">
-        👥 Team Researcher Contribution Matrix (Jira Board)
+        👥 Research Team Overview
       </div>
       <div class="instructor-table-wrap">
         <table class="instructor-table">
           <thead>
             <tr>
-              <th>Researcher / Student</th>
+              <th>Researcher / Contributor</th>
               <th>Assigned Papers</th>
               <th>Reviewed with Notes</th>
-              <th>Sticky Notes</th>
+              <th>Total Notes</th>
               <th>Compiled Papers</th>
               <th>Grey Literature</th>
               <th>Review Coverage</th>
@@ -310,7 +214,7 @@ function renderInstructorDashboard() {
               <span class="student-avatar-small">${student.name.slice(0, 2).toUpperCase()}</span>
               <div>
                 <strong>${escapeHtml(student.name)}</strong>
-                <div style="font-size: 11px; color: var(--text-muted);">${escapeHtml(student.focus)}</div>
+                <div style="font-size: 11px; color: var(--text-muted);">${escapeHtml(getStudentAssignedTopics(student.name))}</div>
               </div>
             </div>
           </td>
@@ -343,23 +247,20 @@ function renderInstructorDashboard() {
     `;
   } else {
     // Individual Student View: Spotlight Cards & Activity Feed
-    const studentInfo = RESEARCH_STUDENTS.find((s) => s.name === currentInstructorStudent) || { focus: "Wastewater Network Sensing" };
-
     html += `
       <div class="instructor-spotlight-grid" style="margin-top: 24px;">
         <!-- Spotlight: Latest Compiled Paper -->
         <div class="instructor-spotlight-card">
           <div class="spotlight-header">
             <span class="spotlight-badge" style="background: rgba(99, 102, 241, 0.2); color: #a5b4fc; border: 1px solid rgba(129, 140, 248, 0.3);">
-              📚 Latest Compiled Review Paper
+              📚 Compiled Review Paper
             </span>
-            <span style="font-size: 12px; color: var(--text-muted);">${stats.latestCompiled ? 'Authored / Co-Authored' : 'In Progress'}</span>
           </div>
           ${
             stats.latestCompiled
               ? `
             <h4 class="spotlight-title">${escapeHtml(stats.latestCompiled.title)}</h4>
-            <p class="spotlight-desc">${escapeHtml(stats.latestCompiled.description || "Comprehensive synthesis on wastewater network monitoring.")}</p>
+            <p class="spotlight-desc">${escapeHtml(stats.latestCompiled.description || "Synthesis on wastewater network monitoring.")}</p>
             <div class="spotlight-meta">
               ${stats.latestCompiled.pages ? `<span>📄 ${stats.latestCompiled.pages} pages</span>` : ""}
               ${stats.latestCompiled.size ? `<span>💾 ${escapeHtml(stats.latestCompiled.size)}</span>` : ""}
@@ -379,9 +280,8 @@ function renderInstructorDashboard() {
         <div class="instructor-spotlight-card">
           <div class="spotlight-header">
             <span class="spotlight-badge" style="background: rgba(45, 212, 191, 0.15); color: #2dd4bf; border: 1px solid rgba(45, 212, 191, 0.3);">
-              📌 Recent Worked Research Paper
+              📌 Assigned Research Paper
             </span>
-            <span style="font-size: 12px; color: var(--text-muted);">Active Research Focus</span>
           </div>
           ${
             stats.latestWorkedPaper
@@ -402,17 +302,17 @@ function renderInstructorDashboard() {
               </button>
             </div>
           `
-              : `<p style="color: var(--text-muted); margin-top: 10px;">No research paper worked on yet.</p>`
+              : `<p style="color: var(--text-muted); margin-top: 10px;">No research paper assigned.</p>`
           }
         </div>
       </div>
     `;
   }
 
-  // Recent Activity Stream / Jira Activity Feed
+  // Real Annotations Feed
   html += `
     <div class="instructor-section-title" style="margin-top: 32px;">
-      📌 ${isAll ? "Recent Team Activity & Sticky Notes Feed (Jira Activity Stream)" : `Recent Research Notes Logged by ${escapeHtml(currentInstructorStudent)}`}
+      📌 ${isAll ? "Recent Contributor Notes & Annotations" : `Recent Notes by ${escapeHtml(currentInstructorStudent)}`}
     </div>
     <div class="instructor-activity-feed">
   `;
@@ -421,7 +321,7 @@ function renderInstructorDashboard() {
     html += `
       <div class="instructor-empty-activity">
         <div style="font-size: 28px; margin-bottom: 8px;">📝</div>
-        <p>No research notes logged yet for this researcher. Sticky notes created in the PDF reader will appear here in real time.</p>
+        <p>No notes recorded yet. Annotations created in the PDF reader will appear here.</p>
       </div>
     `;
   } else {
@@ -437,7 +337,7 @@ function renderInstructorDashboard() {
               <span class="activity-avatar">${note.student.slice(0, 2).toUpperCase()}</span>
               <div>
                 <strong>${escapeHtml(note.student)}</strong>
-                <span class="activity-action-label">added sticky note on</span>
+                <span class="activity-action-label">added note on</span>
                 <span class="activity-paper-tag">Paper #${note.paperId} (Page ${note.page})</span>
               </div>
             </div>
