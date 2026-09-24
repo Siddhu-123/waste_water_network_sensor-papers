@@ -74,7 +74,23 @@ function setActiveUser(name) {
   localStorage.setItem("capstone_user_name", clean);
   localStorage.setItem("pdf_active_user", clean);
   updateProfileHeader();
+  if (typeof syncInstructorVisibility === "function") {
+    syncInstructorVisibility();
+  }
 }
+
+function initActiveUserFromUrl() {
+  try {
+    const params = new URLSearchParams(window.location.search);
+    const userFromUrl = params.get("user") || params.get("contributor");
+    if (userFromUrl && userFromUrl.trim()) {
+      setActiveUser(userFromUrl.trim());
+    }
+  } catch (e) {
+    // Ignore URL parsing errors
+  }
+}
+initActiveUserFromUrl();
 
 function updateProfileHeader() {
   const user = getActiveUser();
@@ -83,6 +99,9 @@ function updateProfileHeader() {
   const dotEl = document.getElementById("headerProfileDot");
   if (nameEl) nameEl.textContent = user;
   if (dotEl) dotEl.style.background = palette.light;
+  if (typeof syncInstructorVisibility === "function") {
+    syncInstructorVisibility();
+  }
 }
 
 function selectWelcomeUser(name) {

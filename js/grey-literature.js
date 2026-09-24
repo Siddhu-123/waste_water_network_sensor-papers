@@ -799,6 +799,11 @@ function switchLibraryTab(tabName) {
     }
     history.replaceState(null, "", "#grey-literature");
   } else if (tabName === "instructor") {
+    const activeUser = typeof getActiveUser === "function" ? getActiveUser() : "";
+    if (typeof isInstructorUser === "function" && !isInstructorUser(activeUser)) {
+      switchLibraryTab("academic");
+      return;
+    }
     if (instructorSection) instructorSection.style.display = "block";
     if (tabInstructor) {
       tabInstructor.classList.add("active");
@@ -827,6 +832,11 @@ window.addEventListener("DOMContentLoaded", () => {
   if (hash === "#grey-literature" || hash === "#grey-lit") {
     switchLibraryTab("grey-literature");
   } else if (hash.startsWith("#instructor")) {
+    const activeUser = typeof getActiveUser === "function" ? getActiveUser() : "";
+    if (typeof isInstructorUser === "function" && !isInstructorUser(activeUser)) {
+      switchLibraryTab("academic");
+      return;
+    }
     if (hash.includes("?")) {
       const q = new URLSearchParams(hash.split("?")[1] || "");
       const s = q.get("student");

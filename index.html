@@ -67,6 +67,13 @@
           <button
             class="welcome-chip"
             type="button"
+            onclick="selectWelcomeUser('Karmajit Kaur')"
+          >
+            Karmajit Kaur
+          </button>
+          <button
+            class="welcome-chip"
+            type="button"
             onclick="promptSwitchUser()"
           >
             + Other
@@ -99,15 +106,6 @@
             <span id="headerProfileName">Unknown User</span>
           </button>
 
-          <button
-            type="button"
-            class="btn-action btn-scholar"
-            onclick="switchLibraryTab('instructor')"
-            style="padding: 10px 16px; font-size: 13px"
-            title="Open Instructor Dashboard & Team Performance"
-          >
-            🎓 Instructor Mode
-          </button>
           <a
             href="https://abrahampaulj.github.io/gravity-sewer-osp/"
             target="_blank"
@@ -162,10 +160,10 @@
           aria-selected="false"
           aria-controls="instructorSection"
           onclick="switchLibraryTab('instructor')"
+          style="display: none;"
         >
           <span class="tab-icon">🎓</span>
           <span class="tab-label">Instructor Mode</span>
-          <span class="tab-count" style="background: rgba(16, 185, 129, 0.2); color: #34d399; border-color: rgba(52, 211, 153, 0.3);">Live</span>
         </button>
       </nav>
     </header>

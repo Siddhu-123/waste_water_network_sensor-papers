@@ -490,8 +490,36 @@ function updateInstructorPills() {
 }
 
 // -------------------------------------------------------------
+// Instructor Permission & Visibility Control
+// -------------------------------------------------------------
+function isInstructorUser(name) {
+  if (!name) return false;
+  const clean = String(name).toLowerCase().replace(/[^a-z]/g, "");
+  return clean.includes("karmajit") || clean.includes("karamjit");
+}
+
+function syncInstructorVisibility() {
+  const activeUser = typeof getActiveUser === "function" ? getActiveUser() : "";
+  const tabInstructor = document.getElementById("tabInstructor");
+  const instructorSection = document.getElementById("instructorSection");
+  const isInstructor = isInstructorUser(activeUser);
+
+  if (tabInstructor) {
+    tabInstructor.style.display = isInstructor ? "inline-flex" : "none";
+  }
+
+  // If instructor section is active but current user is not an instructor, revert to academic
+  if (!isInstructor && instructorSection && instructorSection.style.display !== "none") {
+    if (typeof switchLibraryTab === "function") {
+      switchLibraryTab("academic");
+    }
+  }
+}
+
+// -------------------------------------------------------------
 // Auto-Init Instructor Mode on Load
 // -------------------------------------------------------------
 window.addEventListener("DOMContentLoaded", () => {
   updateInstructorPills();
+  syncInstructorVisibility();
 });
