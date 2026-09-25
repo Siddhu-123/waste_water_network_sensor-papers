@@ -1,9 +1,8 @@
 // Annotation API Configuration
 // Supports Cloudflare Workers (recommended) and Vercel/local fallbacks.
 
-// 1. If you have deployed the Cloudflare Worker, specify its URL here:
-// Example: window.CLOUDFLARE_WORKER_URL = "https://wastewater-annotations.YOUR_SUBDOMAIN.workers.dev";
-window.CLOUDFLARE_WORKER_URL = "";
+// 1. Live Cloudflare Worker URL:
+window.CLOUDFLARE_WORKER_URL = "https://pdf-annotations.sidcode3535.workers.dev";
 
 // 2. Computed API Base with priority:
 // Query Param (?api=...) > LocalStorage > Cloudflare Worker > Vercel fallback > Same origin
