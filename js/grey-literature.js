@@ -334,12 +334,12 @@ function renderGreyLitCards() {
         ${
           hasTakeaways
             ? `
-          <div class="grey-lit-takeaways-container" id="takeaways-${item.id}">
+          <div class="grey-lit-takeaways-container" id="takeaways-${item.id}" style="display: none;">
             <div class="takeaways-header">
-              <span class="takeaways-label">💡 Key Takeaways:</span>
+              <span class="takeaways-label">💡 Key Findings <span class="ai-badge" title="AI-Synthesized Analysis">AI</span>:</span>
             </div>
             <ul class="takeaways-list">
-              ${item.keyTakeaways.map((t) => `<li>${escapeHtml(t)}</li>`).join("")}
+              ${item.keyTakeaways.map((t) => `<li><span class="ai-chip">AI</span><span>${escapeHtml(t)}</span></li>`).join("")}
             </ul>
           </div>
         `
@@ -371,8 +371,8 @@ function renderGreyLitCards() {
             </button>
             ${
               hasTakeaways
-                ? `<button type="button" class="btn-action btn-scholar" onclick="toggleTakeaways('${item.id}')" title="Toggle Quick Takeaways View">
-                    💡 Details
+                ? `<button type="button" class="btn-action btn-scholar" id="btn-takeaways-${item.id}" onclick="toggleTakeaways('${item.id}')" title="Toggle AI Key Findings">
+                    💡 Details <span class="ai-badge-sm">AI</span>
                    </button>`
                 : ""
             }
@@ -387,11 +387,21 @@ function renderGreyLitCards() {
 
 function toggleTakeaways(id) {
   const container = document.getElementById(`takeaways-${id}`);
+  const btn = document.getElementById(`btn-takeaways-${id}`);
   if (!container) return;
-  if (container.style.display === "none") {
+  const isHidden = container.style.display === "none" || !container.style.display;
+  if (isHidden) {
     container.style.display = "block";
+    if (btn) {
+      btn.innerHTML = `✕ Hide Details <span class="ai-badge-sm">AI</span>`;
+      btn.classList.add("active");
+    }
   } else {
     container.style.display = "none";
+    if (btn) {
+      btn.innerHTML = `💡 Details <span class="ai-badge-sm">AI</span>`;
+      btn.classList.remove("active");
+    }
   }
 }
 
@@ -557,7 +567,15 @@ async function openFindingsModal() {
   }
 
   if (findingsMarkdownCache) {
-    bodyContent.innerHTML = renderMarkdownToHtml(findingsMarkdownCache);
+    bodyContent.innerHTML = `
+      <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 20px; padding: 10px 14px; background: rgba(168, 85, 247, 0.12); border: 1px solid rgba(168, 85, 247, 0.35); border-radius: 8px;">
+        <span style="font-size: 16px;">🤖</span>
+        <span style="font-size: 12px; color: #d8b4fe; font-weight: 500;">
+          <strong>AI-Assisted Cross-Utility Synthesis:</strong> The following matrix and findings have been extracted and synthesized with AI assistance from primary utility reports and design standards.
+        </span>
+        <span class="ai-badge" style="margin-left: auto;">AI</span>
+      </div>
+    ` + renderMarkdownToHtml(findingsMarkdownCache);
   } else {
     bodyContent.innerHTML = `
       <div style="padding: 30px; color: #f87171;">
