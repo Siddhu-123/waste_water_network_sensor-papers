@@ -2283,7 +2283,7 @@ window.__BUNDLED_DATA__ = {
       "category": "Sensors & Monitoring Hardware",
       "summary": "Statutory Australian safety code governing equipment installation in hazardous sewer atmospheres. Mandates intrinsically safe (Ex ia / ATEX Zone 0) certification to prevent electrical sparks from igniting methane gas.",
       "assignedTo": "Satya Siddhartha",
-      "pdfUrl": "#",
+      "pdfUrl": "./contributors/satya-siddhartha/grey/GL_2024_SafeWorkAustralia_Confined_Spaces_Code.pdf",
       "url": "https://www.safeworkaustralia.gov.au/doc/model-code-practice-confined-spaces",
       "keyTakeaways": [
         "Classifies wastewater manholes and wet wells as Zone 0 / Zone 1 hazardous explosive environments due to methane (CH4) and hydrogen sulfide (H2S).",
@@ -2309,7 +2309,7 @@ window.__BUNDLED_DATA__ = {
       "category": "Sensors & Monitoring Hardware",
       "summary": "Technical strategy outlining how Sydney Water utilizes online liquid-phase sulfide sensors at pump station discharge rising mains to automate ferric chloride chemical dosing.",
       "assignedTo": "Satya Siddhartha",
-      "pdfUrl": "#",
+      "pdfUrl": "./contributors/satya-siddhartha/grey/GL_2025_SydneyWater_Odour_Turbulence_Guideline.pdf",
       "url": "https://www.sydneywater.com.au/content/dam/sydneywater/documents/provider-information/standards-specifications/standards-alerts/sa2-02-25-design-guideline-for-minimising-odour-causing-turbulence.pdf",
       "keyTakeaways": [
         "Documents automated feed-forward and feedback chemical dosing algorithms using liquid bisulfide (HS-) probes.",
@@ -2335,7 +2335,7 @@ window.__BUNDLED_DATA__ = {
       "category": "Sensors & Monitoring Hardware",
       "summary": "Open-access benchmark dataset covering 10 years of continuous observations (13 level meters, 1 flow meter, 3 rain gauges) and fully calibrated EPA-SWMM dynamic-wave models in Bellinge, Denmark.",
       "assignedTo": "Satya Siddhartha",
-      "pdfUrl": "#",
+      "pdfUrl": "./contributors/satya-siddhartha/grey/GL_2021_Bellinge_Benchmark_Dataset_ESSD.pdf",
       "url": "https://doi.org/10.5194/essd-13-4779-2021",
       "keyTakeaways": [
         "Provides a complete, unredacted, fully calibrated EPA-SWMM (.inp) network model with verified invert levels.",
