@@ -1712,7 +1712,7 @@ window.__BUNDLED_DATA__ = {
       "summary": "The definitive engineering reference for the dynamic-wave Saint-Venant hydraulic solver in EPA SWMM 5.2. Governs open-channel conduit flow, pressurized surcharging, backwater effects, and conduit slot approximations.",
       "assignedTo": "Satya Siddhartha",
       "pdfUrl": "#",
-      "url": "https://www.epa.gov/water-research/storm-water-management-model-swmm",
+      "url": "https://nepis.epa.gov/Exe/ZyPURL.cgi?Dockey=P100S9AS.txt",
       "keyTakeaways": [
         "Derives full 1D Saint-Venant dynamic momentum and continuity equations used in wastewater sewer network routing.",
         "Models junction surcharging and slot approximations (Preissmann slot) when hydraulic grade lines exceed conduit crowns.",
@@ -1738,7 +1738,7 @@ window.__BUNDLED_DATA__ = {
       "summary": "Technical foundation for rainfall-derived inflow and infiltration (RDII) in sewer networks. Explains RTK unit hydrograph parameterisation, catchment depression storage, and infiltration modeling.",
       "assignedTo": "Satya Siddhartha",
       "pdfUrl": "#",
-      "url": "https://www.epa.gov/water-research/storm-water-management-model-swmm",
+      "url": "https://nepis.epa.gov/Exe/ZyPURL.cgi?Dockey=P100NYRA.txt",
       "keyTakeaways": [
         "Details RTK unit hydrograph parameters (R = ratio of rainfall entering sewer, T = time to peak, K = recession ratio) for rapid, medium, and slow infiltration.",
         "Provides parameter catalogue ranges for depression storage (1.0–2.5 mm for impervious surfaces) and Horton/Green-Ampt infiltration.",
@@ -1764,7 +1764,7 @@ window.__BUNDLED_DATA__ = {
       "summary": "The national Australian engineering benchmark for gravity sewer network planning, design, and construction. Mandates self-cleansing velocity (0.6 m/s), maximum design depth ratio (d/D <= 0.7 to 1.0), and diurnal peaking factors.",
       "assignedTo": "Satya Siddhartha",
       "pdfUrl": "#",
-      "url": "https://www.wsaa.asn.au/shop/product/40731",
+      "url": "https://wsaa.asn.au/Web/iCore/Store/StoreLayouts/Item_Detail.aspx?iProductCode=WSAACODE002",
       "keyTakeaways": [
         "Specifies minimum self-cleansing scouring velocity of 0.6 m/s at peak daily flow to prevent grit and silt accumulation.",
         "Sets maximum allowable design depth ratio d/D = 0.7 for reticulation sewers and d/D = 1.0 for major trunk sewers at PWWF.",
@@ -1790,7 +1790,7 @@ window.__BUNDLED_DATA__ = {
       "summary": "Mandatory technical standard specifying asset handover requirements for SA Water linear infrastructure. Establishes survey accuracy (+/-0.01 m) for invert levels, cover elevations, pipe materials, and GPS coordinates.",
       "assignedTo": "Satya Siddhartha",
       "pdfUrl": "#",
-      "url": "https://www.sawater.com.au/developers-and-builders/technical-standards",
+      "url": "https://www.sawater.com.au/building,-developing-and-plumbing/developments/engineering-standards/technical-standards",
       "keyTakeaways": [
         "Mandates exact survey precision: invert levels must be surveyed to +/-0.01 m AHD and planimetric coordinates to +/-0.02 m MGA.",
         "Requires comprehensive attribute capture: pipe material (PVC, VC, DICL, RC), nominal diameter, joint type, and installation year.",
@@ -1816,7 +1816,7 @@ window.__BUNDLED_DATA__ = {
       "summary": "Defines survey tolerances, reference benchmarks, and coordinate systems for SA Water engineering projects, mandating Map Grid of Australia (MGA2020) and Australian Height Datum (AHD).",
       "assignedTo": "Satya Siddhartha",
       "pdfUrl": "#",
-      "url": "https://www.sawater.com.au/developers-and-builders/technical-standards",
+      "url": "https://www.sawater.com.au/building,-developing-and-plumbing/developments/engineering-standards/technical-standards",
       "keyTakeaways": [
         "Specifies mandatory geodetic datum standards across South Australia (GDA2020 / MGA2020 Zone 54).",
         "Defines vertical control tolerances tied to permanent Survey Mark (PSM) benchmarks on the Australian Height Datum (AHD).",
@@ -1868,7 +1868,7 @@ window.__BUNDLED_DATA__ = {
       "summary": "Multi-utility research report mapping sewer pipe age, material, and structural defect classes directly to empirical Manning n roughness coefficients (0.009 to 0.018).",
       "assignedTo": "Satya Siddhartha",
       "pdfUrl": "#",
-      "url": "https://research.csiro.au",
+      "url": "https://research.csiro.au/technology/advanced-data-analytics-for-water-solutions/",
       "keyTakeaways": [
         "Quantifies how aging increases pipe roughness: new PVC has Manning n = 0.009–0.010, while 60-year-old vitrified clay reaches n = 0.015–0.018.",
         "Correlates joint displacement, mineral encrustation, and root penetration with hydraulic capacity losses of up to 45%.",
@@ -1998,7 +1998,7 @@ window.__BUNDLED_DATA__ = {
       "summary": "The national standard for classifying, coding, and scoring defects in sewer pipes from CCTV camera footage. Defines standardized formulas for structural and service defect grading (Grades 1 to 5).",
       "assignedTo": "Satya Siddhartha",
       "pdfUrl": "#",
-      "url": "https://www.wsaa.asn.au/shop/product/54121",
+      "url": "https://wsaa.asn.au/Web/iCore/Store/StoreLayouts/Item_Detail.aspx?iProductCode=WSAACODE005",
       "keyTakeaways": [
         "Standardizes national defect codes: Root Taproot (RT), Root Fine (RF), Encrustation (EN), Fracture (F), Displaced Joint (DJ).",
         "Calculates Mean Defect Score (MDS) and Peak Defect Score (PDS) to grade pipes from Grade 1 (minor) to Grade 5 (imminent collapse).",
@@ -2024,7 +2024,7 @@ window.__BUNDLED_DATA__ = {
       "summary": "Technical guide on non-contact ultrasonic transducers (dBi series) in damp sewer headspaces. Details digital echo tracking (DATEM), acoustic beam angles, false echo suppression, and manhole mounting.",
       "assignedTo": "Satya Siddhartha",
       "pdfUrl": "#",
-      "url": "https://pulsarmeasurement.com",
+      "url": "https://pulsarmeasurement.com/en_uk/measurement-solutions/level",
       "keyTakeaways": [
         "Explains DATEM (Digital Adaptive Tracking Echo Movement) software isolating moving sewage targets from stationary wall rungs.",
         "Details beam spread dynamics (10° beam angle) and mounting offsets required to prevent false reflections from manhole corbels.",
@@ -2050,7 +2050,7 @@ window.__BUNDLED_DATA__ = {
       "summary": "Technical evaluation of 80 GHz frequency modulated continuous wave (FMCW) radar sensors for sewer level tracking. Demonstrates how narrow 4-degree beam angles ignore condensation, grease, and manhole obstacles.",
       "assignedTo": "Satya Siddhartha",
       "pdfUrl": "#",
-      "url": "https://www.siemens.com/sitrans-lr110",
+      "url": "https://www.siemens.com/en-us/products/sitrans/",
       "keyTakeaways": [
         "80 GHz radar features an extremely narrow 4° beam angle, allowing installation in tight manholes without sidewall interference.",
         "Unaffected by vapor, condensation, temperature swings, or hazardous sewer gas atmospheres (H2S/CH4).",
@@ -2076,7 +2076,7 @@ window.__BUNDLED_DATA__ = {
       "summary": "Comprehensive RF engineering study quantifying sub-GHz radio transmission through cast-iron manhole covers, asphalt, and concrete lids for underground sewer telemetry.",
       "assignedTo": "Satya Siddhartha",
       "pdfUrl": "#",
-      "url": "https://lora-alliance.org",
+      "url": "https://resources.lora-alliance.org/",
       "keyTakeaways": [
         "Solid cast-iron manhole covers attenuate 915 MHz RF signals by 25 to 40 dB, requiring composite lids or slot antennas.",
         "Sub-GHz LoRaWAN (915 MHz in Australia, 868 MHz in Europe) achieves 3–5x better penetration than 2.4 GHz WiFi or Zigbee.",
@@ -2102,7 +2102,7 @@ window.__BUNDLED_DATA__ = {
       "summary": "The international handbook for isolating illicit sanitary cross-connections, industrial trade waste dumping, and sewage leaks into stormwater drains using water quality parameters.",
       "assignedTo": "Satya Siddhartha",
       "pdfUrl": "#",
-      "url": "https://www.epa.gov/npdes/illicit-discharge-detection-and-elimination-technical-guidance-manual",
+      "url": "https://nepis.epa.gov/Exe/ZyPURL.cgi?Dockey=20017KFK.TXT",
       "keyTakeaways": [
         "Defines key chemical indicator tracer matrices: conductivity, ammonia, potassium, detergents (surfactants), and optical brighteners.",
         "Provides decision trees distinguishing raw sanitary sewage (high ammonia > 1.0 mg/L, high detergents) from commercial wash water or clean tap water.",
@@ -2128,7 +2128,7 @@ window.__BUNDLED_DATA__ = {
       "summary": "Technical evaluation of continuous water quality instrumentation (pH, ORP, DO, conductivity, turbidity) directly submerged in raw wastewater collection systems.",
       "assignedTo": "Satya Siddhartha",
       "pdfUrl": "#",
-      "url": "https://www.waterrf.org",
+      "url": "https://www.waterrf.org/research/projects",
       "keyTakeaways": [
         "Quantifies biofouling dynamics: submerged optical and galvanic sensors develop thick biofilm layers within 48 to 72 hours without active wipers.",
         "Details mechanical wiper blades, ultrasonic cleaning horns, and compressed air flushing to maintain sensor signal integrity.",
@@ -2180,7 +2180,7 @@ window.__BUNDLED_DATA__ = {
       "summary": "International standard specifying automated spectroscopic and electrochemical determination of ammonium, nitrate, and orthophosphate in municipal wastewater collection and treatment systems.",
       "assignedTo": "Satya Siddhartha",
       "pdfUrl": "#",
-      "url": "https://www.iso.org/standard/64588.html",
+      "url": "https://www.iso.org/standard/39626.html",
       "keyTakeaways": [
         "Defines ion-selective electrode (ISE) measurement protocols with potassium and chloride interference compensation.",
         "Sets accuracy and repeatability standards for continuous in-situ nutrient monitoring (+/-5% full scale).",
@@ -2231,8 +2231,8 @@ window.__BUNDLED_DATA__ = {
       "category": "Sensors & Monitoring Hardware",
       "summary": "The landmark A$21M national Australian research study on concrete sewer corrosion and odour. Outlines biogenic sulfuric acid corrosion mechanisms, ventilation dynamics, and the SeweX predictive model.",
       "assignedTo": "Satya Siddhartha",
-      "pdfUrl": "#",
-      "url": "https://www.water360.com.au",
+      "pdfUrl": "./contributors/rijoy-john/grey/GL_2013_WSAA_SCORe_Project_Summary.pdf",
+      "url": "https://www.waterra.com.au/",
       "keyTakeaways": [
         "Explains microbial corrosion cycle: anaerobic biofilms generate liquid sulfide, which transfers into headspace gas as H2S and is oxidized into sulfuric acid (H2SO4) by Thiobacillus bacteria on concrete crowns.",
         "Establishes empirical corrosion rates: crown corrosion can exceed 5–10 mm per year in warm, unventilated, high-H2S (>50 ppm) sewer headspaces.",
@@ -2258,7 +2258,7 @@ window.__BUNDLED_DATA__ = {
       "summary": "Technical report on electrochemical and optical H2S gas sensors in raw sewer manhole atmospheres. Analyzes sensor saturation, mercaptan poisoning, and electrolyte drying in extreme humidity.",
       "assignedTo": "Satya Siddhartha",
       "pdfUrl": "#",
-      "url": "https://www.gasdata.co.uk",
+      "url": "https://www.gasdata.co.uk/industries/wastewater-treatment/",
       "keyTakeaways": [
         "Standard industrial electrochemical H2S cells suffer severe sensor drift and electrolyte poisoning within 3–6 months in raw sewer atmospheres (>95% RH, 0–200 ppm H2S).",
         "Documents chemical cross-sensitivity to volatile organic compounds, mercaptans, and methane causing false high alarms.",
@@ -2310,7 +2310,7 @@ window.__BUNDLED_DATA__ = {
       "summary": "Technical strategy outlining how Sydney Water utilizes online liquid-phase sulfide sensors at pump station discharge rising mains to automate ferric chloride chemical dosing.",
       "assignedTo": "Satya Siddhartha",
       "pdfUrl": "#",
-      "url": "https://www.sydneywater.com.au",
+      "url": "https://www.sydneywater.com.au/content/dam/sydneywater/documents/provider-information/standards-specifications/standards-alerts/sa2-02-25-design-guideline-for-minimising-odour-causing-turbulence.pdf",
       "keyTakeaways": [
         "Documents automated feed-forward and feedback chemical dosing algorithms using liquid bisulfide (HS-) probes.",
         "Demonstrates 28% reduction in chemical coagulant consumption compared to static timer-based dosing.",
@@ -2361,7 +2361,7 @@ window.__BUNDLED_DATA__ = {
       "category": "Inflow & Infiltration (I&I)",
       "summary": "Comprehensive 3-year open dataset from the Urban Water Observatory (UWO) in Fehraltorf, Switzerland. Features 124 sensors (89 wireless LoRaWAN nodes) tracking water levels, temperatures, and runoff.",
       "assignedTo": "Satya Siddhartha",
-      "pdfUrl": "#",
+      "pdfUrl": "./contributors/satya-siddhartha/papers/Blumensaat_2026_The_UWO_dataset____long_term_observation.pdf",
       "url": "https://doi.org/10.25678/000C5K",
       "keyTakeaways": [
         "Monitored 124 sensor locations with high temporal resolution (1–5 min) over 3 continuous years (2019–2021).",
@@ -2387,8 +2387,8 @@ window.__BUNDLED_DATA__ = {
       "category": "Inflow & Infiltration (I&I)",
       "summary": "Formulates Digital Twin-based Data-Driven Sparse Sensing (DSS) for urban drainage networks. Couples EPA-SWMM with Singular Value Decomposition (SVD) and QR factorization to find optimal sensor nodes.",
       "assignedTo": "Satya Siddhartha",
-      "pdfUrl": "#",
-      "url": "https://arxiv.org",
+      "pdfUrl": "./contributors/rijoy-john/papers/2025_Zihang Ding_Manuscript-Optimizing Sensor Placement for Flow Reconstruction in Urban Drainage Networks A.pdf",
+      "url": "https://arxiv.org/abs/2511.04556",
       "keyTakeaways": [
         "Uses SVD and QR decomposition with column pivoting to select sensor locations that maximize flow reconstruction accuracy.",
         "Demonstrates in the Woodland catchment (Duluth, MN) that monitoring just 10–15% of nodes reconstructs system-wide hydraulics.",
@@ -2440,7 +2440,7 @@ window.__BUNDLED_DATA__ = {
       "summary": "UK water industry guidance comparing heuristic sensor placement (historical flood hotspots, critical trunk junctions) against algorithmic spatial optimization models across 10 water companies.",
       "assignedTo": "Satya Siddhartha",
       "pdfUrl": "#",
-      "url": "https://ukwir.org",
+      "url": "https://ukwir.org/home-of-water-industry-research-projects-reports-tools",
       "keyTakeaways": [
         "Finds that heuristic placement (hotspots) catches frequent repeat chokes but misses catastrophic new failures in unmonitored branches.",
         "Recommends a two-tier hybrid strategy: permanent monitoring on critical trunk assets, and roaming sensors in high-risk reticulation zones.",
@@ -2466,7 +2466,7 @@ window.__BUNDLED_DATA__ = {
       "summary": "Foundational federal compliance manual for evaluating sewer network capacity, I&I abatement, preventative maintenance, and overflow mitigation. Establishes that blockages cause 48% of events but capacity causes ~75% of volume.",
       "assignedTo": "Satya Siddhartha",
       "pdfUrl": "./contributors/rijoy-john/grey/GL_2005_USEPA_CMOM_Guide.pdf",
-      "url": "https://www.epa.gov",
+      "url": "https://nepis.epa.gov/Exe/ZyPURL.cgi?Dockey=30006OW9.TXT",
       "keyTakeaways": [
         "Establishes federal CMOM criteria: utilities must guarantee adequate conveyance capacity before permitting new connections.",
         "Identifies that 48% of SSO events are caused by blockages, but capacity/wet-weather events account for ~75% of total spilled volume.",
@@ -2492,7 +2492,7 @@ window.__BUNDLED_DATA__ = {
       "summary": "The seminal international manual on gravity sewer design, containing the industry's standard flow meter and sensor siting checklist (§3.7.2).",
       "assignedTo": "Satya Siddhartha",
       "pdfUrl": "./contributors/rijoy-john/grey/GL_2007_ASCE_WEF_MOP60_Gravity_Sanitary_Sewer_Design.pdf",
-      "url": "https://ascelibrary.org",
+      "url": "https://ascelibrary.org/doi/book/10.1061/9780784409008",
       "keyTakeaways": [
         "Authoritative design manual for gravity sanitary sewer networks, pipe hydraulics, and manhole spacing.",
         "Section 3.7.2 provides the industry's foundational flow-meter siting checklist: homogeneous upstream land use, clean hydraulic profile, isolatable upstream pipe footage.",
