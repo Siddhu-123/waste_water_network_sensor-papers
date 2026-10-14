@@ -18,3 +18,6 @@ jobs:
 
       - name: Validate contributor data and PDF links
         run: python3 scripts/validate_repo.py
+
+      - name: Validate research geography coverage and sources
+        run: python3 scripts/validate_research_geography.py

@@ -17,6 +17,7 @@
     <link rel="stylesheet" href="css/controls.css" />
     <link rel="stylesheet" href="css/papers.css" />
     <link rel="stylesheet" href="css/modals.css" />
+    <link rel="stylesheet" href="css/research-map.css" />
   </head>
   <body>
     <div
@@ -169,6 +170,64 @@
     </header>
 
     <main id="mainLibraryContent">
+      <section id="researchMapSection" class="research-map-section" aria-labelledby="researchMapHeading">
+        <div class="research-map-heading">
+          <div>
+            <div class="research-map-kicker">Research geography</div>
+            <h2 id="researchMapHeading">Explore the places behind the literature</h2>
+            <p>Browse study locations, organizations, and geographic scope across the library.</p>
+          </div>
+          <div class="research-map-coverage" id="researchMapCoverage" aria-live="polite">Loading map data…</div>
+        </div>
+        <div id="researchMapError" class="research-map-error" role="alert" hidden>
+          <div><strong>Research map data is unavailable.</strong><span id="researchMapErrorText">The map will appear when its location data loads.</span></div>
+          <button type="button" id="researchMapRetry">Try again</button>
+        </div>
+        <div class="research-map-layout" id="researchMapLayout">
+          <div class="research-map-main">
+            <div class="research-map-toolbar">
+              <label class="research-map-search">Country
+                <input id="researchMapCountry" list="researchMapCountryOptions" placeholder="Search countries" autocomplete="off" />
+                <datalist id="researchMapCountryOptions"></datalist>
+              </label>
+              <label class="research-map-search">Location
+                <input id="researchMapLocation" list="researchMapLocationOptions" placeholder="Search cities and places" autocomplete="off" />
+                <datalist id="researchMapLocationOptions"></datalist>
+              </label>
+              <label class="research-map-filter">Type
+                <select id="researchMapType" aria-label="Filter research by type">
+                  <option value="all">All types</option><option value="academic">Academic</option><option value="grey">Grey literature</option><option value="compiled">Compiled reviews</option>
+                </select>
+              </label>
+              <label class="research-map-filter">Contributor
+                <select id="researchMapContributor" aria-label="Filter research by contributor"><option value="all">All contributors</option></select>
+              </label>
+              <div class="research-map-actions">
+                <button type="button" id="researchMapAll" class="research-map-quiet">All places</button>
+                <button type="button" id="researchMapUnmapped" class="research-map-quiet">Unmapped</button>
+              </div>
+            </div>
+            <div class="research-map-canvas-wrap" id="researchMapCanvasWrap">
+              <canvas id="researchMapCanvas" role="img" aria-label="Interactive world map. Select a location marker to view related research."></canvas>
+              <div id="researchMapTooltip" class="research-map-tooltip" role="tooltip" hidden></div>
+              <div class="research-map-map-status">Hover to magnify · Select a pin or city below to explore</div>
+            </div>
+            <div class="research-map-quick" id="researchMapAustralia" aria-label="Australian city shortcuts"></div>
+            <div class="research-map-credit">Map data: <a href="https://www.naturalearthdata.com/" target="_blank" rel="noopener">Natural Earth 1:110m land</a> · Public domain</div>
+          </div>
+          <aside class="research-map-sidebar" aria-labelledby="researchMapResultsHeading">
+            <div class="research-map-sidebar-head">
+              <div class="research-map-kicker">Location guide</div>
+              <h3 id="researchMapResultsHeading">Places in the library</h3>
+              <p id="researchMapSelection">Choose a place to explore its related records.</p>
+            </div>
+            <div id="researchMapOrganizations" class="research-map-organizations" aria-label="Organizations at this location"></div>
+            <div id="researchMapTopPlaces" class="research-map-top-places"></div>
+            <div id="researchMapResults" class="research-map-results" aria-live="polite"></div>
+          </aside>
+        </div>
+        <div id="researchMapStatus" class="sr-only" role="status" aria-live="polite"></div>
+      </section>
       <!-- ========================================== -->
       <!-- SECTION 1: Academic Literature             -->
       <!-- ========================================== -->
@@ -573,14 +632,17 @@
 
     <script src="js/bundled-data.js"></script>
     <script src="js/data.js"></script>
-    <script src="js/filters.js"></script>
     <script src="js/papers.js"></script>
+    <script src="js/filters.js"></script>
     <script src="js/modals.js"></script>
     <script src="js/profile.js"></script>
     <script src="js/annotations.js"></script>
     <script src="js/grey-literature.js"></script>
     <script src="js/instructor.js"></script>
     <script src="js/main.js"></script>
+    <script src="js/world-land.js"></script>
+    <script src="js/research-geography-data.js"></script>
+    <script src="js/research-map.js"></script>
   </body>
 </html>
 
