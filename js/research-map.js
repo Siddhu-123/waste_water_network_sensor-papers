@@ -484,8 +484,8 @@
     const pin = touch ? null : nearestPin(pos.x, pos.y, pointerInsideLens(pos.x, pos.y), 9);
     if (pin && event.pointerType !== "touch") {
       el.tooltip.textContent = describePin(pin); el.tooltip.hidden = false;
-      const x = Math.min(map.width - 185, Math.max(6, pos.x + 13));
-      const y = Math.min(map.height - 42, Math.max(5, pos.y + 12));
+      const x = Math.max(6, Math.min(map.width - el.tooltip.offsetWidth - 6, pos.x + 13));
+      const y = Math.max(5, Math.min(map.height - el.tooltip.offsetHeight - 6, pos.y + 12));
       el.tooltip.style.transform = `translate(${x}px, ${y}px)`;
       el.canvas.style.cursor = "pointer";
     } else { el.tooltip.hidden = true; el.canvas.style.cursor = "crosshair"; }
