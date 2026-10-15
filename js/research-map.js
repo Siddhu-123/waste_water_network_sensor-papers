@@ -56,6 +56,21 @@
     const assigned = Array.isArray(record.assignedTo) ? record.assignedTo : [record.assignedTo];
     return [...new Set(assigned.flatMap((name) => String(name || "").split(",")).map((name) => name.trim()).filter(Boolean))];
   };
+  const SHORT_TYPE = { academic: "Academic", grey: "Grey literature", compiled: "Compiled" };
+  const recordYear = (record) => {
+    const direct = String(record.year || "").match(/(?:19|20)\d{2}/);
+    if (direct) return direct[0];
+    const inCitation = String(record.authors || "").match(/\b((?:19|20)\d{2})\b/);
+    return inCitation ? inCitation[1] : "";
+  };
+  const titleMeta = (record) => {
+    const authors = String(record.authors || "").trim();
+    const firstAuthor = authors.split(/[,;]| and | & /)[0].replace(/\s*\((?:19|20)\d{2}\).*$/, "").trim();
+    const who = firstAuthor ? `${firstAuthor}${/[,;]| and | & /.test(authors) ? " et al." : ""}` : String(record.organization || "").split(";")[0].trim() || (contributorsFor(record).length ? `Added by ${contributorsFor(record).join(", ")}` : "");
+    const bits = [who, recordYear(record)].filter(Boolean).map(escapeHtml);
+    bits.push(`<span class="research-map-title-type">${escapeHtml(SHORT_TYPE[record.type] || record.type)}</span>`);
+    return bits.join(" · ");
+  };
   const organizationName = (record) => String(record.organization || "").trim();
   const placeCountry = (place) => place.kind === "country" ? (place.country || place.name) : place.country;
   const point = (lat, lon) => ({
@@ -312,7 +327,7 @@
     el.results.innerHTML = `<ul class="research-map-titles">${entries.slice().sort(byTitle).map(({ record, locations }, index) => {
       const key = recordKey(record);
       rowData.set(key, { record, locations, selected });
-      return `<li><button type="button" class="research-map-title-row" data-record="${escapeHtml(key)}" tabindex="0" aria-controls="researchMapDetail"><i class="research-map-title-dot ${escapeHtml(record.type)}" aria-hidden="true"></i><span><span class="sr-only">${escapeHtml(typeLabel(record.type))}: </span>${escapeHtml(record.title || `Record ${record.id}`)}</span></button></li>`;
+      return `<li><button type="button" class="research-map-title-row ${escapeHtml(record.type)}" data-record="${escapeHtml(key)}" tabindex="0" aria-controls="researchMapDetail"><span class="research-map-title-text">${escapeHtml(record.title || `Record ${record.id}`)}</span><span class="research-map-title-meta">${titleMeta(record)}</span></button></li>`;
     }).join("")}</ul>`;
     detail.roving = el.results.querySelector(".research-map-title-row");
   }
@@ -649,17 +664,35 @@
     }
   }
 
-  const detailSlot = document.createElement("aside");
-  detailSlot.className = "research-map-detail-slot";
-  detailSlot.setAttribute("aria-label", "Paper details");
-  el.layout.append(detailSlot);
   detail.panel = document.createElement("div");
   detail.panel.id = "researchMapDetail";
   detail.panel.className = "research-map-detail";
+  detail.panel.setAttribute("role", "region");
+  detail.panel.setAttribute("aria-label", "Paper details");
   detail.panel.tabIndex = -1;
   detail.panel.hidden = true;
-  detailSlot.append(detail.panel);
+  document.body.append(detail.panel);
 
+  const DETAIL_WIDTH = 360;
+  const DETAIL_EDGE = 8;
+  const DETAIL_GAP = 4;
+  // Fixed overlay, so it takes no layout space. It sits to the right of the sidebar when there
+  // is room, otherwise it slides left over the sidebar edge to stay inside the viewport.
+  function positionDetail() {
+    if (!detail.row || detail.panel.hidden) return;
+    const vw = document.documentElement.clientWidth, vh = document.documentElement.clientHeight;
+    const rowBox = detail.row.getBoundingClientRect();
+    const anchor = (el.sidebar || el.results).getBoundingClientRect();
+    const width = Math.min(DETAIL_WIDTH, vw - DETAIL_EDGE * 2);
+    const maxHeight = vh - DETAIL_EDGE * 2;
+    detail.panel.style.width = `${width}px`;
+    detail.panel.style.maxHeight = `${maxHeight}px`;
+    const height = Math.min(detail.panel.offsetHeight, maxHeight);
+    const left = Math.max(DETAIL_EDGE, Math.min(anchor.right + DETAIL_GAP, vw - width - DETAIL_EDGE));
+    const top = Math.max(DETAIL_EDGE, Math.min(rowBox.top, vh - height - DETAIL_EDGE));
+    detail.panel.style.left = `${left}px`;
+    detail.panel.style.top = `${top}px`;
+  }
   function hideDetail() {
     clearTimeout(detail.timer);
     detail.row?.classList.remove("active");
@@ -674,17 +707,31 @@
     detail.row?.classList.remove("active");
     detail.row = row; detail.key = row.dataset.record;
     row.classList.add("active");
-    detail.panel.innerHTML = renderRecord(entry.record, entry.locations, entry.selected) + '<button type="button" class="research-map-detail-close">Close</button>';
+    detail.panel.innerHTML = '<div class="research-map-detail-body">' + renderRecord(entry.record, entry.locations, entry.selected) + '<button type="button" class="research-map-detail-close">Close</button></div>';
     detail.panel.hidden = false;
-    detail.panel.scrollTop = 0;
+    detail.panel.firstElementChild.scrollTop = 0;
+    positionDetail();
   }
   function scheduleHide() {
     clearTimeout(detail.timer);
     detail.timer = setTimeout(() => {
       if (!detail.panel.matches(":hover") && !detail.row?.matches(":hover") &&
           !detail.panel.contains(document.activeElement) && document.activeElement !== detail.row) hideDetail();
-    }, 180);
+    }, 250);
   }
+  // Scrolling the list moves the row: follow it while it stays visible, close once it leaves the list.
+  let repositionFrame = 0;
+  window.addEventListener("scroll", (event) => {
+    if (detail.panel.hidden || detail.panel.contains(event.target)) return;
+    cancelAnimationFrame(repositionFrame);
+    repositionFrame = requestAnimationFrame(() => {
+      if (!detail.row || !detail.row.isConnected) { hideDetail(); return; }
+      const rowBox = detail.row.getBoundingClientRect(), listBox = el.results.getBoundingClientRect();
+      if (rowBox.bottom < listBox.top || rowBox.top > listBox.bottom) hideDetail();
+      else positionDetail();
+    });
+  }, true);
+  window.addEventListener("resize", hideDetail);
   el.results.addEventListener("pointerover", (event) => showDetail(event.target.closest("[data-record]")));
   el.results.addEventListener("pointerout", scheduleHide);
   el.results.addEventListener("focusin", (event) => showDetail(event.target.closest("[data-record]")));
