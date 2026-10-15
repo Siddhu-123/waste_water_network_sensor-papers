@@ -173,9 +173,7 @@
       <section id="researchMapSection" class="research-map-section" aria-labelledby="researchMapHeading">
         <div class="research-map-heading">
           <div>
-            <div class="research-map-kicker">Research geography</div>
-            <h2 id="researchMapHeading">Explore the places behind the literature</h2>
-            <p>Browse study locations, organizations, and geographic scope across the library.</p>
+            <h2 id="researchMapHeading">Research locations</h2>
           </div>
           <div class="research-map-coverage" id="researchMapCoverage" aria-live="polite">Loading map data…</div>
         </div>
@@ -210,18 +208,14 @@
             <div class="research-map-canvas-wrap" id="researchMapCanvasWrap">
               <canvas id="researchMapCanvas" role="img" aria-label="Interactive world map. Select a location marker to view related research."></canvas>
               <div id="researchMapTooltip" class="research-map-tooltip" role="tooltip" hidden></div>
-              <div class="research-map-map-status">Hover to magnify · Nearby research dots snap for selection</div>
             </div>
             <div class="research-map-quick" id="researchMapAustralia" aria-label="Australian city shortcuts"></div>
             <div class="research-map-legend" aria-label="Research record types"><span class="academic">Academic / peer-reviewed</span><span class="grey">Grey literature</span></div>
-            <details class="research-map-explanation"><summary>How to read these locations</summary><p>Some reviews and global guides have no single site; some sources leave study locations unnamed; source metadata may lack a place. Markers show approximate city, region, or country centers, not exact sensor sites. Relationships are labelled as study, affiliation, organization, or scope. Snapping changes only the visual position; original coordinates and metadata are retained.</p></details>
-            <div class="research-map-credit">Map data: <a href="https://www.naturalearthdata.com/" target="_blank" rel="noopener">Natural Earth 1:110m land</a> · Public domain</div>
           </div>
           <aside class="research-map-sidebar" aria-labelledby="researchMapResultsHeading">
             <div class="research-map-sidebar-head">
-              <div class="research-map-kicker">Location guide</div>
-              <h3 id="researchMapResultsHeading">Papers in the library</h3>
-              <p id="researchMapSelection">Hover a title for details or click to open the paper.</p>
+              <h3 id="researchMapResultsHeading">Papers</h3>
+              <p id="researchMapSelection">Loading…</p>
             </div>
             <div id="researchMapOrganizations" class="research-map-organizations" aria-label="Organizations at this location"></div>
             <div id="researchMapTopPlaces" class="research-map-top-places"></div>
@@ -295,13 +289,6 @@
               <option value="all">User: All</option>
             </select>
             <div class="filter-group" id="nestedFilterGroup"></div>
-            <p class="filter-help">
-              Select a topic first. The user and category filters then show only
-              values used by that topic. Define <code>topic</code>,
-              <code>filterCategory</code>, and <code>assignedTo</code> in each
-              contributor's <code>papers.json</code>; keep the same metadata in
-              <code>summaries.json</code> for shared summaries.
-            </p>
           </div>
         </div>
 

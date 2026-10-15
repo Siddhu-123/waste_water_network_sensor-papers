@@ -376,9 +376,9 @@
 
   function showOverview() {
     selectedPlace = null;
-    $("researchMapResultsHeading").textContent = "Records in the library";
+    $("researchMapResultsHeading").textContent = "Papers";
     const listed = filteredRecords();
-    el.selection.textContent = `${listed.length} ${listed.length === 1 ? "record" : "records"}. Hover or focus a title for details, or select a map pin to narrow the list.`;
+    el.selection.textContent = `${listed.length} ${listed.length === 1 ? "record" : "records"}`;
     el.organizations.innerHTML = "";
     el.top.innerHTML = "";
     renderTitleList(listed.map((record) => ({ record, locations: locationsFor(record) })), null, `<p class="research-map-empty">No records match these filters.</p>`);
@@ -596,11 +596,11 @@
     selectedPlace = null; selectedOrganization = ""; selectedCountry = ""; unmappedMode = false;
     hideDetail();
     el.organizations.innerHTML = ""; el.results.innerHTML = "";
-    $("researchMapResultsHeading").textContent = "Choose a location";
+    $("researchMapResultsHeading").textContent = "Locations";
     const options = group.pins.map(({ place }) => `<button type="button" class="research-map-place-row" data-place="${escapeHtml(place.id)}"><span>${escapeHtml(place.name)}<small>${escapeHtml(place.country || place.kind || "")}</small></span><b>${recordsAtPlace(place).length}</b></button>`).join("");
-    el.top.innerHTML = `<div class="research-map-subhead">Several places share this map dot</div>${options}`;
+    el.top.innerHTML = options;
     el.top.querySelector("button")?.focus();
-    el.selection.textContent = "Choose a place to view its records.";
+    el.selection.textContent = `${group.pins.length} locations`;
     el.status.textContent = `${group.pins.length} places share this map dot. Choose one in the sidebar.`;
     el.top.focus?.();
   }
@@ -659,7 +659,7 @@
   });
   function renderCountrySelection() {
     if (selectedPlace) showPlaceResults(selectedPlace);
-    else if (selectedCountry) { el.selection.textContent = `Search for a listed country to view its records.`; el.top.innerHTML = ""; el.organizations.innerHTML = ""; el.results.innerHTML = `<p class="research-map-empty">No matching country. Choose a country from the suggestions.</p>`; }
+    else if (selectedCountry) { el.selection.textContent = ""; el.top.innerHTML = ""; el.organizations.innerHTML = ""; el.results.innerHTML = `<p class="research-map-empty">No matching country</p>`; }
     draw();
   }
   el.location.addEventListener("input", () => {
@@ -670,7 +670,7 @@
     if (!value) { selectedPlace = null; selectedCountry = ""; unmappedMode = false; el.country.value = ""; render(); return; }
     const place = places.find((p) => p.name.toLowerCase() === value || `${p.name}, ${p.country || ""}`.toLowerCase() === value || (p.kind === "country" && (p.country || p.name).toLowerCase() === value));
     if (place) choosePlace(place);
-    else { selectedPlace = null; selectedCountry = ""; unmappedMode = false; el.country.value = ""; el.selection.textContent = "Choose a listed location"; el.results.innerHTML = `<p class="research-map-empty">Select a place from the suggestions to see related records.</p>`; el.top.innerHTML = ""; el.organizations.innerHTML = ""; draw(); }
+    else { selectedPlace = null; selectedCountry = ""; unmappedMode = false; el.country.value = ""; el.selection.textContent = ""; el.results.innerHTML = `<p class="research-map-empty">No matching location</p>`; el.top.innerHTML = ""; el.organizations.innerHTML = ""; draw(); }
   });
   el.type.addEventListener("change", () => { selectedOrganization = ""; render(); });
   el.contributor.addEventListener("change", () => { selectedOrganization = ""; render(); });
