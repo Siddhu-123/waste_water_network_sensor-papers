@@ -10,7 +10,7 @@ async function loadAnnotationsSummary() {
   const configuredApi = String(
     window.ANNOTATION_API_BASE ||
       (host === "siddhu-123.github.io"
-        ? "https://waste-water-network-sensor-papers-two.vercel.app"
+        ? "https://pdf-annotations.sidcode3535.workers.dev"
         : ""),
   ).trim().replace(/\/+$/, "");
   const sameOriginApi = host === "localhost" || host === "127.0.0.1" || host.endsWith(".vercel.app");
