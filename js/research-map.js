@@ -19,7 +19,7 @@
   const DOT_RADIUS = 1.65;
   const HIT_RADIUS = { base: 12, lens: 28, touch: 20 };
   const GLOW_RADIUS = { base: 6.5, lens: 7.5 };
-  const TYPE_RGB = { academic: [56, 189, 248], grey: [245, 158, 11], compiled: [167, 139, 250] };
+  const TYPE_RGB = { academic: [56, 189, 248], grey: [245, 158, 11] };
   const desktopQuery = window.matchMedia("(min-width: 1024px) and (hover: hover) and (pointer: fine)");
   const isDesktop = () => desktopQuery.matches;
   const rowData = new Map();
@@ -51,25 +51,68 @@
     catch (_) { return false; }
   };
   const recordKey = (record) => `${record.type}:${record.id}`;
-  const typeLabel = (type) => ({ academic: "Academic / peer-reviewed", grey: "Grey literature", compiled: "Compiled reviews" }[type] || type);
+  const MAP_TYPES = ["academic", "grey"];
+  const typeLabel = (type) => ({ academic: "Academic / peer-reviewed", grey: "Grey literature" }[type] || type);
   const contributorsFor = (record) => {
     const assigned = Array.isArray(record.assignedTo) ? record.assignedTo : [record.assignedTo];
     return [...new Set(assigned.flatMap((name) => String(name || "").split(",")).map((name) => name.trim()).filter(Boolean))];
   };
-  const SHORT_TYPE = { academic: "Academic", grey: "Grey literature", compiled: "Compiled" };
-  const recordYear = (record) => {
-    const direct = String(record.year || "").match(/(?:19|20)\d{2}/);
-    if (direct) return direct[0];
-    const inCitation = String(record.authors || "").match(/\b((?:19|20)\d{2})\b/);
-    return inCitation ? inCitation[1] : "";
+  const INITIALS = /^(?:[A-Z][A-Za-z]?\.[\s-]*)+$/;
+  const YEAR_IN_CITATION = /\(((?:19|20)\d{2})[a-z]?\)\s*\.?\s*$/;
+  const yearOf = (value) => {
+    const direct = String(value ?? "").match(/^\s*((?:19|20)\d{2})\s*$/);
+    return direct ? direct[1] : "";
+  };
+  const citationYear = (authors) => (String(authors || "").match(YEAR_IN_CITATION) || [])[1] || "";
+  // Canonical metadata for a map record, matched on type and exact id.
+  const canonicalFor = (record) => {
+    const bundled = window.__BUNDLED_DATA__ || {};
+    const pick = (live, bundledKey) => {
+      for (const list of [live, bundled[bundledKey]]) {
+        const found = Array.isArray(list) ? list.find((item) => String(item.id) === String(record.id)) : null;
+        if (found) return found;
+      }
+      return null;
+    };
+    if (record.type === "academic") return pick(typeof papersData !== "undefined" ? papersData : null, "papers");
+    if (record.type === "grey") return pick(typeof greyLitData !== "undefined" ? greyLitData : null, "greyLiterature");
+    return null;
+  };
+  const publicationYear = (citation) => {
+    const text = String(citation || "");
+    const match = text.match(/\((?:v\d+,\s*)?((?:19|20)\d{2})\)\s*$/) || text.match(/\bpublished\b.*\b((?:19|20)\d{2})\s*$/i);
+    return match ? match[1] : "";
+  };
+  const recordYear = (record, canonical) =>
+    yearOf(record.year) || citationYear(record.authors) || yearOf(canonical?.year) || citationYear(canonical?.authors) || publicationYear(canonical?.journal);
+  // Names of the actual authors, in order. Handles "Surname, I., Surname, I." and "Given Surname, Given Surname".
+  const authorNames = (raw) => {
+    const text = String(raw || "").replace(YEAR_IN_CITATION, "").replace(/[\s,;]*\bet al\.?$/i, "").trim();
+    const tokens = text.replace(/\s*&\s*|\s+and\s+/g, ",").split(/[,;]/).map((t) => t.trim()).filter(Boolean);
+    const names = [];
+    for (let i = 0; i < tokens.length; i++) {
+      names.push(tokens[i]);
+      if (i + 1 < tokens.length && INITIALS.test(tokens[i + 1])) i++;
+    }
+    return names;
+  };
+  const recordAuthor = (record, canonical) => {
+    if (record.type === "grey") {
+      const people = authorNames(record.authors || canonical?.authors);
+      const orgs = String(canonical?.organization || record.organization || "").split(";").map((name) => name.trim()).filter(Boolean);
+      if (people.length) return people.length > 1 ? `${people[0]} et al.` : people[0];
+      return orgs.length > 1 ? `${orgs[0]} et al.` : orgs[0] || "";
+    }
+    const names = authorNames(record.authors || canonical?.authors);
+    const etAl = /\bet al\.?\s*(?:\(.*\))?$/i.test(String(record.authors || canonical?.authors || ""));
+    if (!names.length) return "";
+    return names.length > 1 || etAl ? `${names[0]} et al.` : names[0];
   };
   const titleMeta = (record) => {
-    const authors = String(record.authors || "").trim();
-    const firstAuthor = authors.split(/[,;]| and | & /)[0].replace(/\s*\((?:19|20)\d{2}\).*$/, "").trim();
-    const who = firstAuthor ? `${firstAuthor}${/[,;]| and | & /.test(authors) ? " et al." : ""}` : String(record.organization || "").split(";")[0].trim() || (contributorsFor(record).length ? `Added by ${contributorsFor(record).join(", ")}` : "");
-    const bits = [who, recordYear(record)].filter(Boolean).map(escapeHtml);
-    bits.push(`<span class="research-map-title-type">${escapeHtml(SHORT_TYPE[record.type] || record.type)}</span>`);
-    return bits.join(" · ");
+    const canonical = canonicalFor(record);
+    const author = recordAuthor(record, canonical) || "Author unavailable";
+    const year = recordYear(record, canonical) || "Year unavailable";
+    return `${escapeHtml(author)} · ${escapeHtml(year)}`;
   };
   const organizationName = (record) => String(record.organization || "").trim();
   const placeCountry = (place) => place.kind === "country" ? (place.country || place.name) : place.country;
@@ -104,9 +147,8 @@
     }
     data = incoming;
     places = incoming.places.filter((place) => place && place.id != null && Number.isFinite(Number(place.lat)) && Number.isFinite(Number(place.lon)));
-    records = incoming.records.filter((record) => record && record.id != null).map((record) => ({
+    records = incoming.records.filter((record) => record && record.id != null && MAP_TYPES.includes(record.type)).map((record) => ({
       ...record,
-      type: ["academic", "grey", "compiled"].includes(record.type) ? record.type : "academic",
       locations: Array.isArray(record.locations) ? record.locations : [],
     }));
     if (!places.length || !records.length) {
@@ -286,7 +328,7 @@
     const counts = pinCounts();
     const pins = places.filter((place) => (counts.get(String(place.id)) || new Set()).size > 0).map((place) => {
       const keys = counts.get(String(place.id));
-      const typeCounts = Object.fromEntries(["academic", "grey", "compiled"].map((type) => [type, new Set(filteredRecords().filter((record) => record.type === type && locationsFor(record).some((loc) => String(loc.placeId) === String(place.id))).map(recordKey)).size]));
+      const typeCounts = Object.fromEntries(MAP_TYPES.map((type) => [type, new Set(filteredRecords().filter((record) => record.type === type && locationsFor(record).some((loc) => String(loc.placeId) === String(place.id))).map(recordKey)).size]));
       return { place, count: keys.size, typeCounts, recordKeys: [...keys], sourcePoint: point(place.lat, place.lon) };
     });
     map.pins = snapPins(pins, map.landDots);
@@ -305,7 +347,7 @@
     const recordTypes = new Map(records.map((record) => [recordKey(record), record.type]));
     for (const pin of pins) {
       const key = `${pin.point.x.toFixed(3)},${pin.point.y.toFixed(3)}`;
-      if (!groups.has(key)) groups.set(key, { point: pin.point, pins: [], typeRecords: { academic: new Set(), grey: new Set(), compiled: new Set() }, records: new Set(), typeCounts: { academic: 0, grey: 0, compiled: 0 }, count: 0 });
+      if (!groups.has(key)) groups.set(key, { point: pin.point, pins: [], typeRecords: { academic: new Set(), grey: new Set() }, records: new Set(), typeCounts: { academic: 0, grey: 0 }, count: 0 });
       const group = groups.get(key); group.pins.push(pin);
       for (const key of pin.recordKeys) group.records.add(key);
       for (const key of pin.recordKeys) {
@@ -398,8 +440,6 @@
     const links = [];
     const academic = record.type === "academic" && typeof papersData !== "undefined" && Array.isArray(papersData)
       ? papersData.find((paper) => String(paper.id) === String(record.id)) : null;
-    const compiled = record.type === "compiled" && typeof compiledPapersData !== "undefined" && Array.isArray(compiledPapersData)
-      ? compiledPapersData.find((paper) => String(paper.id) === String(record.id)) : null;
     const viewerUrl = (paper, fallback) => {
       if (paper && typeof getPdfViewerUrl === "function") return safeUrl(getPdfViewerUrl(paper));
       const viewer = new URL("./pdf-viewer.html", window.location.href);
@@ -413,10 +453,6 @@
       const href = viewerUrl(academic, { ...record, pdfUrl: record.pdfUrl || record.url });
       const sourcePdf = safeUrl(academic?.pdfUrl || record.pdfUrl || record.url);
       if (href && sourcePdf) links.push(`<a class="research-map-link primary" href="${escapeHtml(href)}" target="_blank" rel="noopener">PDF + Notes</a>`);
-    } else if (record.type === "compiled") {
-      const localPdf = linkedPdf;
-      const href = compiled ? viewerUrl(compiled, record) : localPdf;
-      if (href && localPdf) links.push(`<a class="research-map-link primary" href="${escapeHtml(href)}" target="_blank" rel="noopener">Open PDF</a>`);
     }
     if (record.type === "grey") {
       if (linkedPdf) links.push(`<a class="research-map-link primary" href="${escapeHtml(linkedPdf)}" target="_blank" rel="noopener">Open PDF</a>`);
@@ -459,7 +495,7 @@
       ctx.arc(x, y, radius, -Math.PI / 2 + index * Math.PI * 2 / count, -Math.PI / 2 + (index + 1) * Math.PI * 2 / count);
       ctx.closePath();
     };
-    const typesOf = (group) => ["academic", "grey", "compiled"].filter((type) => group.typeCounts[type] > 0);
+    const typesOf = (group) => MAP_TYPES.filter((type) => group.typeCounts[type] > 0);
     for (const group of groups) {
       const { x, y } = group.point;
       const types = typesOf(group);
