@@ -1,6 +1,14 @@
 # Cloudflare vs Vercel backend: review and migration plan
 
-Status: plan only. No code, deploy, or config was changed. Source was read-only. No secrets were read. Live endpoint timings and Cloudflare/Vercel docs research are done separately by the main session. Statements here are about the repo source, not the live deployments, unless marked **unverified**.
+## Transfer status, 15 October 2026
+
+Annotation reconciliation is complete. Both public APIs were exported locally before writes. All 144 registered/discovered paper documents were compared. Cloudflare now contains 339 annotation objects: 120 Vercel-only objects were added, the Cloudflare-only object was retained, and three deletion tombstones were preserved. Shared differences were five highlight opacities and five note colours; current Cloudflare appearance was retained. Every annotation field was compared after transfer, and the global summary was refreshed and verified. Vercel documents were unchanged.
+
+Local safety copies include both API exports, before/after documents, transfer requests and receipts, checksums, the 115 PDFs, tracked site files and a Git bundle. These private backups are outside the repository and deployment package.
+
+The frontend now maps saved links/overrides targeting the former Vercel backend to Cloudflare. Existing open tabs must reload to receive this change. Vercel remains deployed with its original data; perform another incremental comparison before retiring it. No Vercel project, Blob object, PDF, or deployment was deleted.
+
+This transferred annotations into the existing Cloudflare KV service. The D1 migration, concurrency, authentication and deployment hardening recommendations below are still pending. The following sections preserve the original pre-transfer review.
 
 ## Live read-only findings, 15 October 2026
 
