@@ -13,7 +13,7 @@
   if (!el.canvas || !el.wrap) return;
 
   const ctx = el.canvas.getContext("2d", { alpha: false });
-  const map = { width: 0, height: 0, dpr: 1, mask: null, pins: [], pointer: null, raf: 0, lens: 150, zoom: 4, mapTop: 0, mapHeight: 0 };
+  const map = { width: 0, height: 0, dpr: 1, mask: null, landDots: [], pins: [], pointer: null, raf: 0, lens: 150, zoom: 4, mapTop: 0, mapHeight: 0 };
   let data = null;
   let places = [];
   let records = [];
@@ -41,6 +41,7 @@
     catch (_) { return false; }
   };
   const recordKey = (record) => `${record.type}:${record.id}`;
+  const typeLabel = (type) => ({ academic: "Academic / peer-reviewed", grey: "Grey literature", compiled: "Compiled reviews" }[type] || type);
   const contributorsFor = (record) => {
     const assigned = Array.isArray(record.assignedTo) ? record.assignedTo : [record.assignedTo];
     return [...new Set(assigned.flatMap((name) => String(name || "").split(",")).map((name) => name.trim()).filter(Boolean))];
@@ -153,6 +154,32 @@
     return map.mask.pixels[(my * map.mask.width + mx) * 4] > 100;
   }
 
+  function nearestDot(target, dots) {
+    let best = null, distance = Infinity;
+    for (const dot of dots) {
+      const d = (dot.x - target.x) ** 2 + (dot.y - target.y) ** 2;
+      if (d < distance) { best = dot; distance = d; }
+    }
+    return best;
+  }
+
+  function buildLandDots(step = 6.1, start = 4, clip = null, transform = (p) => p) {
+    const dots = [];
+    const minX = clip ? clip.left : 4, maxX = clip ? clip.right : map.width - 3;
+    const minY = clip ? clip.top : 4, maxY = clip ? clip.bottom : map.height - 3;
+    const startX = clip ? Math.floor(clip.left / step) * step : start;
+    const startY = clip ? Math.floor(clip.top / step) * step : start;
+    for (let y = startY; y < maxY; y += step) for (let x = startX; x < maxX; x += step) {
+      const source = transform({ x, y });
+      if (isLand(source.x, source.y)) dots.push({ x, y });
+    }
+    return dots;
+  }
+
+  function snapPins(pins, dots) {
+    return pins.map((pin) => ({ ...pin, point: nearestDot(pin.sourcePoint, dots) || pin.sourcePoint }));
+  }
+
   function setSize() {
     const rect = el.canvas.getBoundingClientRect();
     if (!rect.width) return;
@@ -166,7 +193,10 @@
     el.canvas.height = Math.round(map.height * map.dpr);
     ctx.setTransform(map.dpr, 0, 0, map.dpr, 0, 0);
     buildMask();
-    map.pins.forEach((pin) => { pin.point = point(pin.place.lat, pin.place.lon); });
+    map.landDots = buildLandDots();
+    map.pins = snapPins(map.pins.map((pin) => ({ ...pin, sourcePoint: point(pin.place.lat, pin.place.lon) })), map.landDots);
+    map.pinGroups = groupPins(map.pins);
+    map.lensGroups = [];
     draw();
   }
 
@@ -202,9 +232,13 @@
   function render() {
     if (!data) return;
     const counts = pinCounts();
-    map.pins = places.filter((place) => (counts.get(String(place.id)) || new Set()).size > 0).map((place) => ({
-      place, count: counts.get(String(place.id)).size, point: point(place.lat, place.lon),
-    }));
+    const pins = places.filter((place) => (counts.get(String(place.id)) || new Set()).size > 0).map((place) => {
+      const keys = counts.get(String(place.id));
+      const typeCounts = Object.fromEntries(["academic", "grey", "compiled"].map((type) => [type, new Set(filteredRecords().filter((record) => record.type === type && locationsFor(record).some((loc) => String(loc.placeId) === String(place.id))).map(recordKey)).size]));
+      return { place, count: keys.size, typeCounts, recordKeys: [...keys], sourcePoint: point(place.lat, place.lon) };
+    });
+    map.pins = snapPins(pins, map.landDots);
+    map.pinGroups = groupPins(map.pins);
     const unique = new Set(filteredRecords().map(recordKey)).size;
     const mapped = new Set(filteredRecords().filter((r) => locationsFor(r).length).map(recordKey)).size;
     el.coverage.textContent = `${mapped} of ${unique} records mapped · ${map.pins.length} places`;
@@ -212,6 +246,23 @@
     else if (unmappedMode) showUnmappedResults();
     else showOverview();
     draw();
+  }
+
+  function groupPins(pins) {
+    const groups = new Map();
+    const recordTypes = new Map(records.map((record) => [recordKey(record), record.type]));
+    for (const pin of pins) {
+      const key = `${pin.point.x.toFixed(3)},${pin.point.y.toFixed(3)}`;
+      if (!groups.has(key)) groups.set(key, { point: pin.point, pins: [], typeRecords: { academic: new Set(), grey: new Set(), compiled: new Set() }, records: new Set(), typeCounts: { academic: 0, grey: 0, compiled: 0 }, count: 0 });
+      const group = groups.get(key); group.pins.push(pin);
+      for (const key of pin.recordKeys) group.records.add(key);
+      for (const key of pin.recordKeys) {
+        const type = recordTypes.get(key);
+        if (type) group.typeRecords[type]?.add(key);
+      }
+    }
+    for (const group of groups.values()) { group.count = group.records.size; for (const type of Object.keys(group.typeCounts)) group.typeCounts[type] = group.typeRecords[type].size; }
+    return [...groups.values()];
   }
 
   function showOverview() {
@@ -309,7 +360,7 @@
     }
     const unmapped = matchedLocations.length === 0 ? `<p class="research-map-unmapped-reason">${escapeHtml(record.unmappedReason || "No location assigned")}</p>` : "";
     const assignedTo = contributorsFor(record).join(", ");
-    return `<article class="research-map-record"><div class="research-map-record-top"><span class="research-map-type ${escapeHtml(record.type)}">${escapeHtml(record.type)}</span>${assignedTo ? `<span class="research-map-assignee">${escapeHtml(assignedTo)}</span>` : ""}</div><h4>${escapeHtml(record.title || `Record ${record.id}`)}</h4>${authors}${organization}${relation}${unmapped}<div class="research-map-record-links">${links.join("")}</div></article>`;
+    return `<article class="research-map-record"><div class="research-map-record-top"><span class="research-map-type ${escapeHtml(record.type)}">${escapeHtml(typeLabel(record.type))}</span>${assignedTo ? `<span class="research-map-assignee">${escapeHtml(assignedTo)}</span>` : ""}</div><h4>${escapeHtml(record.title || `Record ${record.id}`)}</h4>${authors}${organization}${relation}${unmapped}<div class="research-map-record-links">${links.join("")}</div></article>`;
   }
 
   function draw() {
@@ -318,12 +369,7 @@
     ctx.fillStyle = "#080d17";
     ctx.fillRect(0, 0, map.width, map.height);
     ctx.fillStyle = "rgba(210, 220, 233, 0.68)";
-    const spacing = 6.1;
-    for (let y = 4; y < map.height - 3; y += spacing) {
-      for (let x = 4; x < map.width - 3; x += spacing) {
-        if (isLand(x, y)) { ctx.beginPath(); ctx.arc(x, y, 1.05, 0, Math.PI * 2); ctx.fill(); }
-      }
-    }
+    for (const dot of map.landDots) { ctx.beginPath(); ctx.arc(dot.x, dot.y, 1.05, 0, Math.PI * 2); ctx.fill(); }
     ctx.strokeStyle = "rgba(110, 134, 163, 0.14)";
     ctx.lineWidth = 1;
     for (let lat = -30; lat <= 60; lat += 30) {
@@ -336,19 +382,20 @@
 
   function drawPins(lens) {
     const bounds = lens ? lensBounds() : null;
-    for (const pin of map.pins) {
-      const isSelected = selectedPlace && String(selectedPlace.id) === String(pin.place.id);
-      let x = pin.point.x, y = pin.point.y;
-      if (lens) {
-        x = map.pointer.x + (pin.point.x - map.pointer.x) * map.zoom;
-        y = map.pointer.y + (pin.point.y - map.pointer.y) * map.zoom;
-      }
-      if (lens && (x < bounds.left - 18 || x > bounds.right + 18 || y < bounds.top - 18 || y > bounds.bottom + 18)) continue;
-      const radius = lens ? 4.1 : isSelected ? 5.5 : 4;
-      ctx.beginPath(); ctx.arc(x, y, radius, 0, Math.PI * 2);
-      ctx.fillStyle = isSelected ? "#e7fbff" : "#42e8ed"; ctx.shadowColor = "rgba(54, 231, 238, .8)"; ctx.shadowBlur = lens ? 12 : 8; ctx.fill(); ctx.shadowBlur = 0;
-      ctx.lineWidth = 1.4; ctx.strokeStyle = "#063c52"; ctx.stroke();
-      if (lens && pin.place.kind === "city" && /^(Adelaide|Melbourne|Sydney)$/i.test(pin.place.name)) {
+    const groups = lens ? map.lensGroups || [] : map.pinGroups || [];
+    for (const group of groups) {
+      const { x, y } = group.point;
+      if (lens && (x < bounds.left - 4 || x > bounds.right + 4 || y < bounds.top - 4 || y > bounds.bottom + 4)) continue;
+      const types = ["academic", "grey", "compiled"].filter((type) => group.typeCounts[type] > 0);
+      const colors = { academic: "#38bdf8", grey: "#f59e0b", compiled: "#a78bfa" };
+      const radius = lens ? 1.08 : 1.05;
+      types.forEach((type, index) => {
+        const start = -Math.PI / 2 + index * Math.PI * 2 / types.length;
+        const end = -Math.PI / 2 + (index + 1) * Math.PI * 2 / types.length;
+        ctx.beginPath(); ctx.moveTo(x, y); ctx.arc(x, y, radius, start, end); ctx.closePath();
+        ctx.fillStyle = colors[type]; ctx.fill();
+      });
+      if (lens) for (const pin of group.pins) if (/^(Adelaide|Melbourne|Sydney)$/.test(pin.place.name)) {
         ctx.font = "600 11px Inter, sans-serif"; ctx.textBaseline = "middle";
         const labelWidth = ctx.measureText(pin.place.name).width;
         const labelX = Math.max(bounds.left + 5, Math.min(bounds.right - labelWidth - 5, x + 8));
@@ -370,15 +417,15 @@
     ctx.fillStyle = "#080d17"; ctx.fillRect(left, top, map.lens, map.lens);
     ctx.fillStyle = "rgba(189, 208, 226, 0.58)";
     const step = 5.2;
-    const startX = Math.floor(left / step) * step;
-    const startY = Math.floor(top / step) * step;
-    for (let yDest = startY; yDest < top + map.lens; yDest += step) {
-      for (let xDest = startX; xDest < left + map.lens; xDest += step) {
-        const sourceX = x + (xDest - x) / map.zoom;
-        const sourceY = y + (yDest - y) / map.zoom;
-        if (isLand(sourceX, sourceY)) { ctx.beginPath(); ctx.arc(xDest, yDest, 1.08, 0, Math.PI * 2); ctx.fill(); }
-      }
-    }
+    const sourceFromLens = (p) => ({ x: x + (p.x - x) / map.zoom, y: y + (p.y - y) / map.zoom });
+    const lensDots = buildLandDots(step, 0, { left, top, right: left + map.lens, bottom: top + map.lens }, sourceFromLens)
+      .filter((dot) => dot.x >= left && dot.x <= left + map.lens && dot.y >= top && dot.y <= top + map.lens);
+    map.lensDots = lensDots;
+    for (const dot of lensDots) { ctx.beginPath(); ctx.arc(dot.x, dot.y, 1.08, 0, Math.PI * 2); ctx.fill(); }
+    const visiblePins = map.pins.map((pin) => ({ ...pin, sourcePoint: { x: x + (pin.sourcePoint.x - x) * map.zoom, y: y + (pin.sourcePoint.y - y) * map.zoom } }))
+      .filter((pin) => pin.sourcePoint.x >= left && pin.sourcePoint.x <= left + map.lens && pin.sourcePoint.y >= top && pin.sourcePoint.y <= top + map.lens);
+    map.lensPins = lensDots.length ? snapPins(visiblePins, lensDots) : [];
+    map.lensGroups = groupPins(map.lensPins);
     drawPins(true);
     ctx.restore();
     ctx.save(); ctx.strokeStyle = "rgba(79, 232, 238, .92)"; ctx.lineWidth = 1.5; ctx.shadowColor = "rgba(45, 212, 222, .24)"; ctx.shadowBlur = 12; ctx.strokeRect(left + 0.75, top + 0.75, map.lens - 1.5, map.lens - 1.5); ctx.restore();
@@ -394,11 +441,10 @@
   }
   function nearestPin(x, y, lens = false, radius = 9) {
     let winner = null, best = radius;
-    for (const pin of map.pins) {
-      const px = lens ? map.pointer.x + (pin.point.x - map.pointer.x) * map.zoom : pin.point.x;
-      const py = lens ? map.pointer.y + (pin.point.y - map.pointer.y) * map.zoom : pin.point.y;
-      const distance = Math.hypot(px - x, py - y);
-      if (distance < best) { best = distance; winner = pin; }
+    const groups = lens ? map.lensGroups || [] : map.pinGroups || [];
+    for (const group of groups) {
+      const distance = Math.hypot(group.point.x - x, group.point.y - y);
+      if (distance < best) { best = distance; winner = group; }
     }
     return winner;
   }
@@ -409,12 +455,32 @@
     return { left, top, right: left + map.lens, bottom: top + map.lens };
   }
   function pointerInsideLens(x, y) { const b = lensBounds(); return b && x >= b.left && x <= b.right && y >= b.top && y <= b.bottom; }
-  function describePin(pin) { return `${pin.place.name}${pin.place.country ? `, ${pin.place.country}` : ""} · ${pin.count} ${pin.count === 1 ? "record" : "records"}`; }
+  function describePin(group) {
+    const types = Object.entries(group.typeCounts).filter(([, count]) => count).map(([type, count]) => `${typeLabel(type)}: ${count}`).join(" · ");
+    const names = group.pins.map(({ place }) => `${place.name}${place.country ? `, ${place.country}` : ""}`);
+    const precision = [...new Set(group.pins.map(({ place }) => place.precision || place.kind || "place"))].join("/");
+    return `${names.join("; ")} · ${group.count} records · ${types} · approximate ${precision} center${names.length > 1 ? "s" : ""}`;
+  }
+
+  function choosePinGroup(group) {
+    if (!group) return;
+    if (group.pins.length === 1) { choosePlace(group.pins[0].place); return; }
+    selectedPlace = null; selectedOrganization = ""; selectedCountry = ""; unmappedMode = false;
+    el.organizations.innerHTML = ""; el.results.innerHTML = "";
+    $("researchMapResultsHeading").textContent = "Choose a location";
+    const options = group.pins.map(({ place }) => `<button type="button" class="research-map-place-row" data-place="${escapeHtml(place.id)}"><span>${escapeHtml(place.name)}<small>${escapeHtml(place.country || place.kind || "")}</small></span><b>${recordsAtPlace(place).length}</b></button>`).join("");
+    el.top.innerHTML = `<div class="research-map-subhead">Several places share this map dot</div>${options}`;
+    el.top.querySelector("button")?.focus();
+    el.selection.textContent = "Choose a place to view its records.";
+    el.status.textContent = `${group.pins.length} places share this map dot. Choose one in the sidebar.`;
+    el.top.focus?.();
+  }
 
   el.canvas.addEventListener("pointermove", (event) => {
     const pos = localPoint(event);
     const touch = event.pointerType === "touch";
     setPointer(pos, touch);
+    draw();
     const pin = touch ? null : nearestPin(pos.x, pos.y, pointerInsideLens(pos.x, pos.y), 9);
     if (pin && event.pointerType !== "touch") {
       el.tooltip.textContent = describePin(pin); el.tooltip.hidden = false;
@@ -430,8 +496,9 @@
     const pos = localPoint(event);
     const touch = event.pointerType === "touch" || map.pointer?.touch === true || Date.now() - lastTouchAt < 900;
     const lens = !touch && pointerInsideLens(pos.x, pos.y);
+    if (lens) draw();
     const pin = nearestPin(pos.x, pos.y, lens, touch ? 17 : 9);
-    if (pin) { choosePlace(pin.place); return; }
+    if (pin) { choosePinGroup(pin); return; }
     const source = lens ? { x: map.pointer.x + (pos.x - map.pointer.x) / map.zoom, y: map.pointer.y + (pos.y - map.pointer.y) / map.zoom } : pos;
     const coords = inverse(source.x, source.y);
     el.status.textContent = `Map position ${coords.lat.toFixed(1)} degrees latitude, ${coords.lon.toFixed(1)} degrees longitude`;
@@ -503,6 +570,21 @@
     selectPlace(id) { const place = places.find((p) => String(p.id) === String(id)); if (place) choosePlace(place); },
     showAll() { $("researchMapAll").click(); },
     showUnmapped() { $("researchMapUnmapped").click(); },
-    getState() { return { places: places.length, records: records.length, selectedPlace: selectedPlace?.id || null, unmapped: unmappedMode }; },
+    getState() {
+      const bounds = map.pointer && !map.pointer.touch ? lensBounds() : null;
+      return {
+        places: places.length, records: records.length, selectedPlace: selectedPlace?.id || null, unmapped: unmappedMode,
+        markerCount: map.pins.length, baseLandDotCount: map.landDots.length, lensLandDotCount: map.lensDots?.length || 0,
+        baseGrid: { startX: 4, startY: 4, step: 6.1 },
+        lensGrid: bounds ? { startX: Math.floor(bounds.left / 5.2) * 5.2, startY: Math.floor(bounds.top / 5.2) * 5.2, step: 5.2, bounds, sourcePointer: { x: map.pointer.x, y: map.pointer.y }, zoom: map.zoom } : null,
+        markerRadius: 1.05, lensMarkerRadius: 1.08,
+      };
+    },
+    getMarkers() {
+      return map.pins.map((pin, index) => {
+        const lensPin = map.pointer && !map.pointer.touch ? map.lensPins?.find((entry) => entry.place.id === pin.place.id) : null;
+        return { id: pin.place.id, name: pin.place.name, kind: pin.place.kind || "place", original: { lat: Number(pin.place.lat), lon: Number(pin.place.lon) }, base: { x: pin.point.x, y: pin.point.y, radius: 1.05, onLandDot: map.landDots.some((dot) => dot.x === pin.point.x && dot.y === pin.point.y) }, lens: lensPin ? { x: lensPin.point.x, y: lensPin.point.y, radius: 1.08, onLandDot: (map.lensDots || []).some((dot) => dot.x === lensPin.point.x && dot.y === lensPin.point.y) } : null, typeCounts: { ...pin.typeCounts }, recordCount: pin.count };
+      });
+    },
   };
 })();

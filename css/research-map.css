@@ -27,7 +27,7 @@
 .research-map-quiet:focus-visible,.research-map-quick button:focus-visible,.research-map-place-row:focus-visible,.research-map-link:focus-visible { outline:2px solid #58e6eb; outline-offset:2px; }
 .research-map-canvas-wrap { position:relative; width:100%; overflow:hidden; border:1px solid rgba(66,96,128,.38); border-radius:10px; background:#080d17; }
 #researchMapCanvas { display:block; width:100%; height:clamp(310px, 38vw, 440px); touch-action:manipulation; cursor:crosshair; }
-.research-map-tooltip { position:absolute; z-index:2; top:0; left:0; pointer-events:none; padding:6px 9px; border:1px solid rgba(70,221,229,.38); border-radius:6px; background:rgba(5,13,23,.96); color:#e7fcff; font-size:10px; font-weight:600; box-shadow:0 5px 18px #0008; white-space:nowrap; }
+.research-map-tooltip { position:absolute; z-index:2; top:0; left:0; pointer-events:none; max-width:min(310px,calc(100% - 12px)); padding:6px 9px; border:1px solid rgba(70,221,229,.38); border-radius:6px; background:rgba(5,13,23,.96); color:#e7fcff; font-size:10px; font-weight:600; box-shadow:0 5px 18px #0008; white-space:normal; overflow-wrap:anywhere; }
 .research-map-map-status { position:absolute; bottom:8px; left:10px; padding:4px 7px; border:1px solid rgba(90,116,147,.22); border-radius:5px; background:rgba(7,13,23,.77); color:#8295ae; font-size:9px; pointer-events:none; }
 .research-map-quick { display:flex; flex-wrap:wrap; align-items:center; gap:6px; min-height:30px; padding-top:8px; }
 .research-map-quick::before { content:"Australia"; margin-right:2px; color:#788ca5; font-size:10px; }
@@ -54,8 +54,14 @@
 .research-map-record { margin-bottom:9px; padding:10px; border:1px solid rgba(49,67,93,.65); border-radius:9px; background:linear-gradient(140deg,rgba(24,36,56,.83),rgba(15,24,39,.83)); }
 .research-map-record:last-child { margin-bottom:0; }
 .research-map-record-top { display:flex; justify-content:space-between; gap:8px; align-items:center; }
-.research-map-type { color:#8ea2bb; font-size:8px; font-weight:700; letter-spacing:.09em; text-transform:uppercase; }
-.research-map-type.academic { color:#72dce2; }.research-map-type.grey { color:#edbd75; }.research-map-type.compiled { color:#b4a4ff; }
+.research-map-type { display:inline-flex; padding:3px 6px; border:1px solid currentColor; border-radius:999px; font-size:8px; font-weight:700; letter-spacing:.04em; text-transform:uppercase; }
+.research-map-type.academic,.research-map-legend .academic { color:#38bdf8; }.research-map-type.grey,.research-map-legend .grey { color:#f59e0b; }.research-map-type.compiled,.research-map-legend .compiled { color:#a78bfa; }
+.research-map-legend { display:flex; flex-wrap:wrap; gap:7px 13px; margin-top:9px; color:#9aabc0; font-size:9px; }
+.research-map-legend span { display:inline-flex; align-items:center; gap:5px; }
+.research-map-legend span::before { content:""; width:7px; height:7px; border-radius:50%; background:currentColor; }
+.research-map-explanation { margin-top:7px; color:#8192a8; font-size:9px; line-height:1.5; }
+.research-map-explanation summary { width:max-content; cursor:pointer; color:#a4b4c8; text-decoration:underline; text-underline-offset:2px; }
+.research-map-explanation p { max-width:620px; margin:5px 0 0; }
 .research-map-assignee { overflow:hidden; color:#778aa2; font-size:9px; text-overflow:ellipsis; white-space:nowrap; }
 .research-map-record h4 { margin:4px 0 3px; color:#e7eef8; font-size:13px; line-height:1.45; font-weight:650; }
 .research-map-record-authors,.research-map-record-org { color:#94a5b9; font-size:11px; line-height:1.4; }
