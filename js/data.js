@@ -239,14 +239,10 @@ function getPdfViewerUrl(paper) {
   viewerUrl.searchParams.set("pdf", paper.pdfUrl || "");
   if (paper.title) viewerUrl.searchParams.set("title", paper.title);
   if (paper.topic) viewerUrl.searchParams.set("topic", paper.topic);
-  const activeUser = typeof getActiveUser === "function" ? getActiveUser() : null;
-  if (activeUser) {
-    viewerUrl.searchParams.set("user", activeUser);
-  } else if (paper.assignedTo) {
-    viewerUrl.searchParams.set(
-      "user",
-      contributorDisplayName(paper.assignedTo),
-    );
+  // Only pass this browser's saved identity; never the paper's assigned owner,
+  // which would make the viewer act as someone else.
+  if (typeof BrowserIdentity !== "undefined" && BrowserIdentity.hasName()) {
+    viewerUrl.searchParams.set("user", BrowserIdentity.getName());
   }
   return viewerUrl.href;
 }

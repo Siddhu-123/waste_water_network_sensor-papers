@@ -31,13 +31,7 @@ function getPersonPalette(name) {
 
 // Method 1: Device Detection
 function detectDevice() {
-  let id = localStorage.getItem("capstone_device_id");
-  if (!id) {
-    id = "dev_" + (window.crypto && typeof window.crypto.randomUUID === "function"
-      ? window.crypto.randomUUID().slice(0, 8)
-      : Math.random().toString(36).slice(2, 10));
-    localStorage.setItem("capstone_device_id", id);
-  }
+  const id = BrowserIdentity.getBrowserId();
 
   const ua = navigator.userAgent || "";
   let platform = "Device";
@@ -55,42 +49,42 @@ function detectDevice() {
   else if (/Firefox\//i.test(ua)) browser = "Firefox";
 
   const label = `${platform} (${browser})`;
-  localStorage.setItem("capstone_device_label", label);
+  try {
+    localStorage.setItem("capstone_device_label", label);
+  } catch (e) {
+    // Storage unavailable: the label is only informational.
+  }
   return { id, label };
 }
 
 const currentDevice = detectDevice();
 
 function getActiveUser() {
-  return (
-    localStorage.getItem("capstone_user_name") ||
-    localStorage.getItem("pdf_active_user") ||
-    "Unknown User"
-  );
+  return BrowserIdentity.getName();
 }
 
 function setActiveUser(name) {
-  const clean = String(name || "").trim() || "Unknown User";
-  localStorage.setItem("capstone_user_name", clean);
-  localStorage.setItem("pdf_active_user", clean);
+  BrowserIdentity.setName(name);
   updateProfileHeader();
   if (typeof syncInstructorVisibility === "function") {
     syncInstructorVisibility();
   }
 }
 
+// URL params only seed an identity when this browser has none saved.
 function initActiveUserFromUrl() {
-  try {
-    const params = new URLSearchParams(window.location.search);
-    const userFromUrl = params.get("user") || params.get("contributor");
-    if (userFromUrl && userFromUrl.trim()) {
-      setActiveUser(userFromUrl.trim());
-    }
-  } catch (e) {
-    // Ignore URL parsing errors
+  if (BrowserIdentity.seedFromParams(window.location.search)) {
+    updateProfileHeader();
   }
 }
 initActiveUserFromUrl();
+
+function profileViewerUrl(paperId) {
+  const url = `./pdf-viewer.html?paper=${encodeURIComponent(paperId)}`;
+  return BrowserIdentity.hasName()
+    ? `${url}&user=${encodeURIComponent(BrowserIdentity.getName())}`
+    : url;
+}
 
 function updateProfileHeader() {
   const user = getActiveUser();
@@ -112,13 +106,21 @@ function selectWelcomeUser(name) {
 function dismissWelcomeBanner() {
   const banner = document.getElementById("welcomeBanner");
   if (banner) banner.style.display = "none";
-  localStorage.setItem("capstone_welcome_dismissed", "true");
+  try {
+    localStorage.setItem("capstone_welcome_dismissed", "true");
+  } catch (e) {
+    // Storage unavailable: banner stays dismissed for this page view only.
+  }
 }
 
 function checkWelcomeBanner() {
-  const saved = localStorage.getItem("capstone_user_name");
-  const dismissed = localStorage.getItem("capstone_welcome_dismissed");
-  if (!saved && !dismissed) {
+  let dismissed = null;
+  try {
+    dismissed = localStorage.getItem("capstone_welcome_dismissed");
+  } catch (e) {
+    // Storage unavailable: treat as not dismissed.
+  }
+  if (!BrowserIdentity.hasName() && !dismissed) {
     const banner = document.getElementById("welcomeBanner");
     if (banner) banner.style.display = "flex";
   }
@@ -156,7 +158,11 @@ function openProfileModal() {
   const reviewedPaperIds = [...new Set(myNotes.map((n) => String(n.paperId)))];
   const totalPapers = papersData.length || 23;
 
+  const persistNote = BrowserIdentity.isPersistent()
+    ? "Remembered in this browser (not a secure login)."
+    : "Browser storage is unavailable, so this choice lasts only until you close or reload this page.";
   let bodyHtml = `
+    <div class="profile-empty-msg" style="margin-bottom: 14px;">${escapeHtml(persistNote)}</div>
     <div class="profile-stats-grid">
       <div class="profile-stat-box">
         <div class="profile-stat-number" style="color: ${palette.light}">${reviewedPaperIds.length}</div>
@@ -189,7 +195,7 @@ function openProfileModal() {
             <strong>${escapeHtml(pTitle)}</strong>
             <span class="profile-paper-sub">${pNotes.length} note${pNotes.length === 1 ? "" : "s"} added by you</span>
           </div>
-          <a class="btn-action btn-pdf" href="./pdf-viewer.html?paper=${encodeURIComponent(pid)}&user=${encodeURIComponent(user)}" target="_blank" rel="noopener">Open Notes</a>
+          <a class="btn-action btn-pdf" href="${profileViewerUrl(pid)}" target="_blank" rel="noopener">Open Notes</a>
         </div>
       `;
     });
@@ -215,7 +221,7 @@ function openProfileModal() {
             <span class="profile-note-tag">P. ${n.page} · ${escapeHtml(pTitle).slice(0, 30)}…</span>
           </div>
           <div class="profile-note-snippet">${escapeHtml(n.text || "")}</div>
-          <a class="profile-note-link" href="./pdf-viewer.html?paper=${encodeURIComponent(n.paperId)}&user=${encodeURIComponent(user)}" target="_blank" rel="noopener">Jump to note in PDF →</a>
+          <a class="profile-note-link" href="${profileViewerUrl(n.paperId)}" target="_blank" rel="noopener">Jump to note in PDF →</a>
         </div>
       `;
     });

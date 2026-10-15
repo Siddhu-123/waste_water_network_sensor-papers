@@ -14,6 +14,7 @@
     />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf_viewer.min.css" />
     <script src="./annotation-config.js?v=remote-api-1"></script>
+    <script src="./js/browser-identity.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
     <style>
       :root {
@@ -1540,7 +1541,7 @@
           </button>
 
           <!-- Active Contributor Badge (Click to edit identity) -->
-          <button class="user-pill" type="button" id="userSelectorBtn" title="Your contributor name (click to change)">
+          <button class="user-pill" type="button" id="userSelectorBtn" title="Your contributor name, remembered in this browser (not a secure login). Click to change.">
             <span class="user-dot" id="activeUserDot"></span>
             <span class="user-pill-name" id="activeUserName">Team</span>
           </button>
@@ -1687,19 +1688,15 @@
           ? new URL("./annotations/paper-" + encodeURIComponent(paperId) + ".json", window.location.href).href
           : "";
 
+        // Saved browser identity wins; ?user=/?contributor= only seed an unset one.
+        BrowserIdentity.seedFromParams(window.location.search);
+
         function getActiveUser() {
-          return (
-            localStorage.getItem("capstone_user_name") ||
-            localStorage.getItem("pdf_active_user") ||
-            query.get("user") ||
-            "Unknown User"
-          );
+          return BrowserIdentity.getName();
         }
 
         function setActiveUser(name) {
-          const clean = String(name || "").trim() || "Unknown User";
-          localStorage.setItem("capstone_user_name", clean);
-          localStorage.setItem("pdf_active_user", clean);
+          BrowserIdentity.setName(name);
           updateUserDisplay();
         }
 

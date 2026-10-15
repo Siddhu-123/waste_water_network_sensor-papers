@@ -210,7 +210,7 @@
             <div class="research-map-canvas-wrap" id="researchMapCanvasWrap">
               <canvas id="researchMapCanvas" role="img" aria-label="Interactive world map. Select a location marker to view related research."></canvas>
               <div id="researchMapTooltip" class="research-map-tooltip" role="tooltip" hidden></div>
-              <div class="research-map-map-status">Hover to magnify · Select a pin or city below to explore</div>
+              <div class="research-map-map-status">Hover to magnify · Nearby research dots snap for selection</div>
             </div>
             <div class="research-map-quick" id="researchMapAustralia" aria-label="Australian city shortcuts"></div>
             <div class="research-map-legend" aria-label="Research record types"><span class="academic">Academic / peer-reviewed</span><span class="grey">Grey literature</span><span class="compiled">Compiled reviews</span></div>
@@ -220,8 +220,8 @@
           <aside class="research-map-sidebar" aria-labelledby="researchMapResultsHeading">
             <div class="research-map-sidebar-head">
               <div class="research-map-kicker">Location guide</div>
-              <h3 id="researchMapResultsHeading">Places in the library</h3>
-              <p id="researchMapSelection">Choose a place to explore its related records.</p>
+              <h3 id="researchMapResultsHeading">Papers in the library</h3>
+              <p id="researchMapSelection">Hover a title for details or click to open the paper.</p>
             </div>
             <div id="researchMapOrganizations" class="research-map-organizations" aria-label="Organizations at this location"></div>
             <div id="researchMapTopPlaces" class="research-map-top-places"></div>
@@ -637,6 +637,7 @@
     <script src="js/papers.js"></script>
     <script src="js/filters.js"></script>
     <script src="js/modals.js"></script>
+    <script src="js/browser-identity.js"></script>
     <script src="js/profile.js"></script>
     <script src="js/annotations.js"></script>
     <script src="js/grey-literature.js"></script>

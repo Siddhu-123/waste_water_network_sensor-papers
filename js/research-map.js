@@ -12,8 +12,18 @@
   };
   if (!el.canvas || !el.wrap) return;
 
+  el.sidebar = document.querySelector(".research-map-sidebar");
   const ctx = el.canvas.getContext("2d", { alpha: false });
-  const map = { width: 0, height: 0, dpr: 1, mask: null, landDots: [], pins: [], pointer: null, raf: 0, lens: 150, zoom: 4, mapTop: 0, mapHeight: 0 };
+  const map = { width: 0, height: 0, dpr: 1, mask: null, landDots: [], pins: [], pointer: null, hover: null, raf: 0, lens: 150, zoom: 4, mapTop: 0, mapHeight: 0 };
+  // Land dots and the solid core of research markers share one radius.
+  const DOT_RADIUS = 1.65;
+  const HIT_RADIUS = { base: 12, lens: 28, touch: 20 };
+  const GLOW_RADIUS = { base: 6.5, lens: 7.5 };
+  const TYPE_RGB = { academic: [56, 189, 248], grey: [245, 158, 11], compiled: [167, 139, 250] };
+  const desktopQuery = window.matchMedia("(min-width: 1024px) and (hover: hover) and (pointer: fine)");
+  const isDesktop = () => desktopQuery.matches;
+  const rowData = new Map();
+  const detail = { panel: null, row: null, key: "", pinned: false, timer: 0, roving: null };
   let data = null;
   let places = [];
   let records = [];
@@ -65,6 +75,8 @@
   }
 
   function init() {
+    if (!isDesktop()) return false;
+    if (data) return true;
     const incoming = window.RESEARCH_GEOGRAPHY_DATA;
     const land = window.RESEARCH_WORLD_LAND;
     if (!incoming || !Array.isArray(incoming.places) || !Array.isArray(incoming.records) || !incoming.records.length) {
@@ -90,6 +102,7 @@
     el.layout.hidden = false;
     buildFilters();
     buildAustraliaShortcuts();
+    observeResize();
     setSize();
     render();
     return true;
@@ -200,6 +213,30 @@
     draw();
   }
 
+  function observeResize() {
+    if (resizeObserver || !("ResizeObserver" in window)) return;
+    resizeObserver = new ResizeObserver(() => {
+      if (!data || !isDesktop()) return;
+      const width = el.canvas.getBoundingClientRect().width;
+      if (width && (!map.mask || Math.abs(width - map.width) >= 0.5)) setSize();
+    });
+    resizeObserver.observe(el.wrap);
+  }
+
+  function suspend() {
+    if (map.raf) { cancelAnimationFrame(map.raf); map.raf = 0; }
+    map.pointer = null; map.hover = null; map.mask = null;
+    map.landDots = []; map.lensDots = []; map.lensGroups = []; map.lensPins = [];
+    el.tooltip.hidden = true;
+    hideDetail();
+  }
+
+  function onDesktopChange() {
+    if (!isDesktop()) { suspend(); return; }
+    if (data) setSize();
+    else init();
+  }
+
   function filteredRecords(ignoreOrganization = false) {
     const type = el.type.value;
     const contributor = el.contributor.value;
@@ -265,14 +302,30 @@
     return [...groups.values()];
   }
 
+  const byTitle = (a, b) => String(a.record.title || "").localeCompare(String(b.record.title || ""), undefined, { numeric: true, sensitivity: "base" });
+
+  function renderTitleList(entries, selected, emptyHtml) {
+    hideDetail();
+    rowData.clear();
+    detail.roving = null;
+    if (!entries.length) { el.results.innerHTML = emptyHtml; return; }
+    el.results.innerHTML = `<ul class="research-map-titles">${entries.slice().sort(byTitle).map(({ record, locations }, index) => {
+      const key = recordKey(record);
+      rowData.set(key, { record, locations, selected });
+      return `<li><button type="button" class="research-map-title-row" data-record="${escapeHtml(key)}" tabindex="0" aria-controls="researchMapDetail"><i class="research-map-title-dot ${escapeHtml(record.type)}" aria-hidden="true"></i><span><span class="sr-only">${escapeHtml(typeLabel(record.type))}: </span>${escapeHtml(record.title || `Record ${record.id}`)}</span></button></li>`;
+    }).join("")}</ul>`;
+    detail.roving = el.results.querySelector(".research-map-title-row");
+  }
+
   function showOverview() {
     selectedPlace = null;
-    $("researchMapResultsHeading").textContent = "Places in the library";
-    el.selection.textContent = "Choose a place to explore its related records.";
+    $("researchMapResultsHeading").textContent = "Records in the library";
+    const listed = filteredRecords();
+    el.selection.textContent = `${listed.length} ${listed.length === 1 ? "record" : "records"}. Hover or focus a title for details, or select a map pin to narrow the list.`;
     el.organizations.innerHTML = "";
-    const ranking = places.map((place) => ({ place, count: recordsAtPlace(place).length })).filter((x) => x.count).sort((a, b) => b.count - a.count || a.place.name.localeCompare(b.place.name)).slice(0, 6);
-    el.top.innerHTML = ranking.length ? `<div class="research-map-subhead">Top locations</div>${ranking.map(({ place, count }) => `<button type="button" class="research-map-place-row" data-place="${escapeHtml(place.id)}"><span>${escapeHtml(place.name)}<small>${escapeHtml(place.country || (place.kind === "country" ? "Country" : ""))}</small></span><b>${count}</b></button>`).join("")}` : `<p class="research-map-empty">No mapped records match these filters.</p>`;
-    el.results.innerHTML = `<div class="research-map-welcome"><span class="research-map-globe">◎</span><h4>Follow the evidence</h4><p>Select a pin or use the location search to see papers connected with a place. Choose <b>Unmapped</b> to review records without a location.</p></div>`;
+    el.top.innerHTML = "";
+    renderTitleList(listed.map((record) => ({ record, locations: locationsFor(record) })), null, `<p class="research-map-empty">No records match these filters.</p>`);
+    el.status.textContent = `${listed.length} records listed`;
   }
 
   function showPlaceResults(place) {
@@ -285,7 +338,7 @@
     el.selection.textContent = `${place.name}${country && selectedCity ? `, ${country}` : ""} · ${linked.length} unique ${linked.length === 1 ? "record" : "records"}${place.kind === "country" ? " across this country" : ""}`;
     el.top.innerHTML = "";
     renderOrganizations(place);
-    el.results.innerHTML = linked.length ? linked.map(({ record, locations }) => renderRecord(record, locations, place)).join("") : `<p class="research-map-empty">No records match ${escapeHtml(place.name)} and the current filters.</p>`;
+    renderTitleList(linked, place, `<p class="research-map-empty">No records match ${escapeHtml(place.name)} and the current filters.</p>`);
     el.status.textContent = `${place.name}: ${linked.length} related records`;
     el.canvas.setAttribute("aria-label", `Interactive world map. ${place.name} selected, ${linked.length} related records. Select another location marker.`);
   }
@@ -307,7 +360,7 @@
     el.selection.textContent = `${unmapped.length} records without a mapped location`;
     el.top.innerHTML = "";
     el.organizations.innerHTML = "";
-    el.results.innerHTML = unmapped.length ? unmapped.map((record) => renderRecord(record, [], null)).join("") : `<p class="research-map-empty">Every record matching these filters has a mapped location.</p>`;
+    renderTitleList(unmapped.map((record) => ({ record, locations: [] })), null, `<p class="research-map-empty">Every record matching these filters has a mapped location.</p>`);
     el.status.textContent = `${unmapped.length} unmapped records`;
   }
 
@@ -338,8 +391,7 @@
       viewer.searchParams.set("paper", String(fallback.id));
       viewer.searchParams.set("pdf", fallback.pdfUrl || fallback.url || "");
       if (fallback.title) viewer.searchParams.set("title", fallback.title);
-      const assigned = contributorsFor(fallback).join(", ");
-      if (assigned) viewer.searchParams.set("user", assigned);
+      if (window.BrowserIdentity?.hasName()) viewer.searchParams.set("user", window.BrowserIdentity.getName());
       return safeUrl(viewer.href);
     };
     if (record.type === "academic") {
@@ -369,7 +421,7 @@
     ctx.fillStyle = "#080d17";
     ctx.fillRect(0, 0, map.width, map.height);
     ctx.fillStyle = "rgba(210, 220, 233, 0.68)";
-    for (const dot of map.landDots) { ctx.beginPath(); ctx.arc(dot.x, dot.y, 1.05, 0, Math.PI * 2); ctx.fill(); }
+    for (const dot of map.landDots) { ctx.beginPath(); ctx.arc(dot.x, dot.y, DOT_RADIUS, 0, Math.PI * 2); ctx.fill(); }
     ctx.strokeStyle = "rgba(110, 134, 163, 0.14)";
     ctx.lineWidth = 1;
     for (let lat = -30; lat <= 60; lat += 30) {
@@ -378,22 +430,40 @@
     }
     drawPins(false);
     if (map.pointer && !map.pointer.touch) drawLens();
+    map.hover = map.pointer && !map.pointer.touch ? hitTest(map.pointer, false) : null;
+
   }
 
   function drawPins(lens) {
     const bounds = lens ? lensBounds() : null;
-    const groups = lens ? map.lensGroups || [] : map.pinGroups || [];
+    const groups = (lens ? map.lensGroups || [] : map.pinGroups || []).filter(({ point: { x, y } }) =>
+      !lens || (x >= bounds.left - 4 && x <= bounds.right + 4 && y >= bounds.top - 4 && y <= bounds.bottom + 4));
+    const glow = lens ? GLOW_RADIUS.lens : GLOW_RADIUS.base;
+    const wedge = (x, y, index, count, radius) => {
+      ctx.beginPath(); ctx.moveTo(x, y);
+      ctx.arc(x, y, radius, -Math.PI / 2 + index * Math.PI * 2 / count, -Math.PI / 2 + (index + 1) * Math.PI * 2 / count);
+      ctx.closePath();
+    };
+    const typesOf = (group) => ["academic", "grey", "compiled"].filter((type) => group.typeCounts[type] > 0);
     for (const group of groups) {
       const { x, y } = group.point;
-      if (lens && (x < bounds.left - 4 || x > bounds.right + 4 || y < bounds.top - 4 || y > bounds.bottom + 4)) continue;
-      const types = ["academic", "grey", "compiled"].filter((type) => group.typeCounts[type] > 0);
-      const colors = { academic: "#38bdf8", grey: "#f59e0b", compiled: "#a78bfa" };
-      const radius = lens ? 1.08 : 1.05;
+      const types = typesOf(group);
       types.forEach((type, index) => {
-        const start = -Math.PI / 2 + index * Math.PI * 2 / types.length;
-        const end = -Math.PI / 2 + (index + 1) * Math.PI * 2 / types.length;
-        ctx.beginPath(); ctx.moveTo(x, y); ctx.arc(x, y, radius, start, end); ctx.closePath();
-        ctx.fillStyle = colors[type]; ctx.fill();
+        const [r, g, b] = TYPE_RGB[type];
+        const halo = ctx.createRadialGradient(x, y, DOT_RADIUS * 0.5, x, y, glow);
+        halo.addColorStop(0, `rgba(${r}, ${g}, ${b}, .55)`);
+        halo.addColorStop(1, `rgba(${r}, ${g}, ${b}, 0)`);
+        wedge(x, y, index, types.length, glow);
+        ctx.fillStyle = halo; ctx.fill();
+      });
+    }
+    for (const group of groups) {
+      const { x, y } = group.point;
+      const types = typesOf(group);
+      types.forEach((type, index) => {
+        const [r, g, b] = TYPE_RGB[type];
+        wedge(x, y, index, types.length, DOT_RADIUS);
+        ctx.fillStyle = `rgb(${r}, ${g}, ${b})`; ctx.fill();
       });
       if (lens) for (const pin of group.pins) if (/^(Adelaide|Melbourne|Sydney)$/.test(pin.place.name)) {
         ctx.font = "600 11px Inter, sans-serif"; ctx.textBaseline = "middle";
@@ -421,7 +491,7 @@
     const lensDots = buildLandDots(step, 0, { left, top, right: left + map.lens, bottom: top + map.lens }, sourceFromLens)
       .filter((dot) => dot.x >= left && dot.x <= left + map.lens && dot.y >= top && dot.y <= top + map.lens);
     map.lensDots = lensDots;
-    for (const dot of lensDots) { ctx.beginPath(); ctx.arc(dot.x, dot.y, 1.08, 0, Math.PI * 2); ctx.fill(); }
+    for (const dot of lensDots) { ctx.beginPath(); ctx.arc(dot.x, dot.y, DOT_RADIUS, 0, Math.PI * 2); ctx.fill(); }
     const visiblePins = map.pins.map((pin) => ({ ...pin, sourcePoint: { x: x + (pin.sourcePoint.x - x) * map.zoom, y: y + (pin.sourcePoint.y - y) * map.zoom } }))
       .filter((pin) => pin.sourcePoint.x >= left && pin.sourcePoint.x <= left + map.lens && pin.sourcePoint.y >= top && pin.sourcePoint.y <= top + map.lens);
     map.lensPins = lensDots.length ? snapPins(visiblePins, lensDots) : [];
@@ -439,14 +509,21 @@
     map.pointer = { ...point, touch };
     if (!map.raf) map.raf = requestAnimationFrame(() => { map.raf = 0; draw(); });
   }
-  function nearestPin(x, y, lens = false, radius = 9) {
+  function nearestPin(x, y, lens = false, radius = HIT_RADIUS.base) {
     let winner = null, best = radius;
     const groups = lens ? map.lensGroups || [] : map.pinGroups || [];
     for (const group of groups) {
       const distance = Math.hypot(group.point.x - x, group.point.y - y);
-      if (distance < best) { best = distance; winner = group; }
+      if (distance <= best) { best = distance; winner = group; }
     }
     return winner;
+  }
+  // One resolver for hover and click: the nearest marker dot inside a bounded radius,
+  // searched in the lens when the pointer sits in it and on the base map otherwise.
+  function hitTest(pos, touch) {
+    const lens = !touch && pointerInsideLens(pos.x, pos.y);
+    const group = nearestPin(pos.x, pos.y, lens, touch ? HIT_RADIUS.touch : lens ? HIT_RADIUS.lens : HIT_RADIUS.base);
+    return group ? { group, lens } : null;
   }
   function lensBounds() {
     if (!map.pointer) return null;
@@ -466,6 +543,7 @@
     if (!group) return;
     if (group.pins.length === 1) { choosePlace(group.pins[0].place); return; }
     selectedPlace = null; selectedOrganization = ""; selectedCountry = ""; unmappedMode = false;
+    hideDetail();
     el.organizations.innerHTML = ""; el.results.innerHTML = "";
     $("researchMapResultsHeading").textContent = "Choose a location";
     const options = group.pins.map(({ place }) => `<button type="button" class="research-map-place-row" data-place="${escapeHtml(place.id)}"><span>${escapeHtml(place.name)}<small>${escapeHtml(place.country || place.kind || "")}</small></span><b>${recordsAtPlace(place).length}</b></button>`).join("");
@@ -476,30 +554,31 @@
     el.top.focus?.();
   }
 
+  function placeTooltip(group) {
+    el.tooltip.textContent = describePin(group); el.tooltip.hidden = false;
+    const x = Math.max(6, Math.min(map.width - el.tooltip.offsetWidth - 6, group.point.x + 13));
+    const y = Math.max(5, Math.min(map.height - el.tooltip.offsetHeight - 6, group.point.y + 12));
+    el.tooltip.style.transform = `translate(${x}px, ${y}px)`;
+  }
+
   el.canvas.addEventListener("pointermove", (event) => {
-    const pos = localPoint(event);
     const touch = event.pointerType === "touch";
-    setPointer(pos, touch);
+    map.pointer = { ...localPoint(event), touch };
+    if (map.raf) { cancelAnimationFrame(map.raf); map.raf = 0; }
     draw();
-    const pin = touch ? null : nearestPin(pos.x, pos.y, pointerInsideLens(pos.x, pos.y), 9);
-    if (pin && event.pointerType !== "touch") {
-      el.tooltip.textContent = describePin(pin); el.tooltip.hidden = false;
-      const x = Math.max(6, Math.min(map.width - el.tooltip.offsetWidth - 6, pos.x + 13));
-      const y = Math.max(5, Math.min(map.height - el.tooltip.offsetHeight - 6, pos.y + 12));
-      el.tooltip.style.transform = `translate(${x}px, ${y}px)`;
-      el.canvas.style.cursor = "pointer";
-    } else { el.tooltip.hidden = true; el.canvas.style.cursor = "crosshair"; }
+    if (map.hover && !touch) { placeTooltip(map.hover.group); el.canvas.style.cursor = "pointer"; }
+    else { el.tooltip.hidden = true; el.canvas.style.cursor = "crosshair"; }
   });
-  el.canvas.addEventListener("pointerleave", () => { map.pointer = null; el.tooltip.hidden = true; el.canvas.style.cursor = "crosshair"; draw(); });
+  el.canvas.addEventListener("pointerleave", () => { map.pointer = null; map.hover = null; el.tooltip.hidden = true; el.canvas.style.cursor = "crosshair"; draw(); });
   el.canvas.addEventListener("pointerdown", (event) => { if (event.pointerType === "touch") { lastTouchAt = Date.now(); setPointer(localPoint(event), true); } });
   el.canvas.addEventListener("click", (event) => {
     const pos = localPoint(event);
     const touch = event.pointerType === "touch" || map.pointer?.touch === true || Date.now() - lastTouchAt < 900;
-    const lens = !touch && pointerInsideLens(pos.x, pos.y);
-    if (lens) draw();
-    const pin = nearestPin(pos.x, pos.y, lens, touch ? 17 : 9);
-    if (pin) { choosePinGroup(pin); return; }
-    const source = lens ? { x: map.pointer.x + (pos.x - map.pointer.x) / map.zoom, y: map.pointer.y + (pos.y - map.pointer.y) / map.zoom } : pos;
+    let hit;
+    if (touch) hit = hitTest(pos, true);
+    else { map.pointer = { ...pos, touch: false }; draw(); hit = map.hover; }
+    if (hit) { choosePinGroup(hit.group); return; }
+    const source = !touch && hit === null && map.pointer ? { x: map.pointer.x + (pos.x - map.pointer.x) / map.zoom, y: map.pointer.y + (pos.y - map.pointer.y) / map.zoom } : pos;
     const coords = inverse(source.x, source.y);
     el.status.textContent = `Map position ${coords.lat.toFixed(1)} degrees latitude, ${coords.lon.toFixed(1)} degrees longitude`;
   });
@@ -513,6 +592,7 @@
   }
 
   el.country.addEventListener("input", () => {
+    hideDetail();
     const value = el.country.value.trim();
     selectedCountry = value;
     selectedOrganization = "";
@@ -532,6 +612,7 @@
     draw();
   }
   el.location.addEventListener("input", () => {
+    hideDetail();
     const rawValue = el.location.value.trim();
     const value = rawValue.toLowerCase();
     selectedOrganization = "";
@@ -560,10 +641,94 @@
   });
   $("researchMapRetry").addEventListener("click", () => { if (init()) el.status.textContent = "Research map loaded."; });
 
-  if ("ResizeObserver" in window) {
-    resizeObserver = new ResizeObserver(() => { if (data) setSize(); });
-    resizeObserver.observe(el.wrap);
-  } else window.addEventListener("resize", () => { if (data) setSize(); });
+  function observeResize() {
+    if (resizeObserver || !isDesktop()) return;
+    if ("ResizeObserver" in window) {
+      resizeObserver = new ResizeObserver(() => { if (data && isDesktop()) setSize(); });
+      resizeObserver.observe(el.wrap);
+    }
+  }
+
+  const detailSlot = document.createElement("aside");
+  detailSlot.className = "research-map-detail-slot";
+  detailSlot.setAttribute("aria-label", "Paper details");
+  el.layout.append(detailSlot);
+  detail.panel = document.createElement("div");
+  detail.panel.id = "researchMapDetail";
+  detail.panel.className = "research-map-detail";
+  detail.panel.tabIndex = -1;
+  detail.panel.hidden = true;
+  detailSlot.append(detail.panel);
+
+  function hideDetail() {
+    clearTimeout(detail.timer);
+    detail.row?.classList.remove("active");
+    detail.panel.hidden = true;
+    detail.row = null; detail.key = "";
+  }
+  function showDetail(row) {
+    if (!row || !isDesktop()) return;
+    clearTimeout(detail.timer);
+    const entry = rowData.get(row.dataset.record);
+    if (!entry) return;
+    detail.row?.classList.remove("active");
+    detail.row = row; detail.key = row.dataset.record;
+    row.classList.add("active");
+    detail.panel.innerHTML = renderRecord(entry.record, entry.locations, entry.selected) + '<button type="button" class="research-map-detail-close">Close</button>';
+    detail.panel.hidden = false;
+    detail.panel.scrollTop = 0;
+  }
+  function scheduleHide() {
+    clearTimeout(detail.timer);
+    detail.timer = setTimeout(() => {
+      if (!detail.panel.matches(":hover") && !detail.row?.matches(":hover") &&
+          !detail.panel.contains(document.activeElement) && document.activeElement !== detail.row) hideDetail();
+    }, 180);
+  }
+  el.results.addEventListener("pointerover", (event) => showDetail(event.target.closest("[data-record]")));
+  el.results.addEventListener("pointerout", scheduleHide);
+  el.results.addEventListener("focusin", (event) => showDetail(event.target.closest("[data-record]")));
+  el.results.addEventListener("focusout", scheduleHide);
+  el.results.addEventListener("click", (event) => {
+    const row = event.target.closest("[data-record]");
+    if (!row) return;
+    showDetail(row);
+    const link = detail.panel.querySelector("a.research-map-link");
+    if (link) window.open(link.href, "_blank", "noopener");
+    else detail.panel.focus();
+  });
+  el.results.addEventListener("keydown", (event) => {
+    const row = event.target.closest("[data-record]");
+    if (!row) return;
+    const rows = [...el.results.querySelectorAll("[data-record]")];
+    const index = rows.indexOf(row);
+    let target;
+    if (event.key === "ArrowDown") target = rows[Math.min(rows.length - 1, index + 1)];
+    if (event.key === "ArrowUp") target = rows[Math.max(0, index - 1)];
+    if (event.key === "Home") target = rows[0];
+    if (event.key === "End") target = rows[rows.length - 1];
+    if (target) { event.preventDefault(); target.focus(); target.scrollIntoView({ block: "nearest" }); }
+    if (event.key === "ArrowRight") { event.preventDefault(); showDetail(row); (detail.panel.querySelector("a,button") || detail.panel).focus(); }
+    if (event.key === "Escape") hideDetail();
+  });
+  detail.panel.addEventListener("pointerenter", () => clearTimeout(detail.timer));
+  detail.panel.addEventListener("pointerleave", scheduleHide);
+  detail.panel.addEventListener("focusout", scheduleHide);
+  detail.panel.addEventListener("click", (event) => {
+    if (event.target.closest(".research-map-detail-close")) { const row = detail.row; row?.focus(); hideDetail(); }
+    const button = event.target.closest("[data-summary]");
+    const paper = button && typeof papersData !== "undefined" ? papersData.find((p) => String(p.id) === button.dataset.summary) : null;
+    if (paper && typeof window.openSummary === "function") window.openSummary(Number(paper.id));
+  });
+  detail.panel.addEventListener("keydown", (event) => {
+    if (event.key === "Escape" || event.key === "ArrowLeft") { event.preventDefault(); const row = detail.row; row?.focus(); hideDetail(); }
+  });
+  function desktopChanged() {
+    if (isDesktop()) { if (init()) { observeResize(); setSize(); } }
+    else { hideDetail(); map.pointer = null; map.hover = null; el.tooltip.hidden = true; resizeObserver?.disconnect(); resizeObserver = null; }
+  }
+  desktopQuery.addEventListener("change", desktopChanged);
+  window.addEventListener("resize", () => { if (data && isDesktop() && !resizeObserver) setSize(); });
   init();
 
   window.ResearchMap = {
@@ -577,13 +742,13 @@
         markerCount: map.pins.length, baseLandDotCount: map.landDots.length, lensLandDotCount: map.lensDots?.length || 0,
         baseGrid: { startX: 4, startY: 4, step: 6.1 },
         lensGrid: bounds ? { startX: Math.floor(bounds.left / 5.2) * 5.2, startY: Math.floor(bounds.top / 5.2) * 5.2, step: 5.2, bounds, sourcePointer: { x: map.pointer.x, y: map.pointer.y }, zoom: map.zoom } : null,
-        markerRadius: 1.05, lensMarkerRadius: 1.08,
+        markerRadius: DOT_RADIUS, lensMarkerRadius: DOT_RADIUS,
       };
     },
     getMarkers() {
       return map.pins.map((pin, index) => {
         const lensPin = map.pointer && !map.pointer.touch ? map.lensPins?.find((entry) => entry.place.id === pin.place.id) : null;
-        return { id: pin.place.id, name: pin.place.name, kind: pin.place.kind || "place", original: { lat: Number(pin.place.lat), lon: Number(pin.place.lon) }, base: { x: pin.point.x, y: pin.point.y, radius: 1.05, onLandDot: map.landDots.some((dot) => dot.x === pin.point.x && dot.y === pin.point.y) }, lens: lensPin ? { x: lensPin.point.x, y: lensPin.point.y, radius: 1.08, onLandDot: (map.lensDots || []).some((dot) => dot.x === lensPin.point.x && dot.y === lensPin.point.y) } : null, typeCounts: { ...pin.typeCounts }, recordCount: pin.count };
+        return { id: pin.place.id, name: pin.place.name, kind: pin.place.kind || "place", original: { lat: Number(pin.place.lat), lon: Number(pin.place.lon) }, base: { x: pin.point.x, y: pin.point.y, radius: DOT_RADIUS, onLandDot: map.landDots.some((dot) => dot.x === pin.point.x && dot.y === pin.point.y) }, lens: lensPin ? { x: lensPin.point.x, y: lensPin.point.y, radius: DOT_RADIUS, onLandDot: (map.lensDots || []).some((dot) => dot.x === lensPin.point.x && dot.y === lensPin.point.y) } : null, typeCounts: { ...pin.typeCounts }, recordCount: pin.count };
       });
     },
   };
