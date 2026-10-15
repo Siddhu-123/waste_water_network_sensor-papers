@@ -10,3 +10,10 @@
 .env.*
 !.env.example
 .vercel
+
+# Geography build and test artifacts
+__pycache__/
+*.pyc
+.cache/
+_site/
+data/geography/extraction-cache.json

@@ -1,4 +1,13 @@
 window.RESEARCH_GEOGRAPHY_DATA = {
+  "automation": {
+    "engine": "study-site-rules",
+    "version": "2"
+  },
+  "attribution": {
+    "cities": "GeoNames, CC BY 4.0",
+    "url": "https://www.geonames.org/",
+    "notice": "./geography-data-notice.txt"
+  },
   "places": [
     {
       "id": "adelaide",

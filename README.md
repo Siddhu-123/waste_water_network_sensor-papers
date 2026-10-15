@@ -272,3 +272,11 @@ For a local browser check, run a static server from this directory:
 python3 -m http.server 8000
 ```
 and open `http://localhost:8000`. GitHub Actions runs the same validator on pushes and pull requests.
+
+## Automatic research map updates
+
+Adding or changing contributor metadata and PDFs on `main` now runs the GitHub Actions build before publishing to GitHub Pages. The build extracts supported study locations, regenerates map/browser data and validates the library. Ambiguous, missing or unreadable locations remain unmapped with a reason. Compiled reviews remain excluded from the map.
+
+Existing curated mappings are preserved in `data/geography/reviewed.json`; corrections belong there. New city matches use the pinned GeoNames catalogue with country context and supporting PDF passages. Details: [automatic location processing](docs/research-location-automation.md). Coordinate attribution: [GeoNames notice](data/geography/NOTICE.md).
+
+The frontend already defaults to the live Cloudflare annotation Worker. Vercel remains a separate store and alternate deployment; see [backend review and measured findings](docs/cloudflare-backend-review.md) before migrating or reconciling annotation data.

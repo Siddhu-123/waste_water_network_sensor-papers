@@ -1,0 +1,2291 @@
+{
+  "version": 1,
+  "records": [
+    {
+      "type": "academic",
+      "id": 1,
+      "organization": "Shoalhaven Water, Shoalhaven City Council; University of Wollongong",
+      "locations": [
+        {
+          "placeId": "shoalhaven-nowra",
+          "relation": "study",
+          "evidence": "The first page identifies Shoalhaven Water in Shoalhaven City Council, Nowra and describes its deployed wastewater network in Shoalhaven.",
+          "source": "./contributors/satya-siddhartha/papers/Drenoyanis_2019_Radar_Sensor_Network.pdf",
+          "page": 1
+        }
+      ],
+      "unmappedReason": "",
+      "pdfSha256": "63e3ec3b4adb35edf232170f67faebc33903fc33ee9ac28fdb10db51de495b5f",
+      "metadataSha256": "4cc59dadd27e901ac206d86284beb4c4874bdbd992486e84e7a000617a174fc5"
+    },
+    {
+      "type": "academic",
+      "id": 2,
+      "organization": "Florida State University; Florida A&M University; Cairo University; The Hong Kong Polytechnic University",
+      "locations": [
+        {
+          "placeId": "hong-kong",
+          "relation": "study",
+          "evidence": "Study-area map and targeted manholes are identified as Hong Kong.",
+          "source": "./contributors/satya-siddhartha/papers/Alshami_2023_Flow_Sensors_HongKong.pdf",
+          "page": 5
+        }
+      ],
+      "unmappedReason": "",
+      "pdfSha256": "40444a84c846fe98a5d74b2575bf7ad25df3eda86d10368ceb6d59059789dd4b",
+      "metadataSha256": "2d6db3bee9a9c3d0100cd82064730dcfa716a7c142c23a93608475a0dbddf70f"
+    },
+    {
+      "type": "academic",
+      "id": 3,
+      "organization": "Research and Innovation Center Industry 4.0; Department of Civil Engineering; Department of Information Technology",
+      "locations": [
+        {
+          "placeId": "astana",
+          "relation": "affiliation",
+          "evidence": "Prototype circuit-board fabrication is stated at Astana IT University; no deployed sewer study site is named.",
+          "source": "./contributors/satya-siddhartha/papers/Utepov_2023_Prototyping_an_integrated_IoT_based.pdf",
+          "page": 5
+        }
+      ],
+      "unmappedReason": "",
+      "pdfSha256": "9e2a1a51dcf982cc1f76b63e2e0b4f95669bdd93d1beb6779710224b6d7152e8",
+      "metadataSha256": "39453d69e1416072eb5ebdf0006d0db8d9f5c6b1bb0d47e24025f7add98d356d"
+    },
+    {
+      "type": "academic",
+      "id": 4,
+      "organization": "Warsaw University of Technology",
+      "locations": [],
+      "unmappedReason": "No specific field or case-study place could be identified in the available full text; bibliographic references and affiliations were excluded.",
+      "pdfSha256": "17b62f2c70e4c2ec62c3bc2dcea9c4b250bdb98636bf0d1616891066f6cf2649",
+      "metadataSha256": "1ba2b69e0ebf2bd97dcf0ffff6410b3f8f8cab2c9ac59a28ebb27634c645d058"
+    },
+    {
+      "type": "academic",
+      "id": 5,
+      "organization": "Eawag, Swiss Federal Institute of Aquatic Science and Technology; ETH Zürich",
+      "locations": [
+        {
+          "placeId": "fehraltorf",
+          "relation": "study",
+          "evidence": "Urban Water Observatory field-lab dataset is from Fehraltorf.",
+          "source": "./contributors/satya-siddhartha/papers/Blumensaat_2026_The_UWO_dataset____long_term_observation.pdf",
+          "page": 1
+        }
+      ],
+      "unmappedReason": "",
+      "pdfSha256": "9bb364068ae9940c8d2dd0974ad72b09e5c4c1891d99846e19e7fd14a6634604",
+      "metadataSha256": "4f5b13f4467f4be226dee3cb6f71aa5c3cfb591a2fa43d62606e2e23b6d413b3"
+    },
+    {
+      "type": "academic",
+      "id": 6,
+      "organization": "University of Sheffield",
+      "locations": [
+        {
+          "placeId": "bradford",
+          "relation": "study",
+          "evidence": "Full-scale sewer-pipe experiments were conducted in the University of Bradford Hydraulics Laboratory.",
+          "source": "./contributors/satya-siddhartha/papers/Bin_2011_Rapid_detection_of_sewer_defects_an.pdf",
+          "page": 5
+        }
+      ],
+      "unmappedReason": "",
+      "pdfSha256": "5c25e3f90f351c1348ab5edd5e71145c3ad219e727d1ae264c7a811c83c986ce",
+      "metadataSha256": "25e52e4e12109b6e2c43343d9c112b16f1fad399d42b745604b932e9d25a159a"
+    },
+    {
+      "type": "academic",
+      "id": 7,
+      "organization": "Edinburgh Napier University; University of Sheffield",
+      "locations": [
+        {
+          "placeId": "united-kingdom",
+          "relation": "study",
+          "evidence": "Both CSO field-trial sites are identified as being in West Yorkshire.",
+          "source": "./contributors/satya-siddhartha/papers/See_2021_CSO_Screen_Acoustic.pdf",
+          "page": 6
+        }
+      ],
+      "unmappedReason": "",
+      "pdfSha256": "6849824511263dba17264427ef095f9a43759998c22452992f805c93d520e122",
+      "metadataSha256": "b8904c841fe28f06913d8cd6f23e453994e7014a9baaf7d9decd5df6fce26b38"
+    },
+    {
+      "type": "academic",
+      "id": 8,
+      "organization": "University of Sheffield",
+      "locations": [],
+      "unmappedReason": "Review or synthesis with no single study geography identified.",
+      "pdfSha256": "16c37c19fb0a547fcbcc42caeabe8bf479d7d783ab192c04b70785b03d743fc9",
+      "metadataSha256": "529539143106204aadbe4a982222377f57a6f759da1609887f65636fda86bfd3"
+    },
+    {
+      "type": "academic",
+      "id": 9,
+      "organization": "University of Sheffield",
+      "locations": [],
+      "unmappedReason": "Review or synthesis with no single study geography identified.",
+      "pdfSha256": "987d68d8e1fe36bf40995d47e9c5d5a9b6b8d6ce7c328c53ce7e78d02bb3463b",
+      "metadataSha256": "b05202943cf25f286dd09af2aecf675d87fd0e4f67981a410723d4528b6825e6"
+    },
+    {
+      "type": "academic",
+      "id": 10,
+      "organization": "Concordia University; The Hong Kong Polytechnic University",
+      "locations": [],
+      "unmappedReason": "Review or synthesis with no single study geography identified.",
+      "pdfSha256": "6e6db23664cba4600e908d38decbfe452809f4fc9de19785190c53a680c3b202",
+      "metadataSha256": "0b4b55628c6be45bbc045102e10962e0c55fac64b513a183ac6bfeff50efe7d7"
+    },
+    {
+      "type": "academic",
+      "id": 11,
+      "organization": "Monash University; Melbourne Water",
+      "locations": [
+        {
+          "placeId": "melbourne",
+          "relation": "study",
+          "evidence": "Study site is a suburban catchment in eastern Melbourne.",
+          "source": "./contributors/satya-siddhartha/papers/Shi_2022_Illicit_discharge_detection_in_stor.pdf",
+          "page": 3
+        },
+        {
+          "placeId": "melbourne",
+          "relation": "organization",
+          "evidence": "First-page affiliation identifies Monash University in Clayton, Victoria; the study abstract identifies the deployed catchment in Melbourne.",
+          "source": "./contributors/satya-siddhartha/papers/Shi_2022_Illicit_discharge_detection_in_stor.pdf",
+          "page": 1
+        }
+      ],
+      "unmappedReason": "",
+      "pdfSha256": "cec56b4d644ee6c163337c510c0bdc516aa0a55afce24e8cf4273ff9a9057915",
+      "metadataSha256": "0874d266c121116d475f8a278563af97d33598b8d1e22ee865378a2c112f5176"
+    },
+    {
+      "type": "academic",
+      "id": 12,
+      "organization": "Griffith University; Goulburn-Murray Water; Liaoning Medical University; Swinburne University of Technology",
+      "locations": [],
+      "unmappedReason": "No specific field or case-study place could be identified in the available full text; bibliographic references and affiliations were excluded.",
+      "pdfSha256": "97ebcc6474f1cf574403c477dc29817b9691f201cafd64c784cf9760ee0aa3c3",
+      "metadataSha256": "a39b805d234be7b9f5cb1843f0452aa267a501d06c0f607f64f015a9c954dd86"
+    },
+    {
+      "type": "academic",
+      "id": 13,
+      "organization": "Catalan Institute for Water Research; University of Girona; Institut Metròpoli; Eurecat",
+      "locations": [
+        {
+          "placeId": "barcelona",
+          "relation": "study",
+          "evidence": "Study uses intra-urban catchments managed by Barcelona’s water authority (BCASA).",
+          "source": "./contributors/satya-siddhartha/papers/Corominas_2024_Catchment_Water_Quality_Profiling.pdf",
+          "page": 2
+        }
+      ],
+      "unmappedReason": "",
+      "pdfSha256": "c5ad709c8612e6169fc1dd370e3330906df5d6846e7ae457895db1e4ad567a3a",
+      "metadataSha256": "2b2c4ad2f41a1b1ed1695e24afdb276bfcb04a6abb8ca25406ecf68a515d7288"
+    },
+    {
+      "type": "academic",
+      "id": 14,
+      "organization": "University of Tartu; Rochester Institute of Technology; Estonian Veterinary and Food Laboratory",
+      "locations": [
+        {
+          "placeId": "tartu",
+          "relation": "affiliation",
+          "evidence": "Author affiliations identify the University of Tartu; analyzer tests use prepared and natural water samples.",
+          "source": "./contributors/satya-siddhartha/papers/Helm_2018_Comparative_validation_of_amperometric_a.pdf",
+          "page": 1
+        }
+      ],
+      "unmappedReason": "",
+      "pdfSha256": "3e9622cc78b5db5680c88422db30af7a2b826a832aa25fbb01e6d6972516604c",
+      "metadataSha256": "d4caece585d05d38128a50f443854e8ba6d84402620e83e57f15d4969da41fc1"
+    },
+    {
+      "type": "academic",
+      "id": 15,
+      "organization": "University of Lyon; Graz University of Technology",
+      "locations": [
+        {
+          "placeId": "bogota",
+          "relation": "study",
+          "evidence": "PUJ-WW dataset samples are from Gibraltar pumping station, Bogotá.",
+          "source": "./contributors/satya-siddhartha/papers/Lepot_2016_UV_Vis_Spectrophotometers_Calibration.pdf",
+          "page": 5
+        },
+        {
+          "placeId": "berlin",
+          "relation": "study",
+          "evidence": "Container dataset is from a CSO monitoring station in central Berlin.",
+          "source": "./contributors/satya-siddhartha/papers/Lepot_2016_UV_Vis_Spectrophotometers_Calibration.pdf",
+          "page": 5
+        }
+      ],
+      "unmappedReason": "",
+      "pdfSha256": "73a524339e6e4a02969a948951633fbc198e4a8824bf1141103603a7ec6dbc3c",
+      "metadataSha256": "059cd563af66754fc84ebe46751740e82efce1fedfcd7a31432abc1ab88807a3"
+    },
+    {
+      "type": "academic",
+      "id": 16,
+      "organization": "University of Birmingham; UNSW Sydney; University of the West of England",
+      "locations": [],
+      "unmappedReason": "Review or synthesis with no single study geography identified.",
+      "pdfSha256": "f33afda8c1dcabe45839583127aa65db41fff4fecc6eeec521dafc362995c626",
+      "metadataSha256": "681207bd64b87dcdd3fce93bae4905c6293ae649fa685bd6976d580a2d745660"
+    },
+    {
+      "type": "academic",
+      "id": 17,
+      "organization": "Central Queensland University",
+      "locations": [],
+      "unmappedReason": "No specific field or case-study place could be identified in the available full text; bibliographic references and affiliations were excluded.",
+      "pdfSha256": "e5ea90b9ac209c2f69cecd361d56f7920585931a2165df05e4d48f3c6ff0e573",
+      "metadataSha256": "1927857d97d13a728986cd82e0acb26cc93326060be171ecdc4b404a0a97bd6b"
+    },
+    {
+      "type": "academic",
+      "id": 18,
+      "organization": "",
+      "locations": [],
+      "unmappedReason": "No specific field or case-study place could be identified in the available full text; bibliographic references and affiliations were excluded.",
+      "pdfSha256": "2d9f8b2699e08a9190e527243c6ef8111e6e943cf79eb55af464a3d90a6d8d27",
+      "metadataSha256": "f4140f73ba5331d5fd0be98cab95c2786ad708462b2ff116f4d120b7732dafe2"
+    },
+    {
+      "type": "academic",
+      "id": 19,
+      "organization": "Sejong University; Tsing Hua University; Ghasidas Central University",
+      "locations": [],
+      "unmappedReason": "Review or synthesis with no single study geography identified.",
+      "pdfSha256": "56b7fdb591c0725aace7d5a543007b595ba57320c53c6469959586bf7154f850",
+      "metadataSha256": "2b3212f13796ecd238d13cab1002b6a03a8f9f64a7da7c0f6b3e2b4fef0174a2"
+    },
+    {
+      "type": "academic",
+      "id": 20,
+      "organization": "Technical University of Berlin",
+      "locations": [
+        {
+          "placeId": "berlin",
+          "relation": "study",
+          "evidence": "Both the sewer manhole and pilot plant are at Neukölln II pumping station, Berlin.",
+          "source": "./contributors/satya-siddhartha/papers/Pacheco_2021_H2S_Gas_Sensors_Sewer.pdf",
+          "page": 3
+        }
+      ],
+      "unmappedReason": "",
+      "pdfSha256": "f624e245d5564bc43457e31bea2cf8aeca0b0a3f8d33c940c0badcb99c5f13ee",
+      "metadataSha256": "547b2f63c0075b64f3ba2a57ebecf4d36b52972a8dac05352f3f122335f22734"
+    },
+    {
+      "type": "academic",
+      "id": 21,
+      "organization": "Technical University of Berlin",
+      "locations": [
+        {
+          "placeId": "berlin",
+          "relation": "study",
+          "evidence": "Sewer-pilot-plant experiments were performed at Neukölln II pumping station, Berlin.",
+          "source": "./contributors/satya-siddhartha/papers/Despot_2021_Liquid_Phase_H2S_Monitoring.pdf",
+          "page": 4
+        }
+      ],
+      "unmappedReason": "",
+      "pdfSha256": "531e2765b31732f4825cb664a6118b091c20ca46422c806ad54de4e5d3338875",
+      "metadataSha256": "161d302bc5502aaeb9645164f38cee9b6c3b98cdb43db16cad68f241caf9fa24"
+    },
+    {
+      "type": "academic",
+      "id": 22,
+      "organization": "Tecnológico de Monterrey",
+      "locations": [],
+      "unmappedReason": "Review or synthesis with no single study geography identified.",
+      "pdfSha256": "0e1627836b0cbb9969f03ed5867d275d9f4a5dd99ae5dffd842fe9faea5d8db7",
+      "metadataSha256": "313c933a7c8a09f0b56c2f95a03098a5bd1a0da21c3001679c482b807ad521d3"
+    },
+    {
+      "type": "academic",
+      "id": 23,
+      "organization": "Federal University of Technology—Paraná; Western Paraná State University; Sanitation Company of Paraná",
+      "locations": [],
+      "unmappedReason": "Review or synthesis with no single study geography identified.",
+      "pdfSha256": "8dab17e6bf726e2bb95b37fa1540b630efa9073a05d400e2183a07ad5481fb5e",
+      "metadataSha256": "8825359cd12c67d96b306530c433e8d271b95c957b607d4d7305c521b81a2a55"
+    },
+    {
+      "type": "compiled",
+      "id": "paper-1-sensors",
+      "organization": "",
+      "locations": [
+        {
+          "placeId": "melbourne",
+          "relation": "scope",
+          "evidence": "Compiled review describes sensor measurements from an urban Melbourne catchment.",
+          "source": "contributors/satya-siddhartha/compiled-papers/paper-1.pdf",
+          "page": 4
+        }
+      ],
+      "unmappedReason": "",
+      "pdfSha256": "ec0c1f958c76d89b143656c28884cae5858b4117c547dae2010dfd2443bf9824",
+      "metadataSha256": "e98626ee7c556c18466f2af9962909cb69b236d71f0d852795e2faba51a535eb"
+    },
+    {
+      "type": "grey",
+      "id": "SATYA-GL-01",
+      "organization": "US Environmental Protection Agency (US EPA)",
+      "locations": [
+        {
+          "placeId": "united-states",
+          "relation": "organization",
+          "evidence": "Publisher is the US Environmental Protection Agency; the manual describes methods applicable across settings.",
+          "source": "contributors/satya-siddhartha/grey-literature.json"
+        }
+      ],
+      "unmappedReason": "",
+      "pdfSha256": null,
+      "metadataSha256": "971df936e09333d87e58802f1867a5903d45b59b9393cac493aac03886d7d400"
+    },
+    {
+      "type": "grey",
+      "id": "SATYA-GL-02",
+      "organization": "US Environmental Protection Agency (US EPA)",
+      "locations": [
+        {
+          "placeId": "united-states",
+          "relation": "organization",
+          "evidence": "Publisher is the US Environmental Protection Agency; the manual describes methods applicable across settings.",
+          "source": "contributors/satya-siddhartha/grey-literature.json"
+        }
+      ],
+      "unmappedReason": "",
+      "pdfSha256": null,
+      "metadataSha256": "6388590541e0e2b5d1909a7b169c92cd383cc933bd787b628bbd9f88f7b126d1"
+    },
+    {
+      "type": "grey",
+      "id": "SATYA-GL-03",
+      "organization": "Water Services Association of Australia (WSAA)",
+      "locations": [
+        {
+          "placeId": "australia",
+          "relation": "scope",
+          "evidence": "Gravity collection sewers from DN 150 up to DN 1200 across all Australian retail water utilities.",
+          "source": "contributors/satya-siddhartha/grey-literature.json"
+        }
+      ],
+      "unmappedReason": "",
+      "pdfSha256": null,
+      "metadataSha256": "9f9a8e5200500a9c026697d4cfdb80c35ddbacd9b0e11d3d4f4a9b976b6e9de7"
+    },
+    {
+      "type": "grey",
+      "id": "SATYA-GL-04",
+      "organization": "SA Water Corporation",
+      "locations": [
+        {
+          "placeId": "australia",
+          "relation": "scope",
+          "evidence": "All gravity sewers, pressure rising mains, manhole chambers, and maintenance shafts owned or maintained by SA Water across South Australia.",
+          "source": "contributors/satya-siddhartha/grey-literature.json"
+        },
+        {
+          "placeId": "south-australia",
+          "relation": "scope",
+          "evidence": "All gravity sewers, pressure rising mains, manhole chambers, and maintenance shafts owned or maintained by SA Water across South Australia.",
+          "source": "contributors/satya-siddhartha/grey-literature.json"
+        },
+        {
+          "placeId": "adelaide",
+          "relation": "organization",
+          "evidence": "Citation identifies SA Water Corporation in Adelaide, South Australia.",
+          "source": "contributors/satya-siddhartha/grey-literature.json"
+        }
+      ],
+      "unmappedReason": "",
+      "pdfSha256": null,
+      "metadataSha256": "0bef3c0dc73fdfc222fc0b4132dc42a0ef5f91bba99254cd0cb00267e2f434f0"
+    },
+    {
+      "type": "grey",
+      "id": "SATYA-GL-05",
+      "organization": "SA Water Corporation",
+      "locations": [
+        {
+          "placeId": "adelaide",
+          "relation": "organization",
+          "evidence": "Citation identifies SA Water Corporation, Adelaide, South Australia.",
+          "source": "contributors/satya-siddhartha/grey-literature.json"
+        },
+        {
+          "placeId": "south-australia",
+          "relation": "scope",
+          "evidence": "Key takeaways state the geodetic standards apply across South Australia.",
+          "source": "contributors/satya-siddhartha/grey-literature.json"
+        }
+      ],
+      "unmappedReason": "",
+      "pdfSha256": null,
+      "metadataSha256": "ebc879170f9c0defdd0ba30d7e71ae1fb485bad32c2f39b77f4e4333260faf7d"
+    },
+    {
+      "type": "grey",
+      "id": "SATYA-GL-06",
+      "organization": "Commonwealth of Australia (Geoscience Australia & Engineers Australia)",
+      "locations": [
+        {
+          "placeId": "australia",
+          "relation": "scope",
+          "evidence": "Urban drainage, municipal collection systems, stormwater inlets, and sanitary sewer infiltration across Australia.",
+          "source": "contributors/satya-siddhartha/grey-literature.json"
+        }
+      ],
+      "unmappedReason": "",
+      "pdfSha256": null,
+      "metadataSha256": "29ed8038990a58070a0a0d57ced750b60b6521c8bec7a35892b757e65f34510c"
+    },
+    {
+      "type": "grey",
+      "id": "SATYA-GL-07",
+      "organization": "CSIRO Data61 & WSAA",
+      "locations": [
+        {
+          "placeId": "melbourne",
+          "relation": "scope",
+          "evidence": "Citation identifies the report as a Melbourne, Australia publication and the summary describes multi-utility Australian field evidence.",
+          "source": "contributors/satya-siddhartha/grey-literature.json"
+        }
+      ],
+      "unmappedReason": "",
+      "pdfSha256": null,
+      "metadataSha256": "ef576b6b29b1a07c08a1847cb1ee44640b70e5a4d5a62084b026f2f9b203a59e"
+    },
+    {
+      "type": "grey",
+      "id": "SATYA-GL-08",
+      "organization": "Innovyze (Autodesk Inc.)",
+      "locations": [
+        {
+          "placeId": "portland",
+          "relation": "organization",
+          "evidence": "Citation identifies Autodesk/Innovyze in Portland, Oregon.",
+          "source": "contributors/satya-siddhartha/grey-literature.json"
+        }
+      ],
+      "unmappedReason": "",
+      "pdfSha256": null,
+      "metadataSha256": "e59ba5987225550191ef062ed503675911e74cc6b05ebe66d79f809f5f6d108f"
+    },
+    {
+      "type": "grey",
+      "id": "SATYA-GL-09",
+      "organization": "The Water Research Foundation (WRF)",
+      "locations": [
+        {
+          "placeId": "denver",
+          "relation": "organization",
+          "evidence": "Citation identifies The Water Research Foundation in Denver, Colorado.",
+          "source": "contributors/satya-siddhartha/grey-literature.json"
+        }
+      ],
+      "unmappedReason": "",
+      "pdfSha256": null,
+      "metadataSha256": "7c459c61a23b4f324b70c102eae40bc1a5d18bf4b97c6ce1c84513037f804ea9"
+    },
+    {
+      "type": "grey",
+      "id": "SATYA-GL-10",
+      "organization": "The Water Research Foundation (WRF)",
+      "locations": [
+        {
+          "placeId": "denver",
+          "relation": "organization",
+          "evidence": "Citation identifies The Water Research Foundation in Denver, Colorado.",
+          "source": "contributors/satya-siddhartha/grey-literature.json"
+        }
+      ],
+      "unmappedReason": "",
+      "pdfSha256": null,
+      "metadataSha256": "38d002b5311c54b1d6a68627f1d3abacd67294c2bbcc2b752f4763e1aa98894f"
+    },
+    {
+      "type": "grey",
+      "id": "SATYA-GL-11",
+      "organization": "ASTM International",
+      "locations": [
+        {
+          "placeId": "west-conshohocken",
+          "relation": "organization",
+          "evidence": "Citation identifies ASTM International in West Conshohocken, Pennsylvania.",
+          "source": "contributors/satya-siddhartha/grey-literature.json"
+        }
+      ],
+      "unmappedReason": "",
+      "pdfSha256": null,
+      "metadataSha256": "6daf15d238fbfc2c55a58a63910750c61877e43929af70998ff2d1a7084330f3"
+    },
+    {
+      "type": "grey",
+      "id": "SATYA-GL-12",
+      "organization": "Water Services Association of Australia (WSAA)",
+      "locations": [
+        {
+          "placeId": "australia",
+          "relation": "scope",
+          "evidence": "Closed-circuit television (CCTV) and zoom camera inspection of all wastewater and stormwater conduits in Australia.",
+          "source": "contributors/satya-siddhartha/grey-literature.json"
+        }
+      ],
+      "unmappedReason": "",
+      "pdfSha256": null,
+      "metadataSha256": "6a9e5960d4d070766601fac4150214be8e2e3999ead25e0edfd85cb468901116"
+    },
+    {
+      "type": "grey",
+      "id": "SATYA-GL-13",
+      "organization": "Pulsar Measurement Ltd",
+      "locations": [
+        {
+          "placeId": "malvern",
+          "relation": "organization",
+          "evidence": "Citation identifies Pulsar Measurement Ltd in Malvern, United Kingdom.",
+          "source": "contributors/satya-siddhartha/grey-literature.json"
+        }
+      ],
+      "unmappedReason": "",
+      "pdfSha256": null,
+      "metadataSha256": "79e514bf9c11ea7ce48c59e8987c61c022deb1991b544407418090a895d2f62c"
+    },
+    {
+      "type": "grey",
+      "id": "SATYA-GL-14",
+      "organization": "Siemens AG",
+      "locations": [
+        {
+          "placeId": "nuremberg",
+          "relation": "organization",
+          "evidence": "Citation identifies Siemens Digital Industries in Nuremberg, Germany.",
+          "source": "contributors/satya-siddhartha/grey-literature.json"
+        }
+      ],
+      "unmappedReason": "",
+      "pdfSha256": null,
+      "metadataSha256": "471b31c9505faa1185df59feb0f8ad93682f6c43df30458a7bcbb8bbca256314"
+    },
+    {
+      "type": "grey",
+      "id": "SATYA-GL-15",
+      "organization": "LoRa Alliance Technical Committee",
+      "locations": [
+        {
+          "placeId": "fremont",
+          "relation": "organization",
+          "evidence": "Citation identifies the LoRa Alliance in Fremont, California.",
+          "source": "contributors/satya-siddhartha/grey-literature.json"
+        }
+      ],
+      "unmappedReason": "",
+      "pdfSha256": null,
+      "metadataSha256": "7c231dfb288be598b7d0ce5b22bc28d473da8143104d1133ee41e1f0aa31159f"
+    },
+    {
+      "type": "grey",
+      "id": "SATYA-GL-16",
+      "organization": "US Environmental Protection Agency & Center for Watershed Protection",
+      "locations": [
+        {
+          "placeId": "united-states",
+          "relation": "scope",
+          "evidence": "Municipal separate storm sewer systems (MS4), sanitary collection systems, and industrial catchment outfalls.",
+          "source": "contributors/satya-siddhartha/grey-literature.json"
+        }
+      ],
+      "unmappedReason": "",
+      "pdfSha256": null,
+      "metadataSha256": "2bdbba6a730036610c8774b58ccd3b77185520608d8591c7a075f14f212c257e"
+    },
+    {
+      "type": "grey",
+      "id": "SATYA-GL-17",
+      "organization": "Water Environment Research Foundation (WERF)",
+      "locations": [
+        {
+          "placeId": "london",
+          "relation": "organization",
+          "evidence": "Citation identifies IWA Publishing in London, United Kingdom.",
+          "source": "contributors/satya-siddhartha/grey-literature.json"
+        }
+      ],
+      "unmappedReason": "",
+      "pdfSha256": null,
+      "metadataSha256": "4917a02256c55ab6625cf7e91a7beb63498bac4fc255994d6fff8177e219c082"
+    },
+    {
+      "type": "grey",
+      "id": "SATYA-GL-18",
+      "organization": "YSI Incorporated (Xylem Inc.)",
+      "locations": [
+        {
+          "placeId": "yellow-springs",
+          "relation": "organization",
+          "evidence": "Citation identifies YSI/Xylem Technical Publishing in Yellow Springs, Ohio.",
+          "source": "contributors/satya-siddhartha/grey-literature.json"
+        }
+      ],
+      "unmappedReason": "",
+      "pdfSha256": null,
+      "metadataSha256": "3ec10ecdbbb66ba71272afc0d9709eeee800562d67e86053f670a53a50ee1d4c"
+    },
+    {
+      "type": "grey",
+      "id": "SATYA-GL-19",
+      "organization": "International Organization for Standardization (ISO / CEN)",
+      "locations": [
+        {
+          "placeId": "geneva",
+          "relation": "organization",
+          "evidence": "Citation identifies the ISO Central Secretariat in Geneva, Switzerland.",
+          "source": "contributors/satya-siddhartha/grey-literature.json"
+        }
+      ],
+      "unmappedReason": "",
+      "pdfSha256": null,
+      "metadataSha256": "05ecedfb26fb66b85a84d2fb694108f69f1be24b21c260f6fd8f4416e0f692c7"
+    },
+    {
+      "type": "grey",
+      "id": "SATYA-GL-20",
+      "organization": "The Water Research Foundation (WRF)",
+      "locations": [
+        {
+          "placeId": "denver",
+          "relation": "organization",
+          "evidence": "Citation identifies The Water Research Foundation in Denver, Colorado.",
+          "source": "contributors/satya-siddhartha/grey-literature.json"
+        }
+      ],
+      "unmappedReason": "",
+      "pdfSha256": null,
+      "metadataSha256": "47d576ef0e0423d457e81084b259ad751dc66484b8c10c1429a76ac825812783"
+    },
+    {
+      "type": "grey",
+      "id": "SATYA-GL-21",
+      "organization": "WSAA & Advanced Water Management Centre (UQ)",
+      "locations": [
+        {
+          "placeId": "brisbane",
+          "relation": "organization",
+          "evidence": "Citation identifies the Advanced Water Management Centre and WSAA publication in Brisbane, Queensland.",
+          "source": "contributors/satya-siddhartha/grey-literature.json"
+        }
+      ],
+      "unmappedReason": "",
+      "pdfSha256": "5ffaef75df21828cd53782d39637b7ec7cef44f105a3dacf9c835a2b7f3d88cb",
+      "metadataSha256": "6e09d12f5d924c68dde5724438d2d62cfe996598168165bd1201cdd7ebbe8cc0"
+    },
+    {
+      "type": "grey",
+      "id": "SATYA-GL-22",
+      "organization": "Gas Data Ltd & SA Water",
+      "locations": [
+        {
+          "placeId": "adelaide",
+          "relation": "organization",
+          "evidence": "Citation identifies SA Water Asset Planning in Adelaide, South Australia.",
+          "source": "contributors/satya-siddhartha/grey-literature.json"
+        },
+        {
+          "placeId": "south-australia",
+          "relation": "scope",
+          "evidence": "The steps describe evaluation of sensors in Adelaide and Gawler sewer systems.",
+          "source": "contributors/satya-siddhartha/grey-literature.json"
+        }
+      ],
+      "unmappedReason": "",
+      "pdfSha256": null,
+      "metadataSha256": "6546a53d9040aa7d0ece533f9bb70cb967a6c34de688c0a486a8f7b0443e7099"
+    },
+    {
+      "type": "grey",
+      "id": "SATYA-GL-23",
+      "organization": "Safe Work Australia",
+      "locations": [
+        {
+          "placeId": "australia",
+          "relation": "scope",
+          "evidence": "All municipal sewerage manholes, wet wells, grit chambers, and enclosed wastewater infrastructure in Australia.",
+          "source": "contributors/satya-siddhartha/grey-literature.json"
+        }
+      ],
+      "unmappedReason": "",
+      "pdfSha256": "c14694180c145fd5fd28b237c502941fee7f410e47829e0c4b9500710eec9771",
+      "metadataSha256": "aacd0c10479b3b693fe00bdbe06f0ce9749e98ec1f94481f89b92a49d558f401"
+    },
+    {
+      "type": "grey",
+      "id": "SATYA-GL-24",
+      "organization": "Sydney Water Corporation",
+      "locations": [
+        {
+          "placeId": "sydney",
+          "relation": "scope",
+          "evidence": "Sewage pumping station rising mains, regional transfer tunnels, and odor treatment facilities across Greater Sydney.",
+          "source": "contributors/satya-siddhartha/grey-literature.json"
+        }
+      ],
+      "unmappedReason": "",
+      "pdfSha256": "8cc12869d70bfc11655a222033ef0cb3685a2d2ab91d1d2ab77de1184197c4b0",
+      "metadataSha256": "f16a0c614aa7e9aa0a20d6fc5b4c8f6b484e64b65b470a96515617750e14c953"
+    },
+    {
+      "type": "grey",
+      "id": "SATYA-GL-25",
+      "organization": "Earth System Science Data & Technical University of Denmark (DTU)",
+      "locations": [
+        {
+          "placeId": "bellinge",
+          "relation": "study",
+          "evidence": "Urban drainage, stormwater retention basins, level sensor networks, and radar rainfall validation.",
+          "source": "contributors/satya-siddhartha/grey-literature.json"
+        }
+      ],
+      "unmappedReason": "",
+      "pdfSha256": "9817a4ec1d87b1341fc1fe27376a9049674958903ea9e6f54e930e2a12ec9b7f",
+      "metadataSha256": "ea9572c4dd223babe2ce65f21ac0786b53ed1b7a04837243f174683bdf10d765"
+    },
+    {
+      "type": "grey",
+      "id": "SATYA-GL-26",
+      "organization": "Earth System Science Data & Eawag",
+      "locations": [
+        {
+          "placeId": "fehraltorf",
+          "relation": "study",
+          "evidence": "Municipal sewer collection network, stormwater overflows, urban streams, and subcatchment hydrology.",
+          "source": "contributors/satya-siddhartha/grey-literature.json"
+        }
+      ],
+      "unmappedReason": "",
+      "pdfSha256": "9bb364068ae9940c8d2dd0974ad72b09e5c4c1891d99846e19e7fd14a6634604",
+      "metadataSha256": "d974259fac5d27d3ed55a2cf448ae12823454ddce66c6e9be7708e67900b1d0c"
+    },
+    {
+      "type": "grey",
+      "id": "SATYA-GL-27",
+      "organization": "University of Minnesota Duluth & USGS",
+      "locations": [
+        {
+          "placeId": "duluth",
+          "relation": "study",
+          "evidence": "Key takeaways identify the Woodland catchment case study in Duluth, Minnesota.",
+          "source": "contributors/satya-siddhartha/grey-literature.json"
+        }
+      ],
+      "unmappedReason": "",
+      "pdfSha256": "e9737e560b7e0b1bf6a397169225fa6c37a54e620ac78e744493a9aa886f4f94",
+      "metadataSha256": "66d96bce1892b0b4f36fea571597283c9c162637cd4c416e58bfb834dfc966b9"
+    },
+    {
+      "type": "grey",
+      "id": "SATYA-GL-28",
+      "organization": "SA Water Corporation & University of Adelaide",
+      "locations": [
+        {
+          "placeId": "stonyfell",
+          "relation": "study",
+          "evidence": "Stonyfell gravity sewer network in Adelaide's eastern suburbs, featuring steep slopes and heavy tree-root intrusion.",
+          "source": "contributors/satya-siddhartha/grey-literature.json"
+        },
+        {
+          "placeId": "adelaide",
+          "relation": "organization",
+          "evidence": "Summary identifies SA Water and University of Adelaide; the cited Stonyfell case study is in Adelaide.",
+          "source": "contributors/satya-siddhartha/grey-literature.json"
+        }
+      ],
+      "unmappedReason": "",
+      "pdfSha256": "443e82cf4fb0ef3d794638299db0f7486c21fa4e606721ca38b8b1fc5835c6d5",
+      "metadataSha256": "6fc135258c44955443e749fa740eb31a0e6b14f4cb8f9c4e2edffb3fdf1c78cf"
+    },
+    {
+      "type": "grey",
+      "id": "SATYA-GL-29",
+      "organization": "UK Water Industry Research (UKWIR)",
+      "locations": [
+        {
+          "placeId": "united-kingdom",
+          "relation": "scope",
+          "evidence": "Combined and separate municipal sewer networks, storm overflow assets, and surface flooding hotspots.",
+          "source": "contributors/satya-siddhartha/grey-literature.json"
+        }
+      ],
+      "unmappedReason": "",
+      "pdfSha256": null,
+      "metadataSha256": "6d79f3153dfe14612c0211cb982347e7ff1ef55a788b4f1a583610f9b69477c4"
+    },
+    {
+      "type": "grey",
+      "id": "SATYA-GL-30",
+      "organization": "US Environmental Protection Agency (US EPA)",
+      "locations": [
+        {
+          "placeId": "united-states",
+          "relation": "scope",
+          "evidence": "Municipal sanitary sewer collection systems nationwide in the US, widely referenced internationally.",
+          "source": "contributors/satya-siddhartha/grey-literature.json"
+        }
+      ],
+      "unmappedReason": "",
+      "pdfSha256": "d4cd80f023300a92727333c7ed1b5737a2628af1736d6b4a1d39520f77fe5412",
+      "metadataSha256": "21ab5a45a400aaf7304c66f5b2f7c56489f091d6b06a10207e5e66ce3b158bed"
+    },
+    {
+      "type": "grey",
+      "id": "SATYA-GL-31",
+      "organization": "American Society of Civil Engineers (ASCE) & WEF",
+      "locations": [
+        {
+          "placeId": "reston",
+          "relation": "organization",
+          "evidence": "Citation identifies ASCE’s publication location in Reston, Virginia.",
+          "source": "contributors/satya-siddhartha/grey-literature.json"
+        }
+      ],
+      "unmappedReason": "",
+      "pdfSha256": "68e8efa01f2c4295b142810e9ab9cc47fc1de3431bfa5ffd7a76d3e03f18e07a",
+      "metadataSha256": "c1f4d93dcf15d1e889212aa4bd5df408ef1f7fa5cebaf0e3a3ce3329acbe575b"
+    },
+    {
+      "type": "grey",
+      "id": "SATYA-GL-32",
+      "organization": "Sydney Water Corporation",
+      "locations": [
+        {
+          "placeId": "sydney",
+          "relation": "scope",
+          "evidence": "Greater Sydney metropolitan sewerage system (~25,000 km of pipes).",
+          "source": "contributors/satya-siddhartha/grey-literature.json"
+        }
+      ],
+      "unmappedReason": "",
+      "pdfSha256": "346bec49f9efa5f324f88ace14292c700836892ee16d589e1113b59fdceecb6d",
+      "metadataSha256": "4a4ba72f2060cc19f8f1efdfe58687366c969ecf886fc23199c18d1c81705c4f"
+    },
+    {
+      "type": "grey",
+      "id": "SATYA-GL-33",
+      "organization": "Sydney Water / WSAA",
+      "locations": [
+        {
+          "placeId": "sydney",
+          "relation": "scope",
+          "evidence": "Sydney Water catchments, environmental protection licences, and wet-weather outfalls.",
+          "source": "contributors/satya-siddhartha/grey-literature.json"
+        }
+      ],
+      "unmappedReason": "",
+      "pdfSha256": "f4fd69b4320c676ac3cba1d6e18bdab5cf5d4c95d26d33d662475c9a6163a9bf",
+      "metadataSha256": "1765556c967102d2002080d4545d353cbed085afebac940a3f441471d2f039fa"
+    },
+    {
+      "type": "grey",
+      "id": "SATYA-GL-34",
+      "organization": "Unitywater / WSAA",
+      "locations": [
+        {
+          "placeId": "moreton-bay",
+          "relation": "scope",
+          "evidence": "Unitywater service area (Moreton Bay and Sunshine Coast, Queensland).",
+          "source": "contributors/satya-siddhartha/grey-literature.json"
+        },
+        {
+          "placeId": "sunshine-coast",
+          "relation": "scope",
+          "evidence": "Unitywater service area (Moreton Bay and Sunshine Coast, Queensland).",
+          "source": "contributors/satya-siddhartha/grey-literature.json"
+        }
+      ],
+      "unmappedReason": "",
+      "pdfSha256": "09cc8d4066a8fbd8f32c829a532cc3519746a7fa17852931c37ff018c47766da",
+      "metadataSha256": "67adb4243610c4901e9ceba808955c26071401d2561f70840ad69b69b32b72fb"
+    },
+    {
+      "type": "grey",
+      "id": "SATYA-GL-35",
+      "organization": "Icon Water / WSAA",
+      "locations": [
+        {
+          "placeId": "canberra",
+          "relation": "scope",
+          "evidence": "Canberra municipal sewerage network (Icon Water / ACT).",
+          "source": "contributors/satya-siddhartha/grey-literature.json"
+        }
+      ],
+      "unmappedReason": "",
+      "pdfSha256": "4aa11909d6a5e7ffd1f07c256946fc404a61e57ece1a7c9fd8fa3ea50c29bb94",
+      "metadataSha256": "f4ecff98b4876c66352a1fe8989f314efab377197e6af3a567d9490a992c2910"
+    },
+    {
+      "type": "academic",
+      "id": 30,
+      "organization": "University of Adelaide",
+      "locations": [
+        {
+          "placeId": "adelaide",
+          "relation": "organization",
+          "evidence": "University of Adelaide is identified as the institution associated with this record in the reviewed source set.",
+          "source": "./contributors/abraham/papers/2025_Ninh_topology-elevation-sensor-placement.pdf",
+          "page": 1
+        }
+      ],
+      "unmappedReason": "",
+      "pdfSha256": "1ec829cc95b8548c62068a1a9980279800e60e864a7f5bf27002768452294a36",
+      "metadataSha256": "1910512a011fbf82e319b92dac4052b41cc5d14838f2af105d0ee21bdbf8aaa3"
+    },
+    {
+      "type": "academic",
+      "id": 31,
+      "organization": "SA Water; University of Adelaide",
+      "locations": [
+        {
+          "placeId": "stonyfell",
+          "relation": "study",
+          "evidence": "Case study sewer network is in Stonyfell, in the foothills of Adelaide, South Australia.",
+          "source": "./contributors/abraham/papers/2023_Do_Stonyfell-SA-overflow-detection.pdf",
+          "page": 3
+        },
+        {
+          "placeId": "adelaide",
+          "relation": "scope",
+          "evidence": "The paper places the Stonyfell study site in Adelaide’s foothills.",
+          "source": "./contributors/abraham/papers/2023_Do_Stonyfell-SA-overflow-detection.pdf",
+          "page": 3
+        },
+        {
+          "placeId": "adelaide",
+          "relation": "organization",
+          "evidence": "The paper identifies SA Water and University of Adelaide in the project context and describes the Greater Adelaide sewer system.",
+          "source": "./contributors/abraham/papers/2023_Do_Stonyfell-SA-overflow-detection.pdf",
+          "page": 1
+        }
+      ],
+      "unmappedReason": "",
+      "pdfSha256": "443e82cf4fb0ef3d794638299db0f7486c21fa4e606721ca38b8b1fc5835c6d5",
+      "metadataSha256": "8e8be194cc91977f4aa93f6d2ecd1bb51985b2afb5e45c69dd59bb17ef6c1e1a"
+    },
+    {
+      "type": "academic",
+      "id": 39,
+      "organization": "University of Adelaide",
+      "locations": [
+        {
+          "placeId": "adelaide",
+          "relation": "organization",
+          "evidence": "First-page affiliation: School of Architecture and Civil Engineering, University of Adelaide, Adelaide, South Australia.",
+          "source": "./contributors/abraham/papers/2026_Ninh_paired-acoustic-blockage-detection.pdf",
+          "page": 1
+        }
+      ],
+      "unmappedReason": "",
+      "pdfSha256": "a60ac2811beb4d403a27936bb0e82f0a56ad3c6103fa2f02786a0d42a8e923d4",
+      "metadataSha256": "b3e56bbe903e4ce5e0e4d503290607ccffc158736acecfa328d44ec2123cfda4"
+    },
+    {
+      "type": "compiled",
+      "id": "abraham-sa-wastewater-data",
+      "organization": "",
+      "locations": [
+        {
+          "placeId": "south-australia",
+          "relation": "scope",
+          "evidence": "Report scope covers the South Australian metropolitan utility.",
+          "source": "contributors/abraham/compiled-papers/Public Wastewater Network Data in South Australia.pdf",
+          "page": 1
+        }
+      ],
+      "unmappedReason": "",
+      "pdfSha256": "40c135f9ce510041144b3db61b917df7bb4b817f5b14e4b5d849fe4952aba923",
+      "metadataSha256": "fa95f4b5c3aa87b11df3fe30acb30ae040afbd49d03cc99145755cd09babe8c2"
+    },
+    {
+      "type": "academic",
+      "id": 29,
+      "organization": "Zhejiang University",
+      "locations": [],
+      "unmappedReason": "Review or synthesis with no single study geography identified.",
+      "pdfSha256": "36cfa63e8b17e2c543463ba06801ce975212807b07c880fbcc52999e6af5a891",
+      "metadataSha256": "75966fd790f6feb214d281073d74a36ff7ac32dc77ab1bbffb7e3ac86754b193"
+    },
+    {
+      "type": "academic",
+      "id": 36,
+      "organization": "Zhejiang University; PowerChina Huadong Engineering Corporation",
+      "locations": [
+        {
+          "placeId": "hangzhou",
+          "relation": "study",
+          "evidence": "Case-study section identifies HZ city in southeast coastal China; HZ is Hangzhou.",
+          "source": "./contributors/ashis-jose/papers/paper-36.pdf",
+          "page": 5
+        }
+      ],
+      "unmappedReason": "",
+      "pdfSha256": "8e8913dbfdef0f339101306d1456ebbc4c6506e8b6a0e9c3f0925ff836d421ae",
+      "metadataSha256": "0bfb2345e0fd717f4221438b2914d7cf9b23c3bdab8bf197037e0094bd36c538"
+    },
+    {
+      "type": "academic",
+      "id": 37,
+      "organization": "University of Naples Federico II",
+      "locations": [],
+      "unmappedReason": "No specific field or case-study place could be identified in the available full text; bibliographic references and affiliations were excluded.",
+      "pdfSha256": "54b31b97f2b1bed05b610ad95db0ee06ddcfaea7000ba5cc10a19ccd7be81cb5",
+      "metadataSha256": "08e0f7a0dae3bcdf446597092e7147a0f5ecb39a7a6e9a615afd0608a33fa93c"
+    },
+    {
+      "type": "academic",
+      "id": 38,
+      "organization": "",
+      "locations": [
+        {
+          "placeId": "united-states",
+          "relation": "scope",
+          "evidence": "Uses stream gauges on the Brazos River in Texas, USA.",
+          "source": "./contributors/ashis-jose/papers/paper-38.pdf",
+          "page": 5
+        },
+        {
+          "placeId": "pijnacker",
+          "relation": "study",
+          "evidence": "Polder-system data are identified as from Pijnacker, Netherlands.",
+          "source": "./contributors/ashis-jose/papers/paper-38.pdf",
+          "page": 9
+        }
+      ],
+      "unmappedReason": "",
+      "pdfSha256": "ff3325225f70d03e78f721da64ca230e92b894dc90ac817210e19f0b654701ca",
+      "metadataSha256": "199ccbe5db3613c9638e90bbfff68f62a257f4a6ae22d1caadb174acf38fabe2"
+    },
+    {
+      "type": "academic",
+      "id": 24,
+      "organization": "The University of Sheffield; Princeton University",
+      "locations": [
+        {
+          "placeId": "england",
+          "relation": "study",
+          "evidence": "First real sewer network is identified as in southern England; city is not specified.",
+          "source": "./contributors/rijoy-john/papers/Crowley_2025_Information_theoretic_sewer_OSP.pdf",
+          "page": 1
+        },
+        {
+          "placeId": "bellinge",
+          "relation": "study",
+          "evidence": "Second real sewer network is identified as Bellinge, Denmark.",
+          "source": "./contributors/rijoy-john/papers/Crowley_2025_Information_theoretic_sewer_OSP.pdf",
+          "page": 1
+        }
+      ],
+      "unmappedReason": "",
+      "pdfSha256": "10c879070332672c69ddffa4fa651bcfaf97aec75badcfc40e5cd2f16742e385",
+      "metadataSha256": "208bbbeb9134cb417b579b9e4f68b641695020d7940b14c0b1d1e8cba66f38f5"
+    },
+    {
+      "type": "academic",
+      "id": 25,
+      "organization": "The University of Hong Kong; University of California, Los Angeles",
+      "locations": [
+        {
+          "placeId": "hong-kong",
+          "relation": "study",
+          "evidence": "Method is demonstrated using a real-world sewage network in Hong Kong.",
+          "source": "./contributors/rijoy-john/papers/Wang_2024_sewer_OSP_for_pandemic_monitoring.pdf",
+          "page": 1
+        }
+      ],
+      "unmappedReason": "",
+      "pdfSha256": "0a2900f4312e876b8e183b5521d9ffcc718cef4fa29832647e019b98a8fdeb87",
+      "metadataSha256": "d8cd20462d331214d523dd4bec74b0873498e8d0e9ed066e1e8a9e3f97c2154e"
+    },
+    {
+      "type": "academic",
+      "id": 26,
+      "organization": "",
+      "locations": [
+        {
+          "placeId": "united-states",
+          "relation": "study",
+          "evidence": "Applied to a real medium-sized combined sewer network in the United States; exact location is confidential.",
+          "source": "./contributors/rijoy-john/papers/Abokifa_2024_sewer_OSP_ML-based_source_ident_approach.pdf",
+          "page": 4
+        }
+      ],
+      "unmappedReason": "",
+      "pdfSha256": "f35ae8a3843bbba7818933b0ce9c7c84b63df0493b1a042105fd57209b7a2cc1",
+      "metadataSha256": "bf8fa43fb4e74732c7c141734a11d1d1a60713a6ed17eeae44ba82e6821c7b85"
+    },
+    {
+      "type": "academic",
+      "id": 27,
+      "organization": "University of Texas at Arlington",
+      "locations": [],
+      "unmappedReason": "Review or synthesis with no single study geography identified.",
+      "pdfSha256": "fa74c6a320dc6d9ef15f32d151819531124fd2286da3e59c52c1a8dc819c6459",
+      "metadataSha256": "6fe7a140cdf06259652552765f66c986681fd0293baf092757394ba14d3b450b"
+    },
+    {
+      "type": "academic",
+      "id": 28,
+      "organization": "University of Texas at Arlington",
+      "locations": [
+        {
+          "placeId": "united-states",
+          "relation": "scope",
+          "evidence": "Framework is applied to a sanitary sewer collection system operated by a large US utility; city is not named.",
+          "source": "./contributors/rijoy-john/papers/Moradi_2026_Risk_based_DPP-SP_framework_for_sewer_OSP.pdf",
+          "page": 3
+        }
+      ],
+      "unmappedReason": "",
+      "pdfSha256": "1ebdaaed1befda660c6b4bdc9955f2e4435c9f305119caf63e7ade095cfed73a",
+      "metadataSha256": "305c7f51f92a61c05c6c060beaeb9f9717cea980adc70b96b79e18a84d546a1a"
+    },
+    {
+      "type": "academic",
+      "id": 47,
+      "organization": "",
+      "locations": [
+        {
+          "placeId": "cincinnati",
+          "relation": "study",
+          "evidence": "Real-world case is Shayler Crossing watershed, Cincinnati, Ohio.",
+          "source": "./contributors/rijoy-john/papers/2025_Enpei Chen_A Novel Machine Learning Based Cluster-Then-Forecast Framework.pdf",
+          "page": 8
+        }
+      ],
+      "unmappedReason": "",
+      "pdfSha256": "92c3836339a9ffd32c5265043694443c9f08b1a3afaabd4b2bddf7ebf14d3080",
+      "metadataSha256": "3bc3012f11916cfa0384f9410274589e73164a3d51841aad2c4d4447cf78719f"
+    },
+    {
+      "type": "academic",
+      "id": 48,
+      "organization": "Harbin Institute of Technology; Jilin University; Chongqing University; Shanghai Urban Construction Design and Research Institute",
+      "locations": [
+        {
+          "placeId": "china",
+          "relation": "scope",
+          "evidence": "Study drainage system is in southeastern China; source does not name a city.",
+          "source": "./contributors/rijoy-john/papers/2025_Li He_A graph neural network using physical attributes to improve the.pdf",
+          "page": 7
+        }
+      ],
+      "unmappedReason": "",
+      "pdfSha256": "97d325c00ee39e024222c4f527c92a7f5b23f647aeedea48ad11ce6b7af848a2",
+      "metadataSha256": "b5a57e074b1720f38561703b1af56770bd4343a0ae437de31bc521db86cf9c66"
+    },
+    {
+      "type": "academic",
+      "id": 49,
+      "organization": "Harbin Institute of Technology; Chongqing University; Shanghai Urban Construction Design and Research Institute",
+      "locations": [
+        {
+          "placeId": "shanghai",
+          "relation": "study",
+          "evidence": "Drainage system used in the study is located in Shanghai.",
+          "source": "./contributors/rijoy-john/papers/2025_Li He_Spatiotemporal graph convolutional network using sparse monitoring data.pdf",
+          "page": 7
+        }
+      ],
+      "unmappedReason": "",
+      "pdfSha256": "ecd5aae3492241a33d8e1604220e566ae3f611bc0ba95a2055998349d3282042",
+      "metadataSha256": "b33b97c65aec495a97c27455332fae9e9371f12ef6e0ed79b4de2f4e447e3ee5"
+    },
+    {
+      "type": "academic",
+      "id": 50,
+      "organization": "University of Adelaide",
+      "locations": [
+        {
+          "placeId": "adelaide",
+          "relation": "organization",
+          "evidence": "University of Adelaide is identified as the institution associated with this record in the reviewed source set.",
+          "source": "./contributors/rijoy-john/papers/2025_Thi Hai Duong Ninh_Optimal Sensor Placement in Smart Sewer Systems Using.pdf",
+          "page": 1
+        }
+      ],
+      "unmappedReason": "",
+      "pdfSha256": "22b6d6510fd9d47912995c7c48f7c89b9646723930ab09f986fb42a3cdba22f2",
+      "metadataSha256": "dd0d9e01e4d069edf08a21c69d729b0001946676fddb534acf183a1f5ce9181a"
+    },
+    {
+      "type": "academic",
+      "id": 51,
+      "organization": "China Three Gorges Corporation",
+      "locations": [
+        {
+          "placeId": "lu-an",
+          "relation": "study",
+          "evidence": "Data come from a residential drainage network in Lu’an City.",
+          "source": "./contributors/rijoy-john/papers/2025_Yaole Qi_Unsupervised Graph-Based Deep Clustering for Optimal.pdf",
+          "page": 6
+        }
+      ],
+      "unmappedReason": "",
+      "pdfSha256": "04f47f78a187a3afcf8a3485ae36c476472c975bcaf1b54fb221bb1bbc743191",
+      "metadataSha256": "82d481855fb51cb1b3dd77e1723b429cc248fb757433c6555d76cee4290a450c"
+    },
+    {
+      "type": "academic",
+      "id": 52,
+      "organization": "Hohai University; Yangtze Institute for Conservation and Development; Zhejiang University; University of Arizona",
+      "locations": [
+        {
+          "placeId": "bellinge",
+          "relation": "study",
+          "evidence": "The two real-world drainage models are derived from the open-access Bellinge dataset.",
+          "source": "./contributors/rijoy-john/papers/2025_Yuan Huang_A robust method to simultaneously place sensors and calibrate parameters for urban.pdf",
+          "page": 7
+        }
+      ],
+      "unmappedReason": "",
+      "pdfSha256": "0afdcb6467db164f6771ced25c51b6759beec37edcdee8d2238d433640fa42f2",
+      "metadataSha256": "4c4c9c9bc7d0fd71a05cd881d0e5a4b80475188f101432cefe3d3c182101684f"
+    },
+    {
+      "type": "academic",
+      "id": 53,
+      "organization": "University of Minnesota Duluth; UNESCO-IHE Delft",
+      "locations": [
+        {
+          "placeId": "duluth",
+          "relation": "study",
+          "evidence": "Woodland catchment case study is in Duluth, Minnesota.",
+          "source": "./contributors/rijoy-john/papers/2025_Zihang Ding_Manuscript-Optimizing Sensor Placement for Flow Reconstruction in Urban Drainage Networks A.pdf",
+          "page": 8
+        }
+      ],
+      "unmappedReason": "",
+      "pdfSha256": "e9737e560b7e0b1bf6a397169225fa6c37a54e620ac78e744493a9aa886f4f94",
+      "metadataSha256": "ecf652b4e1b3f66ce0d8158e351980c00e4a555e79020f3ea31ceb82e79c38dd"
+    },
+    {
+      "type": "academic",
+      "id": 54,
+      "organization": "Kunming University of Science and Technology; Zhejiang University; South China University of Technology; Delft University of Technology",
+      "locations": [],
+      "unmappedReason": "No specific field or case-study place could be identified in the available full text; bibliographic references and affiliations were excluded.",
+      "pdfSha256": "6f001f81da8598c64401498addf4f73075c6ad54c80160f4257f99808f7bc21c",
+      "metadataSha256": "04ebeb65ee28dd0f69a5a4d5e5aebf04a86946d9d596d3b72d1179b59e70431b"
+    },
+    {
+      "type": "academic",
+      "id": 55,
+      "organization": "Harbin Institute of Technology; Chongqing University; Jilin University",
+      "locations": [
+        {
+          "placeId": "china",
+          "relation": "scope",
+          "evidence": "Case study is an urban drainage system in southeastern China; source does not name a city.",
+          "source": "./contributors/rijoy-john/papers/2026_Li He_A topology-first and demand-driven sensor placement framework for.pdf",
+          "page": 6
+        }
+      ],
+      "unmappedReason": "",
+      "pdfSha256": "4d9577f51388067dd02508dcb93f639113ac04feb9ffe53a281d5b9b76d0e295",
+      "metadataSha256": "5d317fd3464b5b082b67b04bae8dcc8e3c019c0fff10c567ab3d9ff6b2f40b7f"
+    },
+    {
+      "type": "compiled",
+      "id": "compiled-paper-algorithms",
+      "organization": "",
+      "locations": [
+        {
+          "placeId": "adelaide",
+          "relation": "affiliation",
+          "evidence": "Review identifies the authors’ Adelaide University affiliation.",
+          "source": "contributors/rijoy-john/compiled-papers/Sewer_OSP_Algorithms_Literature_Review_V1.pdf",
+          "page": 1
+        }
+      ],
+      "unmappedReason": "",
+      "pdfSha256": "640b84b865771af6d7756eab07d59f8b2b709d3e1010a7865d3d18812ab94cb3",
+      "metadataSha256": "c874940cdba95902801430d38314636c9f4d413f73d6b74e022ee605a8ff00eb"
+    },
+    {
+      "type": "grey",
+      "id": "GL-01",
+      "organization": "Sydney Water",
+      "locations": [
+        {
+          "placeId": "sydney",
+          "relation": "scope",
+          "evidence": "Sydney Water Wastewater Overflow Model (WWOM) 2016–2024 Synthesis Report",
+          "source": "contributors/rijoy-john/grey-literature.json"
+        }
+      ],
+      "unmappedReason": "",
+      "pdfSha256": "346bec49f9efa5f324f88ace14292c700836892ee16d589e1113b59fdceecb6d",
+      "metadataSha256": "7a9fec4ac971a0fbcf73a5307bdcaa2029da935906c22f3fd296bfdf26c698a0"
+    },
+    {
+      "type": "grey",
+      "id": "GL-02",
+      "organization": "Icon Water / WSAA",
+      "locations": [
+        {
+          "placeId": "canberra",
+          "relation": "study",
+          "evidence": "Summary identifies the case study as Icon Water in Canberra.",
+          "source": "contributors/rijoy-john/grey-literature.json"
+        }
+      ],
+      "unmappedReason": "",
+      "pdfSha256": "4aa11909d6a5e7ffd1f07c256946fc404a61e57ece1a7c9fd8fa3ea50c29bb94",
+      "metadataSha256": "d7c7d1a0cb7debbd28fb069701c8769d27c3171e8c04e515e89140bd666af07d"
+    },
+    {
+      "type": "grey",
+      "id": "GL-03",
+      "organization": "Watercare Services / WSAA",
+      "locations": [
+        {
+          "placeId": "auckland",
+          "relation": "scope",
+          "evidence": "Summary identifies Auckland’s Central Interceptor and sewer network.",
+          "source": "contributors/rijoy-john/grey-literature.json"
+        }
+      ],
+      "unmappedReason": "",
+      "pdfSha256": "bee31ce32ca8b189a68efd9fc3c31dbe201336a057f115858cea6e720be5bdfc",
+      "metadataSha256": "10ca488334d59394471430a7191b96e35663b5c7c21b999a206e9c8d19383411"
+    },
+    {
+      "type": "grey",
+      "id": "GL-04",
+      "organization": "Sydney Water / WSAA",
+      "locations": [
+        {
+          "placeId": "sydney",
+          "relation": "scope",
+          "evidence": "WSAA Wet Weather Overflows Case Study 5: Sydney Water Risk-Based Overflows Licensing (PRP 307)",
+          "source": "contributors/rijoy-john/grey-literature.json"
+        }
+      ],
+      "unmappedReason": "",
+      "pdfSha256": "f4fd69b4320c676ac3cba1d6e18bdab5cf5d4c95d26d33d662475c9a6163a9bf",
+      "metadataSha256": "c6f51d5745472c9d4d60e833fed78eb5f278e170c2f35a315d7f5cf04bf50526"
+    },
+    {
+      "type": "grey",
+      "id": "GL-05",
+      "organization": "Unitywater / WSAA",
+      "locations": [],
+      "unmappedReason": "No explicit city or region in the available summary or key takeaways.",
+      "pdfSha256": "09cc8d4066a8fbd8f32c829a532cc3519746a7fa17852931c37ff018c47766da",
+      "metadataSha256": "f6b7c06961cb194b50a479fbe70dd3d1f1ea4873c9883ed30cba74f5ae36a5d3"
+    },
+    {
+      "type": "grey",
+      "id": "GL-06",
+      "organization": "Melbourne Water / WSAA",
+      "locations": [
+        {
+          "placeId": "melbourne",
+          "relation": "scope",
+          "evidence": "WSAA Wet Weather Overflows Case Study 1: Melbourne Water Containment Standard and Augmentation",
+          "source": "contributors/rijoy-john/grey-literature.json"
+        }
+      ],
+      "unmappedReason": "",
+      "pdfSha256": "48d16ef5f8ab398916fb67f9b0f878161d2aa92bf39943348dfe6ef7d968ba68",
+      "metadataSha256": "2130def4595ea8362281d8c63fc216a9fa57ce12edb35ef7411abd2f7e5f7663"
+    },
+    {
+      "type": "grey",
+      "id": "GL-07",
+      "organization": "TasWater / WSAA",
+      "locations": [
+        {
+          "placeId": "tasmania",
+          "relation": "scope",
+          "evidence": "WSAA Wet Weather Overflows Case Study 2: TasWater Wet Weather Sewage Overflow Strategy",
+          "source": "contributors/rijoy-john/grey-literature.json"
+        }
+      ],
+      "unmappedReason": "",
+      "pdfSha256": "cff81e8402878aeee501984ce38eb6801c458abbd0429ced843f96e6af10f7e2",
+      "metadataSha256": "beab746746f6953aaa8ace30f9ab98c5572fb7bf6f1360899c14e6b6101f775f"
+    },
+    {
+      "type": "grey",
+      "id": "GL-08",
+      "organization": "Hunter Water / WSAA",
+      "locations": [],
+      "unmappedReason": "No explicit city or region in the available summary or key takeaways.",
+      "pdfSha256": "d1502a1ebb681a79a8fa931b6e13587ffacd8a3b7c1279b9d584ca78af16daac",
+      "metadataSha256": "349f2c8560a951d0cd7fbd14979a37e2828a051ecb85e66994047b3012e4b21a"
+    },
+    {
+      "type": "grey",
+      "id": "GL-09",
+      "organization": "Yarra Valley Water / WSAA",
+      "locations": [],
+      "unmappedReason": "No explicit city or region in the available summary or key takeaways.",
+      "pdfSha256": "362ba19eeed05e710663ea91aa1352bd7b9b2ec1f54381871a86a75ccaa13ba9",
+      "metadataSha256": "210d3a4e40fd2e6be869b1635cd9fe15184dbcdef99af8336e1b4911152d07af"
+    },
+    {
+      "type": "grey",
+      "id": "GL-10",
+      "organization": "Sydney Water",
+      "locations": [
+        {
+          "placeId": "sydney",
+          "relation": "scope",
+          "evidence": "Sydney Water Wastewater Network Planning Guideline (Design & Capacity Assessment)",
+          "source": "contributors/rijoy-john/grey-literature.json"
+        }
+      ],
+      "unmappedReason": "",
+      "pdfSha256": "eea017b1871a0917ff17c950a769dc220df7025721a236556b81dc5fab984111",
+      "metadataSha256": "7d167022bbb23dbc60d090d0ad103eabf8646b83c29190e6eeb0802bdd602fd1"
+    },
+    {
+      "type": "grey",
+      "id": "GL-11",
+      "organization": "Sydney Water",
+      "locations": [
+        {
+          "placeId": "sydney",
+          "relation": "scope",
+          "evidence": "Sydney Water Growth Servicing Plan 2025–2030 (NSW Housing Accord)",
+          "source": "contributors/rijoy-john/grey-literature.json"
+        }
+      ],
+      "unmappedReason": "",
+      "pdfSha256": "1d2eb8bb96cd5b84dab7cd1989d8e3c52795ef83f3da7b64897fbb622cb67ea7",
+      "metadataSha256": "897b4939076a1e091fa763c63630d54c725fc2ba522136964686e53d994bffc9"
+    },
+    {
+      "type": "grey",
+      "id": "GL-12",
+      "organization": "Sydney Water",
+      "locations": [
+        {
+          "placeId": "sydney",
+          "relation": "scope",
+          "evidence": "Sydney Water Servicing Information Review and Capacity Assessment Protocols",
+          "source": "contributors/rijoy-john/grey-literature.json"
+        }
+      ],
+      "unmappedReason": "",
+      "pdfSha256": "1fa0c03478bee990d9eef366537e2e77314a10604343e8f8210731a7a4072509",
+      "metadataSha256": "063645ce9171ce397aa97f74b67ffd8e8179b2d2c1b333a4cbfdf2408b2257f2"
+    },
+    {
+      "type": "grey",
+      "id": "GL-13",
+      "organization": "Sydney Water",
+      "locations": [
+        {
+          "placeId": "sydney",
+          "relation": "scope",
+          "evidence": "Sydney Water Servicing Growth Areas: Frequently Asked Questions & Planning Constraints",
+          "source": "contributors/rijoy-john/grey-literature.json"
+        }
+      ],
+      "unmappedReason": "",
+      "pdfSha256": "7adaef0f0902db4ec5d718cb5db1173ee1cb1293d7b2ae9600011863f668777c",
+      "metadataSha256": "b52bfeeb22e6b21349789446364571d719d7b95c23129c82ff6e6285e37d70a4"
+    },
+    {
+      "type": "grey",
+      "id": "GL-14",
+      "organization": "TasWater",
+      "locations": [
+        {
+          "placeId": "tasmania",
+          "relation": "scope",
+          "evidence": "TasWater Supplement to WSA 02-2014 Sewerage Code of Australia (MRWA Edition V2.1)",
+          "source": "contributors/rijoy-john/grey-literature.json"
+        },
+        {
+          "placeId": "australia",
+          "relation": "scope",
+          "evidence": "TasWater Supplement to WSA 02-2014 Sewerage Code of Australia (MRWA Edition V2.1)",
+          "source": "contributors/rijoy-john/grey-literature.json"
+        }
+      ],
+      "unmappedReason": "",
+      "pdfSha256": "e5db3580b12f9a362d3f8c94fd60f6aed4b698fb506e360885d0c814313f81bc",
+      "metadataSha256": "66ea49a673ce4f3e74869591fd583d1b35e86b08ed4202d778224b5270cc91c6"
+    },
+    {
+      "type": "grey",
+      "id": "GL-15",
+      "organization": "Water Services Association of Australia (WSAA)",
+      "locations": [
+        {
+          "placeId": "brisbane",
+          "relation": "organization",
+          "evidence": "Citation identifies WSAA and the Advanced Water Management Centre in Brisbane.",
+          "source": "contributors/rijoy-john/grey-literature.json"
+        }
+      ],
+      "unmappedReason": "",
+      "pdfSha256": "5ffaef75df21828cd53782d39637b7ec7cef44f105a3dacf9c835a2b7f3d88cb",
+      "metadataSha256": "37bf759d4a80726a394558cdb435bdf0ff297925c4ef84575fac56df518f86c6"
+    },
+    {
+      "type": "grey",
+      "id": "GL-16",
+      "organization": "Water Services Association of Australia (WSAA)",
+      "locations": [
+        {
+          "placeId": "brisbane",
+          "relation": "organization",
+          "evidence": "Citation identifies WSAA and the Advanced Water Management Centre in Brisbane.",
+          "source": "contributors/rijoy-john/grey-literature.json"
+        }
+      ],
+      "unmappedReason": "",
+      "pdfSha256": "8b55d353927ca67364fdca03b23ba523bd66e27c7815266814ee90a1e5f57bf6",
+      "metadataSha256": "5caa4df802d9936e4892a4eda4ada88679d0129fded75e83781f06aa5a7b2800"
+    },
+    {
+      "type": "grey",
+      "id": "GL-17",
+      "organization": "Sydney Coastal Councils Group",
+      "locations": [
+        {
+          "placeId": "sydney",
+          "relation": "scope",
+          "evidence": "Sewage Overflows in the Sydney Region: Environmental, Health and Infrastructure Literature Review",
+          "source": "contributors/rijoy-john/grey-literature.json"
+        }
+      ],
+      "unmappedReason": "",
+      "pdfSha256": "368716198eb7741d8ff67b8f3062caeb2d1590fb91d5cda30fe7e8b897637d60",
+      "metadataSha256": "e5b3667bfe34fd2b53090eb581f4eafae3aaacdc9b9086b48b8f83d5b3697a63"
+    },
+    {
+      "type": "grey",
+      "id": "GL-18",
+      "organization": "American Society of Civil Engineers (ASCE) & WEF",
+      "locations": [],
+      "unmappedReason": "No explicit geographic study site or national scope is stated in the supplied title, scope, or citation; organization location was not inferred.",
+      "pdfSha256": "68e8efa01f2c4295b142810e9ab9cc47fc1de3431bfa5ffd7a76d3e03f18e07a",
+      "metadataSha256": "aa8a9fb636fa7b47d12926bb62d7406c54cf5c2765a81279fe00ef625f1cbbc3"
+    },
+    {
+      "type": "grey",
+      "id": "GL-19",
+      "organization": "US Environmental Protection Agency (US EPA)",
+      "locations": [
+        {
+          "placeId": "united-states",
+          "relation": "scope",
+          "evidence": "US EPA Guide for Evaluating Capacity, Management, Operation, and Maintenance (CMOM) Programs",
+          "source": "contributors/rijoy-john/grey-literature.json"
+        }
+      ],
+      "unmappedReason": "",
+      "pdfSha256": "d4cd80f023300a92727333c7ed1b5737a2628af1736d6b4a1d39520f77fe5412",
+      "metadataSha256": "13aa18e00c2384b934e4a08b97e085ca3795a021259cf12497de05575f91f3c9"
+    },
+    {
+      "type": "grey",
+      "id": "GL-20",
+      "organization": "US Environmental Protection Agency (US EPA)",
+      "locations": [
+        {
+          "placeId": "united-states",
+          "relation": "scope",
+          "evidence": "US EPA CMOM Self-Assessment Checklist for Collection Systems",
+          "source": "contributors/rijoy-john/grey-literature.json"
+        }
+      ],
+      "unmappedReason": "",
+      "pdfSha256": "b3e01294acfaf719e06077f4ac94e8df15388217a984a191f8e6c88a338a7cc4",
+      "metadataSha256": "184b88ad42894d3213cdc94b33652e52ebcfeb64ac7920a29ddf4beb8f80a831"
+    },
+    {
+      "type": "grey",
+      "id": "GL-21",
+      "organization": "US Environmental Protection Agency (US EPA)",
+      "locations": [
+        {
+          "placeId": "united-states",
+          "relation": "scope",
+          "evidence": "US EPA Smart Data Infrastructure for Wet Weather Control and Asset Management",
+          "source": "contributors/rijoy-john/grey-literature.json"
+        }
+      ],
+      "unmappedReason": "",
+      "pdfSha256": "2142d513d7c52e3de81574cb844dd3631be612d24d499eddb5ea7ba46c3bc83d",
+      "metadataSha256": "340d7b6f7c3bccadbdd6b734b398c99c0dd683e8f91edf70e5652b0ec5166593"
+    },
+    {
+      "type": "grey",
+      "id": "GL-22",
+      "organization": "City of South Bend / CSOnet / EmNet",
+      "locations": [
+        {
+          "placeId": "south-bend",
+          "relation": "study",
+          "evidence": "CSOnet: Real-Time Sensing and Autonomous Control Network for Combined Sewer Overflows in South Bend",
+          "source": "contributors/rijoy-john/grey-literature.json"
+        }
+      ],
+      "unmappedReason": "",
+      "pdfSha256": "d5a28d2980f24fa6843812cdcbcb3eeff74c0f5b9a3337bcdba42012fe9f80f0",
+      "metadataSha256": "e94f893bd4c3cda5972c83c9f8e5ca6aa711e5c2c37b0cc7814a3bfc00e9db2c"
+    },
+    {
+      "type": "grey",
+      "id": "GL-23",
+      "organization": "Philadelphia Water Department (PWD)",
+      "locations": [
+        {
+          "placeId": "philadelphia",
+          "relation": "study",
+          "evidence": "Green City, Clean Waters: City of Philadelphia 25-Year Combined Sewer Overflow Long Term Control Plan",
+          "source": "contributors/rijoy-john/grey-literature.json"
+        }
+      ],
+      "unmappedReason": "",
+      "pdfSha256": "a90fec4ab264e530e9c4e3ada33407d223d9ba75fba4fd43434a95aa2de72a3a",
+      "metadataSha256": "bd920c58c6e90dbc23d326858110cb36138b6f867911e487629fd5d6241a95a2"
+    },
+    {
+      "type": "grey",
+      "id": "GL-24",
+      "organization": "King County Wastewater Treatment Division",
+      "locations": [
+        {
+          "placeId": "united-states",
+          "relation": "scope",
+          "evidence": "King County Regional Inflow and Infiltration Control Program: Executive Recommendations Report",
+          "source": "contributors/rijoy-john/grey-literature.json"
+        }
+      ],
+      "unmappedReason": "",
+      "pdfSha256": "c0b4607c6c007b694e18ae4024ad46b96c89eb35ee694c8882062e3acdc3b89a",
+      "metadataSha256": "07629495b0b57f48cb888a01ad6d24beec62b7345ebff27ad0e36abd0ba1b950"
+    },
+    {
+      "type": "grey",
+      "id": "GL-25",
+      "organization": "DC Water",
+      "locations": [
+        {
+          "placeId": "washington-dc",
+          "relation": "scope",
+          "evidence": "Summary identifies DC Water’s Clean Rivers project and the Potomac and Anacostia waterways.",
+          "source": "contributors/rijoy-john/grey-literature.json"
+        }
+      ],
+      "unmappedReason": "",
+      "pdfSha256": "2a833355a8d27f586aa89268d1e7a55f34bcd8983fac691002ab7c3be905baf5",
+      "metadataSha256": "bc37c1deaba1b4e88cc96cebb552d42d08f9b7c41bb782c1942445474882c2b7"
+    },
+    {
+      "type": "grey",
+      "id": "GL-26",
+      "organization": "DC Water / Quantified Ventures",
+      "locations": [
+        {
+          "placeId": "washington-dc",
+          "relation": "scope",
+          "evidence": "DC Water Environmental Impact Bond (EIB) Post-Construction Performance Outcomes",
+          "source": "contributors/rijoy-john/grey-literature.json"
+        }
+      ],
+      "unmappedReason": "",
+      "pdfSha256": "b70e549cbef39114f8b6ea7cb246400d1fa8dcc307c95f4d24be9e7183ee5431",
+      "metadataSha256": "b27e9f28e06bea11f470aefabd16806ce4d5bf487f6745f974c85df4b588f09f"
+    },
+    {
+      "type": "grey",
+      "id": "GL-27",
+      "organization": "Cambridge Systematics & KC Water",
+      "locations": [
+        {
+          "placeId": "kansas-city",
+          "relation": "study",
+          "evidence": "Adaptive Management and Annual Hydraulic Model Calibration under Consent Decree: Kansas City Water",
+          "source": "contributors/rijoy-john/grey-literature.json"
+        }
+      ],
+      "unmappedReason": "",
+      "pdfSha256": "97230588f669fd15d99d474f822a00b3a8341fa59f74e67680de65dba56a483e",
+      "metadataSha256": "b37108591f9d4cdd21d310c74930f62519deecf2ef569d24226a1dd2535e5887"
+    },
+    {
+      "type": "grey",
+      "id": "GL-28",
+      "organization": "Water UK",
+      "locations": [
+        {
+          "placeId": "england-and-wales",
+          "relation": "scope",
+          "evidence": "Key takeaways state the planning framework applies across England and Wales.",
+          "source": "contributors/rijoy-john/grey-literature.json"
+        }
+      ],
+      "unmappedReason": "",
+      "pdfSha256": "aae2f6b92ad88fe7e3c0bcedc9d63b459c8973d0cd6ef3d801eb144f3984ca83",
+      "metadataSha256": "5c1dd4428bd0e365347ecc7e3623a93f1cc4d4d63f998b3ef58522cc54a55e09"
+    },
+    {
+      "type": "grey",
+      "id": "GL-29",
+      "organization": "Water UK",
+      "locations": [
+        {
+          "placeId": "england-and-wales",
+          "relation": "scope",
+          "evidence": "The document is Water UK guidance for wastewater catchments in England and Wales.",
+          "source": "contributors/rijoy-john/grey-literature.json"
+        }
+      ],
+      "unmappedReason": "",
+      "pdfSha256": "625ae1a462d20f7dbd50312df99d938811f07585d263285934d2a18b6b1868f6",
+      "metadataSha256": "54bcc6206ef5debb53abef26d8c5bf749f21e6e86d9ff1d8969c4bbd7e95ad5a"
+    },
+    {
+      "type": "grey",
+      "id": "GL-30",
+      "organization": "Northumbrian Water Limited (NWL)",
+      "locations": [
+        {
+          "placeId": "england-and-wales",
+          "relation": "scope",
+          "evidence": "The source identifies BRAVA as the DWMP methodology for UK catchments; publisher is Northumbrian Water.",
+          "source": "contributors/rijoy-john/grey-literature.json"
+        }
+      ],
+      "unmappedReason": "",
+      "pdfSha256": "5d5dda5b53214703cee75fd2ef7458d4f73ac9d2e8de990c6659b9a3ad1a7af9",
+      "metadataSha256": "e7f0410202ea45d59e8087f030322ec82ebd76501c02eb17a3b34c22e96ebedf"
+    },
+    {
+      "type": "grey",
+      "id": "GL-31",
+      "organization": "Water Services Regulation Authority (Ofwat)",
+      "locations": [
+        {
+          "placeId": "england-and-wales",
+          "relation": "scope",
+          "evidence": "The source identifies Ofwat reporting guidance for UK water companies.",
+          "source": "contributors/rijoy-john/grey-literature.json"
+        }
+      ],
+      "unmappedReason": "",
+      "pdfSha256": "d2b0d4af17fae0091977ea80173247ec7d7de68cb58b249e1f0da339cbc793ee",
+      "metadataSha256": "5db817031d897a3fe7eeacbc0bade235110fcae41fa75afdee6ab8047946f113"
+    },
+    {
+      "type": "grey",
+      "id": "GL-32",
+      "organization": "Department for Environment, Food & Rural Affairs (Defra)",
+      "locations": [
+        {
+          "placeId": "england",
+          "relation": "scope",
+          "evidence": "Summary identifies the statutory Storm Overflows Discharge Reduction Plan and reporting across England.",
+          "source": "contributors/rijoy-john/grey-literature.json"
+        }
+      ],
+      "unmappedReason": "",
+      "pdfSha256": "5f1b7edfb7f3d598c7549790ce630da28e877309f7f6a0aa81b30afcfe134401",
+      "metadataSha256": "5b785f1487a414f7986e2a2c42a6d01d090e3af73e4f46e3e54c7de0a55fc5bd"
+    },
+    {
+      "type": "grey",
+      "id": "GL-33",
+      "organization": "Yorkshire Water",
+      "locations": [
+        {
+          "placeId": "yorkshire",
+          "relation": "scope",
+          "evidence": "The report is Yorkshire Water’s PR24 business-plan appendix.",
+          "source": "contributors/rijoy-john/grey-literature.json"
+        }
+      ],
+      "unmappedReason": "",
+      "pdfSha256": "bcc605ec2e2a642e34422d50c12861bdc0f6b48043b8339c7df7c0019e9641a1",
+      "metadataSha256": "9ce70f97e2187fc2443f2d2633e9063ec1b4a59d1315015dc68f81874c260b59"
+    },
+    {
+      "type": "grey",
+      "id": "GL-34",
+      "organization": "Severn Trent Water",
+      "locations": [
+        {
+          "placeId": "birmingham",
+          "relation": "scope",
+          "evidence": "The report is Severn Trent Water’s DWMP technical option report; the source identifies the company’s regional DWMP service area.",
+          "source": "contributors/rijoy-john/grey-literature.json"
+        }
+      ],
+      "unmappedReason": "",
+      "pdfSha256": "b2bd2073edcc449661891053876ae121ec52dd1de488e0da869744c8c8bbccac",
+      "metadataSha256": "31184f4d92725949a11bcf447a78ca1747bbe8a4cba1becd24621b3f2fe12250"
+    },
+    {
+      "type": "grey",
+      "id": "GL-35",
+      "organization": "Welsh Government",
+      "locations": [
+        {
+          "placeId": "wales",
+          "relation": "scope",
+          "evidence": "The source is Welsh Government guidance for drainage and wastewater management plans in Wales.",
+          "source": "contributors/rijoy-john/grey-literature.json"
+        }
+      ],
+      "unmappedReason": "",
+      "pdfSha256": "03dafdd7c623ec62dc764c91dba8cd7416f44fb429b99a81aeccaf9168179c9e",
+      "metadataSha256": "40b497bba63be2b53f24d23dbe6e00f2829564d733f326bc7a3bf819cf6920f0"
+    },
+    {
+      "type": "grey",
+      "id": "GL-36",
+      "organization": "United Utilities",
+      "locations": [
+        {
+          "placeId": "sefton",
+          "relation": "study",
+          "evidence": "Dynamic Network Management (DNM) in Practice: Sefton Pilot and 20,000 Sensor Rollout",
+          "source": "contributors/rijoy-john/grey-literature.json"
+        }
+      ],
+      "unmappedReason": "",
+      "pdfSha256": "21d6f2090f92b93b43f798a27f08c13063e871fdd6079e18da82b0a08cf01a16",
+      "metadataSha256": "93c541d51878b2f5973fa01a07da5340a618ee4fe48f640f30e50792f2ab8c96"
+    },
+    {
+      "type": "grey",
+      "id": "GL-37",
+      "organization": "Commission for Regulation of Utilities (CRU)",
+      "locations": [
+        {
+          "placeId": "ireland",
+          "relation": "scope",
+          "evidence": "Uisce Éireann (Irish Water) Performance Assessment 2021: Wastewater Network Quality & Compliance",
+          "source": "contributors/rijoy-john/grey-literature.json"
+        }
+      ],
+      "unmappedReason": "",
+      "pdfSha256": "b99d843adcbb32044ed5b0cb14897b0ce9e9d7238eb37a61e2728ef4b7b468a9",
+      "metadataSha256": "e26082eb0b4e511c5edb7d967b3c64ae285c4bd844674c0207f84013905ad29b"
+    },
+    {
+      "type": "grey",
+      "id": "GL-38",
+      "organization": "Metro Vancouver",
+      "locations": [
+        {
+          "placeId": "canada",
+          "relation": "scope",
+          "evidence": "Metro Vancouver Inflow and Infiltration (I&I) Allowance and Management Assessment",
+          "source": "contributors/rijoy-john/grey-literature.json"
+        }
+      ],
+      "unmappedReason": "",
+      "pdfSha256": "9b266ff5f510e061969610739402e6f10a2b11670a586214b0906eb3ad199570",
+      "metadataSha256": "23829850544810dbc58c04eadab168952b3b7cd27f96163b81c2c8eb5aa98314"
+    },
+    {
+      "type": "grey",
+      "id": "GL-39",
+      "organization": "Metro Vancouver",
+      "locations": [
+        {
+          "placeId": "metro-vancouver",
+          "relation": "scope",
+          "evidence": "Summary identifies Metro Vancouver guidance for member municipalities.",
+          "source": "contributors/rijoy-john/grey-literature.json"
+        }
+      ],
+      "unmappedReason": "",
+      "pdfSha256": "af587dc5a9097c025f8b14bc0e713ca295a420d0fcbcefeb9265ae89eebd3b32",
+      "metadataSha256": "d149d9405bda37f1befe55f1e326003500a35763582858ce7c0617495894d4b0"
+    },
+    {
+      "type": "grey",
+      "id": "GL-40",
+      "organization": "Metro Vancouver",
+      "locations": [
+        {
+          "placeId": "metro-vancouver",
+          "relation": "scope",
+          "evidence": "Summary identifies Metro Vancouver’s standardized municipal planning template.",
+          "source": "contributors/rijoy-john/grey-literature.json"
+        }
+      ],
+      "unmappedReason": "",
+      "pdfSha256": "77e3cfc3b7481fac80a1e2e66825a8a762ffb4ac310f7cab60b29fe67c342577",
+      "metadataSha256": "85cb91e916ef8fdaf27151211751aadf8049bef5b5d5a755752f7eda021f8bed"
+    },
+    {
+      "type": "grey",
+      "id": "GL-41",
+      "organization": "Tokyo Bureau of Sewerage",
+      "locations": [
+        {
+          "placeId": "tokyo",
+          "relation": "scope",
+          "evidence": "Sewerage in Tokyo 2024: Operations, Reconstruction & Flood Protection Overview",
+          "source": "contributors/rijoy-john/grey-literature.json"
+        }
+      ],
+      "unmappedReason": "",
+      "pdfSha256": "5ae729fa69277c4bd6f94d19242f2eb215bd186110e4c7a80c2a390a08e7bbda",
+      "metadataSha256": "b28530fe75ca598cb8be2266ff1dafdfbc1ecfa059b2965d5ea7b080b73aaee8"
+    },
+    {
+      "type": "grey",
+      "id": "GL-42",
+      "organization": "Tokyo Bureau of Sewerage",
+      "locations": [
+        {
+          "placeId": "tokyo",
+          "relation": "scope",
+          "evidence": "Tokyo Bureau of Sewerage Management Report Digest 2025: Asset Renewal & Smart Inspection",
+          "source": "contributors/rijoy-john/grey-literature.json"
+        }
+      ],
+      "unmappedReason": "",
+      "pdfSha256": "dad21d7c216a5f9385d9af58c1f0c5cfcbb40dbae46fb606f296bcb71f99f039",
+      "metadataSha256": "dfa027985ddbf8d140a699b2f75b781e3a5a4ddd6696ca675c28af55a1519f03"
+    },
+    {
+      "type": "grey",
+      "id": "GL-43",
+      "organization": "PolyU HK & Drainage Services Department (DSD)",
+      "locations": [
+        {
+          "placeId": "hong-kong",
+          "relation": "study",
+          "evidence": "Real-Time Urban Drainage and Sewer Network Monitoring Using Smart IoT Sensors: Hong Kong Case Study",
+          "source": "contributors/rijoy-john/grey-literature.json"
+        }
+      ],
+      "unmappedReason": "",
+      "pdfSha256": "1b74098821106e9d31939ab5fcf9d10fca766171cae101d61d9836b541c97fb2",
+      "metadataSha256": "c6587abd5e40a2faa0db0becb6c38032236a151ae372f54bec341ba4a17bb30e"
+    },
+    {
+      "type": "grey",
+      "id": "GL-44",
+      "organization": "SHEWC / International Engineering Conference",
+      "locations": [
+        {
+          "placeId": "brazil",
+          "relation": "scope",
+          "evidence": "Combined and Separate Sewer Overflow Challenges in Rapidly Urbanising Brazilian Municipalities",
+          "source": "contributors/rijoy-john/grey-literature.json"
+        }
+      ],
+      "unmappedReason": "",
+      "pdfSha256": "227de4b0eed5f378bc190362fc179f1603ad1c412bf91bb378f8005961b08cb8",
+      "metadataSha256": "819abfaeebfc0da175584f4f68ae66bf4bd9f5962c11f55883c54135e3e4dd67"
+    },
+    {
+      "type": "grey",
+      "id": "GL-45",
+      "organization": "Centre for Liveable Cities (CLC Singapore) & City of Copenhagen",
+      "locations": [
+        {
+          "placeId": "copenhagen",
+          "relation": "study",
+          "evidence": "Blue-Green Infrastructure in Practice: The Copenhagen Cloudburst Management Plan",
+          "source": "contributors/rijoy-john/grey-literature.json"
+        }
+      ],
+      "unmappedReason": "",
+      "pdfSha256": "be6a82c50947a8bab14ea5f60174b8ba10a9c7e37660858acaa16135c8be4bf6",
+      "metadataSha256": "fe62db76f654d31da01ec7cd26fac9e4d064157c235adf9888e56f6adfc1813f"
+    },
+    {
+      "type": "grey",
+      "id": "GL-46",
+      "organization": "SA Water",
+      "locations": [
+        {
+          "placeId": "stonyfell",
+          "relation": "study",
+          "evidence": "SA Water Stonyfell Smart Wastewater Network Trial & Blockage Prevention",
+          "source": "contributors/rijoy-john/grey-literature.json"
+        },
+        {
+          "placeId": "adelaide",
+          "relation": "organization",
+          "evidence": "Summary identifies SA Water and the Stonyfell deployment in Adelaide’s eastern suburbs.",
+          "source": "contributors/rijoy-john/grey-literature.json"
+        }
+      ],
+      "unmappedReason": "",
+      "pdfSha256": "cff81e8402878aeee501984ce38eb6801c458abbd0429ced843f96e6af10f7e2",
+      "metadataSha256": "f89735d49049c045097b16a224decd642873c5fe8377d0b5454c1c15ed4db853"
+    },
+    {
+      "type": "grey",
+      "id": "GL-47",
+      "organization": "Water UK / Environment Agency",
+      "locations": [
+        {
+          "placeId": "united-kingdom",
+          "relation": "scope",
+          "evidence": "UK Environment Agency & Water UK Event Duration Monitoring (EDM) Live Storm Overflows Hub",
+          "source": "contributors/rijoy-john/grey-literature.json"
+        }
+      ],
+      "unmappedReason": "",
+      "pdfSha256": "5f1b7edfb7f3d598c7549790ce630da28e877309f7f6a0aa81b30afcfe134401",
+      "metadataSha256": "80ce17ee9a0ade076b35151739b3cdede243a838fae05580bd950de878d9c733"
+    },
+    {
+      "type": "grey",
+      "id": "GL-48",
+      "organization": "Watercare Services",
+      "locations": [
+        {
+          "placeId": "auckland",
+          "relation": "scope",
+          "evidence": "Summary identifies Watercare’s GIS capacity map for Auckland sewer trunk networks.",
+          "source": "contributors/rijoy-john/grey-literature.json"
+        }
+      ],
+      "unmappedReason": "",
+      "pdfSha256": "bee31ce32ca8b189a68efd9fc3c31dbe201336a057f115858cea6e720be5bdfc",
+      "metadataSha256": "1ef406ef6f147bca287c7940d7d5cfdaf745b3de4df2b795bc189bdecfbf4913"
+    },
+    {
+      "type": "academic",
+      "id": 32,
+      "organization": "University of Chieti-Pescara; University of Naples Federico II",
+      "locations": [],
+      "unmappedReason": "No specific field or case-study place could be identified in the available full text; bibliographic references and affiliations were excluded.",
+      "pdfSha256": "27074fc5ea999704f98e9f344eff5e3de5e4d118998ccdc73432e1b845dd231d",
+      "metadataSha256": "fb6025c1caf610563ac35608aca08943c90c2c4f9c025495ece7ed33fb16fddf"
+    },
+    {
+      "type": "academic",
+      "id": 33,
+      "organization": "",
+      "locations": [],
+      "unmappedReason": "Review or synthesis with no single study geography identified.",
+      "pdfSha256": "a61ee086a4f71a71ff0392261d5121fe4d5de694214fb836d1f1900cf3754f43",
+      "metadataSha256": "97c2bcd7f68de4009546fc2d0e3737075e4eca42ec00e2625040f3f86e656c4b"
+    },
+    {
+      "type": "academic",
+      "id": 34,
+      "organization": "The Hong Kong Polytechnic University; City University of Hong Kong",
+      "locations": [
+        {
+          "placeId": "hong-kong",
+          "relation": "study",
+          "evidence": "Integrated sewer-pipe condition database is collected from Hong Kong.",
+          "source": "./contributors/wimukthi/papers/Shihui_2025_Analyzing_factors_influencing_defect-based_conditions_for_sewe_pipes_using_BN.pdf",
+          "page": 5
+        }
+      ],
+      "unmappedReason": "",
+      "pdfSha256": "81d6ae9a3ad36581719408b2001c9df8ae0c9b4208fce8e1e2f97528dd768cc1",
+      "metadataSha256": "34af138e39d8eaefc62a54c068305a2b15d3d73f13f49c5fcd228f7855db23cf"
+    },
+    {
+      "type": "academic",
+      "id": 35,
+      "organization": "University of Minnesota Duluth; UNESCO-IHE Delft",
+      "locations": [
+        {
+          "placeId": "duluth",
+          "relation": "study",
+          "evidence": "Woodland catchment case study is in Duluth, Minnesota.",
+          "source": "./contributors/wimukthi/papers/Zihang_2025_Optimizing_Sensor_Placement_for_Flow_Reconstruction_in_Urban_Drainage_Networks.pdf",
+          "page": 8
+        }
+      ],
+      "unmappedReason": "",
+      "pdfSha256": "056c836c280997490a1bb67407e96a24045ae8bf3f8c8954e1e675117a1d7ad8",
+      "metadataSha256": "17ef41ebb2c08ed010c85dafb4298c212c4fd210016860a2027c857fd036a65f"
+    },
+    {
+      "type": "academic",
+      "id": 40,
+      "organization": "University of Michigan; Oak Ridge National Laboratory; Boise State University; U.S. Army Garrison Detroit Arsenal",
+      "locations": [
+        {
+          "placeId": "detroit",
+          "relation": "study",
+          "evidence": "Urban-flood case study uses the August 2014 I-696–Mound Road corridor in metropolitan Detroit.",
+          "source": "./contributors/wimukthi/papers/Chen_2026_MATCHING-URBAN-FLOOD-SENSOR-PLACEMENT.pdf",
+          "page": 3
+        }
+      ],
+      "unmappedReason": "",
+      "pdfSha256": "5259d817bbc6dde19e544a71e346fe04105f79598dae8b5a30bd97f7d32c7056",
+      "metadataSha256": "3f1435623e8e9d773261f6a55b2a2102e2b8f4f699d8592dbd99fc562f4393e0"
+    },
+    {
+      "type": "academic",
+      "id": 41,
+      "organization": "Sydney Water",
+      "locations": [
+        {
+          "placeId": "sydney",
+          "relation": "study",
+          "evidence": "Paper surveys digital-meter and wastewater blockage-detection methods used by Sydney Water.",
+          "source": "./contributors/wimukthi/papers/Drenoyanis_2022_Detecting-Wastewater-Blockages-with-Digital-Water-Meters.pdf",
+          "page": 1
+        },
+        {
+          "placeId": "sydney",
+          "relation": "organization",
+          "evidence": "The article describes Sydney Water’s wastewater network and IoT deployments in Greater Sydney.",
+          "source": "./contributors/wimukthi/papers/Drenoyanis_2022_Detecting-Wastewater-Blockages-with-Digital-Water-Meters.pdf",
+          "page": 1
+        }
+      ],
+      "unmappedReason": "",
+      "pdfSha256": "debbd1ec82a2320645106dd7a82f0c85d9bb4351b8cc8e4898e55fc41660e49c",
+      "metadataSha256": "80ede346718dcd8debb4a80bbcfcb02dfe2bc20c0bd9ddb3dd1b56c72e14ffa2"
+    },
+    {
+      "type": "academic",
+      "id": 42,
+      "organization": "Qingdao University of Technology; Rongcheng Water Group",
+      "locations": [],
+      "unmappedReason": "No specific field or case-study place could be identified in the available full text; bibliographic references and affiliations were excluded.",
+      "pdfSha256": "b8d32ce90f4680bcf3287850884822f303371239c0fa5eae2fc33d96915c4dea",
+      "metadataSha256": "3a3d459aee24bced3f6877ba34e4dd296a3f4503478ec0b28e03e46860f8031b"
+    },
+    {
+      "type": "academic",
+      "id": 43,
+      "organization": "City University of Hong Kong; The University of Queensland; Hohai University",
+      "locations": [
+        {
+          "placeId": "china",
+          "relation": "scope",
+          "evidence": "The paper evaluates three monitored manholes across urbanized areas in China; city names are not given.",
+          "source": "./contributors/wimukthi/papers/Ruozhou_2025_A-low-cost-soft-sensor-for-sewer-flow-monitoring.pdf",
+          "page": 3
+        }
+      ],
+      "unmappedReason": "",
+      "pdfSha256": "a5348e916f873e90ffa93e5310180c020931ada82a27a7eabac80823044c463e",
+      "metadataSha256": "5ab15915eb79c4f596c29ecaedbdede152811be465ae9da593b490cf65d9f9ed"
+    },
+    {
+      "type": "academic",
+      "id": 44,
+      "organization": "City University of Hong Kong; The University of Queensland; Hohai University; Zhejiang Ocean University",
+      "locations": [
+        {
+          "placeId": "china",
+          "relation": "scope",
+          "evidence": "Two real-life case-study sewer pipes are in separate urbanized areas in China; city names are not given.",
+          "source": "./contributors/wimukthi/papers/Ruozhou_2025_Low-cost,-data-efficient,-on-device-soft-sensors-for-sewer-flow-monitoring.pdf",
+          "page": 3
+        }
+      ],
+      "unmappedReason": "",
+      "pdfSha256": "373a5491be854e6b9d5643d876f3433894378701ea248b195304b3725311af6e",
+      "metadataSha256": "f0deedc9d7f70d3be6184730c3c3e5446b24af246340212f496a43fa62036f2f"
+    },
+    {
+      "type": "academic",
+      "id": 45,
+      "organization": "Ningbo University; University of Alberta",
+      "locations": [
+        {
+          "placeId": "ningbo",
+          "relation": "study",
+          "evidence": "Two monitored study sites are Bailong and Wantou in Ningbo.",
+          "source": "./contributors/wimukthi/papers/Yong_2024_Assessment-of-rainfall-derived-inflow-and-infilteration.pdf",
+          "page": 3
+        }
+      ],
+      "unmappedReason": "",
+      "pdfSha256": "8a5d22609672aae176d0270d4e14b13a03ab22d6d9d3bbcbe674d78138d4676c",
+      "metadataSha256": "827a5c9adbb84545ed03f66675a809dbb5e3ab45c65b563d4a9f46e56b5f1d51"
+    },
+    {
+      "type": "academic",
+      "id": 46,
+      "organization": "Texas A&M University; Aalto University; Finnish Meteorological Institute; Dalian University of Technology",
+      "locations": [
+        {
+          "placeId": "espoo",
+          "relation": "study",
+          "evidence": "Study area is explicitly identified as the city of Espoo.",
+          "source": "./contributors/wimukthi/papers/Zhe_2020_Comparative-Study-of-AI-Based-Methods.pdf",
+          "page": 3
+        }
+      ],
+      "unmappedReason": "",
+      "pdfSha256": "f5fa6e39a0cbc67d62d2c7738c175541507ef236b338d299ef8cde770224373a",
+      "metadataSha256": "4938a5a5f00f16d603cc43e312233b819c024b0fb3bc2ba8e9f0477f7dd3d4d2"
+    },
+    {
+      "type": "compiled",
+      "id": "wimukthi-osp-condition-review",
+      "organization": "",
+      "locations": [],
+      "unmappedReason": "Literature synthesis without a single named field site; underlying cited studies are not treated as the review location.",
+      "pdfSha256": "03d1d496c2163b2d209cf52f6640523e2cd2529b5ea8200d5488a54bc8ae0463",
+      "metadataSha256": "cfc3add2f45f75b5d3e36c330f890e34a81795f70cffb96d046f38726fc72d0d"
+    },
+    {
+      "type": "compiled",
+      "id": "team-compiled-paper",
+      "organization": "",
+      "locations": [
+        {
+          "placeId": "south-australia",
+          "relation": "scope",
+          "evidence": "Review’s stated project scope and public-data assessment are South Australia.",
+          "source": "contributors/team_compiled_paper.pdf",
+          "page": 2
+        },
+        {
+          "placeId": "melbourne",
+          "relation": "scope",
+          "evidence": "Review discusses low-cost sensors operated in a Melbourne catchment.",
+          "source": "contributors/team_compiled_paper.pdf",
+          "page": 11
+        },
+        {
+          "placeId": "sydney",
+          "relation": "scope",
+          "evidence": "Review discusses Sydney Water’s metropolitan network sensing programme.",
+          "source": "contributors/team_compiled_paper.pdf",
+          "page": 9
+        },
+        {
+          "placeId": "adelaide",
+          "relation": "scope",
+          "evidence": "Review describes Stonyfell as a study site in Adelaide.",
+          "source": "contributors/team_compiled_paper.pdf",
+          "page": 9
+        }
+      ],
+      "unmappedReason": "",
+      "pdfSha256": "b46ac144c5dd042926cbe4fb2b3b64697ee5a4ed33621896e20d3e4baf2464d8",
+      "metadataSha256": "435c5b6109ee0921ce639aa1cbe9db9a70bf643beef61a52294fbdabfcf92086"
+    }
+  ]
+}
