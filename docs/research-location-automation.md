@@ -70,6 +70,8 @@ A record with no PDF (`#`), a missing file, a remote PDF that was not fetched, a
 
 ## Publishing and maintenance
 
+Paper additions still follow the library’s existing metadata contract (contributor JSON, PDF path and matching summary metadata). This pipeline removes the extra manual geography step; it does not invent research summaries or turn an unregistered PDF file into a paper record.
+
 GitHub Pages uses the Actions publishing source. The build stages `index.html`, the viewer, JS/CSS, PDFs and public fallback annotations into `_site`, excluding backend code, caches, and processing data. The generated map data is the artifact that is published; no bot commits or extra API key are required. GeoNames attribution travels with the map data and a standalone notice file.
 
 The committed geography JS is a reproducible snapshot. After additions, the deployed GitHub Pages copy is regenerated even if that snapshot was not manually edited. Vercel does not run this new Actions build, so it remains on its source snapshot until its own deployment flow is adapted or retired. Backend migration is separate from this static-site pipeline.

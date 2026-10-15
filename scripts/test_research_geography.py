@@ -574,15 +574,24 @@ class Gazetteer(GeographyTestCase):
 class RealRepository(unittest.TestCase):
     @unittest.skipUnless((REPO / "data/geography/reviewed.json").is_file() and (REPO / "js/research-geography-data.js").is_file(),
                          "baseline snapshot not present")
-    def test_first_run_reproduces_the_curated_dataset(self):
+    def test_current_manifest_is_generated_without_rewriting_curated_locations(self):
         with tempfile.TemporaryDirectory() as tmp:
             output = Path(tmp) / "out.js"
             out = io.StringIO()
             with contextlib.redirect_stdout(out), contextlib.redirect_stderr(out):
                 code = brg.main(["--root", str(REPO), "--output", str(output), "--no-cache-write"])
             self.assertEqual(code, 0, out.getvalue())
-            expected = (REPO / "js/research-geography-data.js").read_bytes()
-            self.assertEqual(hashlib.sha256(output.read_bytes()).hexdigest(), hashlib.sha256(expected).hexdigest())
+            generated = brg.parse_js_data(output)
+            records = {f"{r['type']}:{r['id']}": r for r in generated["records"]}
+            expected_keys = {source["key"] for source in brg.load_sources(REPO)}
+            self.assertEqual(set(records), expected_keys)
+            reviewed = json.loads((REPO / "data/geography/reviewed.json").read_text())["records"]
+            for entry in reviewed:
+                key = f"{entry['type']}:{entry['id']}"
+                if key in records:
+                    self.assertEqual(records[key]["locations"], entry["locations"])
+            # A committed browser-data snapshot may lag behind a newly added paper.
+            # The test must accept that addition rather than requiring a manual geography edit.
 
 
 class PdfReader(unittest.TestCase):
