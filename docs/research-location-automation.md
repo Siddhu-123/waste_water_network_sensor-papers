@@ -7,7 +7,7 @@ Implemented in `scripts/build_research_geography.py` and `.github/workflows/vali
 - The library reads contributor metadata and local PDFs. The map reads a generated `js/research-geography-data.js` file.
 - `.github/workflows/validate.yml` installs the pinned PDF parser and OCR engine, restores the incremental cache, tests ingestion, regenerates geography and browser data, validates both, then stages and deploys public assets.
 - The parent workspace has a pdfplumber extraction example at `output/research-library-2026-10-13/extract.py`. The builder uses pdfplumber in the same way when it is installed.
-- The map currently includes 55 academic and 83 grey-literature records. Compiled reviews are in the dataset (the validator requires them) but are excluded from the map display.
+- The map includes every academic and grey-literature record in the manifests. Compiled reviews are in the dataset (the validator requires them) but are excluded from the map display.
 
 ## Files
 
@@ -16,8 +16,8 @@ Implemented in `scripts/build_research_geography.py` and `.github/workflows/vali
 | `scripts/build_research_geography.py` | The builder. Production runs require pdfplumber; OCR is enabled in Actions. |
 | `scripts/geography_requirements.txt` | Pinned `pdfplumber` and `pytesseract` dependencies. |
 | `scripts/test_research_geography.py` | Behaviour tests (`python3 -m unittest scripts/test_research_geography.py`). They build throwaway libraries with real pdfplumber extraction through `--root`, including new/changed papers and false-positive cases. The scan test runs when Tesseract is installed. |
-| `data/geography/reviewed.json` | Snapshot of the 143 existing records: locations, unmapped reasons, academic `organization`, original order, and the PDF and metadata hashes they were reviewed against. This is the human-override layer. |
-| `data/geography/gazetteer_seed.json` | The 61 existing places plus search aliases (for example Shoalhaven, Nowra, Washington DC). |
+| `data/geography/reviewed.json` | Snapshot of the reviewed records: locations, unmapped reasons, academic `organization`, original order, and the PDF and metadata hashes they were reviewed against. This is the human-override layer. |
+| `data/geography/gazetteer_seed.json` | The existing places plus search aliases (for example Shoalhaven, Nowra, Washington DC). |
 | `data/geography/countries.json` | Country names, aliases, and state/province names used only as country context. |
 | `data/geography/extraction-cache.json` | Default local cache path. CI uses `.cache/research-geography/extraction-cache.json` and Actions cache; neither is committed or published. Contains bounded evidence, never full text. |
 

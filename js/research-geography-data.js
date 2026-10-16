@@ -913,7 +913,7 @@ window.RESEARCH_GEOGRAPHY_DATA = {
       "authors": "",
       "assignedTo": "Satya Siddhartha",
       "organization": "US Environmental Protection Agency (US EPA)",
-      "pdfUrl": "#",
+      "pdfUrl": "./contributors/satya-siddhartha/grey/GL_2017_USEPA_SWMM_Reference_Manual_Vol2_Hydraulics.pdf",
       "url": "https://nepis.epa.gov/Exe/ZyPURL.cgi?Dockey=P100S9AS.txt",
       "locations": [
         {
@@ -923,7 +923,8 @@ window.RESEARCH_GEOGRAPHY_DATA = {
           "source": "contributors/satya-siddhartha/grey-literature.json"
         }
       ],
-      "unmappedReason": ""
+      "unmappedReason": "",
+      "sourceChanged": true
     },
     {
       "id": "SATYA-GL-02",
@@ -932,7 +933,7 @@ window.RESEARCH_GEOGRAPHY_DATA = {
       "authors": "",
       "assignedTo": "Satya Siddhartha",
       "organization": "US Environmental Protection Agency (US EPA)",
-      "pdfUrl": "#",
+      "pdfUrl": "./contributors/satya-siddhartha/grey/GL_2016_USEPA_SWMM_Reference_Manual_Vol1_Hydrology.pdf",
       "url": "https://nepis.epa.gov/Exe/ZyPURL.cgi?Dockey=P100NYRA.txt",
       "locations": [
         {
@@ -942,234 +943,8 @@ window.RESEARCH_GEOGRAPHY_DATA = {
           "source": "contributors/satya-siddhartha/grey-literature.json"
         }
       ],
-      "unmappedReason": ""
-    },
-    {
-      "id": "SATYA-GL-03",
-      "type": "grey",
-      "title": "WSA 02-2014 Gravity Sewerage Code of Australia (MRWA Edition Version 3.3)",
-      "authors": "",
-      "assignedTo": "Satya Siddhartha",
-      "organization": "Water Services Association of Australia (WSAA)",
-      "pdfUrl": "#",
-      "url": "https://wsaa.asn.au/Web/iCore/Store/StoreLayouts/Item_Detail.aspx?iProductCode=WSAACODE002",
-      "locations": [
-        {
-          "placeId": "australia",
-          "relation": "scope",
-          "evidence": "Gravity collection sewers from DN 150 up to DN 1200 across all Australian retail water utilities.",
-          "source": "contributors/satya-siddhartha/grey-literature.json"
-        }
-      ],
-      "unmappedReason": ""
-    },
-    {
-      "id": "SATYA-GL-04",
-      "type": "grey",
-      "title": "SA Water TS 0130: As Constructed Data Requirements for Linear Assets",
-      "authors": "",
-      "assignedTo": "Satya Siddhartha",
-      "organization": "SA Water Corporation",
-      "pdfUrl": "#",
-      "url": "https://www.sawater.com.au/building,-developing-and-plumbing/developments/engineering-standards/technical-standards",
-      "locations": [
-        {
-          "placeId": "australia",
-          "relation": "scope",
-          "evidence": "All gravity sewers, pressure rising mains, manhole chambers, and maintenance shafts owned or maintained by SA Water across South Australia.",
-          "source": "contributors/satya-siddhartha/grey-literature.json"
-        },
-        {
-          "placeId": "south-australia",
-          "relation": "scope",
-          "evidence": "All gravity sewers, pressure rising mains, manhole chambers, and maintenance shafts owned or maintained by SA Water across South Australia.",
-          "source": "contributors/satya-siddhartha/grey-literature.json"
-        },
-        {
-          "placeId": "adelaide",
-          "relation": "organization",
-          "evidence": "Citation identifies SA Water Corporation in Adelaide, South Australia.",
-          "source": "contributors/satya-siddhartha/grey-literature.json"
-        }
-      ],
-      "unmappedReason": ""
-    },
-    {
-      "id": "SATYA-GL-05",
-      "type": "grey",
-      "title": "SA Water TS 0103: Survey Requirements Specifications",
-      "authors": "",
-      "assignedTo": "Satya Siddhartha",
-      "organization": "SA Water Corporation",
-      "pdfUrl": "#",
-      "url": "https://www.sawater.com.au/building,-developing-and-plumbing/developments/engineering-standards/technical-standards",
-      "locations": [
-        {
-          "placeId": "adelaide",
-          "relation": "organization",
-          "evidence": "Citation identifies SA Water Corporation, Adelaide, South Australia.",
-          "source": "contributors/satya-siddhartha/grey-literature.json"
-        },
-        {
-          "placeId": "south-australia",
-          "relation": "scope",
-          "evidence": "Key takeaways state the geodetic standards apply across South Australia.",
-          "source": "contributors/satya-siddhartha/grey-literature.json"
-        }
-      ],
-      "unmappedReason": ""
-    },
-    {
-      "id": "SATYA-GL-06",
-      "type": "grey",
-      "title": "ARR 2019: Australian Rainfall and Runoff Book 9 — Runoff in Urban Areas",
-      "authors": "",
-      "assignedTo": "Satya Siddhartha",
-      "organization": "Commonwealth of Australia (Geoscience Australia & Engineers Australia)",
-      "pdfUrl": "#",
-      "url": "https://arr.ga.gov.au/arr-guideline",
-      "locations": [
-        {
-          "placeId": "australia",
-          "relation": "scope",
-          "evidence": "Urban drainage, municipal collection systems, stormwater inlets, and sanitary sewer infiltration across Australia.",
-          "source": "contributors/satya-siddhartha/grey-literature.json"
-        }
-      ],
-      "unmappedReason": ""
-    },
-    {
-      "id": "SATYA-GL-07",
-      "type": "grey",
-      "title": "CSIRO Data61 / WSAA Sewer Pipe Degradation and Roughness Matrix",
-      "authors": "",
-      "assignedTo": "Satya Siddhartha",
-      "organization": "CSIRO Data61 & WSAA",
-      "pdfUrl": "#",
-      "url": "https://research.csiro.au/technology/advanced-data-analytics-for-water-solutions/",
-      "locations": [
-        {
-          "placeId": "melbourne",
-          "relation": "scope",
-          "evidence": "Citation identifies the report as a Melbourne, Australia publication and the summary describes multi-utility Australian field evidence.",
-          "source": "contributors/satya-siddhartha/grey-literature.json"
-        }
-      ],
-      "unmappedReason": ""
-    },
-    {
-      "id": "SATYA-GL-08",
-      "type": "grey",
-      "title": "Autodesk / Innovyze InfoWorks ICM Sewer Hydraulic Engine Reference Manual",
-      "authors": "",
-      "assignedTo": "Satya Siddhartha",
-      "organization": "Innovyze (Autodesk Inc.)",
-      "pdfUrl": "#",
-      "url": "https://www.autodesk.com/products/infoworks-icm/overview",
-      "locations": [
-        {
-          "placeId": "portland",
-          "relation": "organization",
-          "evidence": "Citation identifies Autodesk/Innovyze in Portland, Oregon.",
-          "source": "contributors/satya-siddhartha/grey-literature.json"
-        }
-      ],
-      "unmappedReason": ""
-    },
-    {
-      "id": "SATYA-GL-09",
-      "type": "grey",
-      "title": "Water Research Foundation (WRF) Project 5239: Optimizing Sensor Networks for Collection Systems",
-      "authors": "",
-      "assignedTo": "Satya Siddhartha",
-      "organization": "The Water Research Foundation (WRF)",
-      "pdfUrl": "#",
-      "url": "https://www.waterrf.org/research/projects/5239",
-      "locations": [
-        {
-          "placeId": "denver",
-          "relation": "organization",
-          "evidence": "Citation identifies The Water Research Foundation in Denver, Colorado.",
-          "source": "contributors/satya-siddhartha/grey-literature.json"
-        }
-      ],
-      "unmappedReason": ""
-    },
-    {
-      "id": "SATYA-GL-10",
-      "type": "grey",
-      "title": "Water Research Foundation (WRF) Project 4908: Demonstrating Real-Time Collection System Monitoring",
-      "authors": "",
-      "assignedTo": "Satya Siddhartha",
-      "organization": "The Water Research Foundation (WRF)",
-      "pdfUrl": "#",
-      "url": "https://www.waterrf.org/research/projects/4908",
-      "locations": [
-        {
-          "placeId": "denver",
-          "relation": "organization",
-          "evidence": "Citation identifies The Water Research Foundation in Denver, Colorado.",
-          "source": "contributors/satya-siddhartha/grey-literature.json"
-        }
-      ],
-      "unmappedReason": ""
-    },
-    {
-      "id": "SATYA-GL-11",
-      "type": "grey",
-      "title": "ASTM F3220-17 / InfoSense SL-RAT Acoustic Inspection Standard",
-      "authors": "",
-      "assignedTo": "Satya Siddhartha",
-      "organization": "ASTM International",
-      "pdfUrl": "#",
-      "url": "https://www.astm.org/f3220-17.html",
-      "locations": [
-        {
-          "placeId": "west-conshohocken",
-          "relation": "organization",
-          "evidence": "Citation identifies ASTM International in West Conshohocken, Pennsylvania.",
-          "source": "contributors/satya-siddhartha/grey-literature.json"
-        }
-      ],
-      "unmappedReason": ""
-    },
-    {
-      "id": "SATYA-GL-12",
-      "type": "grey",
-      "title": "WSA 05-2020: Sewer Inspection Reporting Code of Australia (4th Edition)",
-      "authors": "",
-      "assignedTo": "Satya Siddhartha",
-      "organization": "Water Services Association of Australia (WSAA)",
-      "pdfUrl": "#",
-      "url": "https://wsaa.asn.au/Web/iCore/Store/StoreLayouts/Item_Detail.aspx?iProductCode=WSAACODE005",
-      "locations": [
-        {
-          "placeId": "australia",
-          "relation": "scope",
-          "evidence": "Closed-circuit television (CCTV) and zoom camera inspection of all wastewater and stormwater conduits in Australia.",
-          "source": "contributors/satya-siddhartha/grey-literature.json"
-        }
-      ],
-      "unmappedReason": ""
-    },
-    {
-      "id": "SATYA-GL-13",
-      "type": "grey",
-      "title": "Pulsar Measurement Application Guide: In-Sewer Ultrasonic Level Sensing",
-      "authors": "",
-      "assignedTo": "Satya Siddhartha",
-      "organization": "Pulsar Measurement Ltd",
-      "pdfUrl": "#",
-      "url": "https://pulsarmeasurement.com/en_uk/measurement-solutions/level",
-      "locations": [
-        {
-          "placeId": "malvern",
-          "relation": "organization",
-          "evidence": "Citation identifies Pulsar Measurement Ltd in Malvern, United Kingdom.",
-          "source": "contributors/satya-siddhartha/grey-literature.json"
-        }
-      ],
-      "unmappedReason": ""
+      "unmappedReason": "",
+      "sourceChanged": true
     },
     {
       "id": "SATYA-GL-14",
@@ -1178,7 +953,7 @@ window.RESEARCH_GEOGRAPHY_DATA = {
       "authors": "",
       "assignedTo": "Satya Siddhartha",
       "organization": "Siemens AG",
-      "pdfUrl": "#",
+      "pdfUrl": "./contributors/satya-siddhartha/grey/GL_2020_Siemens_SITRANS_LR120_Operating_Instructions.pdf",
       "url": "https://www.siemens.com/en-us/products/sitrans/",
       "locations": [
         {
@@ -1188,26 +963,8 @@ window.RESEARCH_GEOGRAPHY_DATA = {
           "source": "contributors/satya-siddhartha/grey-literature.json"
         }
       ],
-      "unmappedReason": ""
-    },
-    {
-      "id": "SATYA-GL-15",
-      "type": "grey",
-      "title": "LoRa Alliance: In-Manhole Radio Frequency Propagation and Battery Management",
-      "authors": "",
-      "assignedTo": "Satya Siddhartha",
-      "organization": "LoRa Alliance Technical Committee",
-      "pdfUrl": "#",
-      "url": "https://resources.lora-alliance.org/",
-      "locations": [
-        {
-          "placeId": "fremont",
-          "relation": "organization",
-          "evidence": "Citation identifies the LoRa Alliance in Fremont, California.",
-          "source": "contributors/satya-siddhartha/grey-literature.json"
-        }
-      ],
-      "unmappedReason": ""
+      "unmappedReason": "",
+      "sourceChanged": true
     },
     {
       "id": "SATYA-GL-16",
@@ -1216,7 +973,7 @@ window.RESEARCH_GEOGRAPHY_DATA = {
       "authors": "",
       "assignedTo": "Satya Siddhartha",
       "organization": "US Environmental Protection Agency & Center for Watershed Protection",
-      "pdfUrl": "#",
+      "pdfUrl": "./contributors/satya-siddhartha/grey/GL_2004_USEPA_IDDE_Guidance_Manual.pdf",
       "url": "https://nepis.epa.gov/Exe/ZyPURL.cgi?Dockey=20017KFK.TXT",
       "locations": [
         {
@@ -1226,83 +983,8 @@ window.RESEARCH_GEOGRAPHY_DATA = {
           "source": "contributors/satya-siddhartha/grey-literature.json"
         }
       ],
-      "unmappedReason": ""
-    },
-    {
-      "id": "SATYA-GL-17",
-      "type": "grey",
-      "title": "WERF Report 01-CTS-1: Online Real-Time Wastewater Quality Monitoring in Collection Systems",
-      "authors": "",
-      "assignedTo": "Satya Siddhartha",
-      "organization": "Water Environment Research Foundation (WERF)",
-      "pdfUrl": "#",
-      "url": "https://www.waterrf.org/research/projects",
-      "locations": [
-        {
-          "placeId": "london",
-          "relation": "organization",
-          "evidence": "Citation identifies IWA Publishing in London, United Kingdom.",
-          "source": "contributors/satya-siddhartha/grey-literature.json"
-        }
-      ],
-      "unmappedReason": ""
-    },
-    {
-      "id": "SATYA-GL-18",
-      "type": "grey",
-      "title": "YSI / Xylem Technical Guide: In-Situ Water Quality Sonde Operation in Wastewater",
-      "authors": "",
-      "assignedTo": "Satya Siddhartha",
-      "organization": "YSI Incorporated (Xylem Inc.)",
-      "pdfUrl": "#",
-      "url": "https://www.ysi.com/exo",
-      "locations": [
-        {
-          "placeId": "yellow-springs",
-          "relation": "organization",
-          "evidence": "Citation identifies YSI/Xylem Technical Publishing in Yellow Springs, Ohio.",
-          "source": "contributors/satya-siddhartha/grey-literature.json"
-        }
-      ],
-      "unmappedReason": ""
-    },
-    {
-      "id": "SATYA-GL-19",
-      "type": "grey",
-      "title": "European Standard EN ISO 6878: Automated In-Situ Nutrient Monitoring in Wastewater",
-      "authors": "",
-      "assignedTo": "Satya Siddhartha",
-      "organization": "International Organization for Standardization (ISO / CEN)",
-      "pdfUrl": "#",
-      "url": "https://www.iso.org/standard/39626.html",
-      "locations": [
-        {
-          "placeId": "geneva",
-          "relation": "organization",
-          "evidence": "Citation identifies the ISO Central Secretariat in Geneva, Switzerland.",
-          "source": "contributors/satya-siddhartha/grey-literature.json"
-        }
-      ],
-      "unmappedReason": ""
-    },
-    {
-      "id": "SATYA-GL-20",
-      "type": "grey",
-      "title": "Water Research Foundation Report 4975: Real-Time Trade Waste Sensing & Anomaly Detection",
-      "authors": "",
-      "assignedTo": "Satya Siddhartha",
-      "organization": "The Water Research Foundation (WRF)",
-      "pdfUrl": "#",
-      "url": "https://www.waterrf.org/research/projects/4975",
-      "locations": [
-        {
-          "placeId": "denver",
-          "relation": "organization",
-          "evidence": "Citation identifies The Water Research Foundation in Denver, Colorado.",
-          "source": "contributors/satya-siddhartha/grey-literature.json"
-        }
-      ],
-      "unmappedReason": ""
+      "unmappedReason": "",
+      "sourceChanged": true
     },
     {
       "id": "SATYA-GL-21",
@@ -1318,31 +1000,6 @@ window.RESEARCH_GEOGRAPHY_DATA = {
           "placeId": "brisbane",
           "relation": "organization",
           "evidence": "Citation identifies the Advanced Water Management Centre and WSAA publication in Brisbane, Queensland.",
-          "source": "contributors/satya-siddhartha/grey-literature.json"
-        }
-      ],
-      "unmappedReason": ""
-    },
-    {
-      "id": "SATYA-GL-22",
-      "type": "grey",
-      "title": "Gas Data Ltd / SA Water Technical Note: In-Sewer H2S Gas Sensor Longevity & Poisoning",
-      "authors": "",
-      "assignedTo": "Satya Siddhartha",
-      "organization": "Gas Data Ltd & SA Water",
-      "pdfUrl": "#",
-      "url": "https://www.gasdata.co.uk/industries/wastewater-treatment/",
-      "locations": [
-        {
-          "placeId": "adelaide",
-          "relation": "organization",
-          "evidence": "Citation identifies SA Water Asset Planning in Adelaide, South Australia.",
-          "source": "contributors/satya-siddhartha/grey-literature.json"
-        },
-        {
-          "placeId": "south-australia",
-          "relation": "scope",
-          "evidence": "The steps describe evaluation of sensors in Adelaide and Gawler sewer systems.",
           "source": "contributors/satya-siddhartha/grey-literature.json"
         }
       ],
@@ -1463,25 +1120,6 @@ window.RESEARCH_GEOGRAPHY_DATA = {
           "placeId": "adelaide",
           "relation": "organization",
           "evidence": "Summary identifies SA Water and University of Adelaide; the cited Stonyfell case study is in Adelaide.",
-          "source": "contributors/satya-siddhartha/grey-literature.json"
-        }
-      ],
-      "unmappedReason": ""
-    },
-    {
-      "id": "SATYA-GL-29",
-      "type": "grey",
-      "title": "UKWIR Report 21/WM/07/11: Sensor Placement Strategies for Early Blockage Detection",
-      "authors": "",
-      "assignedTo": "Satya Siddhartha",
-      "organization": "UK Water Industry Research (UKWIR)",
-      "pdfUrl": "#",
-      "url": "https://ukwir.org/home-of-water-industry-research-projects-reports-tools",
-      "locations": [
-        {
-          "placeId": "united-kingdom",
-          "relation": "scope",
-          "evidence": "Combined and separate municipal sewer networks, storm overflow assets, and surface flooding hotspots.",
           "source": "contributors/satya-siddhartha/grey-literature.json"
         }
       ],
