@@ -111,3 +111,13 @@
 
 .research-map-toolbar { grid-template-columns:1fr 1fr; }
 .research-map-actions { grid-column:1/-1; }
+
+.research-map-heading-tools { display:flex; align-items:center; gap:8px; flex:none; }
+.research-map-squeeze { min-height:30px; padding:0 11px; border:1px solid #31425d; border-radius:999px; background:#121f32; color:#bdcadb; font:600 10px Inter,sans-serif; cursor:pointer; transition:background .15s,border-color .15s,color .15s; }
+.research-map-squeeze:hover { border-color:#4ad5dc; background:#12313d; color:#efffff; }
+.research-map-squeeze:focus-visible { outline:2px solid #58e6eb; outline-offset:2px; }
+.research-map-section.squeezed .research-map-heading { margin-bottom:0; }
+.research-map-quick button b { margin-left:5px; color:#62dfe4; font-weight:700; }
+.research-map-quick button.active { border-color:#4ad5dc; background:#12313d; color:#efffff; }
+.research-map-quick-label { color:#6f819a; font-size:9px; font-weight:700; letter-spacing:.1em; text-transform:uppercase; }
+.research-map-section.squeezed #researchMapLayout { display:none; }

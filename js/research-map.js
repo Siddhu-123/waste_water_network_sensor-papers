@@ -8,13 +8,13 @@
     tooltip: $("researchMapTooltip"), results: $("researchMapResults"), top: $("researchMapTopPlaces"),
     selection: $("researchMapSelection"), status: $("researchMapStatus"), organizations: $("researchMapOrganizations"), country: $("researchMapCountry"),
     location: $("researchMapLocation"), type: $("researchMapType"), contributor: $("researchMapContributor"),
-    australia: $("researchMapAustralia"),
+    australia: $("researchMapAustralia"), section: $("researchMapSection"), squeeze: $("researchMapSqueeze"),
   };
   if (!el.canvas || !el.wrap) return;
 
   el.sidebar = document.querySelector(".research-map-sidebar");
   const ctx = el.canvas.getContext("2d", { alpha: false });
-  const map = { width: 0, height: 0, dpr: 1, mask: null, landDots: [], pins: [], pointer: null, hover: null, raf: 0, lens: 150, zoom: 4, mapTop: 0, mapHeight: 0 };
+  const map = { width: 0, height: 0, dpr: 1, mask: null, landDots: [], pins: [], pointer: null, hover: null, raf: 0, lens: 150, zoom: 4, mapTop: 0, mapHeight: 0, base: null, client: null };
   // Land dots and the solid core of research markers share one radius.
   const DOT_RADIUS = 1.65;
   const HIT_RADIUS = { base: 12, lens: 28, touch: 20 };
@@ -28,11 +28,13 @@
   let places = [];
   let records = [];
   let selectedPlace = null;
+  let shortcuts = null;
   let selectedCountry = "";
   let selectedOrganization = "";
   let unmappedMode = false;
   let lastTouchAt = 0;
   let resizeObserver;
+  const lensSnapCache = new Map();
   const latMin = -58;
   const latMax = 84;
 
@@ -158,7 +160,7 @@
     el.error.hidden = true;
     el.layout.hidden = false;
     buildFilters();
-    buildAustraliaShortcuts();
+    buildShortcuts();
     observeResize();
     setSize();
     render();
@@ -176,10 +178,35 @@
     el.contributor.innerHTML = `<option value="all">All contributors</option>${contributors.map((person) => `<option value="${escapeHtml(person)}">${escapeHtml(person)}</option>`).join("")}`;
   }
 
-  function buildAustraliaShortcuts() {
-    const cities = ["Adelaide", "Melbourne", "Sydney"].map((name) => places.find((p) => p.name.toLowerCase() === name.toLowerCase() && (p.country || "").toLowerCase().includes("australia"))).filter(Boolean);
-    el.australia.innerHTML = cities.map((place) => `<button type="button" data-place="${escapeHtml(place.id)}">${escapeHtml(place.name)}</button>`).join("");
-    el.australia.hidden = !cities.length;
+  // Shortcut places: the three Australian cities first, then the busiest other cities and countries.
+  // Ranking uses all records; the counts shown are recomputed from the current filters in render().
+  const SHORTCUT_LIMITS = { cities: 4, countries: 6 };
+  function buildShortcuts() {
+    const anchors = ["Adelaide", "Melbourne", "Sydney"].map((name) => places.find((p) => p.kind === "city" && p.name.toLowerCase() === name.toLowerCase() && (p.country || "").toLowerCase().includes("australia"))).filter(Boolean);
+    const unique = (place) => recordsAtPlace(place, true).length;
+    const savedType = el.type.value, savedContributor = el.contributor.value;
+    el.type.value = "all"; el.contributor.value = "all";
+    const otherCities = places.filter((p) => p.kind === "city" && !anchors.includes(p))
+      .map((place) => ({ place, total: unique(place) })).filter((e) => e.total > 0)
+      .sort((a, b) => b.total - a.total || a.place.name.localeCompare(b.place.name)).slice(0, SHORTCUT_LIMITS.cities).map((e) => e.place);
+    const countryNames = [...new Set(places.map(placeCountry).filter(Boolean))];
+    const countryPlaces = countryNames.map((name) =>
+      places.find((p) => p.kind === "country" && placeCountry(p) === name) || { id: `country:${name}`, name, country: name, kind: "country" })
+      .map((place) => ({ place, total: unique(place) })).filter((e) => e.total > 0)
+      .sort((a, b) => b.total - a.total || a.place.name.localeCompare(b.place.name)).slice(0, SHORTCUT_LIMITS.countries).map((e) => e.place);
+    el.type.value = savedType; el.contributor.value = savedContributor;
+    shortcuts = { cities: [...anchors, ...otherCities], countries: countryPlaces };
+    el.australia.hidden = !shortcuts.cities.length && !shortcuts.countries.length;
+  }
+
+  function renderShortcuts() {
+    if (!shortcuts) return;
+    const button = (place) => {
+      const active = selectedPlace && String(selectedPlace.id) === String(place.id) && !unmappedMode;
+      return `<button type="button" data-place="${escapeHtml(place.id)}"${active ? ' class="active" aria-pressed="true"' : ' aria-pressed="false"'}>${escapeHtml(place.name)}<b>${recordsAtPlace(place, true).length}</b></button>`;
+    };
+    const group = (label, list) => list.length ? `<span class="research-map-quick-label">${label}</span>${list.map(button).join("")}` : "";
+    el.australia.innerHTML = group("Cities", shortcuts.cities) + group("Countries", shortcuts.countries);
   }
 
   function buildMask() {
@@ -267,6 +294,8 @@
     map.pins = snapPins(map.pins.map((pin) => ({ ...pin, sourcePoint: point(pin.place.lat, pin.place.lon) })), map.landDots);
     map.pinGroups = groupPins(map.pins);
     map.lensGroups = [];
+    lensSnapCache.clear();
+    map.base = null;
     draw();
   }
 
@@ -283,7 +312,7 @@
   function suspend() {
     if (map.raf) { cancelAnimationFrame(map.raf); map.raf = 0; }
     map.pointer = null; map.hover = null; map.mask = null;
-    map.landDots = []; map.lensDots = []; map.lensGroups = []; map.lensPins = [];
+    map.base = null; map.landDots = []; map.lensDots = []; map.lensGroups = []; map.lensPins = [];
     el.tooltip.hidden = true;
     hideDetail();
   }
@@ -339,6 +368,8 @@
     if (selectedPlace && !unmappedMode) showPlaceResults(selectedPlace);
     else if (unmappedMode) showUnmappedResults();
     else showOverview();
+    renderShortcuts();
+    map.base = null;
     draw();
   }
 
@@ -466,88 +497,136 @@
     return `<article class="research-map-record"><div class="research-map-record-top"><span class="research-map-type ${escapeHtml(record.type)}">${escapeHtml(typeLabel(record.type))}</span>${assignedTo ? `<span class="research-map-assignee">${escapeHtml(assignedTo)}</span>` : ""}</div><h4>${escapeHtml(record.title || `Record ${record.id}`)}</h4>${authors}${organization}${relation}${unmapped}<div class="research-map-record-links">${links.join("")}</div></article>`;
   }
 
-  function draw() {
-    if (!ctx || !map.width || !map.mask) return;
-    ctx.setTransform(map.dpr, 0, 0, map.dpr, 0, 0);
-    ctx.fillStyle = "#080d17";
-    ctx.fillRect(0, 0, map.width, map.height);
-    ctx.fillStyle = "rgba(210, 220, 233, 0.68)";
-    for (const dot of map.landDots) { ctx.beginPath(); ctx.arc(dot.x, dot.y, DOT_RADIUS, 0, Math.PI * 2); ctx.fill(); }
-    ctx.strokeStyle = "rgba(110, 134, 163, 0.14)";
-    ctx.lineWidth = 1;
+  // The static layer (background, land dots, graticule, markers) is painted once per layout or filter
+  // change and blitted each frame, so pointer movement only pays for the lens.
+  function baseLayer() {
+    const base = map.base;
+    if (base && base.canvas.width === el.canvas.width && base.canvas.height === el.canvas.height) return base.canvas;
+    const canvas = document.createElement("canvas");
+    canvas.width = el.canvas.width; canvas.height = el.canvas.height;
+    const g = canvas.getContext("2d", { alpha: false });
+    g.setTransform(map.dpr, 0, 0, map.dpr, 0, 0);
+    g.fillStyle = "#080d17";
+    g.fillRect(0, 0, map.width, map.height);
+    g.fillStyle = "rgba(210, 220, 233, 0.68)";
+    for (const dot of map.landDots) { g.beginPath(); g.arc(dot.x, dot.y, DOT_RADIUS, 0, Math.PI * 2); g.fill(); }
+    g.strokeStyle = "rgba(110, 134, 163, 0.14)";
+    g.lineWidth = 1;
     for (let lat = -30; lat <= 60; lat += 30) {
       const y = point(lat, 0).y;
-      ctx.beginPath(); ctx.moveTo(18, y); ctx.lineTo(map.width - 18, y); ctx.stroke();
+      g.beginPath(); g.moveTo(18, y); g.lineTo(map.width - 18, y); g.stroke();
     }
-    drawPins(false);
-    if (map.pointer && !map.pointer.touch) drawLens();
-    map.hover = map.pointer && !map.pointer.touch ? hitTest(map.pointer, false) : null;
-
+    drawPins(g, false);
+    map.base = { canvas };
+    return canvas;
   }
 
-  function drawPins(lens) {
+  function draw() {
+    if (!ctx || !map.width || !map.mask) return;
+    ctx.setTransform(1, 0, 0, 1, 0, 0);
+    ctx.drawImage(baseLayer(), 0, 0);
+    ctx.setTransform(map.dpr, 0, 0, map.dpr, 0, 0);
+    if (map.pointer && !map.pointer.touch) drawLens();
+    else { map.lensDots = []; map.lensPins = []; map.lensGroups = []; }
+    map.hover = map.pointer && !map.pointer.touch ? hitTest(map.pointer, false) : null;
+  }
+
+  function drawPins(g, lens) {
     const bounds = lens ? lensBounds() : null;
     const groups = (lens ? map.lensGroups || [] : map.pinGroups || []).filter(({ point: { x, y } }) =>
       !lens || (x >= bounds.left - 4 && x <= bounds.right + 4 && y >= bounds.top - 4 && y <= bounds.bottom + 4));
     const glow = lens ? GLOW_RADIUS.lens : GLOW_RADIUS.base;
     const wedge = (x, y, index, count, radius) => {
-      ctx.beginPath(); ctx.moveTo(x, y);
-      ctx.arc(x, y, radius, -Math.PI / 2 + index * Math.PI * 2 / count, -Math.PI / 2 + (index + 1) * Math.PI * 2 / count);
-      ctx.closePath();
+      g.beginPath(); g.moveTo(x, y);
+      g.arc(x, y, radius, -Math.PI / 2 + index * Math.PI * 2 / count, -Math.PI / 2 + (index + 1) * Math.PI * 2 / count);
+      g.closePath();
     };
     const typesOf = (group) => MAP_TYPES.filter((type) => group.typeCounts[type] > 0);
     for (const group of groups) {
       const { x, y } = group.point;
       const types = typesOf(group);
       types.forEach((type, index) => {
-        const [r, g, b] = TYPE_RGB[type];
-        const halo = ctx.createRadialGradient(x, y, DOT_RADIUS * 0.5, x, y, glow);
-        halo.addColorStop(0, `rgba(${r}, ${g}, ${b}, .55)`);
-        halo.addColorStop(1, `rgba(${r}, ${g}, ${b}, 0)`);
+        const [r, gr, b] = TYPE_RGB[type];
+        const halo = g.createRadialGradient(x, y, DOT_RADIUS * 0.5, x, y, glow);
+        halo.addColorStop(0, `rgba(${r}, ${gr}, ${b}, .55)`);
+        halo.addColorStop(1, `rgba(${r}, ${gr}, ${b}, 0)`);
         wedge(x, y, index, types.length, glow);
-        ctx.fillStyle = halo; ctx.fill();
+        g.fillStyle = halo; g.fill();
       });
     }
     for (const group of groups) {
       const { x, y } = group.point;
       const types = typesOf(group);
       types.forEach((type, index) => {
-        const [r, g, b] = TYPE_RGB[type];
+        const [r, gr, b] = TYPE_RGB[type];
         wedge(x, y, index, types.length, DOT_RADIUS);
-        ctx.fillStyle = `rgb(${r}, ${g}, ${b})`; ctx.fill();
+        g.fillStyle = `rgb(${r}, ${gr}, ${b})`; g.fill();
       });
       if (lens) for (const pin of group.pins) if (/^(Adelaide|Melbourne|Sydney)$/.test(pin.place.name)) {
-        ctx.font = "600 11px Inter, sans-serif"; ctx.textBaseline = "middle";
-        const labelWidth = ctx.measureText(pin.place.name).width;
+        g.font = "600 11px Inter, sans-serif"; g.textBaseline = "middle";
+        const labelWidth = g.measureText(pin.place.name).width;
         const labelX = Math.max(bounds.left + 5, Math.min(bounds.right - labelWidth - 5, x + 8));
         const labelY = Math.max(bounds.top + 10, Math.min(bounds.bottom - 10, y - 7));
-        ctx.lineWidth = 3; ctx.strokeStyle = "#07101a"; ctx.strokeText(pin.place.name, labelX, labelY);
-        ctx.fillStyle = "#f2fcff"; ctx.fillText(pin.place.name, labelX, labelY);
+        g.lineWidth = 3; g.strokeStyle = "#07101a"; g.strokeText(pin.place.name, labelX, labelY);
+        g.fillStyle = "#f2fcff"; g.fillText(pin.place.name, labelX, labelY);
       }
     }
   }
 
+  // The lens samples a fixed grid in map space, so dots slide with the magnified land instead of
+  // being re-sampled on a screen grid every frame. Pins snap to that same grid, so they stay put.
+  const LENS_STEP = 5.2;
+  function lensSnap(pin) {
+    const key = String(pin.place.id);
+    if (lensSnapCache.has(key)) return lensSnapCache.get(key);
+    const step = LENS_STEP / map.zoom;
+    const ci = Math.round(pin.sourcePoint.x / step), cj = Math.round(pin.sourcePoint.y / step);
+    let best = null, bestD = Infinity;
+    for (let r = 0; r <= 8 && !best; r++) {
+      for (let j = cj - r; j <= cj + r; j++) for (let i = ci - r; i <= ci + r; i++) {
+        if (r && Math.max(Math.abs(i - ci), Math.abs(j - cj)) !== r) continue;
+        const x = i * step, y = j * step;
+        if (!isLand(x, y)) continue;
+        const d = (x - pin.sourcePoint.x) ** 2 + (y - pin.sourcePoint.y) ** 2;
+        if (d < bestD) { bestD = d; best = { x, y }; }
+      }
+    }
+    const snapped = best || pin.sourcePoint;
+    lensSnapCache.set(key, snapped);
+    return snapped;
+  }
+
   function drawLens() {
     const { x, y } = map.pointer;
-    const half = map.lens / 2;
+    const zoom = map.zoom, half = map.lens / 2;
     const left = Math.max(1, Math.min(map.width - map.lens - 1, x - half));
     const top = Math.max(1, Math.min(map.height - map.lens - 1, y - half));
-    const cx = left + half, cy = top + half;
+    const toLens = (p) => ({ x: x + (p.x - x) * zoom, y: y + (p.y - y) * zoom });
     ctx.save();
     ctx.beginPath(); ctx.rect(left, top, map.lens, map.lens); ctx.clip();
     ctx.fillStyle = "#080d17"; ctx.fillRect(left, top, map.lens, map.lens);
     ctx.fillStyle = "rgba(189, 208, 226, 0.58)";
-    const step = 5.2;
-    const sourceFromLens = (p) => ({ x: x + (p.x - x) / map.zoom, y: y + (p.y - y) / map.zoom });
-    const lensDots = buildLandDots(step, 0, { left, top, right: left + map.lens, bottom: top + map.lens }, sourceFromLens)
-      .filter((dot) => dot.x >= left && dot.x <= left + map.lens && dot.y >= top && dot.y <= top + map.lens);
+    const step = LENS_STEP / zoom;
+    const i0 = Math.ceil((x + (left - x) / zoom) / step), i1 = Math.floor((x + (left + map.lens - x) / zoom) / step);
+    const j0 = Math.ceil((y + (top - y) / zoom) / step), j1 = Math.floor((y + (top + map.lens - y) / zoom) / step);
+    const lensDots = [];
+    ctx.beginPath();
+    for (let j = j0; j <= j1; j++) for (let i = i0; i <= i1; i++) {
+      const sx = i * step, sy = j * step;
+      if (!isLand(sx, sy)) continue;
+      const dx = x + (sx - x) * zoom, dy = y + (sy - y) * zoom;
+      lensDots.push({ x: dx, y: dy });
+      ctx.moveTo(dx + DOT_RADIUS, dy); ctx.arc(dx, dy, DOT_RADIUS, 0, Math.PI * 2);
+    }
+    ctx.fill();
     map.lensDots = lensDots;
-    for (const dot of lensDots) { ctx.beginPath(); ctx.arc(dot.x, dot.y, DOT_RADIUS, 0, Math.PI * 2); ctx.fill(); }
-    const visiblePins = map.pins.map((pin) => ({ ...pin, sourcePoint: { x: x + (pin.sourcePoint.x - x) * map.zoom, y: y + (pin.sourcePoint.y - y) * map.zoom } }))
-      .filter((pin) => pin.sourcePoint.x >= left && pin.sourcePoint.x <= left + map.lens && pin.sourcePoint.y >= top && pin.sourcePoint.y <= top + map.lens);
-    map.lensPins = lensDots.length ? snapPins(visiblePins, lensDots) : [];
+    map.lensPins = [];
+    for (const pin of map.pins) {
+      const at = toLens(lensSnap(pin));
+      if (at.x >= left && at.x <= left + map.lens && at.y >= top && at.y <= top + map.lens) map.lensPins.push({ ...pin, point: at });
+    }
     map.lensGroups = groupPins(map.lensPins);
-    drawPins(true);
+    drawPins(ctx, true);
     ctx.restore();
     ctx.save(); ctx.strokeStyle = "rgba(79, 232, 238, .92)"; ctx.lineWidth = 1.5; ctx.shadowColor = "rgba(45, 212, 222, .24)"; ctx.shadowBlur = 12; ctx.strokeRect(left + 0.75, top + 0.75, map.lens - 1.5, map.lens - 1.5); ctx.restore();
   }
@@ -556,9 +635,19 @@
     const rect = el.canvas.getBoundingClientRect();
     return { x: event.clientX - rect.left, y: event.clientY - rect.top };
   }
+  function schedule() { if (!map.raf) map.raf = requestAnimationFrame(frame); }
+  function frame() {
+    map.raf = 0;
+    draw();
+    updateHover();
+  }
   function setPointer(point, touch = false) {
     map.pointer = { ...point, touch };
-    if (!map.raf) map.raf = requestAnimationFrame(() => { map.raf = 0; draw(); });
+    schedule();
+  }
+  function updateHover() {
+    if (map.hover && map.pointer && !map.pointer.touch) { placeTooltip(map.hover.group); el.canvas.style.cursor = "pointer"; }
+    else { el.tooltip.hidden = true; el.canvas.style.cursor = "crosshair"; }
   }
   function nearestPin(x, y, lens = false, radius = HIT_RADIUS.base) {
     let winner = null, best = radius;
@@ -599,10 +688,9 @@
     $("researchMapResultsHeading").textContent = "Locations";
     const options = group.pins.map(({ place }) => `<button type="button" class="research-map-place-row" data-place="${escapeHtml(place.id)}"><span>${escapeHtml(place.name)}<small>${escapeHtml(place.country || place.kind || "")}</small></span><b>${recordsAtPlace(place).length}</b></button>`).join("");
     el.top.innerHTML = options;
-    el.top.querySelector("button")?.focus();
+    el.top.querySelector("button")?.focus({ preventScroll: true });
     el.selection.textContent = `${group.pins.length} locations`;
     el.status.textContent = `${group.pins.length} places share this map dot. Choose one in the sidebar.`;
-    el.top.focus?.();
   }
 
   function placeTooltip(group) {
@@ -612,22 +700,41 @@
     el.tooltip.style.transform = `translate(${x}px, ${y}px)`;
   }
 
-  el.canvas.addEventListener("pointermove", (event) => {
+  function trackPointer(event) {
     const touch = event.pointerType === "touch";
+    map.client = { x: event.clientX, y: event.clientY, touch };
     map.pointer = { ...localPoint(event), touch };
+    schedule();
+  }
+  el.canvas.addEventListener("pointerenter", trackPointer);
+  el.canvas.addEventListener("pointermove", trackPointer);
+  el.canvas.addEventListener("pointerleave", () => {
+    map.pointer = null; map.hover = null; map.client = null;
     if (map.raf) { cancelAnimationFrame(map.raf); map.raf = 0; }
-    draw();
-    if (map.hover && !touch) { placeTooltip(map.hover.group); el.canvas.style.cursor = "pointer"; }
-    else { el.tooltip.hidden = true; el.canvas.style.cursor = "crosshair"; }
+    el.tooltip.hidden = true; el.canvas.style.cursor = "crosshair"; draw();
   });
-  el.canvas.addEventListener("pointerleave", () => { map.pointer = null; map.hover = null; el.tooltip.hidden = true; el.canvas.style.cursor = "crosshair"; draw(); });
+  // Scrolling or a layout shift moves the canvas under a still pointer; follow it from the last client position.
+  function resyncPointer() {
+    if (!map.client || map.client.touch) return;
+    const rect = el.canvas.getBoundingClientRect();
+    const x = map.client.x - rect.left, y = map.client.y - rect.top;
+    if (x < 0 || y < 0 || x > rect.width || y > rect.height) { map.pointer = null; map.client = null; }
+    else map.pointer = { x, y, touch: false };
+    schedule();
+  }
+  window.addEventListener("scroll", resyncPointer, { passive: true, capture: true });
   el.canvas.addEventListener("pointerdown", (event) => { if (event.pointerType === "touch") { lastTouchAt = Date.now(); setPointer(localPoint(event), true); } });
   el.canvas.addEventListener("click", (event) => {
     const pos = localPoint(event);
     const touch = event.pointerType === "touch" || map.pointer?.touch === true || Date.now() - lastTouchAt < 900;
     let hit;
     if (touch) hit = hitTest(pos, true);
-    else { map.pointer = { ...pos, touch: false }; draw(); hit = map.hover; }
+    else {
+      map.pointer = { ...pos, touch: false }; map.client = { x: event.clientX, y: event.clientY, touch: false };
+      if (map.raf) { cancelAnimationFrame(map.raf); map.raf = 0; }
+      draw(); hit = map.hover;
+      schedule();
+    }
     if (hit) { choosePinGroup(hit.group); return; }
     const source = !touch && hit === null && map.pointer ? { x: map.pointer.x + (pos.x - map.pointer.x) / map.zoom, y: map.pointer.y + (pos.y - map.pointer.y) / map.zoom } : pos;
     const coords = inverse(source.x, source.y);
@@ -690,6 +797,20 @@
     const paper = papersData.find((entry) => String(entry.id) === String(button.dataset.summary));
     if (paper && typeof window.openSummary === "function") window.openSummary(Number(paper.id));
   });
+  // Squeeze: collapse the map and its sidebar to the heading bar, expand to restore.
+  const SQUEEZE_KEY = "researchMapSqueezed";
+  function setSqueezed(on, remember = true) {
+    el.section.classList.toggle("squeezed", on);
+    el.squeeze.setAttribute("aria-expanded", String(!on));
+    el.squeeze.textContent = on ? "Expand map" : "Squeeze map";
+    el.squeeze.title = on ? "Show the map" : "Collapse the map";
+    if (on) { map.pointer = null; map.hover = null; map.client = null; el.tooltip.hidden = true; hideDetail(); }
+    else if (data && isDesktop()) requestAnimationFrame(setSize);
+    if (remember) { try { localStorage.setItem(SQUEEZE_KEY, on ? "1" : "0"); } catch (_) { /* storage unavailable */ } }
+  }
+  el.squeeze.addEventListener("click", () => setSqueezed(!el.section.classList.contains("squeezed")));
+  try { if (localStorage.getItem(SQUEEZE_KEY) === "1") setSqueezed(true, false); } catch (_) { /* storage unavailable */ }
+
   $("researchMapRetry").addEventListener("click", () => { if (init()) el.status.textContent = "Research map loaded."; });
 
   function observeResize() {
