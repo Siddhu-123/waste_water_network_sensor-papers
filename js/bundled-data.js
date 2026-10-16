@@ -1711,7 +1711,7 @@ window.__BUNDLED_DATA__ = {
       "category": "Hydraulic Simulators & Modeling",
       "summary": "The definitive engineering reference for the dynamic-wave Saint-Venant hydraulic solver in EPA SWMM 5.2. Governs open-channel conduit flow, pressurized surcharging, backwater effects, and conduit slot approximations.",
       "assignedTo": "Satya Siddhartha",
-      "pdfUrl": "#",
+      "pdfUrl": "./contributors/satya-siddhartha/grey/GL_2017_USEPA_SWMM_Reference_Manual_Vol2_Hydraulics.pdf",
       "url": "https://nepis.epa.gov/Exe/ZyPURL.cgi?Dockey=P100S9AS.txt",
       "keyTakeaways": [
         "Derives full 1D Saint-Venant dynamic momentum and continuity equations used in wastewater sewer network routing.",
@@ -1737,7 +1737,7 @@ window.__BUNDLED_DATA__ = {
       "category": "Hydraulic Simulators & Modeling",
       "summary": "Technical foundation for rainfall-derived inflow and infiltration (RDII) in sewer networks. Explains RTK unit hydrograph parameterisation, catchment depression storage, and infiltration modeling.",
       "assignedTo": "Satya Siddhartha",
-      "pdfUrl": "#",
+      "pdfUrl": "./contributors/satya-siddhartha/grey/GL_2016_USEPA_SWMM_Reference_Manual_Vol1_Hydrology.pdf",
       "url": "https://nepis.epa.gov/Exe/ZyPURL.cgi?Dockey=P100NYRA.txt",
       "keyTakeaways": [
         "Details RTK unit hydrograph parameters (R = ratio of rainfall entering sewer, T = time to peak, K = recession ratio) for rapid, medium, and slow infiltration.",
@@ -1756,292 +1756,6 @@ window.__BUNDLED_DATA__ = {
       }
     },
     {
-      "id": "SATYA-GL-03",
-      "title": "WSA 02-2014 Gravity Sewerage Code of Australia (MRWA Edition Version 3.3)",
-      "organization": "Water Services Association of Australia (WSAA)",
-      "year": 2014,
-      "category": "Hydraulic Simulators & Modeling",
-      "summary": "The national Australian engineering benchmark for gravity sewer network planning, design, and construction. Mandates self-cleansing velocity (0.6 m/s), maximum design depth ratio (d/D <= 0.7 to 1.0), and diurnal peaking factors.",
-      "assignedTo": "Satya Siddhartha",
-      "pdfUrl": "#",
-      "url": "https://wsaa.asn.au/Web/iCore/Store/StoreLayouts/Item_Detail.aspx?iProductCode=WSAACODE002",
-      "keyTakeaways": [
-        "Specifies minimum self-cleansing scouring velocity of 0.6 m/s at peak daily flow to prevent grit and silt accumulation.",
-        "Sets maximum allowable design depth ratio d/D = 0.7 for reticulation sewers and d/D = 1.0 for major trunk sewers at PWWF.",
-        "Establishes standardized sizing equations, minimum gradients for 150 mm pipes (1 in 150), and manhole spacing guidelines."
-      ],
-      "steps": {
-        "citation": "Water Services Association of Australia (WSAA, 2014/2024). WSA 02-2014: Gravity Sewerage Code of Australia (Incorporating Amendments 1 & 2, Version 3.3). WSAA, Melbourne, Australia.",
-        "intro": "In Australia, any sensor placement or capacity assessment must be justified against WSA 02. Water utilities don't operate on abstract theory; they operate under WSAA codes and their specific state supplements.",
-        "methods": "Provides deterministic engineering formulas for calculating Peak Dry Weather Flow (PDWF) and Peak Wet Weather Flow (PWWF) based on Equivalent Population (EP). Utilises Colebrook-White and Manning equations to calculate conduit capacities at varying d/D ratios.",
-        "scope": "Gravity collection sewers from DN 150 up to DN 1200 across all Australian retail water utilities.",
-        "usefulness": "Supplies the core design thresholds for our parameter catalogue. A pipe reach operating at d/D > 0.7 in dry weather or surcharging a manhole in wet weather represents an immediate regulatory trigger for sensor placement.",
-        "limitations": "WSA 02 is written for designing new greenfield infrastructure. It provides limited guidance on how to retrofit sensors into 80-year-old vitrified clay networks suffering from heavy tree-root intrusion.",
-        "conclusions": "Hydraulic capacity thresholds must be dynamic: a pipe with 0.6 m/s velocity during dry weather can still choke if roots reduce effective Manning area by 40%.",
-        "reflection": "Serves as the baseline hydraulic design reference across all my sensor research and provides the explicit capacity rules coded into our simulation algorithms."
-      }
-    },
-    {
-      "id": "SATYA-GL-04",
-      "title": "SA Water TS 0130: As Constructed Data Requirements for Linear Assets",
-      "organization": "SA Water Corporation",
-      "year": 2024,
-      "category": "Hydraulic Simulators & Modeling",
-      "summary": "Mandatory technical standard specifying asset handover requirements for SA Water linear infrastructure. Establishes survey accuracy (+/-0.01 m) for invert levels, cover elevations, pipe materials, and GPS coordinates.",
-      "assignedTo": "Satya Siddhartha",
-      "pdfUrl": "#",
-      "url": "https://www.sawater.com.au/building,-developing-and-plumbing/developments/engineering-standards/technical-standards",
-      "keyTakeaways": [
-        "Mandates exact survey precision: invert levels must be surveyed to +/-0.01 m AHD and planimetric coordinates to +/-0.02 m MGA.",
-        "Requires comprehensive attribute capture: pipe material (PVC, VC, DICL, RC), nominal diameter, joint type, and installation year.",
-        "Explains why legacy GIS networks lack verified inverts: older pre-digital assets relied on surface contour interpolation."
-      ],
-      "steps": {
-        "citation": "SA Water Corporation (2024). Technical Standard TS 0130: As Constructed Data Requirements for Linear Assets (Water and Wastewater). Version 5.0, SA Water Engineering & Technical Services, Adelaide, SA.",
-        "intro": "When we analyzed the SA Water Location SA dataset for Walkerville, we found invert levels were redacted or unrecorded, forcing us to interpolate from surface contours. TS 0130 explains how modern data is captured and what quality standards SA Water enforces.",
-        "methods": "Defines mandatory survey verification protocols prior to practical completion. Surveyors must take direct physical rod readings on pipe inverts prior to trench backfilling, recording absolute mAHD elevations and MGA2020 eastings/northings.",
-        "scope": "All gravity sewers, pressure rising mains, manhole chambers, and maintenance shafts owned or maintained by SA Water across South Australia.",
-        "usefulness": "Directly guides our project's data quality audit. By comparing modern TS 0130 standards against historical Walkerville assets, we can quantify the slope error margin (+/-0.23 m lid error) and understand where physical level sensor verification is most needed.",
-        "limitations": "Only enforces data quality on new or refurbished capital works; it does not solve the historical data deficit for pipe networks installed in the 1950s–1980s.",
-        "conclusions": "Level sensors placed in manholes with uncertain invert levels must be calibrated using relative water depth rather than relying on absolute datum elevations.",
-        "reflection": "Directly addresses the client feedback from Vineeth Maruvada regarding identifying information gaps in SA Water's existing asset register."
-      }
-    },
-    {
-      "id": "SATYA-GL-05",
-      "title": "SA Water TS 0103: Survey Requirements Specifications",
-      "organization": "SA Water Corporation",
-      "year": 2024,
-      "category": "Hydraulic Simulators & Modeling",
-      "summary": "Defines survey tolerances, reference benchmarks, and coordinate systems for SA Water engineering projects, mandating Map Grid of Australia (MGA2020) and Australian Height Datum (AHD).",
-      "assignedTo": "Satya Siddhartha",
-      "pdfUrl": "#",
-      "url": "https://www.sawater.com.au/building,-developing-and-plumbing/developments/engineering-standards/technical-standards",
-      "keyTakeaways": [
-        "Specifies mandatory geodetic datum standards across South Australia (GDA2020 / MGA2020 Zone 54).",
-        "Defines vertical control tolerances tied to permanent Survey Mark (PSM) benchmarks on the Australian Height Datum (AHD).",
-        "Establishes laser scanning, GNSS RTK, and total station precision requirements for underground utility tracing."
-      ],
-      "steps": {
-        "citation": "SA Water Corporation (2024). Technical Standard TS 0103: Survey Requirements Specifications. Version 4.0, Asset Operations, Adelaide, SA.",
-        "intro": "In sewer hydraulic modeling, vertical slope errors of just a few centimeters can flip the modeled direction of flow or produce false backwater warnings. TS 0103 sets the benchmark for survey accuracy.",
-        "methods": "Sets out rigorous closed-loop leveling and GNSS RTK surveying protocols, establishing permissible misclose formulas (misclose <= 12 mm * sqrt(K), where K is distance in km).",
-        "scope": "Applies to site investigations, asset mapping, manhole rim elevations, and pump station wet-well geometry across SA Water infrastructure.",
-        "usefulness": "Helps our team understand the difference between high-precision surveyed nodes (like the 10 surveyed lids in Walkerville) and contour-interpolated nodes, allowing us to weight sensor placement toward hydraulically sensitive reaches.",
-        "limitations": "Physical surveying is labor-intensive and costly; utilities cannot afford to re-survey thousands of kilometers of established reticulation pipes.",
-        "conclusions": "Sensors provide an empirical way to validate modeled pipe slopes and verify actual flow velocities without digging up roads or conducting costly surveys.",
-        "reflection": "Directly supports our Parameter Catalogue Deliverable D2 by identifying physical survey certainty as a primary parameter."
-      }
-    },
-    {
-      "id": "SATYA-GL-06",
-      "title": "ARR 2019: Australian Rainfall and Runoff Book 9 — Runoff in Urban Areas",
-      "organization": "Commonwealth of Australia (Geoscience Australia & Engineers Australia)",
-      "year": 2019,
-      "category": "Utility Codes & Design Standards",
-      "summary": "The national standard for urban stormwater and sewer runoff modeling in Australia. Introduces ensemble storm burst temporal patterns, urban fraction imperviousness, and subcatchment routing.",
-      "assignedTo": "Satya Siddhartha",
-      "pdfUrl": "#",
-      "url": "https://arr.ga.gov.au/arr-guideline",
-      "keyTakeaways": [
-        "Replaces outdated single-burst design storms with 10-pattern ensembles to capture diverse rainfall burst dynamics.",
-        "Defines Effective Impervious Area (EIA) vs Total Impervious Area (TIA) in residential and commercial catchments.",
-        "Provides standardized dimensionless temporal hydrographs for Adelaide and South Australian drainage zones."
-      ],
-      "steps": {
-        "citation": "Ball, J., Babister, M., Nathan, R., Weeks, W., Weinmann, E., Retallick, M., & Testoni, I. (Eds.) (2019). Australian Rainfall and Runoff: A Guide to Flood Estimation - Book 9: Runoff in Urban Areas. Commonwealth of Australia, Canberra, ACT.",
-        "intro": "Wet-weather sewer overflows aren't caused by average rain; they happen during intense burst patterns that overwhelm pipe storage. ARR 2019 is the definitive guide on how Australian rain actually falls.",
-        "methods": "Uses an ensemble of 12 discrete temporal patterns for every storm duration and Annual Exceedance Probability (AEP). Rainfall is routed across pervious and directly connected impervious surfaces to produce catchment hydrographs.",
-        "scope": "Urban drainage, municipal collection systems, stormwater inlets, and sanitary sewer infiltration across Australia.",
-        "usefulness": "Supplied the temporal pattern ensemble in our project data warehouse (`arr2019_temporal_patterns.csv`). Convolving ARR temporal patterns with BOM IFD depths allows us to simulate realistic surcharge waves in SWMM.",
-        "limitations": "Urban infiltration equations require local ground calibration; soil moisture prior to the storm strongly influences how much rain enters cracked pipes.",
-        "conclusions": "A sewer network that handles a 5-year storm with a late-peaking burst can overflow under the same storm if the burst is front-loaded.",
-        "reflection": "Directly links to Paper 5 (UWO dataset hydrology) and provides the meteorological forcing for our sensor placement simulation scenarios."
-      }
-    },
-    {
-      "id": "SATYA-GL-07",
-      "title": "CSIRO Data61 / WSAA Sewer Pipe Degradation and Roughness Matrix",
-      "organization": "CSIRO Data61 & WSAA",
-      "year": 2011,
-      "category": "Utility Codes & Design Standards",
-      "summary": "Multi-utility research report mapping sewer pipe age, material, and structural defect classes directly to empirical Manning n roughness coefficients (0.009 to 0.018).",
-      "assignedTo": "Satya Siddhartha",
-      "pdfUrl": "#",
-      "url": "https://research.csiro.au/technology/advanced-data-analytics-for-water-solutions/",
-      "keyTakeaways": [
-        "Quantifies how aging increases pipe roughness: new PVC has Manning n = 0.009–0.010, while 60-year-old vitrified clay reaches n = 0.015–0.018.",
-        "Correlates joint displacement, mineral encrustation, and root penetration with hydraulic capacity losses of up to 45%.",
-        "Provides lookup matrices mapping GIS asset fields (MATERIAL, YEAR_INSTALLED) to calibrated hydraulic model parameters."
-      ],
-      "steps": {
-        "citation": "Davis, P., Marlow, D., & Tran, D. (2011). Condition Assessment and Asset Performance of Underground Wastewater Networks: Material Roughness and Structural Deterioration Matrix. CSIRO Water for a Healthy Country / WSAA, Melbourne, Australia.",
-        "intro": "Engineers often assume a single textbook Manning's n value (like 0.013) for an entire network. In reality, a 70-year-old clay pipe choked with slime and roots has drastically less capacity than modern PVC.",
-        "methods": "Combined laser profiling, CCTV inspections, and field dye testing across >50,000 sewer pipe segments in Victoria and NSW to measure actual hydraulic resistance as a function of age and material.",
-        "scope": "Vitrified clay (VC), reinforced concrete (RCP), unplasticised PVC, asbestos cement (AC), and cast iron sewers from DN 150 to DN 900.",
-        "usefulness": "This is the source for `csiro_pipe_roughness_matrix.csv` in our project data warehouse. It allows our simulation engine to calculate real, asset-differentiated capacities for Walkerville's 158 reaches.",
-        "limitations": "Local factors like ground movement, reactive clay soils, and aggressive tree species can cause rapid local deterioration that defies national age-based averages.",
-        "conclusions": "Pipes with high CSIRO roughness scores represent natural hydraulic bottlenecks where level sensors should be prioritized.",
-        "reflection": "Directly supports Paper 6 (Bin Ali et al. on sewer defects) and Paper 10 (CCTV AI defect detection) by linking physical defects to hydraulic flow reduction."
-      }
-    },
-    {
-      "id": "SATYA-GL-08",
-      "title": "Autodesk / Innovyze InfoWorks ICM Sewer Hydraulic Engine Reference Manual",
-      "organization": "Innovyze (Autodesk Inc.)",
-      "year": 2023,
-      "category": "Utility Codes & Design Standards",
-      "summary": "Industry-standard engineering reference for integrated 1D collection system and 2D overland flood modeling. Covers manhole head losses, pressurized pipe transitions, and real-time SCADA sensor assimilation.",
-      "assignedTo": "Satya Siddhartha",
-      "pdfUrl": "#",
-      "url": "https://www.autodesk.com/products/infoworks-icm/overview",
-      "keyTakeaways": [
-        "Provides advanced 1D/2D coupled solvers simulating surface spill pathways when manhole lids blow off during surcharge.",
-        "Details manhole energy loss calculations (FHWA, Miller, and Borda-Carnot junction loss models).",
-        "Documents live telemetry integration capabilities for real-time model calibration and automated warning generation."
-      ],
-      "steps": {
-        "citation": "Innovyze (2023). InfoWorks ICM 1D/2D Hydrodynamic Network Simulation Engine Reference Guide. Autodesk Inc., Portland, OR.",
-        "intro": "While SWMM is open-source, major water utilities like SA Water and Sydney Water use InfoWorks ICM for operational planning. Understanding its internal logic ensures our sensor placement research translates to utility industry tools.",
-        "methods": "Combines a 1D implicit Preissmann-scheme pipe network solver with a 2D shallow water equation surface routing engine. Accurately simulates water escaping manhole lids, flowing along street gutters, and re-entering downstream gullies.",
-        "scope": "City-wide sanitary and combined sewer networks, pumping stations, retention basins, and overland flood plains.",
-        "usefulness": "Explains junction head-loss phenomena that simple Manning calculations ignore. When multiple pipes meet at an angle inside a manhole, turbulence causes substantial energy loss, raising the upstream hydraulic grade line and triggering premature overflows.",
-        "limitations": "High computational overhead for 2D surface meshes; building and maintaining full InfoWorks models requires substantial engineering hours.",
-        "conclusions": "Optimal sensor placement must account for junction head losses, because drop manholes and sharp bends frequently act as localized surcharge triggers.",
-        "reflection": "Connects directly to Paper 4 (Sikorski et al. on network coverage) by defining where hydraulic stress concentrates in complex topologies."
-      }
-    },
-    {
-      "id": "SATYA-GL-09",
-      "title": "Water Research Foundation (WRF) Project 5239: Optimizing Sensor Networks for Collection Systems",
-      "organization": "The Water Research Foundation (WRF)",
-      "year": 2025,
-      "category": "Utility Codes & Design Standards",
-      "summary": "Landmark research report establishing the Descriptive–Predictive–Prescriptive Sensor Placement (DPP-SP) framework. Combines machine learning failure forecasting with multi-objective sensor placement optimization.",
-      "assignedTo": "Satya Siddhartha",
-      "pdfUrl": "#",
-      "url": "https://www.waterrf.org/research/projects/5239",
-      "keyTakeaways": [
-        "Demonstrates that redeploying existing sensors using risk-weighted models increases overflow detection by up to 35% without buying new hardware.",
-        "Uses XGBoost and Random Forest models on historical GIS and work orders to rank pipe failure probabilities.",
-        "Balances detection reliability (upstream placement) against network identifiability (downstream placement)."
-      ],
-      "steps": {
-        "citation": "Moradi, M. & Najafi, M. (2025). Optimizing Sensor Networks and Advanced Sensing Techniques for Enhanced Collection Systems Management. Research Project Report No. WRF 5239, The Water Research Foundation, Denver, CO.",
-        "intro": "Utilities often deploy sensors based on gut instinct or customer complaints. WRF 5239 provides the academic and industry rigor showing how machine learning and optimization algorithms should decide where sensors go.",
-        "methods": "Employs a three-stage framework: (1) Descriptive analysis of past sewer choke incidents, (2) Predictive modeling of structural and hydraulic failure risk using machine learning, and (3) Prescriptive optimization (Genetic Algorithms and Greedy heuristics) to locate sensors.",
-        "scope": "Municipal sewer collection systems facing sanitary sewer overflows (SSOs), combined sewer overflows (CSOs), and budget caps.",
-        "usefulness": "This is the primary modern methodological benchmark for our capstone project. It provides the exact mathematical justification for combining GIS risk factors (pipe age, slope, diameter) with hydraulic surcharge risk in our scoring algorithm.",
-        "limitations": "Requires clean historical incident data (work orders, blockage records) to train the predictive machine learning models.",
-        "conclusions": "Optimal sensor placement is an optimization trade-off between coverage, lead-time to overflow, and capital budget.",
-        "reflection": "Directly links to Paper 4 (Sikorski et al. 2022) and Paper 28 (Moradi & Najafi 2026), providing the theoretical backbone for our placement tool."
-      }
-    },
-    {
-      "id": "SATYA-GL-10",
-      "title": "Water Research Foundation (WRF) Project 4908: Demonstrating Real-Time Collection System Monitoring",
-      "organization": "The Water Research Foundation (WRF)",
-      "year": 2022,
-      "category": "Utility Codes & Design Standards",
-      "summary": "Field evaluation of real-time sensor networks, telemetry gateways, and automated anomaly detection algorithms deployed across operating wastewater collection catchments.",
-      "assignedTo": "Satya Siddhartha",
-      "pdfUrl": "#",
-      "url": "https://www.waterrf.org/research/projects/4908",
-      "keyTakeaways": [
-        "Evaluates continuous telemetry reliability, reporting data packet loss rates of 2–8% in dense urban manhole environments.",
-        "Documents automated anomaly detection algorithms filtering diurnal flow noise to detect illegal industrial dumping and sudden choke events.",
-        "Provides operational cost breakdowns: maintenance and battery replacement account for >60% of 10-year total cost of ownership."
-      ],
-      "steps": {
-        "citation": "The Water Research Foundation (2022). Demonstrating Real-Time Collection System Monitoring for Source Control and Potable Reuse. Research Report No. WRF 4908, Denver, CO.",
-        "intro": "Deploying a sensor in a clean lab is easy; keeping 50 sensors running in an active, damp, corrosive sewer manhole is an operational nightmare. WRF 4908 captures the hard-won practical realities.",
-        "methods": "Piloted multi-parameter sensors and ultrasonic level monitors across diverse collection catchments. Tested edge computing gateways that process sensor data locally and transmit only event alarms to save battery life.",
-        "scope": "Municipal sewer networks, trade waste trunk mains, and indirect potable reuse collection basins.",
-        "usefulness": "Gives our project concrete operational constraints to include in our sensor placement tool. A placement algorithm that chooses inaccessible manholes in high-traffic intersections is useless in practice.",
-        "limitations": "Focuses heavily on potable reuse source control, meaning water quality sensors (conductivity, pH, UV-Vis) receive more focus than purely acoustic blockage detection.",
-        "conclusions": "Sensor placement must consider physical maintainability, cell signal strength, and confined space access restrictions alongside hydraulic scores.",
-        "reflection": "Directly supports Paper 22 (wireless sensor networks) and Paper 23 (low-cost IoT sensors for water quality)."
-      }
-    },
-    {
-      "id": "SATYA-GL-11",
-      "title": "ASTM F3220-17 / InfoSense SL-RAT Acoustic Inspection Standard",
-      "organization": "ASTM International",
-      "year": 2017,
-      "category": "Utility Codes & Design Standards",
-      "summary": "Standard guide for screening gravity sanitary sewers using transmissive acoustic technology (SL-RAT). Defines acoustic blockage scoring (0–10) in under 3 minutes per pipe reach without CCTV.",
-      "assignedTo": "Satya Siddhartha",
-      "pdfUrl": "#",
-      "url": "https://www.astm.org/f3220-17.html",
-      "keyTakeaways": [
-        "Standardizes active acoustic sound wave transmission: an acoustic transmitter (TX) yells and a receiver (RX) listens at adjacent manholes.",
-        "Scores pipe condition on a 0–10 scale: 7–10 indicates clean pipe with ample flow, while 0–3 indicates severe blockage requiring jetting.",
-        "Enables screening up to 3,000 meters of sewer pipe per day, eliminating the need to clean clean pipes."
-      ],
-      "steps": {
-        "citation": "ASTM International (2017). ASTM F3220-17: Standard Guide for Prioritizing Sewer Cleaning Operations in Gravity Sanitary Sewer Lines Using Transmissive Acoustic Inspection. ASTM Committee F36, West Conshohocken, PA.",
-        "intro": "CCTV inspection is slow and expensive (500 meters a day), and jetting unblocked pipes waste millions of liters of water. Transmissive acoustics like the SL-RAT allow rapid pre-screening to find where blockages actually are.",
-        "methods": "Sends a specialized multi-frequency acoustic signal through the air headspace of a sewer pipe. Obstructions (roots, grease, sags, sediment) reflect and attenuate the sound wave, which is processed to generate an immediate blockage score.",
-        "scope": "Gravity sanitary sewers DN 150 to DN 450 up to 150 meters in length between manholes.",
-        "usefulness": "Connects acoustic screening scores with sensor placement. If a reach has an SL-RAT score of 2, placing a continuous level sensor immediately upstream provides an active early-warning sentinel before a full choke forms.",
-        "limitations": "Cannot inspect full-pipe siphons or completely submerged reaches where no air headspace exists for sound propagation.",
-        "conclusions": "Acoustic screening is the fastest way to survey a network; coupling periodic acoustic audits with permanent level monitors creates an efficient hybrid defense.",
-        "reflection": "Directly links to Paper 6 (Bin Ali et al. on acoustic instrumentation) and Paper 7 (acoustic condition monitoring)."
-      }
-    },
-    {
-      "id": "SATYA-GL-12",
-      "title": "WSA 05-2020: Sewer Inspection Reporting Code of Australia (4th Edition)",
-      "organization": "Water Services Association of Australia (WSAA)",
-      "year": 2020,
-      "category": "Utility Codes & Design Standards",
-      "summary": "The national standard for classifying, coding, and scoring defects in sewer pipes from CCTV camera footage. Defines standardized formulas for structural and service defect grading (Grades 1 to 5).",
-      "assignedTo": "Satya Siddhartha",
-      "pdfUrl": "#",
-      "url": "https://wsaa.asn.au/Web/iCore/Store/StoreLayouts/Item_Detail.aspx?iProductCode=WSAACODE005",
-      "keyTakeaways": [
-        "Standardizes national defect codes: Root Taproot (RT), Root Fine (RF), Encrustation (EN), Fracture (F), Displaced Joint (DJ).",
-        "Calculates Mean Defect Score (MDS) and Peak Defect Score (PDS) to grade pipes from Grade 1 (minor) to Grade 5 (imminent collapse).",
-        "Establishes CCTV video formats and digital metadata protocols required for automated AI computer vision analysis."
-      ],
-      "steps": {
-        "citation": "Water Services Association of Australia (WSAA, 2020). WSA 05-2020: Sewer Inspection Reporting Code of Australia (CCTV Inspection and Defect Classification). 4th Edition, WSAA, Melbourne, Australia.",
-        "intro": "When human operators inspect sewers with CCTV, their defect grading is notoriously subjective. WSA 05 gives the rigorous, objective mathematical rules that modern AI vision models use to score sewer defects.",
-        "methods": "Classifies every pipe anomaly by type, clock-face orientation, and longitudinal percentage. Each defect is assigned a severity weight that sums into Structural and Service condition indices.",
-        "scope": "Closed-circuit television (CCTV) and zoom camera inspection of all wastewater and stormwater conduits in Australia.",
-        "usefulness": "This is the ground truth coding system needed for Paper 10 (CCTV AI defect detection). In our sensor placement framework, reaches with high WSA 05 Service scores (Grade 4–5 tree roots or grease) receive elevated placement weights.",
-        "limitations": "CCTV requires pre-cleaning the pipe, which temporarily washes away grease dams and loose sediment, giving a clean view of the pipe but missing transient operational choke dynamics.",
-        "conclusions": "CCTV defect grades should feed directly into hydraulic model roughness factors and sensor priority calculations.",
-        "reflection": "Directly supports Paper 10 (review of computer-aided sewer pipeline defect detection)."
-      }
-    },
-    {
-      "id": "SATYA-GL-13",
-      "title": "Pulsar Measurement Application Guide: In-Sewer Ultrasonic Level Sensing",
-      "organization": "Pulsar Measurement Ltd",
-      "year": 2023,
-      "category": "Network Overflows & Surcharging",
-      "summary": "Technical guide on non-contact ultrasonic transducers (dBi series) in damp sewer headspaces. Details digital echo tracking (DATEM), acoustic beam angles, false echo suppression, and manhole mounting.",
-      "assignedTo": "Satya Siddhartha",
-      "pdfUrl": "#",
-      "url": "https://pulsarmeasurement.com/en_uk/measurement-solutions/level",
-      "keyTakeaways": [
-        "Explains DATEM (Digital Adaptive Tracking Echo Movement) software isolating moving sewage targets from stationary wall rungs.",
-        "Details beam spread dynamics (10° beam angle) and mounting offsets required to prevent false reflections from manhole corbels.",
-        "Reviews temperature compensation techniques required when sewer headspace air temperature shifts by 15°C between day and night."
-      ],
-      "steps": {
-        "citation": "Pulsar Measurement Ltd (2023). Application Note: In-Sewer Level and Overflow Monitoring with dBi Series Ultrasonic Transducers and DATEM Echo Processing. Pulsar Measurement, Malvern, UK.",
-        "intro": "The 62 level sensors deployed by SA Water in the Stonyfell catchment (Do et al. 2023) were Pulsar dBi 6 ultrasonic units. To understand why that trial succeeded and where sensors failed, you have to understand this document.",
-        "methods": "Emits 125 kHz acoustic pulses and measures time-of-flight to the water surface. Uses dynamic threshold tracking to disregard constant reflections from ladder rungs, dripping condensation, or cobwebs.",
-        "scope": "Underground sewer manholes, combined overflow chambers, wet wells, and flumes.",
-        "usefulness": "Explains why ultrasonic sensors suffer 20–25% maintenance interventions in year 1: condensation droplets clinging to the transducer face create ringdown dead-zones, and spiderwebs mimic surface targets.",
-        "limitations": "Cannot measure through heavy steam or foam; sound velocity changes with methane and CO2 concentration in the manhole, requiring calibration.",
-        "conclusions": "Ultrasonic sensors are cost-effective but require careful manhole bracket mounting and periodic lens cleaning to avoid false overflow alarms.",
-        "reflection": "Directly connects to Paper 3 (integrated IoT low-power sensors) and the Do et al. (2023) Stonyfell report in our capstone project."
-      }
-    },
-    {
       "id": "SATYA-GL-14",
       "title": "Siemens SITRANS LR110/LR120 80 GHz Radar Level Transmitters in Wastewater",
       "organization": "Siemens AG",
@@ -2049,7 +1763,7 @@ window.__BUNDLED_DATA__ = {
       "category": "Network Overflows & Surcharging",
       "summary": "Technical evaluation of 80 GHz frequency modulated continuous wave (FMCW) radar sensors for sewer level tracking. Demonstrates how narrow 4-degree beam angles ignore condensation, grease, and manhole obstacles.",
       "assignedTo": "Satya Siddhartha",
-      "pdfUrl": "#",
+      "pdfUrl": "./contributors/satya-siddhartha/grey/GL_2020_Siemens_SITRANS_LR120_Operating_Instructions.pdf",
       "url": "https://www.siemens.com/en-us/products/sitrans/",
       "keyTakeaways": [
         "80 GHz radar features an extremely narrow 4° beam angle, allowing installation in tight manholes without sidewall interference.",
@@ -2068,32 +1782,6 @@ window.__BUNDLED_DATA__ = {
       }
     },
     {
-      "id": "SATYA-GL-15",
-      "title": "LoRa Alliance: In-Manhole Radio Frequency Propagation and Battery Management",
-      "organization": "LoRa Alliance Technical Committee",
-      "year": 2021,
-      "category": "Network Overflows & Surcharging",
-      "summary": "Comprehensive RF engineering study quantifying sub-GHz radio transmission through cast-iron manhole covers, asphalt, and concrete lids for underground sewer telemetry.",
-      "assignedTo": "Satya Siddhartha",
-      "pdfUrl": "#",
-      "url": "https://resources.lora-alliance.org/",
-      "keyTakeaways": [
-        "Solid cast-iron manhole covers attenuate 915 MHz RF signals by 25 to 40 dB, requiring composite lids or slot antennas.",
-        "Sub-GHz LoRaWAN (915 MHz in Australia, 868 MHz in Europe) achieves 3–5x better penetration than 2.4 GHz WiFi or Zigbee.",
-        "Presents battery life equations: 1 transmission every 15 minutes yields 8–10 years on a single D-cell lithium thionyl chloride (LiSOCl2) pack."
-      ],
-      "steps": {
-        "citation": "LoRa Alliance (2021). Technical Report: Sub-GHz RF Propagation and Antenna Optimization Beneath Cast-Iron Manhole Covers for Smart Water Infrastructure. LoRa Alliance, Fremont, CA.",
-        "intro": "You can have the best level sensor in the world, but if the radio signal cannot escape from 3 meters underground beneath a 100 kg cast-iron lid, the sensor is completely useless.",
-        "methods": "Conducted electromagnetic link budget testing across 120 underground manhole installations with varying lid materials (cast iron, composite, ductile iron with vent holes) and antenna orientations.",
-        "scope": "Underground smart water networks, sewer level telemetry, stormwater manholes, and IoT gateway deployments.",
-        "usefulness": "Directly explains the communication viability parameter in our sensor placement framework. Siting a sensor under a vented or composite lid ensures 99.5% packet delivery, while a solid iron lid in a roadway requires external puck antennas.",
-        "limitations": "High groundwater or street flooding covering the manhole lid temporarily cuts RF transmission completely until floodwaters recede.",
-        "conclusions": "Optimal sensor placement algorithms must include an RF link budget constraint; placing a sensor where signal margin is < 10 dB guarantees lost alarm packets.",
-        "reflection": "Connects directly to Paper 4 (Sikorski et al. 2022) and Paper 22 (wireless sensor networks for water monitoring)."
-      }
-    },
-    {
       "id": "SATYA-GL-16",
       "title": "US EPA Illicit Discharge Detection and Elimination (IDDE) Technical Guidance Manual",
       "organization": "US Environmental Protection Agency & Center for Watershed Protection",
@@ -2101,7 +1789,7 @@ window.__BUNDLED_DATA__ = {
       "category": "Network Overflows & Surcharging",
       "summary": "The international handbook for isolating illicit sanitary cross-connections, industrial trade waste dumping, and sewage leaks into stormwater drains using water quality parameters.",
       "assignedTo": "Satya Siddhartha",
-      "pdfUrl": "#",
+      "pdfUrl": "./contributors/satya-siddhartha/grey/GL_2004_USEPA_IDDE_Guidance_Manual.pdf",
       "url": "https://nepis.epa.gov/Exe/ZyPURL.cgi?Dockey=20017KFK.TXT",
       "keyTakeaways": [
         "Defines key chemical indicator tracer matrices: conductivity, ammonia, potassium, detergents (surfactants), and optical brighteners.",
@@ -2117,110 +1805,6 @@ window.__BUNDLED_DATA__ = {
         "limitations": "Chemical concentrations dilute rapidly in wet weather; tracer screening must be performed during baseflow (dry weather) periods.",
         "conclusions": "Multi-parameter sensor nodes placed at strategic branch junctions can isolate the subcatchment source of illegal discharges in hours rather than months.",
         "reflection": "Directly supports Paper 11 (illicit discharge detection using an Arduino) and Paper 12 (multi-parameter water quality monitoring)."
-      }
-    },
-    {
-      "id": "SATYA-GL-17",
-      "title": "WERF Report 01-CTS-1: Online Real-Time Wastewater Quality Monitoring in Collection Systems",
-      "organization": "Water Environment Research Foundation (WERF)",
-      "year": 2004,
-      "category": "Network Overflows & Surcharging",
-      "summary": "Technical evaluation of continuous water quality instrumentation (pH, ORP, DO, conductivity, turbidity) directly submerged in raw wastewater collection systems.",
-      "assignedTo": "Satya Siddhartha",
-      "pdfUrl": "#",
-      "url": "https://www.waterrf.org/research/projects",
-      "keyTakeaways": [
-        "Quantifies biofouling dynamics: submerged optical and galvanic sensors develop thick biofilm layers within 48 to 72 hours without active wipers.",
-        "Details mechanical wiper blades, ultrasonic cleaning horns, and compressed air flushing to maintain sensor signal integrity.",
-        "Establishes calibration drift rates for pH and dissolved oxygen probes in raw sewage environments."
-      ],
-      "steps": {
-        "citation": "Water Environment Research Foundation (WERF, 2004). Online Real-Time Wastewater Quality Monitoring in Collection Systems: Practical Sensor Evaluation. Project Report 01-CTS-1, IWA Publishing, London, UK.",
-        "intro": "Putting an expensive water quality probe into raw sewage sounds great until you pull it out two days later and find it coated in grease, toilet paper, and black biofilm. WERF 01-CTS-1 addresses the real-world maintenance headache.",
-        "methods": "Tested commercial water quality analyzers submerged in untreated gravity sewers and pump station wet wells over multi-month trial runs. Evaluated signal drift before and after automatic mechanical cleaning cycles.",
-        "scope": "Raw municipal wastewater collection systems, trunk sewers, and treatment plant headworks.",
-        "usefulness": "Directly connects to Paper 12 (reliable sewage abnormal event monitoring) and Paper 14 (optical dissolved oxygen analyzers). It proves why non-contact level sensing (radar/ultrasonic) is preferred for level, while submerged water quality probes require motorized wiper arms.",
-        "limitations": "Mechanical wiper blades can jam on wet wipes and hair ragging, requiring routine human inspection every 2–4 weeks.",
-        "conclusions": "Submerged water quality sensing is only viable if automated cleaning mechanisms are integrated into the sensor body.",
-        "reflection": "Supports my research on water quality sensor maintenance intervals across Papers 12, 13, and 14."
-      }
-    },
-    {
-      "id": "SATYA-GL-18",
-      "title": "YSI / Xylem Technical Guide: In-Situ Water Quality Sonde Operation in Wastewater",
-      "organization": "YSI Incorporated (Xylem Inc.)",
-      "year": 2023,
-      "category": "Network Overflows & Surcharging",
-      "summary": "Comprehensive best-practice manual for deploying multi-parameter sondes (EXO series) in aggressive wastewater. Covers copper anti-fouling guards, optical dissolved oxygen (DO) caps, and automated calibration.",
-      "assignedTo": "Satya Siddhartha",
-      "pdfUrl": "#",
-      "url": "https://www.ysi.com/exo",
-      "keyTakeaways": [
-        "Demonstrates that pure copper components (copper-nickel alloys and wiper brushes) prevent barnacle and bacterial biofilm attachment on optical windows.",
-        "Details luminescent optical DO (LDO) technology avoiding the electrolyte consumption and membrane fouling of traditional galvanic cells.",
-        "Provides step-by-step procedures for calibration frequency, battery budgeting, and smart sensor diagnostics."
-      ],
-      "steps": {
-        "citation": "YSI Incorporated / Xylem Inc. (2023). Technical Guide: Best Practices for Continuous In-Situ Water Quality Sondes (EXO Series) in Harsh Wastewater Environments. YSI Technical Publishing, Yellow Springs, OH.",
-        "intro": "In Paper 14, I reviewed optical versus amperometric dissolved oxygen sensors in wastewater. This YSI/Xylem guide provides the industry operational standard for keeping those sensors calibrated in the field.",
-        "methods": "Uses optical luminescent lifetime measurement: a blue LED excites a ruthenium dye membrane, and the luminescence decay time is inversely proportional to oxygen concentration. Copper wiper guards physically wipe sensor faces before every reading.",
-        "scope": "Wastewater networks, aeration basins, outfall discharge channels, and industrial trade waste monitoring.",
-        "usefulness": "Provides exact field protocols for our parameter catalogue. When placing water quality sensors for trade waste surveillance, copper guards and optical DO sensors are mandatory to avoid maintenance failure.",
-        "limitations": "High initial equipment cost ($8,000–$15,000 per sonde); requires trained field technicians for multi-point chemical buffer calibrations.",
-        "conclusions": "Optical dissolved oxygen combined with copper anti-fouling guards extends field maintenance intervals from 3 days to over 30 days in wastewater.",
-        "reflection": "Directly links to Paper 14 (comparative validation of amperometric and optical analyzers of DO)."
-      }
-    },
-    {
-      "id": "SATYA-GL-19",
-      "title": "European Standard EN ISO 6878: Automated In-Situ Nutrient Monitoring in Wastewater",
-      "organization": "International Organization for Standardization (ISO / CEN)",
-      "year": 2018,
-      "category": "Network Overflows & Surcharging",
-      "summary": "International standard specifying automated spectroscopic and electrochemical determination of ammonium, nitrate, and orthophosphate in municipal wastewater collection and treatment systems.",
-      "assignedTo": "Satya Siddhartha",
-      "pdfUrl": "#",
-      "url": "https://www.iso.org/standard/39626.html",
-      "keyTakeaways": [
-        "Defines ion-selective electrode (ISE) measurement protocols with potassium and chloride interference compensation.",
-        "Sets accuracy and repeatability standards for continuous in-situ nutrient monitoring (+/-5% full scale).",
-        "Specifies automatic chemical reagent delivery, filtration membranes, and waste neutralization protocols."
-      ],
-      "steps": {
-        "citation": "International Organization for Standardization (ISO, 2018). ISO 6878: Water Quality — Determination of Phosphorus and Nitrogen Fractions for Continuous Online Analyzers. ISO Central Secretariat, Geneva, Switzerland.",
-        "intro": "Measuring nutrients (ammonium, nitrate, phosphorus) in real-time in a sewer pipe is difficult because interference from other ions in urine and feces skews standard electrochemical readings. ISO 6878 provides the international benchmark.",
-        "methods": "Combines spectrophotometric absorption with ion-selective electrode (ISE) arrays. Uses dynamic mathematical matrix compensation where potassium sensors correct ammonium readings and chloride sensors correct nitrate readings.",
-        "scope": "Municipal sewer collection networks, decentralized package plants, and wastewater treatment discharge outfalls.",
-        "usefulness": "Directly supports Paper 17 (Electrochemical detection of nitrate, nitrite and ammonium). Provides standard analytical thresholds to evaluate low-cost ISE sensors against certified laboratory instruments.",
-        "limitations": "Ion-selective membranes degrade over 3–6 months and require regular chemical replacement; reagents must not freeze in outdoor cabinets.",
-        "conclusions": "Electrochemical ISEs provide viable screening for nitrogen spikes, but automated interference compensation is essential in raw sewage.",
-        "reflection": "Supports my research on nutrient sensor deployment in Paper 17."
-      }
-    },
-    {
-      "id": "SATYA-GL-20",
-      "title": "Water Research Foundation Report 4975: Real-Time Trade Waste Sensing & Anomaly Detection",
-      "organization": "The Water Research Foundation (WRF)",
-      "year": 2023,
-      "category": "Sensors & Monitoring Hardware",
-      "summary": "Technical report on sensor networks and machine-learning algorithms deployed to catch illegal trade waste dumps, heavy metal spikes, and acidic discharges in municipal sewers.",
-      "assignedTo": "Satya Siddhartha",
-      "pdfUrl": "#",
-      "url": "https://www.waterrf.org/research/projects/4975",
-      "keyTakeaways": [
-        "Demonstrates multi-sensor fusion (conductivity, pH, temperature, and UV-Vis absorbance) to fingerprint industrial effluent.",
-        "Evaluates autoencoder and Isolation Forest machine learning algorithms detecting anomalous discharge events in under 15 minutes.",
-        "Documents utility enforcement savings: rapid localization of illegal electroplating and food-processing dumps prevented asset corrosion."
-      ],
-      "steps": {
-        "citation": "The Water Research Foundation (2023). Real-Time Sensing, Edge Analytics, and Anomaly Detection for Industrial Trade Waste Tracking. Project Report No. WRF 4975, Denver, CO.",
-        "intro": "Illegal trade waste discharges (acids, solvents, concentrated brewery waste) destroy concrete pipes, poison biological treatment plants, and create toxic gas clouds. WRF 4975 shows how real-time sensing catches illegal dumpers.",
-        "methods": "Deploys edge-computing sensor pods measuring pH, electrical conductivity, and temperature. An autoencoder neural network learns normal diurnal baseline curves; unexpected deviations trigger automated GPS sampling and valve shutoffs.",
-        "scope": "Industrial sewer corridors, commercial food precincts, and municipal trunk sewer interceptors.",
-        "usefulness": "Connects to Paper 11 (illicit discharge detection) and Paper 18 (BOD biosensors). Siting sensors in commercial industrial sub-catchments protects downstream assets from biogenic corrosion caused by high-strength organic loads.",
-        "limitations": "Fast-moving shock loads can pass through a pipe reach before mobile sampling teams can verify the source.",
-        "conclusions": "Sensor placement for trade waste must focus on network junction nodes that aggregate multiple industrial discharge contributors.",
-        "reflection": "Directly supports Paper 11, 12, and 18, providing the data analytics bridge between raw water quality readings and utility enforcement."
       }
     },
     {
@@ -2247,32 +1831,6 @@ window.__BUNDLED_DATA__ = {
         "limitations": "SeweX requires detailed wastewater temperature, sulfate concentration, and COD parameters to predict sulfide generation accurately.",
         "conclusions": "Chemical dosing (ferric chloride, caustic soda, magnesium hydroxide) can be optimized using real-time H2S sensors, cutting chemical costs by 30%.",
         "reflection": "This is the core scientific foundation for my Papers 19, 20, and 21 on H2S gas and liquid bisulfide sensor monitoring."
-      }
-    },
-    {
-      "id": "SATYA-GL-22",
-      "title": "Gas Data Ltd / SA Water Technical Note: In-Sewer H2S Gas Sensor Longevity & Poisoning",
-      "organization": "Gas Data Ltd & SA Water",
-      "year": 2021,
-      "category": "Sensors & Monitoring Hardware",
-      "summary": "Technical report on electrochemical and optical H2S gas sensors in raw sewer manhole atmospheres. Analyzes sensor saturation, mercaptan poisoning, and electrolyte drying in extreme humidity.",
-      "assignedTo": "Satya Siddhartha",
-      "pdfUrl": "#",
-      "url": "https://www.gasdata.co.uk/industries/wastewater-treatment/",
-      "keyTakeaways": [
-        "Standard industrial electrochemical H2S cells suffer severe sensor drift and electrolyte poisoning within 3–6 months in raw sewer atmospheres (>95% RH, 0–200 ppm H2S).",
-        "Documents chemical cross-sensitivity to volatile organic compounds, mercaptans, and methane causing false high alarms.",
-        "Recommends optical NDIR or robust diffusion-barrier electrochemical cells with automated baseline zeroing."
-      ],
-      "steps": {
-        "citation": "Gas Data Ltd & SA Water (2021). Technical Report: Performance Evaluation and Chemical Poisoning Mechanisms of Solid-State and Electrochemical H2S Sensors in Raw Sewer Atmospheres. Gas Data Technical Services & SA Water Asset Planning, Adelaide, SA.",
-        "intro": "In Paper 20, I compared H2S gas sensors and established a sensor management procedure. This joint evaluation between Gas Data and SA Water documents the exact failure modes seen when deploying gas sensors in South Australian sewers.",
-        "methods": "Tested multiple commercial electrochemical H2S sensors installed in Adelaide manholes and Gawler sewer trunks over 12 months. Tracked baseline drift, response time (T90), and sensitivity degradation.",
-        "scope": "Sewer manhole headspaces, drop structures, pump station discharge chambers, and air-valve pits.",
-        "usefulness": "Crucial operational knowledge for our Parameter Catalogue. Siting an H2S sensor in an unventilated manhole without considering sensor saturation guarantees premature equipment failure within half a year.",
-        "limitations": "Optical NDIR gas sensors resist chemical poisoning but require significantly more battery power than passive electrochemical cells.",
-        "conclusions": "Electrochemical H2S sensors must be paired with automated environmental baseline recalibration and replaced every 12–18 months.",
-        "reflection": "Directly supports Paper 20 (Comparison of H2S gas sensors: a sensor management procedure for collection systems)."
       }
     },
     {
@@ -2429,32 +1987,6 @@ window.__BUNDLED_DATA__ = {
         "limitations": "Sensors were placed based on expert operator judgment and blockage history; SA Water did not use an automated optimization algorithm to determine sensor locations.",
         "conclusions": "Continuous level monitoring successfully transforms reactive spill cleanup into proactive, scheduled jetting weeks in advance.",
         "reflection": "This document connects directly to our SA Water project brief, providing the baseline utility practice that our capstone placement algorithm is designed to improve upon."
-      }
-    },
-    {
-      "id": "SATYA-GL-29",
-      "title": "UKWIR Report 21/WM/07/11: Sensor Placement Strategies for Early Blockage Detection",
-      "organization": "UK Water Industry Research (UKWIR)",
-      "year": 2021,
-      "category": "Sensors & Monitoring Hardware",
-      "summary": "UK water industry guidance comparing heuristic sensor placement (historical flood hotspots, critical trunk junctions) against algorithmic spatial optimization models across 10 water companies.",
-      "assignedTo": "Satya Siddhartha",
-      "pdfUrl": "#",
-      "url": "https://ukwir.org/home-of-water-industry-research-projects-reports-tools",
-      "keyTakeaways": [
-        "Finds that heuristic placement (hotspots) catches frequent repeat chokes but misses catastrophic new failures in unmonitored branches.",
-        "Recommends a two-tier hybrid strategy: permanent monitoring on critical trunk assets, and roaming sensors in high-risk reticulation zones.",
-        "Highlights that grease and wet wipe disposal causes >70% of blockages in the UK, making reticulation branches high-priority."
-      ],
-      "steps": {
-        "citation": "UK Water Industry Research (UKWIR, 2021). Sensor Placement Strategies for Early Detection of Sewer Network Blockages and Flooding. Report No. 21/WM/07/11, UKWIR, London, UK.",
-        "intro": "Across the UK, water companies are installing tens of thousands of sewer level monitors. UKWIR evaluated how utilities actually decide where to place these sensors and where the industry heuristics fall short.",
-        "methods": "Benchmarked sensor siting strategies across 10 UK water companies (Severn Trent, United Utilities, Yorkshire Water), comparing historical incident targeting against network topology algorithms.",
-        "scope": "Combined and separate municipal sewer networks, storm overflow assets, and surface flooding hotspots.",
-        "usefulness": "Validates our project's approach: relying purely on historical hotspots is backward-looking and fails when urban infill housing adds new load to previously stable pipes.",
-        "limitations": "UK sewers are predominantly combined systems, so storm surge dynamics play a heavier role than in Australia's separate sanitary networks.",
-        "conclusions": "Optimal placement must integrate hydraulic capacity risk with customer demographic growth, not just past blockage work orders.",
-        "reflection": "Directly supports Paper 4 (cost-efficient coverage of wastewater networks by IoT monitoring devices)."
       }
     },
     {

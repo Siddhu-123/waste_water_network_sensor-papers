@@ -915,6 +915,7 @@ items = [
 ]
 
 def main():
+    raise SystemExit('Retired: grey-literature.json is now edited directly; this script still holds the removed entries.')
     root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
     target = os.path.join(root, 'contributors', 'satya-siddhartha', 'grey-literature.json')
     data = {
