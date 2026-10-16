@@ -160,9 +160,9 @@ The team compiled paper is the collaborative review authored together by the ent
     "topic": "OSP",
     "filterCategory": "Compiled Review",
     "assignedTo": "Team",
-    "description": "Team's compiled literature review on Optimal Sensor Placement for Wastewater Network Monitoring.",
-    "pages": 32,
-    "size": "465 KB",
+    "description": "Compiled team review of where to place a small number of sensors in a wastewater network. It covers sensor technologies, placement and optimisation methods, sewer condition and failure factors, and the openly available South Australian network data. The review finds that the best location depends on what the sensor must detect (level trend, overflow alarm, flow, contaminant or gas), and that published percentage gains are network-specific. It sets out a staged, purpose-specific placement method to be tested on the SA Water network.",
+    "pages": 42,
+    "size": "564 KB",
     "pdfUrl": "./contributors/team_compiled_paper.pdf"
   }
   ```
