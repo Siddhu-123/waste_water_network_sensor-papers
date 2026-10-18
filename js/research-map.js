@@ -7,7 +7,7 @@
     error: $("researchMapError"), errorText: $("researchMapErrorText"), coverage: $("researchMapCoverage"),
     tooltip: $("researchMapTooltip"), results: $("researchMapResults"), top: $("researchMapTopPlaces"),
     selection: $("researchMapSelection"), status: $("researchMapStatus"), organizations: $("researchMapOrganizations"), country: $("researchMapCountry"),
-    location: $("researchMapLocation"), type: $("researchMapType"), contributor: $("researchMapContributor"),
+    location: $("researchMapLocation"), type: $("researchMapType"), contributor: $("researchMapContributor"), organization: $("researchMapOrganization"),
     australia: $("researchMapAustralia"), section: $("researchMapSection"), squeeze: $("researchMapSqueeze"),
   };
   if (!el.canvas || !el.wrap) return;
@@ -116,7 +116,38 @@
     const year = recordYear(record, canonical) || "Year unavailable";
     return `${escapeHtml(author)} · ${escapeHtml(year)}`;
   };
-  const organizationName = (record) => String(record.organization || "").trim();
+  // Organizations are individual names: collaborations split on ";" and on a spaced "/" or "&"
+  // (so "Florida A&M" and "Texas A&M" stay whole); commas inside a name are kept.
+  const collapseSpace = (value) => String(value ?? "").normalize("NFC").replace(/\s+/g, " ").trim();
+  const orgKey = (name) => collapseSpace(name).toLowerCase();
+  // The capture group keeps the official Defra name (it has a spaced "&") as one part of the split.
+  const ORG_SPLIT = /(Department for Environment, Food & Rural Affairs \(Defra\))|\s*;\s*|\s+\/\s+|\s+&\s+/;
+  // Exact spellings (case-insensitive, whole name) that refer to one organization, mapped to its canonical name.
+  const ORG_ALIASES = new Map([
+    ["SA Water Corporation", "SA Water"],
+    ["Sydney Water Corporation", "Sydney Water"],
+    ["WSAA", "Water Services Association of Australia (WSAA)"],
+    ["The University of Sheffield", "University of Sheffield"],
+    ["Eawag", "Eawag, Swiss Federal Institute of Aquatic Science and Technology"],
+    ["US Environmental Protection Agency", "US Environmental Protection Agency (US EPA)"],
+  ].map(([from, to]) => [orgKey(from), to]));
+  const canonicalOrganization = (name) => ORG_ALIASES.get(orgKey(name)) || name;
+  const splitOrganizations = (raw) => {
+    const names = new Map();
+    for (const part of collapseSpace(raw).split(ORG_SPLIT)) {
+      const name = canonicalOrganization(collapseSpace(part));
+      if (name && !names.has(orgKey(name))) names.set(orgKey(name), name);
+    }
+    return [...names.values()];
+  };
+  const recordOrganizations = (record) => {
+    const own = collapseSpace(record.organization);
+    return splitOrganizations(own || canonicalFor(record)?.organization);
+  };
+  const orgIndex = new Map();
+  const recordOrgKeys = new Map();
+  const organizationKeys = (record) => recordOrgKeys.get(recordKey(record)) || new Set();
+  const matchesOrganization = (record) => !selectedOrganization || organizationKeys(record).has(orgKey(selectedOrganization));
   const placeCountry = (place) => place.kind === "country" ? (place.country || place.name) : place.country;
   const point = (lat, lon) => ({
     x: 18 + ((Number(lon) + 180) / 360) * (map.width - 36),
@@ -176,6 +207,30 @@
       `<option value="${escapeHtml(place.kind === "city" ? `${place.name}, ${place.country}` : place.name)}"></option>`).join("");
     const contributors = [...new Set(records.flatMap(contributorsFor))].sort((a, b) => a.localeCompare(b));
     el.contributor.innerHTML = `<option value="all">All contributors</option>${contributors.map((person) => `<option value="${escapeHtml(person)}">${escapeHtml(person)}</option>`).join("")}`;
+    buildOrganizations();
+  }
+
+  // Full alphabetical list over every record (mapped or not), independent of the other filters.
+  function buildOrganizations() {
+    orgIndex.clear(); recordOrgKeys.clear();
+    for (const record of records) {
+      const names = recordOrganizations(record);
+      recordOrgKeys.set(recordKey(record), new Set(names.map(orgKey)));
+      for (const name of names) {
+        const entry = orgIndex.get(orgKey(name)) || { label: name, keys: new Set() };
+        entry.keys.add(recordKey(record));
+        orgIndex.set(orgKey(name), entry);
+      }
+    }
+    const sorted = [...orgIndex].sort((a, b) => a[1].label.localeCompare(b[1].label, undefined, { sensitivity: "base", numeric: true }) || (a[0] < b[0] ? -1 : 1));
+    el.organization.innerHTML = `<option value="">All companies / organizations</option>${sorted.map(([key, entry]) => `<option value="${escapeHtml(key)}">${escapeHtml(entry.label)} (${entry.keys.size})</option>`).join("")}`;
+    el.organization.value = "";
+  }
+
+  function setOrganization(name) {
+    const entry = orgIndex.get(orgKey(name));
+    selectedOrganization = entry ? entry.label : "";
+    el.organization.value = entry ? orgKey(name) : "";
   }
 
   // Shortcut places: the three Australian cities first, then the busiest other cities and countries.
@@ -203,7 +258,7 @@
     if (!shortcuts) return;
     const button = (place) => {
       const active = selectedPlace && String(selectedPlace.id) === String(place.id) && !unmappedMode;
-      return `<button type="button" data-place="${escapeHtml(place.id)}"${active ? ' class="active" aria-pressed="true"' : ' aria-pressed="false"'}>${escapeHtml(place.name)}<b>${recordsAtPlace(place, true).length}</b></button>`;
+      return `<button type="button" data-place="${escapeHtml(place.id)}"${active ? ' class="active" aria-pressed="true"' : ' aria-pressed="false"'}>${escapeHtml(place.name)}<b>${recordsAtPlace(place).length}</b></button>`;
     };
     const group = (label, list) => list.length ? `<span class="research-map-quick-label">${label}</span>${list.map(button).join("")}` : "";
     el.australia.innerHTML = group("Cities", shortcuts.cities) + group("Countries", shortcuts.countries);
@@ -328,7 +383,7 @@
     const contributor = el.contributor.value;
     return records.filter((record) => (type === "all" || record.type === type) &&
       (contributor === "all" || contributorsFor(record).includes(contributor)) &&
-      (ignoreOrganization || !selectedOrganization || organizationName(record) === selectedOrganization));
+      (ignoreOrganization || matchesOrganization(record)));
   }
 
   function locationsFor(record) { return record.locations.map((loc) => ({ ...loc, place: places.find((p) => String(p.id) === String(loc.placeId)) })).filter((loc) => loc.place); }
@@ -354,6 +409,7 @@
 
   function render() {
     if (!data) return;
+    el.organization.value = selectedOrganization ? orgKey(selectedOrganization) : "";
     const counts = pinCounts();
     const pins = places.filter((place) => (counts.get(String(place.id)) || new Set()).size > 0).map((place) => {
       const keys = counts.get(String(place.id));
@@ -367,6 +423,7 @@
     el.coverage.textContent = `${mapped} of ${unique} records mapped · ${map.pins.length} places`;
     if (selectedPlace && !unmappedMode) showPlaceResults(selectedPlace);
     else if (unmappedMode) showUnmappedResults();
+    else if (selectedCountry) renderCountrySelection();
     else showOverview();
     renderShortcuts();
     map.base = null;
@@ -434,11 +491,14 @@
   function renderOrganizations(place) {
     const counts = new Map();
     for (const { record } of recordsAtPlace(place, true)) {
-      const name = organizationName(record);
-      if (name) counts.set(name, (counts.get(name) || 0) + 1);
+      for (const key of organizationKeys(record)) {
+        const entry = orgIndex.get(key);
+        if (entry) counts.set(entry.label, (counts.get(entry.label) || 0) + 1);
+      }
     }
     const entries = [...counts].sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]));
-    el.organizations.innerHTML = entries.length ? `<div class="research-map-subhead">Organizations</div>${entries.map(([name, count]) => `<button type="button" class="research-map-place-row research-map-org-row${selectedOrganization === name ? " active" : ""}" data-org="${escapeHtml(name)}"><span>${escapeHtml(name)}</span><b>${count}</b></button>`).join("")}${selectedOrganization ? `<button type="button" class="research-map-clear-org" data-clear-org>Clear organization filter</button>` : ""}` : "";
+    const selectedKey = selectedOrganization ? orgKey(selectedOrganization) : "";
+    el.organizations.innerHTML = entries.length ? `<div class="research-map-subhead">Organizations</div>${entries.map(([name, count]) => `<button type="button" class="research-map-place-row research-map-org-row${selectedKey === orgKey(name) ? " active" : ""}" aria-pressed="${selectedKey === orgKey(name)}" data-org="${escapeHtml(name)}"><span>${escapeHtml(name)}</span><b>${count}</b></button>`).join("")}${selectedOrganization ? `<button type="button" class="research-map-clear-org" data-clear-org>Clear organization filter</button>` : ""}` : "";
   }
 
   function showUnmappedResults() {
@@ -448,7 +508,8 @@
     el.selection.textContent = `${unmapped.length} records without a mapped location`;
     el.top.innerHTML = "";
     el.organizations.innerHTML = "";
-    renderTitleList(unmapped.map((record) => ({ record, locations: [] })), null, `<p class="research-map-empty">Every record matching these filters has a mapped location.</p>`);
+    const anyMatch = filteredRecords().length > 0;
+    renderTitleList(unmapped.map((record) => ({ record, locations: [] })), null, `<p class="research-map-empty">${anyMatch ? "Every record matching these filters has a mapped location." : "No records match these filters."}</p>`);
     el.status.textContent = `${unmapped.length} unmapped records`;
   }
 
@@ -682,7 +743,7 @@
   function choosePinGroup(group) {
     if (!group) return;
     if (group.pins.length === 1) { choosePlace(group.pins[0].place); return; }
-    selectedPlace = null; selectedOrganization = ""; selectedCountry = ""; unmappedMode = false;
+    selectedPlace = null; selectedCountry = ""; unmappedMode = false;
     hideDetail();
     el.organizations.innerHTML = ""; el.results.innerHTML = "";
     $("researchMapResultsHeading").textContent = "Locations";
@@ -743,7 +804,7 @@
 
   function choosePlace(place) {
     if (!place) return;
-    selectedCountry = ""; selectedOrganization = ""; unmappedMode = false; selectedPlace = place;
+    selectedCountry = ""; unmappedMode = false; selectedPlace = place;
     el.country.value = place.kind === "country" ? (place.country || place.name) : "";
     el.location.value = place.kind === "city" ? `${place.name}, ${place.country}` : place.name;
     render();
@@ -753,7 +814,6 @@
     hideDetail();
     const value = el.country.value.trim();
     selectedCountry = value;
-    selectedOrganization = "";
     const countryPlace = places.find((p) => p.kind === "country" && (p.name.toLowerCase() === value.toLowerCase() || (p.country || "").toLowerCase() === value.toLowerCase()));
     selectedPlace = countryPlace || null; unmappedMode = false;
     el.location.value = "";
@@ -773,22 +833,21 @@
     hideDetail();
     const rawValue = el.location.value.trim();
     const value = rawValue.toLowerCase();
-    selectedOrganization = "";
     if (!value) { selectedPlace = null; selectedCountry = ""; unmappedMode = false; el.country.value = ""; render(); return; }
     const place = places.find((p) => p.name.toLowerCase() === value || `${p.name}, ${p.country || ""}`.toLowerCase() === value || (p.kind === "country" && (p.country || p.name).toLowerCase() === value));
     if (place) choosePlace(place);
     else { selectedPlace = null; selectedCountry = ""; unmappedMode = false; el.country.value = ""; el.selection.textContent = ""; el.results.innerHTML = `<p class="research-map-empty">No matching location</p>`; el.top.innerHTML = ""; el.organizations.innerHTML = ""; draw(); }
   });
-  el.type.addEventListener("change", () => { selectedOrganization = ""; render(); });
-  el.contributor.addEventListener("change", () => { selectedOrganization = ""; render(); });
-  $("researchMapAll").addEventListener("click", () => { selectedCountry = ""; selectedOrganization = ""; selectedPlace = null; unmappedMode = false; el.country.value = ""; el.location.value = ""; render(); });
-  $("researchMapUnmapped").addEventListener("click", () => { selectedPlace = null; selectedCountry = ""; selectedOrganization = ""; unmappedMode = true; el.country.value = ""; el.location.value = ""; render(); });
+  el.type.addEventListener("change", render);
+  el.contributor.addEventListener("change", render);
+  el.organization.addEventListener("change", () => { hideDetail(); setOrganization(el.organization.value); render(); });
+  $("researchMapAll").addEventListener("click", () => { selectedCountry = ""; setOrganization(""); selectedPlace = null; unmappedMode = false; el.country.value = ""; el.location.value = ""; render(); });
+  $("researchMapUnmapped").addEventListener("click", () => { selectedPlace = null; selectedCountry = ""; unmappedMode = true; el.country.value = ""; el.location.value = ""; render(); });
   el.australia.addEventListener("click", (event) => { const button = event.target.closest("[data-place]"); if (button) choosePlace(places.find((p) => String(p.id) === button.dataset.place)); });
   el.top.addEventListener("click", (event) => { const button = event.target.closest("[data-place]"); if (button) choosePlace(places.find((p) => String(p.id) === button.dataset.place)); });
   el.organizations.addEventListener("click", (event) => {
-    if (event.target.closest("[data-clear-org]")) selectedOrganization = "";
-    else { const button = event.target.closest("[data-org]"); if (button) selectedOrganization = button.dataset.org; }
-    if (selectedPlace) showPlaceResults(selectedPlace);
+    if (event.target.closest("[data-clear-org]")) setOrganization("");
+    else { const button = event.target.closest("[data-org]"); if (!button) return; setOrganization(button.dataset.org); }
     render();
   });
   el.results.addEventListener("click", (event) => {
@@ -943,6 +1002,7 @@
       const bounds = map.pointer && !map.pointer.touch ? lensBounds() : null;
       return {
         places: places.length, records: records.length, selectedPlace: selectedPlace?.id || null, unmapped: unmappedMode,
+        selectedOrganization, organizations: orgIndex.size, filteredRecordKeys: filteredRecords().map(recordKey).sort(),
         markerCount: map.pins.length, baseLandDotCount: map.landDots.length, lensLandDotCount: map.lensDots?.length || 0,
         baseGrid: { startX: 4, startY: 4, step: 6.1 },
         lensGrid: bounds ? { startX: Math.floor(bounds.left / 5.2) * 5.2, startY: Math.floor(bounds.top / 5.2) * 5.2, step: 5.2, bounds, sourcePointer: { x: map.pointer.x, y: map.pointer.y }, zoom: map.zoom } : null,
