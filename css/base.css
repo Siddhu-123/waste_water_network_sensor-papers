@@ -32,10 +32,9 @@ body {
     sans-serif;
   background: var(--bg-primary);
   color: var(--text-primary);
-  padding: clamp(16px, 3vw, 40px) max(14px, env(safe-area-inset-right))
-    clamp(24px, 4vw, 48px) max(14px, env(safe-area-inset-left));
-  max-width: 1450px;
-  margin: 0 auto;
+  padding: clamp(16px, 3vw, 40px) max(clamp(12px, 1.4vw, 24px), env(safe-area-inset-right))
+    clamp(24px, 4vw, 48px) max(clamp(12px, 1.4vw, 24px), env(safe-area-inset-left));
+  margin: 0;
   line-height: 1.5;
   -webkit-font-smoothing: antialiased;
   min-height: 100vh;

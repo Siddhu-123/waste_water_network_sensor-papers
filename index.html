@@ -186,15 +186,18 @@
         </div>
         <div class="research-map-layout" id="researchMapLayout">
           <div class="research-map-main">
-            <div class="research-map-toolbar">
-              <label class="research-map-search">Country
-                <input id="researchMapCountry" list="researchMapCountryOptions" placeholder="Search countries" autocomplete="off" />
-                <datalist id="researchMapCountryOptions"></datalist>
-              </label>
-              <label class="research-map-search">Location
-                <input id="researchMapLocation" list="researchMapLocationOptions" placeholder="Search cities and places" autocomplete="off" />
-                <datalist id="researchMapLocationOptions"></datalist>
-              </label>
+            <div class="research-map-canvas-wrap" id="researchMapCanvasWrap">
+              <canvas id="researchMapCanvas" role="img" aria-label="Interactive world map. Select a location marker to view related research."></canvas>
+              <div id="researchMapTooltip" class="research-map-tooltip" role="tooltip" hidden></div>
+            </div>
+            <div class="research-map-legend" aria-label="Research record types"><span class="academic">Academic / peer-reviewed</span><span class="grey">Grey literature</span></div>
+          </div>
+          <aside class="research-map-sidebar" aria-labelledby="researchMapResultsHeading">
+            <div class="research-map-sidebar-head">
+              <h3 id="researchMapResultsHeading">Papers</h3>
+              <p id="researchMapSelection">Loading…</p>
+            </div>
+            <div class="research-map-filters">
               <label class="research-map-filter">Type
                 <select id="researchMapType" aria-label="Filter research by type">
                   <option value="all">All types</option><option value="academic">Academic</option><option value="grey">Grey literature</option>
@@ -211,18 +214,10 @@
                 <button type="button" id="researchMapUnmapped" class="research-map-quiet">Unmapped</button>
               </div>
             </div>
-            <div class="research-map-canvas-wrap" id="researchMapCanvasWrap">
-              <canvas id="researchMapCanvas" role="img" aria-label="Interactive world map. Select a location marker to view related research."></canvas>
-              <div id="researchMapTooltip" class="research-map-tooltip" role="tooltip" hidden></div>
-            </div>
-            <div class="research-map-quick" id="researchMapAustralia" aria-label="Place shortcuts"></div>
-            <div class="research-map-legend" aria-label="Research record types"><span class="academic">Academic / peer-reviewed</span><span class="grey">Grey literature</span></div>
-          </div>
-          <aside class="research-map-sidebar" aria-labelledby="researchMapResultsHeading">
-            <div class="research-map-sidebar-head">
-              <h3 id="researchMapResultsHeading">Papers</h3>
-              <p id="researchMapSelection">Loading…</p>
-            </div>
+            <details class="research-map-browse" id="researchMapBrowse">
+              <summary>Browse places</summary>
+              <div class="research-map-quick" id="researchMapAustralia" aria-label="Place shortcuts"></div>
+            </details>
             <div id="researchMapOrganizations" class="research-map-organizations" aria-label="Organizations at this location"></div>
             <div id="researchMapTopPlaces" class="research-map-top-places"></div>
             <div id="researchMapResults" class="research-map-results" aria-live="polite"></div>

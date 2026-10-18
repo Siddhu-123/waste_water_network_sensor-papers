@@ -6,9 +6,9 @@
     canvas: $("researchMapCanvas"), wrap: $("researchMapCanvasWrap"), layout: $("researchMapLayout"),
     error: $("researchMapError"), errorText: $("researchMapErrorText"), coverage: $("researchMapCoverage"),
     tooltip: $("researchMapTooltip"), results: $("researchMapResults"), top: $("researchMapTopPlaces"),
-    selection: $("researchMapSelection"), status: $("researchMapStatus"), organizations: $("researchMapOrganizations"), country: $("researchMapCountry"),
-    location: $("researchMapLocation"), type: $("researchMapType"), contributor: $("researchMapContributor"), organization: $("researchMapOrganization"),
-    australia: $("researchMapAustralia"), section: $("researchMapSection"), squeeze: $("researchMapSqueeze"),
+    selection: $("researchMapSelection"), status: $("researchMapStatus"), organizations: $("researchMapOrganizations"),
+    type: $("researchMapType"), contributor: $("researchMapContributor"), organization: $("researchMapOrganization"),
+    australia: $("researchMapAustralia"), browse: $("researchMapBrowse"), section: $("researchMapSection"), squeeze: $("researchMapSqueeze"),
   };
   if (!el.canvas || !el.wrap) return;
 
@@ -29,7 +29,6 @@
   let records = [];
   let selectedPlace = null;
   let shortcuts = null;
-  let selectedCountry = "";
   let selectedOrganization = "";
   let unmappedMode = false;
   let lastTouchAt = 0;
@@ -37,6 +36,11 @@
   const lensSnapCache = new Map();
   const latMin = -58;
   const latMax = 84;
+  const MAP_RATIO = (latMax - latMin) / 360;
+  const MAP_MARGIN_X = 18, MAP_MARGIN_Y = 12;
+  const MAP_MIN_HEIGHT = 340;
+  // Window height kept free for the page header, section heading, panel padding and legend.
+  const MAP_VIEWPORT_RESERVE = 190;
 
   const escapeHtml = (value) => String(value ?? "").replace(/[&<>"']/g, (ch) => ({
     "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;",
@@ -199,12 +203,6 @@
   }
 
   function buildFilters() {
-    const countries = [...new Set(places.map(placeCountry).filter(Boolean))].sort((a, b) => a.localeCompare(b));
-    const countryList = $("researchMapCountryOptions");
-    countryList.innerHTML = countries.map((country) => `<option value="${escapeHtml(country)}"></option>`).join("");
-    const locationList = $("researchMapLocationOptions");
-    locationList.innerHTML = places.slice().sort((a, b) => a.name.localeCompare(b.name)).map((place) =>
-      `<option value="${escapeHtml(place.kind === "city" ? `${place.name}, ${place.country}` : place.name)}"></option>`).join("");
     const contributors = [...new Set(records.flatMap(contributorsFor))].sort((a, b) => a.localeCompare(b));
     el.contributor.innerHTML = `<option value="all">All contributors</option>${contributors.map((person) => `<option value="${escapeHtml(person)}">${escapeHtml(person)}</option>`).join("")}`;
     buildOrganizations();
@@ -251,7 +249,7 @@
       .sort((a, b) => b.total - a.total || a.place.name.localeCompare(b.place.name)).slice(0, SHORTCUT_LIMITS.countries).map((e) => e.place);
     el.type.value = savedType; el.contributor.value = savedContributor;
     shortcuts = { cities: [...anchors, ...otherCities], countries: countryPlaces };
-    el.australia.hidden = !shortcuts.cities.length && !shortcuts.countries.length;
+    el.browse.hidden = !shortcuts.cities.length && !shortcuts.countries.length;
   }
 
   function renderShortcuts() {
@@ -332,12 +330,24 @@
     return pins.map((pin) => ({ ...pin, point: nearestDot(pin.sourcePoint, dots) || pin.sourcePoint }));
   }
 
+  // Canvas height follows the map's natural ratio plus margins, never below MAP_MIN_HEIGHT, and is
+  // capped by the window height (not the scroll position, so scrolling never resizes the map).
+  function canvasHeight(width) {
+    const natural = Math.ceil((width - MAP_MARGIN_X * 2) * MAP_RATIO + MAP_MARGIN_Y * 2);
+    const available = Math.floor(window.innerHeight - MAP_VIEWPORT_RESERVE);
+    return Math.max(MAP_MIN_HEIGHT, Math.min(natural, available));
+  }
+  function needsResize() {
+    const width = el.canvas.getBoundingClientRect().width;
+    return width > 0 && (!map.mask || Math.abs(width - map.width) >= 0.5 || canvasHeight(width) !== map.height);
+  }
+
   function setSize() {
     const rect = el.canvas.getBoundingClientRect();
     if (!rect.width) return;
     map.width = rect.width;
-    map.height = Math.max(310, Math.min(440, Math.round(rect.width * 0.55)));
-    map.mapHeight = Math.min(map.height - 24, (map.width - 36) * ((latMax - latMin) / 360));
+    map.height = canvasHeight(rect.width);
+    map.mapHeight = Math.min(map.height - MAP_MARGIN_Y * 2, (map.width - MAP_MARGIN_X * 2) * MAP_RATIO);
     map.mapTop = (map.height - map.mapHeight) / 2;
     map.dpr = Math.min(window.devicePixelRatio || 1, 2);
     el.canvas.style.height = `${map.height}px`;
@@ -358,8 +368,7 @@
     if (resizeObserver || !("ResizeObserver" in window)) return;
     resizeObserver = new ResizeObserver(() => {
       if (!data || !isDesktop()) return;
-      const width = el.canvas.getBoundingClientRect().width;
-      if (width && (!map.mask || Math.abs(width - map.width) >= 0.5)) setSize();
+      if (needsResize()) setSize();
     });
     resizeObserver.observe(el.wrap);
   }
@@ -423,7 +432,6 @@
     el.coverage.textContent = `${mapped} of ${unique} records mapped · ${map.pins.length} places`;
     if (selectedPlace && !unmappedMode) showPlaceResults(selectedPlace);
     else if (unmappedMode) showUnmappedResults();
-    else if (selectedCountry) renderCountrySelection();
     else showOverview();
     renderShortcuts();
     map.base = null;
@@ -743,7 +751,7 @@
   function choosePinGroup(group) {
     if (!group) return;
     if (group.pins.length === 1) { choosePlace(group.pins[0].place); return; }
-    selectedPlace = null; selectedCountry = ""; unmappedMode = false;
+    selectedPlace = null; unmappedMode = false;
     hideDetail();
     el.organizations.innerHTML = ""; el.results.innerHTML = "";
     $("researchMapResultsHeading").textContent = "Locations";
@@ -804,45 +812,15 @@
 
   function choosePlace(place) {
     if (!place) return;
-    selectedCountry = ""; unmappedMode = false; selectedPlace = place;
-    el.country.value = place.kind === "country" ? (place.country || place.name) : "";
-    el.location.value = place.kind === "city" ? `${place.name}, ${place.country}` : place.name;
+    unmappedMode = false; selectedPlace = place;
     render();
   }
 
-  el.country.addEventListener("input", () => {
-    hideDetail();
-    const value = el.country.value.trim();
-    selectedCountry = value;
-    const countryPlace = places.find((p) => p.kind === "country" && (p.name.toLowerCase() === value.toLowerCase() || (p.country || "").toLowerCase() === value.toLowerCase()));
-    selectedPlace = countryPlace || null; unmappedMode = false;
-    el.location.value = "";
-    if (value && !countryPlace) {
-      const country = places.find((p) => (p.country || "").toLowerCase() === value.toLowerCase());
-      if (country) selectedPlace = { id: `country:${value}`, name: value, country: value, kind: "country", lat: country.lat, lon: country.lon };
-    }
-    if (!value) { selectedPlace = null; render(); }
-    else renderCountrySelection();
-  });
-  function renderCountrySelection() {
-    if (selectedPlace) showPlaceResults(selectedPlace);
-    else if (selectedCountry) { el.selection.textContent = ""; el.top.innerHTML = ""; el.organizations.innerHTML = ""; el.results.innerHTML = `<p class="research-map-empty">No matching country</p>`; }
-    draw();
-  }
-  el.location.addEventListener("input", () => {
-    hideDetail();
-    const rawValue = el.location.value.trim();
-    const value = rawValue.toLowerCase();
-    if (!value) { selectedPlace = null; selectedCountry = ""; unmappedMode = false; el.country.value = ""; render(); return; }
-    const place = places.find((p) => p.name.toLowerCase() === value || `${p.name}, ${p.country || ""}`.toLowerCase() === value || (p.kind === "country" && (p.country || p.name).toLowerCase() === value));
-    if (place) choosePlace(place);
-    else { selectedPlace = null; selectedCountry = ""; unmappedMode = false; el.country.value = ""; el.selection.textContent = ""; el.results.innerHTML = `<p class="research-map-empty">No matching location</p>`; el.top.innerHTML = ""; el.organizations.innerHTML = ""; draw(); }
-  });
   el.type.addEventListener("change", render);
   el.contributor.addEventListener("change", render);
   el.organization.addEventListener("change", () => { hideDetail(); setOrganization(el.organization.value); render(); });
-  $("researchMapAll").addEventListener("click", () => { selectedCountry = ""; setOrganization(""); selectedPlace = null; unmappedMode = false; el.country.value = ""; el.location.value = ""; render(); });
-  $("researchMapUnmapped").addEventListener("click", () => { selectedPlace = null; selectedCountry = ""; unmappedMode = true; el.country.value = ""; el.location.value = ""; render(); });
+  $("researchMapAll").addEventListener("click", () => { setOrganization(""); selectedPlace = null; unmappedMode = false; render(); });
+  $("researchMapUnmapped").addEventListener("click", () => { selectedPlace = null; unmappedMode = true; render(); });
   el.australia.addEventListener("click", (event) => { const button = event.target.closest("[data-place]"); if (button) choosePlace(places.find((p) => String(p.id) === button.dataset.place)); });
   el.top.addEventListener("click", (event) => { const button = event.target.closest("[data-place]"); if (button) choosePlace(places.find((p) => String(p.id) === button.dataset.place)); });
   el.organizations.addEventListener("click", (event) => {
@@ -871,14 +849,6 @@
   try { if (localStorage.getItem(SQUEEZE_KEY) === "1") setSqueezed(true, false); } catch (_) { /* storage unavailable */ }
 
   $("researchMapRetry").addEventListener("click", () => { if (init()) el.status.textContent = "Research map loaded."; });
-
-  function observeResize() {
-    if (resizeObserver || !isDesktop()) return;
-    if ("ResizeObserver" in window) {
-      resizeObserver = new ResizeObserver(() => { if (data && isDesktop()) setSize(); });
-      resizeObserver.observe(el.wrap);
-    }
-  }
 
   detail.panel = document.createElement("div");
   detail.panel.id = "researchMapDetail";
@@ -991,7 +961,11 @@
     else { hideDetail(); map.pointer = null; map.hover = null; el.tooltip.hidden = true; resizeObserver?.disconnect(); resizeObserver = null; }
   }
   desktopQuery.addEventListener("change", desktopChanged);
-  window.addEventListener("resize", () => { if (data && isDesktop() && !resizeObserver) setSize(); });
+  let resizeFrame = 0;
+  window.addEventListener("resize", () => {
+    cancelAnimationFrame(resizeFrame);
+    resizeFrame = requestAnimationFrame(() => { if (data && isDesktop() && needsResize()) setSize(); });
+  });
   init();
 
   window.ResearchMap = {
