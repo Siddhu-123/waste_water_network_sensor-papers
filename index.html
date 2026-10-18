@@ -323,7 +323,15 @@
           <div class="compiled-shelves-container" id="compiledPapersList"></div>
         </section>
 
-        <div class="table-container">
+        <div class="library-view-bar">
+          <h2 class="library-view-heading" id="academicViewHeading">Peer-reviewed papers</h2>
+          <div class="library-view-toggle" role="group" aria-label="Academic display" data-library-view="academic">
+            <button type="button" class="library-view-btn" data-view-option="list" aria-pressed="true">List</button>
+            <button type="button" class="library-view-btn" data-view-option="tiles" aria-pressed="false">Tiles</button>
+          </div>
+        </div>
+
+        <div class="table-container" id="papersTableContainer">
           <table id="papersTable">
             <thead>
               <tr>
@@ -412,6 +420,14 @@
               </button>
             </div>
             <div class="grey-lit-category-pills" id="greyLitCategoryPills" aria-label="Category quick filter pills"></div>
+          </div>
+        </div>
+
+        <div class="library-view-bar">
+          <h2 class="library-view-heading" id="greyViewHeading">Reports and documents</h2>
+          <div class="library-view-toggle" role="group" aria-label="Grey literature display" data-library-view="grey">
+            <button type="button" class="library-view-btn" data-view-option="list" aria-pressed="false">List</button>
+            <button type="button" class="library-view-btn" data-view-option="tiles" aria-pressed="true">Tiles</button>
           </div>
         </div>
 
@@ -631,6 +647,7 @@
     <script src="js/grey-literature.js"></script>
     <script src="js/instructor.js"></script>
     <script src="js/main.js"></script>
+    <script src="js/library-views.js"></script>
     <script src="js/world-land.js"></script>
     <script src="js/research-geography-data.js"></script>
     <script src="js/research-map.js"></script>
