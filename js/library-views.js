@@ -9,13 +9,13 @@
   const SECTIONS = [
     {
       name: "academic",
-      storageKey: "libraryView.academic",
-      fallback: "list",
+      storageKey: "libraryView.v2.academic",
+      fallback: "tiles",
       targetId: "papersTableContainer",
     },
     {
       name: "grey",
-      storageKey: "libraryView.grey",
+      storageKey: "libraryView.v2.grey",
       fallback: "tiles",
       targetId: "greyLitGrid",
     },

@@ -1764,7 +1764,7 @@ tr:hover td {
 .table-container[data-view="tiles"] tbody {
   display: grid;
   gap: 18px;
-  grid-template-columns: repeat(auto-fill, minmax(min(100%, 340px), 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 290px), 1fr));
 }
 
 .table-container[data-view="tiles"] tr {
@@ -1843,7 +1843,7 @@ tr:hover td {
 
 /* ----- Grey literature: tiles and list ----- */
 .grey-lit-grid[data-view="tiles"] {
-  grid-template-columns: repeat(auto-fill, minmax(min(100%, 340px), 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 290px), 1fr));
 }
 
 .grey-lit-card {
