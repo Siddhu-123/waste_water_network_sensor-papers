@@ -9,9 +9,9 @@
         {
           "placeId": "shoalhaven-nowra",
           "relation": "study",
-          "evidence": "The first page identifies Shoalhaven Water in Shoalhaven City Council, Nowra and describes its deployed wastewater network in Shoalhaven.",
+          "evidence": "The paper describes Shoalhaven Water’s wastewater network. Nowra is the representative anchor for the Shoalhaven region, not the coordinate of a specific installed sensor.",
           "source": "./contributors/satya-siddhartha/papers/Drenoyanis_2019_Radar_Sensor_Network.pdf",
-          "page": 1
+          "page": 2
         }
       ],
       "unmappedReason": "",
@@ -101,9 +101,9 @@
       "organization": "Edinburgh Napier University; University of Sheffield",
       "locations": [
         {
-          "placeId": "united-kingdom",
+          "placeId": "west-yorkshire",
           "relation": "study",
-          "evidence": "Both CSO field-trial sites are identified as being in West Yorkshire.",
+          "evidence": "The first CSO field-trial site is explicitly located in West Yorkshire; subsequent field sites are also identified in West Yorkshire. The marker represents the region, not a chamber GPS coordinate.",
           "source": "./contributors/satya-siddhartha/papers/See_2021_CSO_Screen_Acoustic.pdf",
           "page": 6
         }
@@ -153,10 +153,10 @@
         },
         {
           "placeId": "melbourne",
-          "relation": "organization",
+          "relation": "affiliation",
           "evidence": "First-page affiliation identifies Monash University in Clayton, Victoria; the study abstract identifies the deployed catchment in Melbourne.",
           "source": "./contributors/satya-siddhartha/papers/Shi_2022_Illicit_discharge_detection_in_stor.pdf",
-          "page": 1
+          "page": 2
         }
       ],
       "unmappedReason": "",
@@ -167,8 +167,37 @@
       "type": "academic",
       "id": 12,
       "organization": "Griffith University; Goulburn-Murray Water; Liaoning Medical University; Swinburne University of Technology",
-      "locations": [],
-      "unmappedReason": "No specific field or case-study place could be identified in the available full text; bibliographic references and affiliations were excluded.",
+      "locations": [
+        {
+          "placeId": "new-south-wales",
+          "relation": "scope",
+          "evidence": "Field trials are explicitly reported across New South Wales, Victoria, Queensland and Western Australia. The exact catchments are unnamed, so this marker represents a state-level study area.",
+          "source": "./contributors/satya-siddhartha/papers/Li_2017_Sewage_Quality_Abnormal_Event_Monitoring.pdf",
+          "page": 2
+        },
+        {
+          "placeId": "victoria",
+          "relation": "scope",
+          "evidence": "Field trials are explicitly reported across New South Wales, Victoria, Queensland and Western Australia. The exact catchments are unnamed, so this marker represents a state-level study area.",
+          "source": "./contributors/satya-siddhartha/papers/Li_2017_Sewage_Quality_Abnormal_Event_Monitoring.pdf",
+          "page": 2
+        },
+        {
+          "placeId": "queensland",
+          "relation": "scope",
+          "evidence": "Field trials are explicitly reported across New South Wales, Victoria, Queensland and Western Australia. The exact catchments are unnamed, so this marker represents a state-level study area.",
+          "source": "./contributors/satya-siddhartha/papers/Li_2017_Sewage_Quality_Abnormal_Event_Monitoring.pdf",
+          "page": 2
+        },
+        {
+          "placeId": "western-australia",
+          "relation": "scope",
+          "evidence": "Field trials are explicitly reported across New South Wales, Victoria, Queensland and Western Australia. The exact catchments are unnamed, so this marker represents a state-level study area.",
+          "source": "./contributors/satya-siddhartha/papers/Li_2017_Sewage_Quality_Abnormal_Event_Monitoring.pdf",
+          "page": 2
+        }
+      ],
+      "unmappedReason": "",
       "pdfSha256": "97ebcc6474f1cf574403c477dc29817b9691f201cafd64c784cf9760ee0aa3c3",
       "metadataSha256": "a39b805d234be7b9f5cb1843f0452aa267a501d06c0f607f64f015a9c954dd86"
     },
@@ -182,7 +211,7 @@
           "relation": "study",
           "evidence": "Study uses intra-urban catchments managed by Barcelona’s water authority (BCASA).",
           "source": "./contributors/satya-siddhartha/papers/Corominas_2024_Catchment_Water_Quality_Profiling.pdf",
-          "page": 2
+          "page": 3
         }
       ],
       "unmappedReason": "",
@@ -341,10 +370,11 @@
       "organization": "US Environmental Protection Agency (US EPA)",
       "locations": [
         {
-          "placeId": "united-states",
+          "placeId": "cincinnati",
           "relation": "organization",
-          "evidence": "Publisher is the US Environmental Protection Agency; the manual describes methods applicable across settings.",
-          "source": "contributors/satya-siddhartha/grey-literature.json"
+          "evidence": "The manual identifies the US EPA research laboratory/publisher in Cincinnati, Ohio. This marks the publishing organization, not a field study site.",
+          "source": "./contributors/satya-siddhartha/grey/GL_2017_USEPA_SWMM_Reference_Manual_Vol2_Hydraulics.pdf",
+          "page": 2
         }
       ],
       "unmappedReason": "",
@@ -357,10 +387,11 @@
       "organization": "US Environmental Protection Agency (US EPA)",
       "locations": [
         {
-          "placeId": "united-states",
+          "placeId": "cincinnati",
           "relation": "organization",
-          "evidence": "Publisher is the US Environmental Protection Agency; the manual describes methods applicable across settings.",
-          "source": "contributors/satya-siddhartha/grey-literature.json"
+          "evidence": "The manual identifies the US EPA research laboratory/publisher in Cincinnati, Ohio. This marks the publishing organization, not a field study site.",
+          "source": "./contributors/satya-siddhartha/grey/GL_2016_USEPA_SWMM_Reference_Manual_Vol1_Hydrology.pdf",
+          "page": 3
         }
       ],
       "unmappedReason": "",
@@ -569,8 +600,9 @@
         {
           "placeId": "nuremberg",
           "relation": "organization",
-          "evidence": "Citation identifies Siemens Digital Industries in Nuremberg, Germany.",
-          "source": "contributors/satya-siddhartha/grey-literature.json"
+          "evidence": "The operating instructions give the publisher address as Siemens AG, Process Automation, 90026 NÜRNBERG, Germany. This marks the publishing organization.",
+          "source": "./contributors/satya-siddhartha/grey/GL_2020_Siemens_SITRANS_LR120_Operating_Instructions.pdf",
+          "page": 3
         }
       ],
       "unmappedReason": "",
@@ -901,14 +933,23 @@
         {
           "placeId": "moreton-bay",
           "relation": "scope",
-          "evidence": "Unitywater service area (Moreton Bay and Sunshine Coast, Queensland).",
-          "source": "contributors/satya-siddhartha/grey-literature.json"
+          "evidence": "The source explicitly describes Unitywater’s service regions as Moreton Bay, Sunshine Coast and Noosa in South-East Queensland. These are service-area markers, not exact intervention sites.",
+          "source": "./contributors/rijoy-john/grey/GL_WSAA_WetWeather_CS6_Unitywater.pdf",
+          "page": 1
         },
         {
           "placeId": "sunshine-coast",
           "relation": "scope",
-          "evidence": "Unitywater service area (Moreton Bay and Sunshine Coast, Queensland).",
-          "source": "contributors/satya-siddhartha/grey-literature.json"
+          "evidence": "The source explicitly describes Unitywater’s service regions as Moreton Bay, Sunshine Coast and Noosa in South-East Queensland. These are service-area markers, not exact intervention sites.",
+          "source": "./contributors/rijoy-john/grey/GL_WSAA_WetWeather_CS6_Unitywater.pdf",
+          "page": 1
+        },
+        {
+          "placeId": "noosa",
+          "relation": "scope",
+          "evidence": "The source explicitly describes Unitywater’s service regions as Moreton Bay, Sunshine Coast and Noosa in South-East Queensland. These are service-area markers, not exact intervention sites.",
+          "source": "./contributors/rijoy-john/grey/GL_WSAA_WetWeather_CS6_Unitywater.pdf",
+          "page": 1
         }
       ],
       "unmappedReason": "",
@@ -938,7 +979,7 @@
       "locations": [
         {
           "placeId": "adelaide",
-          "relation": "organization",
+          "relation": "affiliation",
           "evidence": "University of Adelaide is identified as the institution associated with this record in the reviewed source set.",
           "source": "./contributors/abraham/papers/2025_Ninh_topology-elevation-sensor-placement.pdf",
           "page": 1
@@ -969,7 +1010,7 @@
         },
         {
           "placeId": "adelaide",
-          "relation": "organization",
+          "relation": "affiliation",
           "evidence": "The paper identifies SA Water and University of Adelaide in the project context and describes the Greater Adelaide sewer system.",
           "source": "./contributors/abraham/papers/2023_Do_Stonyfell-SA-overflow-detection.pdf",
           "page": 1
@@ -986,7 +1027,7 @@
       "locations": [
         {
           "placeId": "adelaide",
-          "relation": "organization",
+          "relation": "affiliation",
           "evidence": "First-page affiliation: School of Architecture and Civil Engineering, University of Adelaide, Adelaide, South Australia.",
           "source": "./contributors/abraham/papers/2026_Ninh_paired-acoustic-blockage-detection.pdf",
           "page": 1
@@ -1028,11 +1069,18 @@
       "organization": "Zhejiang University; PowerChina Huadong Engineering Corporation",
       "locations": [
         {
-          "placeId": "hangzhou",
-          "relation": "study",
-          "evidence": "Case-study section identifies HZ city in southeast coastal China; HZ is Hangzhou.",
+          "placeId": "china",
+          "relation": "scope",
+          "evidence": "The case study identifies “HZ city” in southeastern coastal China beside the Qiantang River. The city is abbreviated, so a precise Hangzhou study-site claim is not made.",
           "source": "./contributors/ashis-jose/papers/paper-36.pdf",
           "page": 5
+        },
+        {
+          "placeId": "hangzhou",
+          "relation": "affiliation",
+          "evidence": "The author affiliations explicitly identify Hangzhou, China. This is an affiliation location; the case-study city is only identified as “HZ city”.",
+          "source": "./contributors/ashis-jose/papers/paper-36.pdf",
+          "page": 1
         }
       ],
       "unmappedReason": "",
@@ -1054,9 +1102,9 @@
       "organization": "",
       "locations": [
         {
-          "placeId": "united-states",
+          "placeId": "texas",
           "relation": "scope",
-          "evidence": "Uses stream gauges on the Brazos River in Texas, USA.",
+          "evidence": "Case 1 evaluates streamflow gauges along the mainstream of the Brazos River in Texas. Texas is a regional marker, not an exact gauge location.",
           "source": "./contributors/ashis-jose/papers/paper-38.pdf",
           "page": 5
         },
@@ -1104,9 +1152,9 @@
         {
           "placeId": "hong-kong",
           "relation": "study",
-          "evidence": "Method is demonstrated using a real-world sewage network in Hong Kong.",
+          "evidence": "The real-world sewer case study is Tuen Mun in northwestern Hong Kong. The marker represents Hong Kong at regional scale, not a specific manhole or district-centre GPS position.",
           "source": "./contributors/rijoy-john/papers/Wang_2024_sewer_OSP_for_pandemic_monitoring.pdf",
-          "page": 1
+          "page": 6
         }
       ],
       "unmappedReason": "",
@@ -1214,7 +1262,7 @@
       "locations": [
         {
           "placeId": "adelaide",
-          "relation": "organization",
+          "relation": "affiliation",
           "evidence": "University of Adelaide is identified as the institution associated with this record in the reviewed source set.",
           "source": "./contributors/rijoy-john/papers/2025_Thi Hai Duong Ninh_Optimal Sensor Placement in Smart Sewer Systems Using.pdf",
           "page": 1
@@ -1386,8 +1434,30 @@
       "type": "grey",
       "id": "GL-05",
       "organization": "Unitywater / WSAA",
-      "locations": [],
-      "unmappedReason": "No explicit city or region in the available summary or key takeaways.",
+      "locations": [
+        {
+          "placeId": "moreton-bay",
+          "relation": "scope",
+          "evidence": "The source explicitly describes Unitywater’s service regions as Moreton Bay, Sunshine Coast and Noosa in South-East Queensland. These are service-area markers, not exact intervention sites.",
+          "source": "./contributors/rijoy-john/grey/GL_WSAA_WetWeather_CS6_Unitywater.pdf",
+          "page": 1
+        },
+        {
+          "placeId": "sunshine-coast",
+          "relation": "scope",
+          "evidence": "The source explicitly describes Unitywater’s service regions as Moreton Bay, Sunshine Coast and Noosa in South-East Queensland. These are service-area markers, not exact intervention sites.",
+          "source": "./contributors/rijoy-john/grey/GL_WSAA_WetWeather_CS6_Unitywater.pdf",
+          "page": 1
+        },
+        {
+          "placeId": "noosa",
+          "relation": "scope",
+          "evidence": "The source explicitly describes Unitywater’s service regions as Moreton Bay, Sunshine Coast and Noosa in South-East Queensland. These are service-area markers, not exact intervention sites.",
+          "source": "./contributors/rijoy-john/grey/GL_WSAA_WetWeather_CS6_Unitywater.pdf",
+          "page": 1
+        }
+      ],
+      "unmappedReason": "",
       "pdfSha256": "09cc8d4066a8fbd8f32c829a532cc3519746a7fa17852931c37ff018c47766da",
       "metadataSha256": "f6b7c06961cb194b50a479fbe70dd3d1f1ea4873c9883ed30cba74f5ae36a5d3"
     },
@@ -1413,10 +1483,11 @@
       "organization": "TasWater / WSAA",
       "locations": [
         {
-          "placeId": "tasmania",
-          "relation": "scope",
-          "evidence": "WSAA Wet Weather Overflows Case Study 2: TasWater Wet Weather Sewage Overflow Strategy",
-          "source": "contributors/rijoy-john/grey-literature.json"
+          "placeId": "launceston",
+          "relation": "study",
+          "evidence": "The case study explicitly concerns the Launceston combined sewerage system. The marker represents the city, not a sewer structure GPS coordinate.",
+          "source": "./contributors/rijoy-john/grey/GL_WSAA_WetWeather_CS2_TasWater.pdf",
+          "page": 1
         }
       ],
       "unmappedReason": "",
@@ -1427,8 +1498,16 @@
       "type": "grey",
       "id": "GL-08",
       "organization": "Hunter Water / WSAA",
-      "locations": [],
-      "unmappedReason": "No explicit city or region in the available summary or key takeaways.",
+      "locations": [
+        {
+          "placeId": "lake-macquarie",
+          "relation": "study",
+          "evidence": "Hunter Water’s effects-based modelling study examines sewage overflows and stormwater impacts on Lake Macquarie. The marker represents the lake/receiving environment.",
+          "source": "./contributors/rijoy-john/grey/GL_WSAA_WetWeather_CS3_HunterWater.pdf",
+          "page": 1
+        }
+      ],
+      "unmappedReason": "",
       "pdfSha256": "d1502a1ebb681a79a8fa931b6e13587ffacd8a3b7c1279b9d584ca78af16daac",
       "metadataSha256": "349f2c8560a951d0cd7fbd14979a37e2828a051ecb85e66994047b3012e4b21a"
     },
@@ -1436,8 +1515,16 @@
       "type": "grey",
       "id": "GL-09",
       "organization": "Yarra Valley Water / WSAA",
-      "locations": [],
-      "unmappedReason": "No explicit city or region in the available summary or key takeaways.",
+      "locations": [
+        {
+          "placeId": "melbourne",
+          "relation": "study",
+          "evidence": "The Merri Creek waterway investment project is explicitly located in Melbourne’s established northern suburbs. The marker represents the city-level study area.",
+          "source": "./contributors/rijoy-john/grey/GL_WSAA_WetWeather_CS4_YarraValleyWater.pdf",
+          "page": 1
+        }
+      ],
+      "unmappedReason": "",
       "pdfSha256": "362ba19eeed05e710663ea91aa1352bd7b9b2ec1f54381871a86a75ccaa13ba9",
       "metadataSha256": "210d3a4e40fd2e6be869b1635cd9fe15184dbcdef99af8336e1b4911152d07af"
     },
@@ -1828,15 +1915,8 @@
       "type": "grey",
       "id": "GL-34",
       "organization": "Severn Trent Water",
-      "locations": [
-        {
-          "placeId": "birmingham",
-          "relation": "scope",
-          "evidence": "The report is Severn Trent Water’s DWMP technical option report; the source identifies the company’s regional DWMP service area.",
-          "source": "contributors/rijoy-john/grey-literature.json"
-        }
-      ],
-      "unmappedReason": "",
+      "locations": [],
+      "unmappedReason": "The technical report describes a regional planning method but does not identify Birmingham or another specific study location. The unsupported Birmingham marker was removed.",
       "pdfSha256": "b2bd2073edcc449661891053876ae121ec52dd1de488e0da869744c8c8bbccac",
       "metadataSha256": "31184f4d92725949a11bcf447a78ca1747bbe8a4cba1becd24621b3f2fe12250"
     },
@@ -1863,8 +1943,8 @@
       "locations": [
         {
           "placeId": "sefton",
-          "relation": "study",
-          "evidence": "Dynamic Network Management (DNM) in Practice: Sefton Pilot and 20,000 Sensor Rollout",
+          "relation": "scope",
+          "evidence": "The source discusses United Utilities’ catchment and flood-risk work with Sefton Metropolitan Borough Council. This marks the borough-level geographic scope, not an exact sensor/pilot site.",
           "source": "contributors/rijoy-john/grey-literature.json"
         }
       ],
@@ -2024,14 +2104,16 @@
         {
           "placeId": "stonyfell",
           "relation": "study",
-          "evidence": "SA Water Stonyfell Smart Wastewater Network Trial & Blockage Prevention",
-          "source": "contributors/rijoy-john/grey-literature.json"
+          "evidence": "Do et al. (2023), page 3, locates the pilot smart sewer in Stonyfell, in Adelaide’s foothills. SA Water’s 2018–19 annual report, page 43, independently confirms the trial. The attached PDF is a different TasWater case study and does not support this entry.",
+          "source": "./contributors/abraham/papers/2023_Do_Stonyfell-SA-overflow-detection.pdf",
+          "page": 3
         },
         {
           "placeId": "adelaide",
-          "relation": "organization",
-          "evidence": "Summary identifies SA Water and the Stonyfell deployment in Adelaide’s eastern suburbs.",
-          "source": "contributors/rijoy-john/grey-literature.json"
+          "relation": "scope",
+          "evidence": "The pilot network in Stonyfell lies in Adelaide’s foothills. This marker represents the broader city area, rather than an organization headquarters.",
+          "source": "./contributors/abraham/papers/2023_Do_Stonyfell-SA-overflow-detection.pdf",
+          "page": 3
         }
       ],
       "unmappedReason": "",
@@ -2153,7 +2235,7 @@
         },
         {
           "placeId": "sydney",
-          "relation": "organization",
+          "relation": "affiliation",
           "evidence": "The article describes Sydney Water’s wastewater network and IoT deployments in Greater Sydney.",
           "source": "./contributors/wimukthi/papers/Drenoyanis_2022_Detecting-Wastewater-Blockages-with-Digital-Water-Meters.pdf",
           "page": 1
@@ -2167,8 +2249,23 @@
       "type": "academic",
       "id": 42,
       "organization": "Qingdao University of Technology; Rongcheng Water Group",
-      "locations": [],
-      "unmappedReason": "No specific field or case-study place could be identified in the available full text; bibliographic references and affiliations were excluded.",
+      "locations": [
+        {
+          "placeId": "qingdao",
+          "relation": "study",
+          "source": "./contributors/wimukthi/papers/Ning_2023_Real-Time-Identification-and-Positioning-of-Sewer-Blockage-Based.pdf",
+          "page": 3,
+          "evidence": "The pilot-scale sewer experiment was built at a wastewater treatment plant in Qingdao. Only the city is identified; the marker is not the plant GPS location."
+        },
+        {
+          "placeId": "weihai",
+          "relation": "study",
+          "source": "./contributors/wimukthi/papers/Ning_2023_Real-Time-Identification-and-Positioning-of-Sewer-Blockage-Based.pdf",
+          "page": 4,
+          "evidence": "The actual-sewer experiment was carried out in an unnamed village in an area of Weihai City. The marker represents Weihai, not the village or sensor position."
+        }
+      ],
+      "unmappedReason": "",
       "pdfSha256": "b8d32ce90f4680bcf3287850884822f303371239c0fa5eae2fc33d96915c4dea",
       "metadataSha256": "3a3d459aee24bced3f6877ba34e4dd296a3f4503478ec0b28e03e46860f8031b"
     },

@@ -101,8 +101,8 @@
       "id": "bellinge",
       "name": "Bellinge",
       "country": "Denmark",
-      "lat": 55.333,
-      "lon": 10.4,
+      "lat": 55.33535,
+      "lon": 10.320446,
       "kind": "city"
     },
     {
@@ -233,17 +233,17 @@
       "id": "sefton",
       "name": "Sefton",
       "country": "United Kingdom",
-      "lat": 53.503,
-      "lon": -3.02,
-      "kind": "city"
+      "lat": 53.5,
+      "lon": -3.0,
+      "kind": "region"
     },
     {
       "id": "moreton-bay",
       "name": "Moreton Bay",
       "country": "Australia",
-      "lat": -27.108,
-      "lon": 153.12,
-      "kind": "city"
+      "lat": -27.10731,
+      "lon": 152.92937,
+      "kind": "region"
     },
     {
       "id": "sunshine-coast",
@@ -251,14 +251,14 @@
       "country": "Australia",
       "lat": -26.65,
       "lon": 153.0667,
-      "kind": "city"
+      "kind": "region"
     },
     {
       "id": "stonyfell",
       "name": "Stonyfell",
       "country": "Australia",
-      "lat": -34.951,
-      "lon": 138.686,
+      "lat": -34.93422,
+      "lon": 138.67674,
       "kind": "city",
       "parentPlaceId": "adelaide"
     },
@@ -348,7 +348,7 @@
       "country": "Australia",
       "lat": -34.88,
       "lon": 150.6,
-      "kind": "city",
+      "kind": "region",
       "aliases": [
         "Shoalhaven",
         "Nowra"
@@ -400,7 +400,11 @@
       "country": "Germany",
       "lat": 49.4521,
       "lon": 11.0767,
-      "kind": "city"
+      "kind": "city",
+      "aliases": [
+        "Nürnberg",
+        "Nuernberg"
+      ]
     },
     {
       "id": "fremont",
@@ -496,6 +500,94 @@
       "country": "United States",
       "lat": 38.9586,
       "lon": -77.357,
+      "kind": "city"
+    },
+    {
+      "id": "west-yorkshire",
+      "name": "West Yorkshire",
+      "country": "United Kingdom",
+      "lat": 53.7,
+      "lon": -1.58333,
+      "kind": "region"
+    },
+    {
+      "id": "texas",
+      "name": "Texas",
+      "country": "United States",
+      "lat": 31.25044,
+      "lon": -99.25061,
+      "kind": "region"
+    },
+    {
+      "id": "noosa",
+      "name": "Noosa",
+      "country": "Australia",
+      "lat": -26.31818,
+      "lon": 152.93082,
+      "kind": "region"
+    },
+    {
+      "id": "launceston",
+      "name": "Launceston",
+      "country": "Australia",
+      "lat": -41.43876,
+      "lon": 147.13467,
+      "kind": "city"
+    },
+    {
+      "id": "lake-macquarie",
+      "name": "Lake Macquarie",
+      "country": "Australia",
+      "lat": -33.0652,
+      "lon": 151.6012,
+      "kind": "region"
+    },
+    {
+      "id": "new-south-wales",
+      "name": "New South Wales",
+      "country": "Australia",
+      "lat": -33.0,
+      "lon": 146.0,
+      "kind": "region"
+    },
+    {
+      "id": "victoria",
+      "name": "Victoria",
+      "country": "Australia",
+      "lat": -37.0,
+      "lon": 145.0,
+      "kind": "region"
+    },
+    {
+      "id": "queensland",
+      "name": "Queensland",
+      "country": "Australia",
+      "lat": -20.0,
+      "lon": 145.0,
+      "kind": "region"
+    },
+    {
+      "id": "western-australia",
+      "name": "Western Australia",
+      "country": "Australia",
+      "lat": -25.0,
+      "lon": 122.0,
+      "kind": "region"
+    },
+    {
+      "id": "qingdao",
+      "name": "Qingdao",
+      "country": "China",
+      "lat": 36.06488,
+      "lon": 120.38042,
+      "kind": "city"
+    },
+    {
+      "id": "weihai",
+      "name": "Weihai",
+      "country": "China",
+      "lat": 37.50914,
+      "lon": 122.11356,
       "kind": "city"
     }
   ]

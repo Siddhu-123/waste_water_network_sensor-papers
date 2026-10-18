@@ -23,7 +23,7 @@ table {
 th {
   background: rgba(15, 23, 42, 0.95);
   color: var(--text-muted);
-  font-size: 12px;
+  font-size: var(--fs-micro);
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.06em;
@@ -35,7 +35,7 @@ th {
 td {
   padding: 16px 16px;
   border-bottom: 1px solid rgba(35, 49, 79, 0.5);
-  font-size: 14px;
+  font-size: var(--fs-body);
   vertical-align: middle;
 }
 
@@ -51,7 +51,7 @@ tr:hover td {
   font-weight: 600;
   color: var(--text-primary);
   margin-bottom: 4px;
-  font-size: 14px;
+  font-size: var(--fs-title);
   line-height: 1.4;
 }
 
@@ -63,14 +63,14 @@ tr:hover td {
   border-radius: 5px;
   background: rgba(245, 158, 11, 0.12);
   color: #fcd34d;
-  font-size: 10px;
+  font-size: var(--fs-micro);
   font-weight: 700;
   letter-spacing: 0.02em;
   vertical-align: middle;
 }
 
 .paper-meta {
-  font-size: 12px;
+  font-size: var(--fs-meta);
   color: var(--text-secondary);
   display: flex;
   align-items: center;
@@ -83,7 +83,7 @@ tr:hover td {
   border: 1px solid rgba(129, 140, 248, 0.24);
   border-radius: 999px;
   color: #c7d2fe;
-  font-size: 11px;
+  font-size: var(--fs-micro);
   font-weight: 600;
   padding: 2px 7px;
 }
@@ -109,7 +109,7 @@ tr:hover td {
 .filter-help {
   color: var(--text-muted);
   flex: 1 0 100%;
-  font-size: 12px;
+  font-size: var(--fs-meta);
 }
 
 .compiled-papers-panel {
@@ -148,7 +148,7 @@ tr:hover td {
   cursor: pointer;
   display: inline-flex;
   font-family: inherit;
-  font-size: 11px;
+  font-size: var(--fs-ui);
   font-weight: 600;
   gap: 5px;
   letter-spacing: 0.02em;
@@ -179,7 +179,7 @@ tr:hover td {
 
 .compiled-papers-kicker {
   color: var(--accent-blue);
-  font-size: 11px;
+  font-size: var(--fs-micro);
   font-weight: 700;
   letter-spacing: 0.08em;
   text-transform: uppercase;
@@ -187,13 +187,13 @@ tr:hover td {
 
 .compiled-papers-title {
   color: var(--text-primary);
-  font-size: 18px;
+  font-size: var(--fs-h2);
   margin: 2px 0 0;
 }
 
 .compiled-papers-count {
   color: var(--text-muted);
-  font-size: 12px;
+  font-size: var(--fs-micro);
   white-space: nowrap;
 }
 
@@ -216,7 +216,7 @@ tr:hover td {
   align-items: center;
   color: var(--text-muted);
   display: flex;
-  font-size: 11px;
+  font-size: var(--fs-micro);
   font-weight: 700;
   gap: 8px;
   letter-spacing: 0.06em;
@@ -250,20 +250,20 @@ tr:hover td {
 
 .compiled-paper-card h3 {
   color: var(--text-primary);
-  font-size: 14px;
+  font-size: var(--fs-title);
   line-height: 1.4;
   margin: 0;
 }
 
 .compiled-paper-meta {
   color: var(--text-muted);
-  font-size: 11px;
+  font-size: var(--fs-meta);
 }
 
 .compiled-paper-description {
   color: var(--text-secondary);
   flex: 1;
-  font-size: 12px;
+  font-size: var(--fs-meta);
   margin: 0;
 }
 
@@ -272,7 +272,7 @@ tr:hover td {
   color: var(--accent-blue);
   padding: 2px 8px;
   border-radius: 4px;
-  font-size: 11px;
+  font-size: var(--fs-micro);
   font-weight: 600;
   letter-spacing: 0.02em;
   display: inline-block;
@@ -291,10 +291,12 @@ tr:hover td {
   align-items: center;
   justify-content: center;
   gap: 6px;
-  padding: 7px 11px;
+  padding: 0.45em 0.85em;
+  min-height: 2.25rem;
   border-radius: 6px;
-  font-size: 12px;
+  font-size: var(--fs-ui);
   font-weight: 600;
+  line-height: 1.3;
   text-decoration: none;
   transition: all 0.15s ease;
   white-space: nowrap;
@@ -480,7 +482,7 @@ tr:hover td {
   .mobile-num {
     color: var(--text-muted);
     font-family: "JetBrains Mono", monospace;
-    font-size: 13px;
+    font-size: var(--fs-ui);
     font-weight: 700;
   }
 
@@ -493,17 +495,17 @@ tr:hover td {
 
   .mobile-actions {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(auto-fit, minmax(5.5rem, 1fr));
     gap: 6px;
     border-top: 1px solid rgba(35, 49, 79, 0.6);
     padding-top: 10px;
   }
 
   .btn-action {
-    padding: 8px 4px;
-    font-size: 11.5px;
+    padding: 0.45em 0.4em;
     justify-content: center;
-    white-space: nowrap;
+    text-align: center;
+    white-space: normal;
   }
 
   .header-top {
@@ -514,7 +516,6 @@ tr:hover td {
   }
 
   .header-top h1 {
-    font-size: 18px;
     line-height: 1.25;
   }
 
@@ -525,7 +526,6 @@ tr:hover td {
 
   .btn-profile-pill {
     padding: 5px 10px;
-    font-size: 12px;
   }
 
   .welcome-contributor-banner {
@@ -536,11 +536,11 @@ tr:hover td {
   }
 
   .welcome-banner-title {
-    font-size: 12px;
+    font-size: var(--fs-ui);
   }
 
   .welcome-chip {
-    font-size: 11.5px;
+    font-size: var(--fs-ui);
     padding: 3px 8px;
   }
 
@@ -565,7 +565,7 @@ tr:hover td {
   }
 
   .profile-stat-label {
-    font-size: 9.5px;
+    font-size: var(--fs-micro);
   }
 
   .step-item {
@@ -576,7 +576,7 @@ tr:hover td {
   .step-badge {
     width: 26px;
     height: 26px;
-    font-size: 12px;
+    font-size: var(--fs-micro);
   }
 }
 
@@ -607,14 +607,13 @@ tr:hover td {
   }
 
   .mobile-actions {
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(auto-fit, minmax(5.5rem, 1fr));
     gap: 4px;
   }
 
   .btn-action {
     width: 100%;
-    padding: 7px 2px;
-    font-size: 11px;
+    padding: 0.45em 0.3em;
   }
 
   .step-item {
@@ -639,7 +638,7 @@ tr:hover td {
   gap: 2px;
   background: rgba(45, 212, 191, 0.22);
   color: #5eead4;
-  font-size: 10px;
+  font-size: var(--fs-micro);
   font-weight: 700;
   padding: 1px 5px;
   border-radius: 8px;
@@ -669,7 +668,7 @@ tr:hover td {
   color: var(--text-secondary);
   padding: 10px 18px;
   border-radius: 10px;
-  font-size: 14px;
+  font-size: var(--fs-control);
   font-weight: 600;
   cursor: pointer;
   transition: all 0.2s ease;
@@ -697,7 +696,7 @@ tr:hover td {
   background: rgba(255, 255, 255, 0.12);
   border-radius: 999px;
   padding: 2px 8px;
-  font-size: 11px;
+  font-size: var(--fs-micro);
   font-family: 'JetBrains Mono', monospace;
   font-weight: 700;
   color: #e2e8f0;
@@ -727,14 +726,14 @@ tr:hover td {
 }
 
 .grey-lit-hero-text h2 {
-  font-size: 18px;
+  font-size: var(--fs-h2);
   font-weight: 700;
   color: var(--text-primary);
   margin-bottom: 4px;
 }
 
 .grey-lit-hero-text p {
-  font-size: 13px;
+  font-size: var(--fs-meta);
   color: var(--text-secondary);
   max-width: 820px;
 }
@@ -748,11 +747,14 @@ tr:hover td {
   border: 1px solid rgba(255, 255, 255, 0.2);
   padding: 10px 18px;
   border-radius: 8px;
-  font-size: 13px;
+  font-size: var(--fs-control);
   font-weight: 600;
   cursor: pointer;
   transition: all 0.2s ease;
-  white-space: nowrap;
+  white-space: normal;
+  max-width: 100%;
+  overflow-wrap: anywhere;
+  line-height: 1.35;
 }
 
 .btn-findings-reader:hover {
@@ -762,7 +764,7 @@ tr:hover td {
 }
 
 .grey-lit-count-bar {
-  font-size: 13px;
+  font-size: var(--fs-meta);
   color: var(--text-secondary);
   margin-top: 10px;
   margin-bottom: 16px;
@@ -809,7 +811,7 @@ tr:hover td {
 }
 
 .org-badge {
-  font-size: 11px;
+  font-size: var(--fs-micro);
   font-weight: 700;
   padding: 3px 8px;
   border-radius: 6px;
@@ -821,7 +823,7 @@ tr:hover td {
   background: rgba(30, 41, 59, 0.8);
   border: 1px solid rgba(148, 163, 184, 0.2);
   color: var(--text-secondary);
-  font-size: 11px;
+  font-size: var(--fs-micro);
   padding: 3px 8px;
   border-radius: 6px;
   font-weight: 500;
@@ -832,13 +834,13 @@ tr:hover td {
   border: 1px solid rgba(148, 163, 184, 0.2);
   color: var(--text-muted);
   font-family: 'JetBrains Mono', monospace;
-  font-size: 11px;
+  font-size: var(--fs-micro);
   padding: 3px 6px;
   border-radius: 6px;
 }
 
 .doctype-pill {
-  font-size: 11px;
+  font-size: var(--fs-micro);
   font-weight: 600;
   color: #cbd5e1;
   background: rgba(148, 163, 184, 0.12);
@@ -849,7 +851,7 @@ tr:hover td {
 }
 
 .grey-lit-title {
-  font-size: 15px;
+  font-size: var(--fs-title);
   font-weight: 600;
   color: var(--text-primary);
   line-height: 1.4;
@@ -857,13 +859,13 @@ tr:hover td {
 }
 
 .grey-lit-topic {
-  font-size: 12px;
+  font-size: var(--fs-meta);
   color: #38bdf8;
   margin-bottom: 10px;
 }
 
 .grey-lit-summary {
-  font-size: 13px;
+  font-size: var(--fs-meta);
   color: var(--text-secondary);
   line-height: 1.55;
   margin-bottom: 14px;
@@ -881,7 +883,7 @@ tr:hover td {
 .takeaways-header {
   display: flex;
   align-items: center;
-  font-size: 12px;
+  font-size: var(--fs-meta);
   font-weight: 700;
   color: #2dd4bf;
   margin-bottom: 8px;
@@ -891,7 +893,7 @@ tr:hover td {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  font-size: 10px;
+  font-size: var(--fs-micro);
   font-weight: 700;
   font-family: 'JetBrains Mono', monospace;
   padding: 1px 5px;
@@ -909,7 +911,7 @@ tr:hover td {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  font-size: 9px;
+  font-size: var(--fs-micro);
   font-weight: 700;
   font-family: 'JetBrains Mono', monospace;
   padding: 0 4px;
@@ -926,7 +928,7 @@ tr:hover td {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  font-size: 9px;
+  font-size: var(--fs-micro);
   font-weight: 700;
   font-family: 'JetBrains Mono', monospace;
   padding: 1px 5px;
@@ -944,7 +946,7 @@ tr:hover td {
   padding-left: 0;
   list-style: none;
   margin: 0;
-  font-size: 12px;
+  font-size: var(--fs-meta);
   color: #cbd5e1;
   line-height: 1.55;
 }
@@ -980,7 +982,7 @@ tr:hover td {
   display: flex;
   align-items: center;
   gap: 10px;
-  font-size: 11px;
+  font-size: var(--fs-meta);
   color: var(--text-muted);
 }
 
@@ -1007,18 +1009,18 @@ tr:hover td {
 
 .findings-markdown {
   color: #e2e8f0;
-  font-size: 14px;
+  font-size: var(--fs-body);
   line-height: 1.65;
 }
 
 .findings-markdown h1 {
-  font-size: 22px;
+  font-size: var(--fs-h2);
   margin-bottom: 12px;
   color: #38bdf8;
 }
 
 .findings-markdown h2 {
-  font-size: 17px;
+  font-size: var(--fs-title);
   font-weight: 700;
   margin-top: 24px;
   margin-bottom: 10px;
@@ -1028,7 +1030,7 @@ tr:hover td {
 }
 
 .findings-markdown h3 {
-  font-size: 14px;
+  font-size: var(--fs-body);
   font-weight: 600;
   margin-top: 16px;
   margin-bottom: 6px;
@@ -1058,7 +1060,7 @@ tr:hover td {
 .findings-table {
   width: 100%;
   border-collapse: collapse;
-  font-size: 13px;
+  font-size: var(--fs-meta);
   text-align: left;
 }
 
@@ -1098,8 +1100,25 @@ tr:hover td {
 
 .grey-lit-search-row {
   display: flex;
+  flex-wrap: wrap;
   gap: 12px;
   align-items: center;
+}
+
+/* index.html and the JS renderers set small inline sizes; override only those elements. */
+.header-actions .btn-action[style*="font-size"],
+.grey-lit-search-row > .btn-action,
+.instructor-table .btn-action[style*="font-size"] {
+  font-size: var(--fs-ui) !important;
+}
+
+.grey-lit-search-row > .btn-action {
+  height: auto !important;
+  min-height: 2.75rem;
+}
+
+.badge-tag[style*="font-size"] {
+  font-size: var(--fs-micro) !important;
 }
 
 .grey-lit-search-row .search-box {
@@ -1111,7 +1130,7 @@ tr:hover td {
   background-color: rgba(15, 23, 42, 0.75);
   border: 1px solid rgba(56, 189, 248, 0.25);
   color: var(--text-primary);
-  font-size: 13px;
+  font-size: var(--fs-control);
   padding: 8px 30px 8px 12px;
   border-radius: 8px;
   appearance: none;
@@ -1149,7 +1168,7 @@ tr:hover td {
   background: rgba(15, 23, 42, 0.75);
   border: 1px solid rgba(148, 163, 184, 0.2);
   border-radius: 20px;
-  font-size: 12px;
+  font-size: var(--fs-control);
   font-weight: 500;
   color: var(--text-secondary);
   cursor: pointer;
@@ -1174,7 +1193,7 @@ tr:hover td {
   background: rgba(255, 255, 255, 0.1);
   padding: 1px 6px;
   border-radius: 10px;
-  font-size: 10px;
+  font-size: var(--fs-micro);
   font-family: 'JetBrains Mono', monospace;
   color: var(--text-muted);
 }
@@ -1213,14 +1232,14 @@ tr:hover td {
 }
 
 .instructor-hero-text h2 {
-  font-size: 18px;
+  font-size: var(--fs-h2);
   font-weight: 700;
   color: var(--text-primary);
   margin-bottom: 4px;
 }
 
 .instructor-hero-text p {
-  font-size: 13px;
+  font-size: var(--fs-meta);
   color: var(--text-secondary);
   max-width: 820px;
 }
@@ -1238,7 +1257,7 @@ tr:hover td {
 }
 
 .instructor-controls-label {
-  font-size: 13px;
+  font-size: var(--fs-meta);
   font-weight: 600;
   color: var(--text-secondary);
   white-space: nowrap;
@@ -1259,7 +1278,7 @@ tr:hover td {
   color: var(--text-secondary);
   padding: 6px 14px;
   border-radius: 20px;
-  font-size: 13px;
+  font-size: var(--fs-control);
   font-weight: 500;
   cursor: pointer;
   transition: all 0.2s ease;
@@ -1310,7 +1329,7 @@ tr:hover td {
 }
 
 .instructor-kpi-card .kpi-value {
-  font-size: 24px;
+  font-size: var(--fs-h2);
   font-weight: 700;
   font-family: 'JetBrains Mono', monospace;
   color: var(--text-primary);
@@ -1318,7 +1337,7 @@ tr:hover td {
 }
 
 .instructor-kpi-card .kpi-label {
-  font-size: 11.5px;
+  font-size: var(--fs-micro);
   color: var(--text-muted);
   margin-top: 4px;
   font-weight: 500;
@@ -1337,7 +1356,7 @@ tr:hover td {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  font-size: 13px;
+  font-size: var(--fs-meta);
   color: var(--text-primary);
   margin-bottom: 8px;
 }
@@ -1366,7 +1385,7 @@ tr:hover td {
 
 /* Section Title */
 .instructor-section-title {
-  font-size: 15px;
+  font-size: var(--fs-title);
   font-weight: 700;
   color: var(--text-primary);
   margin-bottom: 12px;
@@ -1388,7 +1407,7 @@ tr:hover td {
 .instructor-table {
   width: 100%;
   border-collapse: collapse;
-  font-size: 13px;
+  font-size: var(--fs-meta);
   text-align: left;
 }
 
@@ -1427,7 +1446,7 @@ tr:hover td {
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 11px;
+  font-size: var(--fs-micro);
   font-weight: 700;
   flex-shrink: 0;
 }
@@ -1444,7 +1463,7 @@ tr:hover td {
   border: 1px solid rgba(56, 189, 248, 0.3);
   padding: 2px 8px;
   border-radius: 12px;
-  font-size: 11px;
+  font-size: var(--fs-micro);
   font-family: 'JetBrains Mono', monospace;
   font-weight: 600;
 }
@@ -1489,14 +1508,14 @@ tr:hover td {
 }
 
 .spotlight-badge {
-  font-size: 11px;
+  font-size: var(--fs-micro);
   font-weight: 700;
   padding: 3px 10px;
   border-radius: 6px;
 }
 
 .spotlight-title {
-  font-size: 15px;
+  font-size: var(--fs-title);
   font-weight: 600;
   color: var(--text-primary);
   margin-bottom: 8px;
@@ -1504,7 +1523,7 @@ tr:hover td {
 }
 
 .spotlight-desc {
-  font-size: 13px;
+  font-size: var(--fs-meta);
   color: var(--text-secondary);
   line-height: 1.5;
   margin-bottom: 12px;
@@ -1515,7 +1534,7 @@ tr:hover td {
   display: flex;
   gap: 8px;
   flex-wrap: wrap;
-  font-size: 11.5px;
+  font-size: var(--fs-micro);
   color: var(--text-muted);
 }
 
@@ -1562,7 +1581,7 @@ tr:hover td {
   display: flex;
   align-items: center;
   gap: 8px;
-  font-size: 13px;
+  font-size: var(--fs-meta);
 }
 
 .activity-avatar {
@@ -1574,13 +1593,13 @@ tr:hover td {
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 10px;
+  font-size: var(--fs-micro);
   font-weight: 700;
 }
 
 .activity-action-label {
   color: var(--text-muted);
-  font-size: 12px;
+  font-size: var(--fs-micro);
 }
 
 .activity-paper-tag {
@@ -1588,26 +1607,26 @@ tr:hover td {
   color: #38bdf8;
   padding: 1px 6px;
   border-radius: 4px;
-  font-size: 11px;
+  font-size: var(--fs-micro);
   font-weight: 600;
   font-family: 'JetBrains Mono', monospace;
 }
 
 .activity-date {
-  font-size: 11px;
+  font-size: var(--fs-micro);
   color: var(--text-muted);
   font-family: 'JetBrains Mono', monospace;
 }
 
 .activity-note-title {
-  font-size: 13px;
+  font-size: var(--fs-meta);
   font-weight: 600;
   color: #e2e8f0;
   margin-bottom: 4px;
 }
 
 .activity-note-body {
-  font-size: 13px;
+  font-size: var(--fs-meta);
   color: var(--text-secondary);
   line-height: 1.5;
   background: rgba(15, 23, 42, 0.5);
@@ -1626,7 +1645,7 @@ tr:hover td {
 }
 
 .activity-paper-sub {
-  font-size: 12px;
+  font-size: var(--fs-micro);
   color: var(--text-muted);
   max-width: 60%;
   overflow: hidden;
@@ -1635,7 +1654,7 @@ tr:hover td {
 }
 
 .activity-jump-link {
-  font-size: 12px;
+  font-size: var(--fs-ui);
   font-weight: 600;
   color: #2dd4bf;
   text-decoration: none;
@@ -1654,7 +1673,7 @@ tr:hover td {
   padding: 36px 20px;
   text-align: center;
   color: var(--text-secondary);
-  font-size: 13px;
+  font-size: var(--fs-meta);
 }
 
 /* ==========================================
@@ -1673,7 +1692,7 @@ tr:hover td {
 
 .library-view-heading {
   color: var(--text-primary);
-  font-size: 16px;
+  font-size: var(--fs-title);
   font-weight: 700;
   line-height: 1.3;
 }
@@ -1693,11 +1712,11 @@ tr:hover td {
   color: var(--text-secondary);
   cursor: pointer;
   font: inherit;
-  font-size: 12px;
+  font-size: var(--fs-control);
   font-weight: 600;
-  min-height: 30px;
-  min-width: 56px;
-  padding: 4px 12px;
+  min-height: 2.5rem;
+  min-width: 4rem;
+  padding: 4px 14px;
 }
 
 .library-view-btn:hover {
@@ -1791,7 +1810,7 @@ tr:hover td {
 .table-container[data-view="tiles"] .mobile-num {
   color: var(--text-muted);
   font-family: "JetBrains Mono", monospace;
-  font-size: 13px;
+  font-size: var(--fs-ui);
   font-weight: 700;
 }
 
@@ -1817,8 +1836,8 @@ tr:hover td {
 
 .table-container[data-view="tiles"] .mobile-actions .btn-action {
   flex: 1 1 auto;
-  font-size: 12px;
-  padding: 8px 10px;
+  padding: 0.45em 0.7em;
+  white-space: normal;
   width: auto;
 }
 
@@ -1859,7 +1878,7 @@ tr:hover td {
 }
 
 .grey-lit-grid[data-view="list"] .grey-lit-title {
-  font-size: 15px;
+  font-size: var(--fs-title);
   grid-column: 2;
   grid-row: 1;
   margin-bottom: 4px;
