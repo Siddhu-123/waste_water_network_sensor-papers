@@ -220,7 +220,7 @@
         orgIndex.set(orgKey(name), entry);
       }
     }
-    const sorted = [...orgIndex].sort((a, b) => a[1].label.localeCompare(b[1].label, undefined, { sensitivity: "base", numeric: true }) || (a[0] < b[0] ? -1 : 1));
+    const sorted = [...orgIndex].sort((a, b) => b[1].keys.size - a[1].keys.size || a[1].label.localeCompare(b[1].label, undefined, { sensitivity: "base", numeric: true }) || (a[0] < b[0] ? -1 : 1));
     el.organization.innerHTML = `<option value="">All companies / organizations</option>${sorted.map(([key, entry]) => `<option value="${escapeHtml(key)}">${escapeHtml(entry.label)} (${entry.keys.size})</option>`).join("")}`;
     el.organization.value = "";
   }
