@@ -2383,6 +2383,454 @@
       "unmappedReason": "",
       "pdfSha256": "b46ac144c5dd042926cbe4fb2b3b64697ee5a4ed33621896e20d3e4baf2464d8",
       "metadataSha256": "435c5b6109ee0921ce639aa1cbe9db9a70bf643beef61a52294fbdabfcf92086"
+    },
+    {
+      "type": "grey",
+      "id": "WIMUKTHI-GL-01",
+      "organization": "Natural Resource Management Ministerial Council (NRMMC), Australian Government",
+      "locations": [
+        {
+          "placeId": "australia",
+          "relation": "scope",
+          "evidence": "Australia's national guideline (National Water Quality Management Strategy) for sewerage system overflows; scope is whole sewerage systems in Australia.",
+          "source": "contributors/wimukthi/grey-literature.json"
+        }
+      ],
+      "unmappedReason": "",
+      "pdfSha256": "9987aa42df68f954d04c969c28ad4740c91272218c66a9c3dd98616e1d603ea3",
+      "metadataSha256": "6cf1021d6682048751c9351efa18047237591a4bf1ebf96a13b6d297a60e7a63"
+    },
+    {
+      "type": "grey",
+      "id": "WIMUKTHI-GL-02",
+      "organization": "US Environmental Protection Agency (US EPA)",
+      "locations": [
+        {
+          "placeId": "united-states",
+          "relation": "scope",
+          "evidence": "US EPA Report to Congress on combined and sanitary sewer overflows across United States sewer systems.",
+          "source": "contributors/wimukthi/grey-literature.json"
+        }
+      ],
+      "unmappedReason": "",
+      "pdfSha256": "47aca80496fb1f0a2158e24137285e1a93d9cbc951a32a1b058dcef24a18071f",
+      "metadataSha256": "5dccea1eab2e8f925845c7d3723c66fa6949609d8fdb7babdfbf1ff3afb660d7"
+    },
+    {
+      "type": "grey",
+      "id": "WIMUKTHI-GL-03",
+      "organization": "US Environmental Protection Agency (US EPA)",
+      "locations": [
+        {
+          "placeId": "united-states",
+          "relation": "scope",
+          "evidence": "Review of condition assessment technology for wastewater collection systems in the United States.",
+          "source": "contributors/wimukthi/grey-literature.json"
+        },
+        {
+          "placeId": "cincinnati",
+          "relation": "organization",
+          "evidence": "The white paper identifies the US EPA National Risk Management Research Laboratory in Cincinnati, Ohio. This marks the publishing organization, not a field study site.",
+          "source": "./contributors/wimukthi/grey/GL_2009_USEPA_Condition_Assessment_Wastewater_Collection_White_Paper.pdf",
+          "page": 3
+        }
+      ],
+      "unmappedReason": "",
+      "pdfSha256": "5f0b61d4e9bbc2df0b7188799a678652c2420573d7e6c3b451cadb3d14094c1f",
+      "metadataSha256": "058d17d8bca1b8f59296f1dd5b6d1b71d33f1fac8a1cc621c90339ec8d9e96cc"
+    },
+    {
+      "type": "grey",
+      "id": "WIMUKTHI-GL-04",
+      "organization": "US Environmental Protection Agency (US EPA) and Camp Dresser & McKee",
+      "locations": [
+        {
+          "placeId": "united-states",
+          "relation": "scope",
+          "evidence": "EPA toolbox for RDII analysis and SSO control planning in separate sanitary sewer systems in the United States.",
+          "source": "contributors/wimukthi/grey-literature.json"
+        }
+      ],
+      "unmappedReason": "",
+      "pdfSha256": "1224567e27516b433cda3d71437491f20ff6ec1568094dbf4a24eb9fb18c9f83",
+      "metadataSha256": "58644c3fcccfcf999952f75a69249fc236323f12b590a48d22c6cca79b1833a4"
+    },
+    {
+      "type": "grey",
+      "id": "WIMUKTHI-GL-05",
+      "organization": "US Environmental Protection Agency (US EPA)",
+      "locations": [
+        {
+          "placeId": "cincinnati",
+          "relation": "organization",
+          "evidence": "The manual identifies the US EPA National Risk Management Research Laboratory in Cincinnati, OH. This marks the publishing organization, not a field study site.",
+          "source": "./contributors/wimukthi/grey/GL_2010_USEPA_SWMM5_Users_Manual.pdf",
+          "page": 1
+        }
+      ],
+      "unmappedReason": "",
+      "pdfSha256": "f5f63aed4b06136ffa159d7081516ba723a79b4ad4780c90796b179e1f9b95fc",
+      "metadataSha256": "c8f8a4e02bd3010f74261d6658d138093842b838cbfbf8532f5b688cc9256439"
+    },
+    {
+      "type": "grey",
+      "id": "WIMUKTHI-GL-06",
+      "organization": "National Research Council Canada (NRC), Institute for Research in Construction",
+      "locations": [
+        {
+          "placeId": "canada",
+          "relation": "scope",
+          "evidence": "Compares sewer condition assessment protocols used by Canadian municipalities with the UK WRc protocol, including a survey of municipalities in Canada.",
+          "source": "contributors/wimukthi/grey-literature.json"
+        }
+      ],
+      "unmappedReason": "",
+      "pdfSha256": "fd5acafed9aa7243cd811bf141213956bed699551883255bfbcab271dac28340",
+      "metadataSha256": "3e03f28e74b23fd60196e6d80c37f383e15dbb2ffd662098a1f0d5d7a7e85dac"
+    },
+    {
+      "type": "grey",
+      "id": "WIMUKTHI-GL-07",
+      "organization": "National Research Council Canada (NRC), Institute for Research in Construction",
+      "locations": [
+        {
+          "placeId": "canada",
+          "relation": "scope",
+          "evidence": "NRC Canada guidelines developed with 10 municipalities and two consulting companies; pooled sewer condition data from municipalities across Canada.",
+          "source": "./contributors/wimukthi/grey/GL_2001_NRC_Canada_Condition_Assessment_Rehabilitation_Large_Sewers.pdf",
+          "page": 3
+        }
+      ],
+      "unmappedReason": "",
+      "pdfSha256": "33c9d4ac8d6eec790a28fa02995ee5d592b5f1c610e6d9affab5107936c902ec",
+      "metadataSha256": "a2293cd39bc19b384b30dea72a676e3043e7ffe7b7493809c8abbf39f4fc6b93"
+    },
+    {
+      "type": "grey",
+      "id": "WIMUKTHI-GL-08",
+      "organization": "Svenskt Vatten (Swedish Water & Wastewater Association)",
+      "locations": [
+        {
+          "placeId": "sweden",
+          "relation": "scope",
+          "evidence": "Svenskt Vatten estimate of investment needs for municipal water and wastewater in Sweden to 2040.",
+          "source": "contributors/wimukthi/grey-literature.json"
+        }
+      ],
+      "unmappedReason": "",
+      "pdfSha256": "e3d73b05875adc0eaa91df9b47e73e88cfb164fb236a97cb6d00cb1b8b189493",
+      "metadataSha256": "e77ae05b3ee40c892a3bfe6405a6231d319232f6561bea46d40be5f64bf1f210"
+    },
+    {
+      "type": "grey",
+      "id": "WIMUKTHI-GL-09",
+      "organization": "Svenskt Vatten Utveckling (Swedish Water & Wastewater Association)",
+      "locations": [
+        {
+          "placeId": "sweden",
+          "relation": "scope",
+          "evidence": "Properties and expected lifetimes of pipe materials in Swedish water and sewer pipelines.",
+          "source": "contributors/wimukthi/grey-literature.json"
+        }
+      ],
+      "unmappedReason": "",
+      "pdfSha256": "a29275b3fd616f3fbede51173d0e9fb17c0efd1c7d0783b3a60bc819ff1e4aee",
+      "metadataSha256": "32a7798925f64a4ca875b8e276b572195a709e42be7d5b0158ee88bfe8c087c6"
+    },
+    {
+      "type": "grey",
+      "id": "WIMUKTHI-GL-10",
+      "organization": "American Society of Civil Engineers (ASCE)",
+      "locations": [
+        {
+          "placeId": "united-states",
+          "relation": "scope",
+          "evidence": "ASCE 2017 Infrastructure Report Card grade (D+) for wastewater infrastructure in the United States.",
+          "source": "contributors/wimukthi/grey-literature.json"
+        }
+      ],
+      "unmappedReason": "",
+      "pdfSha256": "9c757df9cba588105697eb528dde722d76cdd0051349ca66e7389d57e888b2c2",
+      "metadataSha256": "e251529365eb3e54b3b81a76e48e6dd8ce82860645c431d72ac0d97e169dac85"
+    },
+    {
+      "type": "grey",
+      "id": "WIMUKTHI-GL-11",
+      "organization": "American Society of Civil Engineers (ASCE) and the Value of Water Campaign",
+      "locations": [
+        {
+          "placeId": "united-states",
+          "relation": "scope",
+          "evidence": "ASCE estimate of the cost to the US economy of under-investing in water, wastewater and stormwater infrastructure.",
+          "source": "contributors/wimukthi/grey-literature.json"
+        }
+      ],
+      "unmappedReason": "",
+      "pdfSha256": "82cfea837a7f2e6c87a32e42ab39b0172ccb326c97b2f12aa03b8fc67167c909",
+      "metadataSha256": "b44a742d239f3ec973c922e9db83a548f4a4d0095fc8b5f44d7e72be6d92e521"
+    },
+    {
+      "type": "grey",
+      "id": "WIMUKTHI-GL-12",
+      "organization": "Drainage Services Department (DSD), Hong Kong SAR Government",
+      "locations": [
+        {
+          "placeId": "hong-kong",
+          "relation": "scope",
+          "evidence": "Drainage Services Department design and planning manual for public gravity sewers in Hong Kong.",
+          "source": "contributors/wimukthi/grey-literature.json"
+        }
+      ],
+      "unmappedReason": "",
+      "pdfSha256": "fd4adaa1d867c76e8a1d8e48a0d58e23a206c0733d837406259482e9f7825782",
+      "metadataSha256": "9566d2e6489b890cf0402dd54895daefcb02dacf77dc694d34e57d3921f03757"
+    },
+    {
+      "type": "grey",
+      "id": "WIMUKTHI-GL-13",
+      "organization": "Drainage Services Department (DSD), Hong Kong SAR Government",
+      "locations": [
+        {
+          "placeId": "hong-kong",
+          "relation": "scope",
+          "evidence": "Drainage Services Department stormwater drainage manual for Hong Kong.",
+          "source": "contributors/wimukthi/grey-literature.json"
+        }
+      ],
+      "unmappedReason": "",
+      "pdfSha256": "9644392e9f21bbb5c85457c748a808b763b22dd0ccc65f3b4a0260b620b80da0",
+      "metadataSha256": "cd751642c5d74298f2f52370ce72be0616a07ded39bf97ac0436aace0e12dd13"
+    },
+    {
+      "type": "grey",
+      "id": "WIMUKTHI-GL-14",
+      "organization": "Sydney Water",
+      "locations": [
+        {
+          "placeId": "sydney",
+          "relation": "study",
+          "evidence": "Sydney Water's IoT pilot installed around 330 sewer sensors in the Liverpool area of south-western Sydney, NSW. The marker represents Sydney, not the Liverpool catchment itself.",
+          "source": "./contributors/wimukthi/grey/GL_2019_SydneyWater_IoT_Hyper-Connected_Utility.pdf",
+          "page": 5
+        }
+      ],
+      "unmappedReason": "",
+      "pdfSha256": "48e27b09e9ec5697f44783fb8d0494a0d50690c5722689527a5f80cd828118ab",
+      "metadataSha256": "8fabb804dba5a5db30bb2797cdda218783512ee61902050f61b5264d7fe016be"
+    },
+    {
+      "type": "grey",
+      "id": "WIMUKTHI-GL-15",
+      "organization": "Water UK (with Defra and EDANA); press release by Severn Trent Water",
+      "locations": [
+        {
+          "placeId": "united-kingdom",
+          "relation": "scope",
+          "evidence": "Water UK study of sewer blockages for statutory water and wastewater providers in England, Scotland, Wales and Northern Ireland.",
+          "source": "contributors/wimukthi/grey-literature.json"
+        }
+      ],
+      "unmappedReason": "",
+      "pdfSha256": "968827bf5a9852eb63adca601598231b4beb8976bfd035e6053e9aa1743194ee",
+      "metadataSha256": "ac2bad49b3992a424434de52e054a7cca64490e6eef9c053ce73f355e6fca086"
+    },
+    {
+      "type": "grey",
+      "id": "WIMUKTHI-GL-16",
+      "organization": "Environment Agency (England)",
+      "locations": [
+        {
+          "placeId": "england",
+          "relation": "scope",
+          "evidence": "Environment Agency (England) MCERTS certification standard for continuous water flowmeters.",
+          "source": "contributors/wimukthi/grey-literature.json"
+        }
+      ],
+      "unmappedReason": "",
+      "pdfSha256": null,
+      "metadataSha256": "d70a3ba625128193abb4133a3fb26de9661e1be0cd9654855bd121d21144473c"
+    },
+    {
+      "type": "grey",
+      "id": "WIMUKTHI-GL-17",
+      "organization": "WRc (Water Research Centre), UK",
+      "locations": [
+        {
+          "placeId": "united-kingdom",
+          "relation": "scope",
+          "evidence": "WRc guide to short-term sewer flow surveys; a reference for UK flow-survey practice.",
+          "source": "contributors/wimukthi/grey-literature.json"
+        }
+      ],
+      "unmappedReason": "",
+      "pdfSha256": null,
+      "metadataSha256": "1b755d5bd9a7c7bd677919cf248772ea35acc44fd78288d8981a99abe8aa4e35"
+    },
+    {
+      "type": "grey",
+      "id": "WIMUKTHI-GL-18",
+      "organization": "WRc (Water Research Centre), UK",
+      "locations": [
+        {
+          "placeId": "united-kingdom",
+          "relation": "scope",
+          "evidence": "WRc Sewerage Rehabilitation Manual, developed into the Sewerage Risk Management site funded by eleven UK sewerage utilities with Defra and Ofwat support.",
+          "source": "contributors/wimukthi/grey-literature.json"
+        }
+      ],
+      "unmappedReason": "",
+      "pdfSha256": null,
+      "metadataSha256": "7a7ba704dfbac0c173046275cca2c5f5d5023fbdecf5b85eb938fbc11e452dca"
+    },
+    {
+      "type": "grey",
+      "id": "WIMUKTHI-GL-19",
+      "organization": "Kompetenzzentrum Wasser Berlin (KWB)",
+      "locations": [
+        {
+          "placeId": "berlin",
+          "relation": "organization",
+          "evidence": "Review published by Kompetenzzentrum Wasser Berlin (KWB) for the SEMA project. This marks the publishing organization, not a field study site.",
+          "source": "contributors/wimukthi/grey-literature.json"
+        }
+      ],
+      "unmappedReason": "",
+      "pdfSha256": null,
+      "metadataSha256": "8c1848ea71dd5223820b94c3df29a1c1c6f0ac1f604ced543dfcbe71aad5aae0"
+    },
+    {
+      "type": "grey",
+      "id": "WIMUKTHI-GL-20",
+      "organization": "Transport and Road Research Laboratory (TRRL), UK, with Southern Water Authority",
+      "locations": [
+        {
+          "placeId": "england",
+          "relation": "study",
+          "evidence": "Analysis of defects in 180 km of pipe sewers in the Southern Water Authority area of southern England. The marker represents England, not a specific catchment.",
+          "source": "contributors/wimukthi/grey-literature.json"
+        }
+      ],
+      "unmappedReason": "",
+      "pdfSha256": null,
+      "metadataSha256": "a7cb76c07e93d1fbdbeb723edfd31762f6ff4a0abdba8e4ff6cfc677ea59de54"
+    },
+    {
+      "type": "grey",
+      "id": "WIMUKTHI-GL-21",
+      "organization": "VA-Forsk / Svenskt Vatten (Swedish Water & Wastewater Association)",
+      "locations": [
+        {
+          "placeId": "sweden",
+          "relation": "scope",
+          "evidence": "Swedish VA-Forsk system for grading CCTV-inspected gravity sewers, for use by Swedish municipalities.",
+          "source": "contributors/wimukthi/grey-literature.json"
+        }
+      ],
+      "unmappedReason": "",
+      "pdfSha256": null,
+      "metadataSha256": "f000d7acff080959a32c728abae73f8a69dddbc141cd31edc2acfded618ef4fb"
+    },
+    {
+      "type": "grey",
+      "id": "WIMUKTHI-GL-22",
+      "organization": "Utility Training Institute (UTI), Hong Kong",
+      "locations": [
+        {
+          "placeId": "hong-kong",
+          "relation": "scope",
+          "evidence": "Hong Kong's code for evaluating conduit condition from CCTV and man-entry surveys.",
+          "source": "contributors/wimukthi/grey-literature.json"
+        }
+      ],
+      "unmappedReason": "",
+      "pdfSha256": null,
+      "metadataSha256": "bb6ad73fcda7fc74011758477d1db5584475379a1e7b87bd61535977de20a909"
+    },
+    {
+      "type": "grey",
+      "id": "WIMUKTHI-GL-23",
+      "organization": "Sydney Water",
+      "locations": [
+        {
+          "placeId": "sydney",
+          "relation": "study",
+          "evidence": "Sydney Water method for detecting blockages and overflows upstream of sewage pumping stations in its network, as described by Drenoyanis et al. (2022). The OzWater'21 venue (Adelaide) is not the study site.",
+          "source": "contributors/wimukthi/grey-literature.json"
+        }
+      ],
+      "unmappedReason": "",
+      "pdfSha256": null,
+      "metadataSha256": "74b4f8c5fe23f590e1878ad78a7dbd53b1ccfc8e0a4d5dd40b54219f26190693"
+    },
+    {
+      "type": "grey",
+      "id": "WIMUKTHI-GL-24",
+      "organization": "SA Water",
+      "locations": [
+        {
+          "placeId": "south-australia",
+          "relation": "scope",
+          "evidence": "SA Water's public guidance on sewer blockages, overflows, cleaning and smart sensor trials for its South Australian network.",
+          "source": "contributors/wimukthi/grey-literature.json"
+        },
+        {
+          "placeId": "adelaide",
+          "relation": "organization",
+          "evidence": "SA Water is headquartered in Adelaide, South Australia.",
+          "source": "contributors/wimukthi/grey-literature.json"
+        }
+      ],
+      "unmappedReason": "",
+      "pdfSha256": null,
+      "metadataSha256": "c63552ac7213bce6b9491450b51ce1010e329b85643094a2da03eafc1bd11cce"
+    },
+    {
+      "type": "grey",
+      "id": "WIMUKTHI-GL-25",
+      "organization": "South Australian Government (We Are SA) with SA Water",
+      "locations": [
+        {
+          "placeId": "adelaide",
+          "relation": "scope",
+          "evidence": "South Australian Government article on wet-wipe blockages found by SA Water crews in Adelaide's sewers.",
+          "source": "contributors/wimukthi/grey-literature.json"
+        }
+      ],
+      "unmappedReason": "",
+      "pdfSha256": null,
+      "metadataSha256": "54c31371133bea3bed22b633c0961e218d8e0921c5e058b34065620a9ed30f15"
+    },
+    {
+      "type": "grey",
+      "id": "WIMUKTHI-GL-26",
+      "organization": "Drainage Services Department (DSD), Hong Kong SAR Government",
+      "locations": [
+        {
+          "placeId": "hong-kong",
+          "relation": "scope",
+          "evidence": "Drainage Services Department sustainability report on sewerage and drainage work in Hong Kong, 2019-20.",
+          "source": "contributors/wimukthi/grey-literature.json"
+        }
+      ],
+      "unmappedReason": "",
+      "pdfSha256": null,
+      "metadataSha256": "698753aac3c9347dc676de34fe163cd6791aa4b5ad691011e8c08fcef8312519"
+    },
+    {
+      "type": "grey",
+      "id": "WIMUKTHI-GL-27",
+      "organization": "Drainage Services Department (DSD), Hong Kong SAR Government",
+      "locations": [
+        {
+          "placeId": "hong-kong",
+          "relation": "scope",
+          "evidence": "Drainage Services Department overview of Hong Kong's sewerage strategy, Sewerage Master Plans and the Harbour Area Treatment Scheme.",
+          "source": "contributors/wimukthi/grey-literature.json"
+        }
+      ],
+      "unmappedReason": "",
+      "pdfSha256": null,
+      "metadataSha256": "a0f6bc71d33485e4fb43ae55bac16e7bb098ba1de10cb534b281023c2ff1960a"
     }
   ]
 }
