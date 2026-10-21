@@ -636,14 +636,16 @@ tr:hover td {
 .notes-count-pill {
   display: inline-flex;
   align-items: center;
-  gap: 2px;
+  justify-content: center;
+  flex-shrink: 0;
   background: rgba(45, 212, 191, 0.22);
   color: #5eead4;
   font-size: var(--fs-micro);
   font-weight: 700;
-  padding: 1px 5px;
+  line-height: 1.5;
+  white-space: nowrap;
+  padding: 0 3px;
   border-radius: 8px;
-  margin-left: 4px;
   border: 1px solid rgba(45, 212, 191, 0.4);
 }
 
@@ -2101,16 +2103,6 @@ tr:hover td {
   flex-shrink: 0;
 }
 
-/* Keep badges available without expanding the single-line action row. */
-#papersTableContainer .notes-count-pill {
-  position: absolute;
-  top: -7px;
-  right: -3px;
-  margin: 0;
-  font-size: var(--fs-micro);
-  padding: 0 3px;
-}
-
 #greyLitGrid .ai-badge-sm {
   display: none;
 }
@@ -2509,6 +2501,12 @@ tr:hover td {
     padding: 3px;
     gap: 0;
     font-size: var(--fs-ui);
+  }
+
+  #papersTableContainer[data-view="list"] .btn-pdf {
+    width: auto;
+    min-width: 26px;
+    gap: 3px;
   }
 
   #papersTableContainer[data-view="list"] .action-label,

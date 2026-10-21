@@ -50,7 +50,8 @@ function updateAllPaperBadges() {
       const count = info.count || 0;
       if (count > 0) {
         badge.style.display = "inline-flex";
-        badge.textContent = `💬 ${count}`;
+        badge.textContent = String(count);
+        badge.setAttribute("aria-label", `${count} note${count === 1 ? "" : "s"}`);
         const authorsList = info.authors && info.authors.length ? info.authors.join(", ") : "Team";
         if (pdfBtn) {
           pdfBtn.title = `Read PDF (${count} note${count === 1 ? "" : "s"} by ${authorsList})`;

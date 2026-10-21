@@ -51,12 +51,12 @@ function renderTable() {
           `;
     tbody.appendChild(tr);
   });
+  if (typeof updateAllPaperBadges === "function") updateAllPaperBadges();
 }
 
 document.getElementById("academicSort")?.addEventListener("change", () => {
   renderTable();
   filterTable();
-  if (typeof updateAllPaperBadges === "function") updateAllPaperBadges();
 });
 
 function renderCompiledPaperCard(paper) {
