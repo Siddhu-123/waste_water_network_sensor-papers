@@ -29,7 +29,8 @@ window.__BUNDLED_DATA__ = {
       {
         "name": "Ashis Jose",
         "slug": "ashis-jose",
-        "file": "./ashis-jose/papers.json"
+        "file": "./ashis-jose/papers.json",
+        "greyLiteratureFile": "./ashis-jose/grey-literature.json"
       },
       {
         "name": "Rijoy John",
@@ -2143,6 +2144,395 @@ window.__BUNDLED_DATA__ = {
         "limitations": "Monitoring does not create physical pipe volume; it works only where upstream pipes or manholes have residual buffer storage.",
         "conclusions": "Real-time monitoring is now accepted by Australian environmental regulators as an active mitigation strategy against urban growth overcapacity.",
         "reflection": "Directly links to Paper 4 and provides the economic and regulatory justification for the SA Water OSP capstone."
+      }
+    },
+    {
+      "id": "ASHIS-GL-01",
+      "title": "Sewerage Code of Australia: SA Water Supplementary Documentation, Part 1 Design (Issue 03)",
+      "organization": "SA Water",
+      "year": 2010,
+      "category": "Utility Codes & Design Standards",
+      "summary": "SA Water's own additions to the national sewerage design code (WSA 02-2002 V2.3). It sets the local rules for how many homes each pipe size may serve, minimum grades, connection depths and easements for new sewers in South Australia.",
+      "assignedTo": "Ashis Jose",
+      "pdfUrl": "./contributors/ashis-jose/grey/ASHIS-GL-01_SAWater_Sewerage_Code_Supplement_Pt1_Design.pdf",
+      "url": "https://www.sawater.com.au/__data/assets/pdf_file/0005/65435/SCM-WSAA-Code-Supplement-Pt-1-Design.pdf",
+      "keyTakeaways": [
+        "Maximum load per pipe size: DN150 serves up to 1,000 EP (about 400 properties), DN225 up to 2,500 EP (about 1,000 properties), DN300 up to 4,500 EP (about 1,800 properties).",
+        "Minimum grades: DN150 0.5%, DN225 0.3% (residential), DN300 0.2%, DN375 0.15%, DN450 0.14%.",
+        "The house connection point is at the property boundary, not at the main; residential connection depth is 1.4 m to 2.6 m."
+      ],
+      "steps": {
+        "citation": "SA Water (2010). Sewerage Code of Australia: SA Water Supplementary Documentation to WSA 02-2002 V2.3, Part 1 Design, Issue 03, 1 July 2010. South Australian Water Corporation, Adelaide.",
+        "intro": "Australian utilities design sewers to the national WSAA Sewerage Code, but each utility adds its own rules. This document is SA Water's list of local changes and extra requirements for the design part of the code.",
+        "methods": "A clause-by-clause supplement. Each row names the WSA 02 clause and says what SA Water requires instead or in addition, with tables for maximum equivalent population (EP) per pipe size, minimum grades, easement widths and connection depths.",
+        "scope": "All new gravity sewer reticulation designed for SA Water in South Australia. Pumping stations and rising mains are covered by separate SA Water criteria (DS11(a)).",
+        "usefulness": "It gives an SA Water source for how much load a pipe is meant to carry. For example, a DN150 main is designed for about 400 properties, so our growth cases (50, 150 and 300 extra homes) can be checked against the design load of the pipes they drain into, instead of using a number we picked ourselves.",
+        "limitations": "It is a 2010 issue linked to an older code version (WSA 02-2002 V2.3), so values may have been updated. It sets design limits for new pipes and does not state an operating alarm level or a fill ratio (d/D) for existing pipes. Flow estimation is referred to SA Water directly rather than given here.",
+        "conclusions": "SA Water caps how many homes each pipe size can serve and fixes grades and connection details. These caps are the utility's own measure of pipe capacity.",
+        "reflection": "Supports the threshold and growth-scenario assumptions in our simulation. It also confirms the industry partner's point that houses connect at the boundary to the main, not at a manhole, which we model as a simplification."
+      }
+    },
+    {
+      "id": "ASHIS-GL-02",
+      "title": "Torbay 2032: An Assessment of Future Sewer Capacity in Torbay",
+      "organization": "AECOM for Torbay Council and South West Water",
+      "year": 2014,
+      "category": "Urban Growth & Sewer Capacity",
+      "summary": "A consultant study that used verified hydraulic sewer models to test whether the housing growth planned for Torbay to 2032 would fit in the existing sewer network, and which areas would come under pressure.",
+      "assignedTo": "Ashis Jose",
+      "pdfUrl": "./contributors/ashis-jose/grey/ASHIS-GL-02_Torbay_2032_Sewer_Capacity_Assessment.pdf",
+      "url": "https://www.torbay.gov.uk/media/21953/torbay2032sewercapacityassessment.pdf",
+      "keyTakeaways": [
+        "Population was expected to grow about 18% by 2032, but water use per person was expected to fall from 146 to 123 L/day (about 16% less foul flow), so foul flow roughly balanced out.",
+        "Urban creep (new patios, driveways and extensions draining to sewers) and climate change (+10% rainfall intensity) were the bigger threat, causing more flooding and overflow spills.",
+        "A sewer was flagged 'at risk' when modelled water level came within 0.5 m of the manhole cover, or when modelled flooding got worse, in a 1-in-30-year, 120-minute summer storm."
+      ],
+      "steps": {
+        "citation": "AECOM (2014). Torbay 2032: An Assessment of Future Sewer Capacity in Torbay. Report for Torbay Council and South West Water, Rev 2, September 2014. AECOM, Exeter.",
+        "intro": "Torbay's Local Plan named the sewer network as a possible barrier to growth. The council and the water company asked AECOM to test the effect of planned new homes on the sewers before the plan was submitted.",
+        "methods": "Existing hydraulic models of the three catchments (verified against in-sewer flow monitors) were run for present day and 2032. Three scenarios: new foul flow only; foul flow plus urban creep in new development areas (0.5 m2 extra paved area per property); and a worst case with catchment-wide creep plus 10% higher rainfall intensity. Results were shown for a 1-in-30-year, 120-minute summer storm.",
+        "scope": "The combined sewer network draining to Brokenbury Quarry treatment works, Torbay, UK. Treatment plant capacity was outside scope.",
+        "usefulness": "This is the closest real example of our question: will planned growth fit the existing pipes, and where? Its scenario structure (growth only, growth plus extra runoff, worst case) matches our growth and wet weather cases, and its 0.5 m below cover warning level is a practical alarm threshold we can compare with ours.",
+        "limitations": "Torbay has a combined sewer, so rain enters by design; Adelaide's network is separate, so rain enters only through leaks and wrong connections. Results are for one extreme storm, which the report says is an indicator, not a prediction of actual flooding. It does not cover sensors or monitoring.",
+        "conclusions": "The main sewers were unlikely to limit growth before 2032 on foul flow alone, but only if water saving happens and surface water is kept out of the sewers. Creep and climate change must not be underestimated. Local sewers still need checking development by development.",
+        "reflection": "Supports our use of scenario modelling to judge growth impact, and our point that wet weather, not dry weather growth alone, drives overflow risk. Also suggests urban creep as a scenario we have not yet modelled."
+      }
+    },
+    {
+      "id": "ASHIS-GL-03",
+      "title": "CIWEM UDG Code of Practice for the Hydraulic Modelling of Urban Drainage Systems (Version 01)",
+      "organization": "Chartered Institution of Water and Environmental Management (CIWEM), Urban Drainage Group",
+      "year": 2017,
+      "category": "Hydraulic Simulators & Modeling",
+      "summary": "The UK industry standard for building, checking, verifying, using and documenting hydraulic models of sewer and drainage networks. It sets numeric targets for how closely a model must match measured flows and depths.",
+      "assignedTo": "Ashis Jose",
+      "pdfUrl": "./contributors/ashis-jose/grey/ASHIS-GL-03_CIWEM_Code_of_Practice_Hydraulic_Modelling_2017.pdf",
+      "url": "https://www.ciwem.org/assets/pdf/Special%20Interest%20Groups/Urban%20Drainage%20Group/Code%20of%20Practice%20for%20the%20Hydraulic%20Modelling%20of%20Ur.pdf",
+      "keyTakeaways": [
+        "Storm verification targets at general locations: peak depth within +0.5 m to -0.1 m when surcharged, peak flow within +25% to -15%, flow volume within +20% to -10%, and peak timing within 0.5 hour.",
+        "Nash-Sutcliffe efficiency above 0.5 counts as a satisfactory match for depth and flow shape; for depth it should only be applied where water is deeper than 10% of pipe height or 100 mm.",
+        "Covers the full model life: project definition, data collection, model build, verification, confidence assessment, application, documentation and model management."
+      ],
+      "steps": {
+        "citation": "CIWEM Urban Drainage Group (2017). Code of Practice for the Hydraulic Modelling of Urban Drainage Systems, Version 01, 3 November 2017. Chartered Institution of Water and Environmental Management, London.",
+        "intro": "Utilities rely on hydraulic models to make investment decisions, so the industry needs a shared standard for what a trustworthy model looks like. This code, written by an industry team, is that standard in the UK.",
+        "methods": "A guidance document in nine chapters, from defining the project and collecting data to building, verifying and documenting the model. It gives target tolerances for matching model results to flow survey data and explains how to judge and report model confidence.",
+        "scope": "Hydraulic models of urban drainage systems (foul, surface water and combined sewers) of any software, mainly as used in the UK water industry.",
+        "usefulness": "Gives us a recognised checklist to show our SWMM model is built and reported properly, and gives numeric targets (for example peak flow within +25%/-15%) to apply once the utility's flow or level data arrives. It also helps us say honestly what our model can and cannot be trusted for before calibration.",
+        "limitations": "It is written for UK practice and data. It assumes flow survey data exists for verification; our current model is not yet calibrated, so we can follow its build and documentation steps but cannot yet meet its verification targets.",
+        "conclusions": "A model is fit for purpose only when it is built from checked data, verified against measurements to stated tolerances, and documented so others can understand its limits.",
+        "reflection": "Supports the validation and documentation part of our method, and gives the standard we would aim for when the model is calibrated with the utility's data."
+      }
+    },
+    {
+      "id": "ASHIS-GL-04",
+      "title": "Review of Sewer Design Criteria and RDII Prediction Methods (EPA/600/R-08/010)",
+      "organization": "US Environmental Protection Agency (US EPA)",
+      "year": 2008,
+      "category": "Inflow & Infiltration (I&I)",
+      "summary": "A US EPA review of how sewers are designed to allow for rainwater that gets into them, and of the methods used to predict rainfall-derived infiltration and inflow (RDII), the main cause of sanitary sewer overflows.",
+      "assignedTo": "Ashis Jose",
+      "pdfUrl": "./contributors/ashis-jose/grey/ASHIS-GL-04_USEPA_Review_of_Sewer_Design_Criteria_and_RDII_Methods.pdf",
+      "url": "https://www.epa.gov/water-research/sanitary-sewer-overflow-analysis-and-planning-ssoap-toolbox",
+      "keyTakeaways": [
+        "Sewer flow is split into three parts: base wastewater flow, groundwater infiltration and rainfall-derived infiltration and inflow (RDII).",
+        "Reviews eight RDII prediction methods tested on real data (WERF, 1999); no single method suits every system.",
+        "The RTK unit hydrograph method was chosen for the EPA SSOAP Toolbox because it is the most widely accepted and is already built into EPA SWMM."
+      ],
+      "steps": {
+        "citation": "Lai, F. (2008). Review of Sewer Design Criteria and RDII Prediction Methods, EPA/600/R-08/010. US Environmental Protection Agency, Office of Research and Development, Cincinnati, OH.",
+        "intro": "The US has about 40,000 sanitary sewer overflow events a year, and rainwater entering separate sewers is their main cause. This report supported the development of the EPA SSOAP Toolbox.",
+        "methods": "A literature review. It describes the components of sewer flow, past and current design rules of several US states and agencies for allowing for infiltration and inflow, and compares RDII prediction methods (constant unit rate, regression, percent of rainfall (R-value), synthetic unit hydrograph and others).",
+        "scope": "Separate sanitary sewer systems in the United States.",
+        "usefulness": "Supports how we add rain in our wet weather cases. Adelaide's network is also a separate system, so the same idea applies: rain gets in through cracks and wrong connections, not by design. The RTK method it recommends is the one available in SWMM, the tool we use.",
+        "limitations": "A review, not a field study, and based on US design practice and data. It does not give RDII values for Australian or Adelaide catchments, which would need local flow data.",
+        "conclusions": "RDII must be estimated from local flow monitoring; the RTK unit hydrograph is the most widely used and practical method, and is suitable for SWMM-based capacity planning.",
+        "reflection": "Supports the wet weather inflow assumptions in our SWMM scenarios, and points to RTK calibration as a next step once flow data is available."
+      }
+    },
+    {
+      "id": "ASHIS-GL-05",
+      "title": "Computer Tools for Sanitary Sewer System Capacity Analysis and Planning (EPA/600/R-07/111)",
+      "organization": "US Environmental Protection Agency (US EPA) and Camp Dresser & McKee",
+      "year": 2007,
+      "category": "Hydraulic Simulators & Modeling",
+      "summary": "The technical guide to the EPA SSOAP Toolbox. It sets out a full sewer capacity planning process: flow and rain monitoring, RDII analysis, SWMM5 modelling, capacity assessment and choosing improvements, with a case study from Ann Arbor, Michigan.",
+      "assignedTo": "Ashis Jose",
+      "pdfUrl": "./contributors/ashis-jose/grey/ASHIS-GL-05_USEPA_Computer_Tools_Sanitary_Sewer_Capacity_Analysis_SSOAP.pdf",
+      "url": "https://www.epa.gov/water-research/sanitary-sewer-overflow-analysis-and-planning-ssoap-toolbox",
+      "keyTakeaways": [
+        "Flow monitors should go where tributary sewersheds join the trunk sewer, upstream of known overflows and flooding, and in priority problem areas; avoid placing meters in series because meter error (up to +/-20%) can exceed the flow from the area between them.",
+        "A good strategy combines many temporary monitors (to describe sub-catchments) with a few permanent ones (along trunk sewers and at problem sites); temporary monitoring should run 4 to 6 months, ideally in the wet season.",
+        "The SSOAP Toolbox links RDII analysis to EPA SWMM5 to test capacity and compare fixes such as rehabilitation, storage, conveyance and real-time control."
+      ],
+      "steps": {
+        "citation": "Vallabhaneni, S., Chan, C.C. & Burgess, E.H. (2007). Computer Tools for Sanitary Sewer System Capacity Analysis and Planning, EPA/600/R-07/111. US Environmental Protection Agency, Office of Research and Development, Cincinnati, OH.",
+        "intro": "US utilities must plan to reduce sanitary sewer overflows but needed free, consistent tools to do it. The EPA built the SSOAP Toolbox and this guide explains the method behind it.",
+        "methods": "Describes hydrology (RDII prediction with the RTK method), hydraulics (static, kinematic and dynamic analysis), data collection (flow, rain and system data), the Toolbox's modules, model building and calibration, capacity assessment, and how to develop improvement options. Includes an Ann Arbor case study.",
+        "scope": "Separate sanitary sewer systems in the United States, using EPA SWMM5.",
+        "usefulness": "It is an official example of the same chain we follow: monitoring data, rain inflow, SWMM capacity check. Its flow monitor site selection rules (place at confluences with the trunk, upstream of known overflows, avoid meters in series) are practical placement guidance we can compare with our simulation-based sensor placement.",
+        "limitations": "Written for flow meters used in model calibration, not for low-cost level sensors used for early warning. Placement rules are expert rules of thumb, not an optimisation. Based on US practice from 2007.",
+        "conclusions": "Capacity planning should combine targeted flow monitoring, RDII analysis and hydraulic modelling, and use the model to compare improvement options.",
+        "reflection": "Directly relevant to sensor placement: it gives an industry baseline (rule-based monitor siting) that our simulation-based placement can be compared against."
+      }
+    },
+    {
+      "id": "ASHIS-GL-06",
+      "title": "Land Supply Report for Greater Adelaide: Residential (July 2023)",
+      "organization": "South Australian Government (State Planning Commission / PlanSA)",
+      "year": 2023,
+      "category": "Urban Growth & Sewer Capacity",
+      "summary": "The state's estimate of how much land is available for new homes across Greater Adelaide, split into greenfield, general infill and strategic infill, with recent building trends by region.",
+      "assignedTo": "Ashis Jose",
+      "pdfUrl": "./contributors/ashis-jose/grey/ASHIS-GL-06_PlanSA_Residential_Land_Supply_Report.pdf",
+      "url": "https://plan.sa.gov.au/__data/assets/pdf_file/0007/1267486/Residential-Land-Supply-Report-for-Greater-Adelaide.pdf",
+      "keyTakeaways": [
+        "From 2017 to 2021 about two thirds of new dwellings in Greater Adelaide came from infill and one third from greenfield (67:33); in the COVID years this shifted to 58:42.",
+        "Estimated total supply is about 203,750 dwellings (2022), down about 61,000 from the 2021 estimate, but still enough for the 15-year demand of about 135,000 dwellings.",
+        "The Inner Metro region (which includes Walkerville) grew by about 1,754 net dwellings per year since 2017, mostly from infill; Walkerville is listed among suburbs with notable net dwelling increase."
+      ],
+      "steps": {
+        "citation": "State Planning Commission (2023). Land Supply Report for Greater Adelaide: Residential, Version 2, July 2023 (published 7 September 2023). Government of South Australia, Adelaide.",
+        "intro": "The state must keep at least 15 years of land supply for housing. This report updates the supply estimate using a revised method after concerns raised in 2021.",
+        "methods": "Analysis of dwelling completions, demolitions and land parcels. Greenfield land is discounted for uncertainty (15% for zoned, 30% for future growth areas); general infill supply is filtered by capital to site value ratio, building age and trends; strategic infill uses a five-year rolling average.",
+        "scope": "Greater Adelaide, by region, data to June 2022.",
+        "usefulness": "Gives real numbers for how much growth comes from infill versus greenfield, which supports splitting our growth scenarios into infill and greenfield. It also shows that inner suburbs like Walkerville are actively growing through infill, so our study area is realistic.",
+        "limitations": "About land and dwellings, not infrastructure; it says nothing about sewer capacity. Regional totals cannot be turned directly into homes per manhole or per catchment.",
+        "conclusions": "Infill supplies most new housing in Greater Adelaide and there is enough land overall for 15 years of growth.",
+        "reflection": "Supports the growth scenario design (infill vs greenfield split and scenario sizes) and the choice of Walkerville as a pilot area."
+      }
+    },
+    {
+      "id": "ASHIS-GL-07",
+      "title": "Land Supply Report for Greater Adelaide, Part 2: Urban Infill (June 2021)",
+      "organization": "South Australian Government (State Planning Commission / PlanSA)",
+      "year": 2021,
+      "category": "Urban Growth & Sewer Capacity",
+      "summary": "The infill part of the 2021 land supply report: where and how fast homes are being added inside the existing suburbs of Adelaide, and how much more infill is possible.",
+      "assignedTo": "Ashis Jose",
+      "pdfUrl": "./contributors/ashis-jose/grey/ASHIS-GL-07_PlanSA_Land_Supply_Urban_Infill_2021.pdf",
+      "url": "https://plan.sa.gov.au/__data/assets/pdf_file/0006/830985/Land_Supply_Report_for_Greater_Adelaide_-_Urban_Infill.pdf",
+      "keyTakeaways": [
+        "Infill makes up around two thirds of Greater Adelaide's yearly net dwelling increase (2010 to 2020): general infill 37% and strategic infill 30%.",
+        "About 2,000 dwellings were demolished per year (2014 to 2020); close to 70% of them were built between 1950 and 1969, and over 75% were on sites with a capital to site value ratio of 1.3 or less.",
+        "Inner Metro needs about 8,300 (medium) to 13,600 (high) extra dwellings from 2020 to 2030; over 35% of all strategic infill was in the Inner Metro region."
+      ],
+      "steps": {
+        "citation": "State Planning Commission (2021). Land Supply Report for Greater Adelaide, Part 2: Urban Infill, June 2021. Growth Management Program, Government of South Australia, Adelaide.",
+        "intro": "Most new homes in Adelaide are built inside existing suburbs. The state needed evidence on where infill happens and how much more is possible, as part of its land supply review.",
+        "methods": "Analysis of net dwelling increase, demolitions and parcel characteristics from 2010 to 2020, with projected dwelling needs by region under medium and high growth.",
+        "scope": "Established urban areas of Greater Adelaide, data to June 2020.",
+        "usefulness": "Supports the infill side of our infill vs greenfield scenarios: infill in Adelaide typically replaces 1950s and 1960s houses with several new dwellings, which is exactly the kind of growth that adds load to old pipes. It also gives Inner Metro growth numbers to keep scenario sizes realistic.",
+        "limitations": "Superseded in part by the 2023 report (item 06). Planning data only; no information on sewer or water capacity.",
+        "conclusions": "Infill is the main source of new housing in Adelaide and is concentrated in older, low-value housing stock.",
+        "reflection": "Supports the realism of our infill scenarios in older inner suburbs such as Walkerville."
+      }
+    },
+    {
+      "id": "ASHIS-GL-08",
+      "title": "SA Water Regulatory Determination 2024: Final Determination, Statement of Reasons",
+      "organization": "Essential Services Commission of South Australia (ESCOSA)",
+      "year": 2024,
+      "category": "Regulation & Funding",
+      "summary": "The regulator's full reasons for SA Water's revenue caps, service standards and approved spending for 1 July 2024 to 30 June 2028, including the government-directed Metropolitan Growth program.",
+      "assignedTo": "Ashis Jose",
+      "pdfUrl": "./contributors/ashis-jose/grey/ASHIS-GL-08_ESCOSA_SAWRD24_Final_Determination_Statement_of_Reasons.pdf",
+      "url": "https://www.escosa.sa.gov.au/ArticleDocuments/22067/20240625-Water-SAWRD24-SAWaterRegulatoryDetermination2024-FinalDetermination-StatementOfReasons.pdf",
+      "keyTakeaways": [
+        "Sewerage revenue is capped at $1,806 million ($Dec22) for 2024 to 2028.",
+        "The Metropolitan Growth project is a government-directed $1,070.1 million ($Dec22) program, split 50% sewerage and 50% water.",
+        "Service standards: attend 98% of metropolitan sewer overflows on time (1 hour inside a building, 2 hours on the property, 4 hours outside the property), and keep public reporting of sewer overflows to the environment."
+      ],
+      "steps": {
+        "citation": "Essential Services Commission of South Australia (2024). SA Water Regulatory Determination 2024: Final Determination, Statement of Reasons, June 2024. ESCOSA, Adelaide.",
+        "intro": "Every four years ESCOSA decides how much revenue SA Water may recover and what service standards it must meet. This document explains the 2024 decision in full.",
+        "methods": "Regulatory review of SA Water's business proposal, independent expert review of capital spending, public consultation and submissions, leading to revenue caps, service standards and reporting requirements.",
+        "scope": "SA Water's water and sewerage retail services across South Australia, 2024 to 2028.",
+        "usefulness": "Shows that growth on the sewer network is a recognised and funded problem: about $535 million of the Metropolitan Growth program is for sewerage. The overflow response standards also show what the utility is held to when an overflow happens, which is the cost of not detecting it early.",
+        "limitations": "A long financial and regulatory document (406 pages); it does not say where growth spending goes within the network or anything about sensor placement. Dollar figures are in December 2022 terms.",
+        "conclusions": "SA Water is funded and directed to invest in growth infrastructure, and is measured on how quickly it responds to and cleans up sewer overflows.",
+        "reflection": "Gives the regulatory and funding context for why growth-related overflow monitoring matters to the industry partner. Useful for the introduction and the cost-benefit discussion."
+      }
+    },
+    {
+      "id": "ASHIS-GL-09",
+      "title": "Fact Sheet: SA Water Regulatory Determination 2024 Overview",
+      "organization": "Essential Services Commission of South Australia (ESCOSA)",
+      "year": 2024,
+      "category": "Regulation & Funding",
+      "summary": "A short summary of the 2024 regulatory determination for SA Water: revenue caps, consumer protections and how ESCOSA, the state government and SA Water share roles.",
+      "assignedTo": "Ashis Jose",
+      "pdfUrl": "./contributors/ashis-jose/grey/ASHIS-GL-09_ESCOSA_SAWRD24_Overview_Factsheet.pdf",
+      "url": "https://www.escosa.sa.gov.au/ArticleDocuments/22067/20240625-Water-SAWRD24-RegulatoryDetermination2024Overview-FactSheet.pdf",
+      "keyTakeaways": [
+        "Overall revenue cap of $5,330 million ($Dec22) for 2024 to 2028: $3,524 million water and $1,806 million sewerage.",
+        "Caps include $1,387 million of government-directed capital spending, including the Metropolitan Growth program and the Tea Tree Gully Sustainable Sewers program.",
+        "ESCOSA sets caps and standards but does not approve individual projects; SA Water chooses its own investment priorities within the caps."
+      ],
+      "steps": {
+        "citation": "Essential Services Commission of South Australia (2024). Fact Sheet: SA Water Regulatory Determination 2024: Overview, June 2024. ESCOSA, Adelaide.",
+        "intro": "A plain summary of the four-year regulatory decision for SA Water, for the public.",
+        "methods": "Summary of the final determination (item 08).",
+        "scope": "SA Water, 1 July 2024 to 30 June 2028.",
+        "usefulness": "A quick, citable source for the headline numbers and for the point that SA Water decides its own investment priorities, which is where a sensor programme would have to compete for funding.",
+        "limitations": "Summary only; no network or technical detail.",
+        "conclusions": "SA Water's revenue is capped and must cover government-directed growth programs; SA Water sets its own priorities within that.",
+        "reflection": "Short context source for slides and the report introduction; use item 08 for detail."
+      }
+    },
+    {
+      "id": "ASHIS-GL-11",
+      "title": "Infrastructure Provision in Different Development Settings, Metropolitan Melbourne, Volume 1 Technical Paper",
+      "organization": "Infrastructure Victoria",
+      "year": 2019,
+      "category": "Urban Growth & Sewer Capacity",
+      "summary": "Research on whether existing infrastructure limits new housing in Melbourne and how infrastructure costs compare between established (infill) areas and greenfield growth areas.",
+      "assignedTo": "Ashis Jose",
+      "pdfUrl": "./contributors/ashis-jose/grey/ASHIS-GL-11_Infrastructure_Victoria_Infrastructure_Provision_Development_Settings_Vol1.pdf",
+      "url": "https://infrastructurevictoria.com.au/resources/infrastructure-provision-in-different-development-settings",
+      "keyTakeaways": [
+        "Excluding transport, infrastructure capital costs in greenfield areas can be two to four times higher than in established areas, but only where existing infrastructure has spare capacity.",
+        "Sewer networks in established areas typically can absorb projected growth, because capacity is mainly limited by wet weather flows; but growth will at some stage exceed existing capacity.",
+        "Sewer, water and electricity costs are of a similar order relative to a new dwelling, and higher in greenfield areas because new networks must be built."
+      ],
+      "steps": {
+        "citation": "Infrastructure Victoria (2019). Infrastructure Provision in Different Development Settings: Metropolitan Melbourne, Volume 1 Technical Paper, April 2019. Infrastructure Victoria, Melbourne.",
+        "intro": "Victoria wanted evidence on whether infill or greenfield housing is cheaper to service and which infrastructure limits growth.",
+        "methods": "Review of each infrastructure type and cost data from recent Melbourne projects, consultant databases and service providers, compared across development settings over a 30-year period.",
+        "scope": "Metropolitan Melbourne: transport, water, sewer, stormwater, energy, telecommunications and social infrastructure.",
+        "usefulness": "Supports the cost side of our risk and cost-benefit work: infill is cheaper only while the pipes have room. It also states that sewer capacity is limited by wet weather flows, which matches our finding that infill causes more trouble on wet days.",
+        "limitations": "Melbourne, not Adelaide. Strategic order-of-magnitude costs, not project costs. Sewer is covered only briefly and at network level.",
+        "conclusions": "Most infrastructure can keep up with growth if funded on time; infill is cheaper than greenfield where spare capacity exists.",
+        "reflection": "Supports the argument that monitoring existing pipes in infill areas has value, because spare capacity is what makes infill cheap."
+      }
+    },
+    {
+      "id": "ASHIS-GL-12",
+      "title": "Rethinking 70/30: The Cost of Building Where We Already Live",
+      "organization": "Prepared for the Urban Development Institute of Australia (UDIA) Victoria",
+      "year": 2026,
+      "category": "Urban Growth & Sewer Capacity",
+      "summary": "An industry report arguing that Victoria's target of 70% of new homes in established areas is out of reach because infrastructure in older suburbs, including ageing sewers, is at or beyond capacity.",
+      "assignedTo": "Ashis Jose",
+      "pdfUrl": "./contributors/ashis-jose/grey/ASHIS-GL-12_UDIA_Rethinking_70-30_2026.pdf",
+      "url": "https://udiavic.com.au/wp-content/uploads/2026/05/Rethinking-7030-The-Cost-of-Building-Where-We-Already-Live.pdf",
+      "keyTakeaways": [
+        "The cost advantage of infill holds only where existing networks have genuine spare capacity; once capacity is used up, infill costs can match or exceed greenfield costs.",
+        "Ageing drainage and sewer networks in established suburbs need major retrofits, and upgrades are usually reactive, triggered by development rather than planned in sequence.",
+        "Recommends an 'infrastructure readiness assessment' so housing targets are based on verified, not assumed, infrastructure capacity."
+      ],
+      "steps": {
+        "citation": "Urban Development Institute of Australia (Victoria) (2026). Rethinking 70/30: The Cost of Building Where We Already Live. UDIA Victoria, Melbourne.",
+        "intro": "Victoria aims for 70% of new homes in established areas and 30% in growth areas. The development industry questions whether that is achievable and whether infill is really cheaper.",
+        "methods": "Policy review drawing on earlier cost studies (2016 and 2019), audit and agency reports, and analysis of infrastructure, funding and governance barriers.",
+        "scope": "Metropolitan Melbourne, all infrastructure types.",
+        "usefulness": "Its call for verified, not assumed, capacity is the case for monitoring: sensors show how much spare room existing sewers really have before infill is approved. It matches our finding that infill is the harder case on wet days.",
+        "limitations": "Commissioned by a development industry body, so it has an interest in greenfield growth. Not sewer-specific and gives no new hydraulic evidence. Victorian context.",
+        "conclusions": "Infill targets need infrastructure planning and funding that is based on real capacity data.",
+        "reflection": "Supports the motivation for monitoring capacity in infill areas; cite with care because of who commissioned it."
+      }
+    },
+    {
+      "id": "ASHIS-GL-13",
+      "title": "Greater Adelaide Regional Plan Fact Sheet: Housing and Land Supply Targets",
+      "organization": "South Australian Government (Department for Housing and Urban Development)",
+      "year": 2024,
+      "category": "Urban Growth & Sewer Capacity",
+      "summary": "A short fact sheet on the regional plan's housing targets: 315,000 additional homes in Greater Adelaide by 2051, with targets for each council set in 10-year steps.",
+      "assignedTo": "Ashis Jose",
+      "pdfUrl": "./contributors/ashis-jose/grey/ASHIS-GL-13_GARP_Housing_Targets_Factsheet.pdf",
+      "url": "https://dit.sa.gov.au/__data/assets/pdf_file/0019/1411246/GARP-fact-sheet-housing-and-land-supply-targets.pdf",
+      "keyTakeaways": [
+        "Greater Adelaide needs 315,000 additional homes by 2051.",
+        "Council housing targets are set in 10-year steps based on the constraints and known capacity of infrastructure in each area.",
+        "The state must keep a rolling 15-year supply of zoned land, 5 years of it development ready; supply is tracked quarterly on a Land Supply Dashboard."
+      ],
+      "steps": {
+        "citation": "Government of South Australia (2024). Greater Adelaide Regional Plan Fact Sheet: Housing and Land Supply Targets. Department for Housing and Urban Development, Adelaide.",
+        "intro": "The regional plan sets how many homes Greater Adelaide needs and where. This fact sheet explains the targets.",
+        "methods": "Summary of plan targets.",
+        "scope": "Greater Adelaide, 2021 to 2051.",
+        "usefulness": "A single citable line for 'growth is coming' (315,000 homes by 2051). It also notes that targets depend on known infrastructure capacity, which is information monitoring can provide.",
+        "limitations": "Very short. No sewer detail and no suburb-level numbers.",
+        "conclusions": "Large growth is planned, and housing targets are tied to infrastructure capacity.",
+        "reflection": "Background for the introduction."
+      }
+    },
+    {
+      "id": "ASHIS-GL-14",
+      "title": "Greater Adelaide Regional Plan Summary (2025)",
+      "organization": "South Australian Government",
+      "year": 2025,
+      "category": "Urban Growth & Sewer Capacity",
+      "summary": "The summary of the Greater Adelaide Regional Plan, the 30-year plan for where homes and jobs will go to 2051.",
+      "assignedTo": "Ashis Jose",
+      "pdfUrl": "./contributors/ashis-jose/grey/ASHIS-GL-14_GARP_Summary_2025.pdf",
+      "url": "https://dit.sa.gov.au/__data/assets/pdf_file/0005/1407389/GARP-Summary.pdf",
+      "keyTakeaways": [
+        "Plans for about 670,000 more people (46% growth, to about 2.2 million), 315,000 new homes and 254,000 jobs by 2051.",
+        "Land for about 215,000 homes is already zoned or being rezoned, but much of it is not yet serviced by infrastructure.",
+        "No fixed greenfield vs infill split; growth will come from a mix of greenfield, township and infill development with appropriately timed infrastructure."
+      ],
+      "steps": {
+        "citation": "Government of South Australia (2025). Greater Adelaide Regional Plan Summary. Adelaide.",
+        "intro": "The regional plan is the state's long-term land use plan for Greater Adelaide. This is its public summary.",
+        "methods": "Plan summary.",
+        "scope": "Greater Adelaide, to 2051.",
+        "usefulness": "Context for the scale of growth that the sewer network must absorb, and confirms both infill and greenfield will continue.",
+        "limitations": "Strategic summary; nothing on sewer capacity or monitoring.",
+        "conclusions": "Adelaide will grow strongly to 2051 through a mix of infill and greenfield, with infrastructure timed to match.",
+        "reflection": "Background only."
+      }
+    },
+    {
+      "id": "ASHIS-GL-15",
+      "title": "Infrastructure and Land Development Cost Comparison Technical Note (GARP Discussion Paper)",
+      "organization": "Infrastructure SA and Planning and Land Use Services (PlanSA)",
+      "year": 2023,
+      "category": "Urban Growth & Sewer Capacity",
+      "summary": "A short note explaining how the GARP discussion paper compared land development infrastructure costs across six common Adelaide development types, from CBD apartments to greenfield estates.",
+      "assignedTo": "Ashis Jose",
+      "pdfUrl": "./contributors/ashis-jose/grey/ASHIS-GL-15_PlanSA_Infrastructure_Cost_Technical_Note.pdf",
+      "url": "https://plan.sa.gov.au/__data/assets/pdf_file/0003/1263486/Infrastructure-and-land-development-cost-comparison-technical-note-Greater-Adelaide-Regional-Plan-Discussion-Paper.pdf",
+      "keyTakeaways": [
+        "Six case studies: CBD high density, inner master planned, inner corridor, inner minor infill ('1 into 2'), urban greenfield and township greenfield.",
+        "Water and wastewater costs include the network in the development and may trigger upgrades to the wider network; they can be significant for both greenfield and infill.",
+        "Existing network capacity and peak demand are listed as factors that change infrastructure cost."
+      ],
+      "steps": {
+        "citation": "Infrastructure SA and Planning and Land Use Services (2023). Infrastructure and Land Development Cost Comparison Technical Note, Greater Adelaide Regional Plan Discussion Paper, August 2023. Government of South Australia, Adelaide.",
+        "intro": "The GARP discussion paper compared development costs; this note explains the method behind that comparison.",
+        "methods": "Cost ranges built from comparable recent projects (some confidential) for six case study development types; lists what was included and excluded.",
+        "scope": "Land development infrastructure in Greater Adelaide.",
+        "usefulness": "Shows that in Adelaide, wastewater upgrade costs and existing network capacity are recognised factors in the cost of infill, supporting our cost-benefit framing.",
+        "limitations": "Method note only; actual cost figures are in the discussion paper. Little sewer-specific detail.",
+        "conclusions": "Infrastructure costs vary with development type, and existing network capacity is one of the factors.",
+        "reflection": "Weak support for the cost discussion."
+      }
+    },
+    {
+      "id": "ASHIS-GL-16",
+      "title": "Data-Driven Blockage Detection in Sewer Collection Systems (conference abstract)",
+      "organization": "Water Environment Federation (WEF), Access Water proceedings",
+      "year": 2025,
+      "category": "Sensors & Monitoring Hardware",
+      "summary": "A conference abstract on detecting sewer blockages in real time from depth sensor and rainfall data in New Bedford, using matrix profiling and a state-based alert method. Only the abstract is public.",
+      "assignedTo": "Ashis Jose",
+      "url": "https://www.accesswater.org/publications/proceedings/-10117329/data-driven-blockage-detection-in-sewer-collection-systems",
+      "keyTakeaways": [
+        "Used depth data from 94 locations and 3 rain gauges across a 254-mile sewer system.",
+        "Matrix profiling with synthetic blockage patterns detected a blockage within about 40 minutes, even during rain.",
+        "A sleep, monitoring and trigger state approach tracks how a blockage develops before raising an alert."
+      ],
+      "steps": {
+        "citation": "Water Environment Federation (2025). Data-Driven Blockage Detection in Sewer Collection Systems. WEF conference proceedings, Access Water.",
+        "intro": "Blockages cause overflows and are usually found only after complaints. The authors test a data-driven method to catch them early from sensor data.",
+        "methods": "Time series of depth from 94 sites and rainfall from 3 gauges; matrix profiling against synthetic and real blockage patterns; state-based triggering to separate rain effects from blockages.",
+        "scope": "New Bedford, MA, USA (254 miles of sewer, 72 CSO regulators).",
+        "usefulness": "Shows what a dense level sensor network can do once installed. It is about blockages, which the industry partner has said is out of scope for now, so it is useful only for future work.",
+        "limitations": "Abstract only; full paper is behind WEF access. Combined sewer system. Results not yet fully validated at the time of the abstract.",
+        "conclusions": "Level sensor data can detect blockages in under an hour with methods that need little training data.",
+        "reflection": "Future work only (blockage detection with the same sensors)."
       }
     },
     {

@@ -1,6 +1,6 @@
 # Wastewater Research Corpus
 
-This repository contains the Paper 1 wastewater-sensor literature viewer. It stores research-paper PDFs, 8-step summaries, contributor metadata, topic-level compiled papers, and industry grey literature across **55 research papers**, **4 contributor compiled reviews**, **1 team-wide compiled paper**, and **65 grey literature / utility reports** (125 total documents).
+This repository contains the Paper 1 wastewater-sensor literature viewer. It stores research-paper PDFs, 8-step summaries, contributor metadata, topic-level compiled papers, and industry grey literature across **55 research papers**, **4 contributor compiled reviews**, **1 team-wide compiled paper**, and **80 grey literature / utility reports** (140 total documents).
 
 Open [`index.html`](./index.html) to use the viewer.
 

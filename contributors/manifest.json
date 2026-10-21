@@ -26,7 +26,8 @@
     {
       "name": "Ashis Jose",
       "slug": "ashis-jose",
-      "file": "./ashis-jose/papers.json"
+      "file": "./ashis-jose/papers.json",
+      "greyLiteratureFile": "./ashis-jose/grey-literature.json"
     },
     {
       "name": "Rijoy John",
