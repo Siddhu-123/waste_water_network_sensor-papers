@@ -16,7 +16,7 @@
 .research-map-layout { display:grid; grid-template-columns:minmax(0, 2fr) minmax(0, 1fr); gap:14px; align-items:stretch; }
 
 .research-map-main,.research-map-sidebar { min-width:0; border:1px solid rgba(43,61,88,.85); border-radius:14px; background:rgba(12,19,32,.78); }
-.research-map-main { display:flex; flex-direction:column; gap:10px; height:max(30rem, calc(100vh - 170px)); padding:12px; }
+.research-map-main { display:flex; flex-direction:column; gap:10px; padding:12px; }
 .research-map-filters { flex:none; display:grid; grid-template-columns:minmax(0, .9fr) minmax(0, 1.1fr); gap:4px; align-items:end; padding:4px 0; border-bottom:1px solid rgba(48,65,90,.75); }
 .research-map-filter { display:flex; min-width:0; flex-direction:column; gap:4px; color:#8294ad; font-size: var(--fs-ui); font-weight:600; letter-spacing:.045em; }
 .research-map-filter select { width:100%; min-width:0; min-height:2rem; padding:0 7px; border:1px solid #2b3b55; border-radius:7px; outline:0; background:#0f1929; color:#e5edf7; font:500 var(--fs-ui)/1.5 Inter, sans-serif; letter-spacing:0; }
@@ -25,7 +25,7 @@
 .research-map-actions { display:flex; gap:5px; }
 .research-map-actions .research-map-quiet { flex:1; min-width:0; min-height:2rem; white-space:normal; }
 .research-map-browse,.research-map-key { border:1px solid rgba(66,96,128,.38); border-radius:10px; padding:12px; background:rgba(16,26,42,.7); }
-.research-map-browse { flex:1 1 auto; min-height:0; overflow-y:auto; scrollbar-color:#334966 transparent; scrollbar-width:thin; }
+.research-map-browse { flex:none; }
 .research-map-browse-heading { margin:0 0 8px; color:#9fb2c8; font-size:var(--fs-micro); font-weight:700; line-height:1.4; letter-spacing:.08em; text-transform:uppercase; }
 .research-map-key { flex:none; }
 .research-map-quiet,.research-map-quick button { min-height:2.5rem; border:1px solid #31425d; border-radius:7px; background:#121f32; color:#bdcadb; padding:0 9px; font:600 var(--fs-ui)/1.5 Inter,sans-serif; white-space:nowrap; cursor:pointer; transition:background .15s,border-color .15s,color .15s; }
