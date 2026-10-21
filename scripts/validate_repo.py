@@ -150,8 +150,8 @@ def validate_annotation_files(validation: Validation) -> None:
                 annotation_ids.add(annotation_id)
 
             annotation_type = annotation.get("type")
-            if annotation_type not in ("highlight", "sticky-note"):
-                validation.error(f"{label}: type must be highlight or sticky-note")
+            if annotation_type not in ("highlight", "line-link", "sticky-note"):
+                validation.error(f"{label}: type must be highlight, line-link or sticky-note")
             page = annotation.get("page")
             if isinstance(page, bool) or not isinstance(page, int) or page < 1:
                 validation.error(f"{label}: page must be a positive integer")
@@ -161,7 +161,7 @@ def validate_annotation_files(validation: Validation) -> None:
                 if not isinstance(value, (int, float)) or isinstance(value, bool) or not 0 <= value <= 1:
                     validation.error(f"{label}: {coordinate} must be between 0 and 1")
 
-            if annotation_type == "highlight":
+            if annotation_type in ("highlight", "line-link"):
                 for dimension in ("width", "height"):
                     value = annotation.get(dimension)
                     if not isinstance(value, (int, float)) or isinstance(value, bool) or not 0 < value <= 1:

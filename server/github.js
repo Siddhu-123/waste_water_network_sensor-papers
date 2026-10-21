@@ -439,7 +439,7 @@ function normalizeAnnotation(value, index) {
     throw new Error("Annotation " + (index + 1) + " must be an object");
   }
   const type = value.type === "sticky-note" ? "sticky-note" : value.type;
-  if (type !== "highlight" && type !== "sticky-note") {
+  if (type !== "highlight" && type !== "line-link" && type !== "sticky-note") {
     throw new Error("Annotation " + (index + 1) + " has an unsupported type");
   }
   const id = String(value.id || "").trim();
@@ -468,7 +468,7 @@ function normalizeAnnotation(value, index) {
     ).slice(0, 40),
   };
 
-  if (type === "highlight") {
+  if (type === "highlight" || type === "line-link") {
     const width = Number(value.width);
     const height = Number(value.height);
     const color = String(value.color || "#ffdf5d");

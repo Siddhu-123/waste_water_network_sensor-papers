@@ -657,6 +657,64 @@
         box-shadow: 0 0 0 1.5px rgba(45, 212, 191, 0.9);
       }
 
+      .line-link-annotation {
+        position: absolute;
+        background-color: rgba(59, 130, 246, 0.18);
+        background-image: repeating-linear-gradient(135deg, rgba(37, 99, 235, 0.22) 0 1px, transparent 1px 5px);
+        border-bottom: 2px solid rgba(37, 99, 235, 0.75);
+        border-radius: 2px;
+        mix-blend-mode: multiply;
+        cursor: pointer;
+        z-index: 1;
+      }
+
+      .line-link-annotation:hover,
+      .line-link-annotation.selected {
+        box-shadow: 0 0 0 1.5px rgba(37, 99, 235, 0.9);
+      }
+
+      .line-link-target {
+        animation: line-link-pulse 800ms ease-in-out 3;
+      }
+
+      @keyframes line-link-pulse {
+        50% {
+          outline: 2px solid rgba(37, 99, 235, 0.85);
+          box-shadow: 0 0 14px 4px rgba(59, 130, 246, 0.5);
+        }
+      }
+
+      .line-link-menu {
+        position: fixed;
+        z-index: 10000;
+        padding: 5px;
+        max-width: calc(100vw - 16px);
+        max-height: calc(100vh - 16px);
+        overflow: auto;
+        background: #1e293b;
+        border: 1px solid #334155;
+        border-radius: 8px;
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+      }
+
+      .line-link-menu button {
+        display: block;
+        width: 100%;
+        padding: 8px 12px;
+        border: 0;
+        border-radius: 4px;
+        background: transparent;
+        color: #e2e8f0;
+        font: inherit;
+        text-align: left;
+        cursor: pointer;
+      }
+
+      .line-link-menu button:hover,
+      .line-link-menu button:focus-visible {
+        background: #334155;
+      }
+
       /* Sticky Note Minimized Sticker on Canvas */
       .sticky-note {
         position: absolute;
@@ -1559,6 +1617,7 @@
             <button class="tool-btn" type="button" data-tool="highlight" title="Highlight text with cursor">
               🖍 Highlight
             </button>
+            <button class="tool-btn" type="button" data-tool="link" title="Select a line or passage to make a shareable link">🔗 Line link</button>
             <label class="color-dot-control" title="Highlight color">
               <input id="highlightColor" type="color" value="#ffdf5d" />
               <span class="color-dot-preview" id="colorPreview"></span>
@@ -1717,6 +1776,9 @@
         }
 
         const query = new URLSearchParams(window.location.search);
+        const startPage = parseInt(query.get("page"), 10);
+        const startMark = query.get("mark");
+        const startText = query.get("q");
         const paperId = String(query.get("paper") || "").trim();
         const pdfParameter = query.get("pdf") || "";
         const paperTitle = query.get("title") || (paperId ? "Paper " + paperId : "PDF annotation workspace");
@@ -1805,6 +1867,7 @@
         let annotations = [];
         let annotationRevision = null;
         let selectedAnnotationId = null;
+        let linkTarget = null;
         let activeTool = "pan";
         let undoHistory = [];
         let redoHistory = [];
@@ -1904,7 +1967,7 @@
         }
 
         function validAnnotation(annotation) {
-          if (!annotation || (annotation.type !== "highlight" && annotation.type !== "sticky-note")) return false;
+          if (!annotation || (annotation.type !== "highlight" && annotation.type !== "line-link" && annotation.type !== "sticky-note")) return false;
           const page = Number(annotation.page);
           if (!Number.isInteger(page) || page < 1) return false;
           if (annotation.type === "sticky-note") {
@@ -1914,7 +1977,7 @@
             if (annotation.id === activeExpandedNoteId || annotation.isDraftNew) return true;
             return String(annotation.text || "").trim().length > 0;
           }
-          return true; // highlight can have boxes
+          return true; // highlights and line links can have boxes
         }
 
         function getShortNoteTitle(annotation) {
@@ -2314,25 +2377,10 @@
           return merged;
         }
 
-        /* Real Text Highlighting on Mouse Up */
-        function handleTextSelection() {
-          if (activeTool !== "highlight") return;
-          const selection = window.getSelection();
-          if (!selection || selection.isCollapsed) return;
-
-          const text = selection.toString().trim();
-          if (!text) return;
-
-          const range = selection.getRangeAt(0);
-          const commonAncestor = range.commonAncestorContainer;
-          const pageEl = (commonAncestor.nodeType === 1 ? commonAncestor : commonAncestor.parentElement).closest(".pdf-page");
-          if (!pageEl) return;
-
-          const pageNumber = Number(pageEl.dataset.pageNumber);
+        function rangeLineBoxes(range, pageEl) {
           const pageRect = pageEl.getBoundingClientRect();
+          if (!pageRect.width || !pageRect.height) return [];
           const clientRects = Array.from(range.getClientRects());
-          if (!clientRects.length) return;
-
           const rawBoxes = [];
           for (const cr of clientRects) {
             // Ignore degenerate / tiny rects (artifacts, zero-dimension marks)
@@ -2345,9 +2393,33 @@
             });
           }
 
-          selection.removeAllRanges();
-          const boxes = mergeLineBoxes(rawBoxes);
-          if (!boxes.length) return;
+          return mergeLineBoxes(rawBoxes);
+        }
+
+        function selectedLine() {
+          const selection = window.getSelection();
+          if (!selection || selection.isCollapsed || !selection.rangeCount) return null;
+          const text = selection.toString().trim();
+          if (!text) return null;
+          const range = selection.getRangeAt(0);
+          const startEl = range.startContainer.nodeType === 1 ? range.startContainer : range.startContainer.parentElement;
+          const endEl = range.endContainer.nodeType === 1 ? range.endContainer : range.endContainer.parentElement;
+          const textLayer = startEl.closest(".textLayer");
+          const pageEl = textLayer && textLayer.closest(".pdf-page");
+          if (!pageEl || !textLayer.contains(endEl)) return null;
+          const boxes = rangeLineBoxes(range, pageEl);
+          return boxes.length ? { page: Number(pageEl.dataset.pageNumber), boxes, text } : null;
+        }
+
+        /* Real Text Highlighting and Line Links on Mouse Up */
+        function handleTextSelection(event) {
+          if (activeTool !== "highlight" && activeTool !== "link") return;
+          if (event && (event.button !== 0 || event.target.closest(".line-link-menu"))) return;
+          const selected = selectedLine();
+          if (!selected) return;
+          const { page: pageNumber, boxes, text } = selected;
+          window.getSelection().removeAllRanges();
+          const isLineLink = activeTool === "link";
 
           const minX = Math.min(...boxes.map((b) => b.x));
           const minY = Math.min(...boxes.map((b) => b.y));
@@ -2356,8 +2428,8 @@
 
           const next = snapshot();
           const annotation = {
-            id: newId("highlight"),
-            type: "highlight",
+            id: newId(isLineLink ? "line-link" : "highlight"),
+            type: isLineLink ? "line-link" : "highlight",
             page: pageNumber,
             text: text,
             boxes: boxes,
@@ -2365,16 +2437,235 @@
             y: clamp(minY, 0, 1),
             width: clamp(maxX - minX, 0.001, 1),
             height: clamp(maxY - minY, 0.001, 1),
-            color: elements.color.value,
+            color: isLineLink ? "#2563eb" : elements.color.value,
             createdBy: getActiveUser(),
             createdAt: new Date().toISOString(),
           };
           next.push(annotation);
           commitChange(next, annotation.id);
-          setStatus(`Highlighted text on Page ${pageNumber}`, "success");
+          setStatus(isLineLink
+            ? `Line link added on Page ${pageNumber}. Right-click it to copy the link.`
+            : `Highlighted text on Page ${pageNumber}`, "success");
         }
 
         document.addEventListener("mouseup", handleTextSelection);
+
+        function buildLineLink(page, boxes, text) {
+          const params = new URLSearchParams();
+          ["paper", "pdf", "title"].forEach((key) => {
+            if (query.has(key)) params.set(key, query.get(key));
+          });
+          params.set("page", String(page));
+          params.set("mark", boxes.slice(0, 12).map((box) =>
+            [box.x, box.y, box.width, box.height].map((value) => Number(value).toFixed(4)).join(",")
+          ).join(";"));
+          params.set("q", String(text || "").replace(/\s+/g, " ").trim().slice(0, 160));
+          return window.location.origin + window.location.pathname + "?" + params.toString();
+        }
+
+        function parseLineMark(mark) {
+          if (!mark) return [];
+          const entries = mark.split(";");
+          if (entries.length > 12) return [];
+          const boxes = [];
+          for (const entry of entries) {
+            const parts = entry.split(",");
+            if (parts.length !== 4 || parts.some((part) => !part.trim())) return [];
+            const [x, y, width, height] = parts.map(Number);
+            if (![x, y, width, height].every(Number.isFinite) || x < 0 || y < 0 || x > 1 || y > 1 ||
+                width <= 0 || height <= 0 || width > 1 || height > 1 ||
+                x + width > 1.0001 || y + height > 1.0001) return [];
+            boxes.push({ x, y, width, height });
+          }
+          return boxes;
+        }
+
+        function normalizeLineText(text, map) {
+          const chars = [];
+          const positions = [];
+          const normalized = text.replace(/[\u2018\u2019\u201a\u201b]/g, "'")
+            .replace(/[\u201c\u201d\u201e\u201f]/g, '"')
+            .replace(/[\u2010-\u2015\u2212]/g, "-");
+          for (let i = 0; i < normalized.length; i++) {
+            const char = normalized[i];
+            if (char === "\u00ad" || /\s/.test(char)) continue;
+            if (char === "-" && /\s/.test(normalized[i + 1] || "")) continue;
+            const lower = char.toLowerCase();
+            for (let j = 0; j < lower.length; j++) {
+              chars.push(lower[j]);
+              if (map) positions.push(map[i]);
+            }
+          }
+          return { text: chars.join(""), positions };
+        }
+
+        function findTextBoxes(pageNumber, q) {
+          const pageEl = elements.pages.querySelector(`[data-page-number="${pageNumber}"]`);
+          if (!pageEl || !String(q || "").trim()) return [];
+          let text = "";
+          const map = [];
+          const seen = new Set();
+          pageEl.querySelectorAll(".textLayer span").forEach((span) => {
+            const walker = document.createTreeWalker(span, NodeFilter.SHOW_TEXT);
+            let node;
+            while ((node = walker.nextNode())) {
+              if (seen.has(node)) continue;
+              seen.add(node);
+              for (let offset = 0; offset < node.textContent.length; offset++) {
+                text += node.textContent[offset];
+                map.push({ node, offset });
+              }
+            }
+            text += " ";
+            map.push(null);
+          });
+          const normalized = normalizeLineText(text, map);
+          const words = String(q).trim().split(/\s+/);
+          const candidates = [String(q), words.slice(0, 12).join(" "), words.slice(0, 6).join(" ")];
+          for (const candidate of candidates) {
+            const needle = normalizeLineText(candidate).text;
+            if (!needle) continue;
+            const index = normalized.text.indexOf(needle);
+            if (index === -1) continue;
+            const start = normalized.positions[index];
+            const end = normalized.positions[index + needle.length - 1];
+            if (!start || !end) continue;
+            const range = document.createRange();
+            range.setStart(start.node, start.offset);
+            range.setEnd(end.node, end.offset + 1);
+            const boxes = rangeLineBoxes(range, pageEl);
+            if (boxes.length) return boxes;
+          }
+          return [];
+        }
+
+        async function openLineLink(pageNumber) {
+          // Yield first so the "PDF ready" status does not overwrite the line-link status.
+          await new Promise((resolve) => setTimeout(resolve, 0));
+          const deadline = Date.now() + 15000;
+          renderPageCanvas(pageNumber);
+          while (!renderedPages.has(pageNumber) && Date.now() < deadline) {
+            await new Promise((resolve) => setTimeout(resolve, 100));
+          }
+          const markedBoxes = parseLineMark(startMark);
+          const boxes = renderedPages.has(pageNumber)
+            ? (markedBoxes.length ? markedBoxes : findTextBoxes(pageNumber, startText))
+            : [];
+          if (!boxes.length) {
+            setStatus(`Opened Page ${pageNumber} (the linked text was not found on this page).`, "neutral");
+            return;
+          }
+          linkTarget = { page: pageNumber, boxes };
+          renderAnnotationsForPage(pageNumber);
+          const scrollToLine = () => {
+            const pageEl = elements.pages.querySelector(`[data-page-number="${pageNumber}"]`);
+            if (!pageEl) return;
+            const pageRect = pageEl.getBoundingClientRect();
+            const viewportRect = elements.viewport.getBoundingClientRect();
+            elements.viewport.scrollTo({
+              top: elements.viewport.scrollTop + pageRect.top - viewportRect.top + boxes[0].y * pageRect.height - elements.viewport.clientHeight * 0.3,
+              behavior: "smooth",
+            });
+          };
+          scrollToLine();
+          setTimeout(scrollToLine, 700);
+          setStatus(`Opened at the linked line on Page ${pageNumber}.`, "success");
+        }
+
+        const lineLinkMenu = document.createElement("div");
+        lineLinkMenu.className = "line-link-menu";
+        lineLinkMenu.hidden = true;
+        lineLinkMenu.setAttribute("aria-label", "Line link actions");
+        document.body.appendChild(lineLinkMenu);
+
+        function closeLineLinkMenu() {
+          lineLinkMenu.hidden = true;
+        }
+
+        async function copyLineLink(line) {
+          const url = buildLineLink(line.page, line.boxes, line.text);
+          try {
+            try {
+              await navigator.clipboard.writeText(url);
+            } catch (_clipboardError) {
+              const textarea = document.createElement("textarea");
+              textarea.value = url;
+              textarea.style.position = "fixed";
+              textarea.style.opacity = "0";
+              const focused = document.activeElement;
+              document.body.appendChild(textarea);
+              try {
+                textarea.select();
+                if (!document.execCommand("copy")) throw new Error("Copy failed");
+              } finally {
+                textarea.remove();
+                if (focused) focused.focus({ preventScroll: true });
+              }
+            }
+            setStatus("Link copied. Anyone who opens it lands on this line.", "success");
+          } catch (_error) {
+            setStatus("Could not copy the link. Please try again.", "error");
+          }
+        }
+
+        document.addEventListener("contextmenu", (event) => {
+          const annotationEl = event.target.closest(".line-link-annotation, .highlight-annotation");
+          let annotation = null;
+          let line = null;
+          if (annotationEl) {
+            annotation = annotations.find((item) => item.id === annotationEl.dataset.annotationId);
+            if (annotation) {
+              line = {
+                page: Number(annotation.page),
+                boxes: annotation.boxes && annotation.boxes.length ? annotation.boxes
+                  : [{ x: annotation.x, y: annotation.y, width: annotation.width, height: annotation.height }],
+                text: annotation.text,
+              };
+            } else if (annotationEl.classList.contains("line-link-target") && linkTarget) {
+              line = { ...linkTarget, text: startText };
+            }
+          } else {
+            line = selectedLine();
+          }
+          closeLineLinkMenu();
+          if (!line) return;
+          event.preventDefault();
+          lineLinkMenu.replaceChildren();
+          const copyButton = document.createElement("button");
+          copyButton.type = "button";
+          copyButton.textContent = "Copy link to this line";
+          copyButton.addEventListener("click", () => {
+            closeLineLinkMenu();
+            copyLineLink(line);
+          });
+          lineLinkMenu.appendChild(copyButton);
+          if (annotation && annotation.type === "line-link") {
+            const removeButton = document.createElement("button");
+            removeButton.type = "button";
+            removeButton.textContent = "Remove";
+            removeButton.addEventListener("click", () => {
+              closeLineLinkMenu();
+              removeAnnotation(annotation.id);
+            });
+            lineLinkMenu.appendChild(removeButton);
+          }
+          lineLinkMenu.hidden = false;
+          const rect = lineLinkMenu.getBoundingClientRect();
+          lineLinkMenu.style.left = clamp(event.clientX, 8, Math.max(8, window.innerWidth - rect.width - 8)) + "px";
+          lineLinkMenu.style.top = clamp(event.clientY, 8, Math.max(8, window.innerHeight - rect.height - 8)) + "px";
+          copyButton.focus({ preventScroll: true });
+        });
+
+        document.addEventListener("pointerdown", (event) => {
+          if (!lineLinkMenu.contains(event.target)) closeLineLinkMenu();
+          // Keep a right-click on selected text from placing a note in the Note tool.
+          if (event.button === 2 && event.target.closest(".pdf-page") && selectedLine()) event.stopPropagation();
+        }, true);
+        document.addEventListener("scroll", closeLineLinkMenu, true);
+        window.addEventListener("resize", closeLineLinkMenu);
+        document.addEventListener("keydown", (event) => {
+          if (event.key === "Escape") closeLineLinkMenu();
+        });
 
         /* Render Highlights & Sticky Notes on Page */
         function renderAnnotationsForPage(pageNumber) {
@@ -2390,7 +2681,8 @@
             return validAnnotation(a);
           });
           pageAnns.forEach((annotation) => {
-            if (annotation.type === "highlight") {
+            if (annotation.type === "highlight" || annotation.type === "line-link") {
+              const isLineLink = annotation.type === "line-link";
               const rawBoxes = annotation.boxes && annotation.boxes.length
                 ? annotation.boxes
                 : [{ x: annotation.x, y: annotation.y, width: annotation.width, height: annotation.height }];
@@ -2399,14 +2691,16 @@
 
               boxes.forEach((box) => {
                 const el = document.createElement("div");
-                el.className = "annotation highlight-annotation" + (isSelected ? " selected" : "");
+                el.className = "annotation " + (isLineLink ? "line-link-annotation" : "highlight-annotation") + (isSelected ? " selected" : "");
                 el.dataset.annotationId = annotation.id;
                 el.style.left = box.x * 100 + "%";
                 el.style.top = box.y * 100 + "%";
                 el.style.width = box.width * 100 + "%";
                 el.style.height = box.height * 100 + "%";
-                el.style.backgroundColor = annotation.color || elements.color.value;
-                el.title = `Highlighted by ${annotation.createdBy || "Contributor"}: "${annotation.text || ""}"`;
+                if (!isLineLink) el.style.backgroundColor = annotation.color || elements.color.value;
+                el.title = isLineLink
+                  ? "Line link — right-click to copy a link to this line"
+                  : `Highlighted by ${annotation.createdBy || "Contributor"}: "${annotation.text || ""}"`;
 
                 el.addEventListener("click", (event) => {
                   event.stopPropagation();
@@ -2507,6 +2801,19 @@
               }
             }
           });
+          if (linkTarget && linkTarget.page === pageNumber) {
+            linkTarget.boxes.forEach((box) => {
+              const el = document.createElement("div");
+              el.className = "annotation line-link-annotation line-link-target";
+              el.style.left = box.x * 100 + "%";
+              el.style.top = box.y * 100 + "%";
+              el.style.width = box.width * 100 + "%";
+              el.style.height = box.height * 100 + "%";
+              el.title = "Line link — right-click to copy a link to this line";
+              el.addEventListener("click", (event) => event.stopPropagation());
+              layer.appendChild(el);
+            });
+          }
         }
 
         function renderAnnotations() {
@@ -2712,13 +3019,15 @@
             layer.classList.toggle("tool-note", tool === "note");
           });
 
-          // Enable text selection on textLayer when tool is highlight or pan
+          // Enable text selection on textLayer when tool is highlight, link or pan
           elements.pages.querySelectorAll(".textLayer").forEach((tl) => {
-            tl.style.pointerEvents = (tool === "highlight" || tool === "pan") ? "auto" : "none";
+            tl.style.pointerEvents = (tool === "highlight" || tool === "link" || tool === "pan") ? "auto" : "none";
           });
 
           if (tool === "highlight") {
             setStatus("Select words on document with cursor to highlight.", "neutral");
+          } else if (tool === "link") {
+            setStatus("Select a line or passage to make a blue line link. Right-click it to copy the link.", "neutral");
           } else if (tool === "note") {
             setStatus("Click anywhere on PDF to place note.", "neutral");
           } else {
@@ -2739,7 +3048,7 @@
               width: Number(annotation.width || 0.05),
               height: Number(annotation.height || 0.05),
               boxes: annotation.boxes || undefined,
-              color: annotation.type === "sticky-note" ? palette.light : (annotation.color || "#ffdf5d"),
+              color: annotation.type === "sticky-note" ? palette.light : (annotation.color || (annotation.type === "line-link" ? "#2563eb" : "#ffdf5d")),
               opacity: annotation.type === "highlight" ? 0.42 : undefined,
               title: annotation.title ? String(annotation.title).trim() : undefined,
               text: annotation.text ? String(annotation.text).trim() : undefined,
@@ -3256,6 +3565,7 @@
             textLayerDiv.style.width = Math.floor(viewport.width) + "px";
             textLayerDiv.style.height = Math.floor(viewport.height) + "px";
             textLayerDiv.style.setProperty("--scale-factor", String(viewport.scale));
+            textLayerDiv.style.pointerEvents = activeTool === "note" ? "none" : "auto";
 
             const textContent = await page.getTextContent();
             if (typeof window.pdfjsLib.renderTextLayer === "function") {
@@ -3402,10 +3712,17 @@
               renderPageCanvas(2);
             }
 
+            if (startPage >= 1 && startPage <= totalPages) {
+              scrollToPage(startPage);
+            }
+
             // Load outline into Left Sidebar
             loadDocumentOutline();
 
             setStatus("PDF ready (" + pdfDoc.numPages + " pages).", "success");
+            if ((startMark !== null || startText !== null) && startPage >= 1 && startPage <= totalPages) {
+              openLineLink(startPage);
+            }
           } catch (error) {
             console.error(error);
             setEmpty("PDF could not be loaded: " + (error.message || "network error"));
