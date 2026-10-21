@@ -10,14 +10,14 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="css/base.css" />
-    <link rel="stylesheet" href="css/controls.css" />
-    <link rel="stylesheet" href="css/papers.css?v=tiles-v2" />
-    <link rel="stylesheet" href="css/modals.css" />
-    <link rel="stylesheet" href="css/research-map.css" />
+    <link rel="stylesheet" href="css/base.css?v=layout-v15" />
+    <link rel="stylesheet" href="css/controls.css?v=layout-v8" />
+    <link rel="stylesheet" href="css/papers.css?v=layout-v10" />
+    <link rel="stylesheet" href="css/modals.css?v=layout-v8" />
+    <link rel="stylesheet" href="css/research-map.css?v=layout-v16" />
   </head>
   <body>
     <div
@@ -112,7 +112,7 @@
             target="_blank"
             rel="noopener"
             class="btn-action btn-scholar"
-            style="padding: 10px 16px; font-size: 13px"
+            style="padding: 10px 16px; font-size: var(--fs-ui)"
           >
             🌐 OSP Sandbox
           </a>
@@ -121,12 +121,103 @@
             target="_blank"
             rel="noopener"
             class="btn-action btn-scholar"
-            style="padding: 10px 16px; font-size: 13px"
+            style="padding: 10px 16px; font-size: var(--fs-ui)"
           >
             ✎ Edit Shared Summaries on GitHub
           </a>
         </div>
       </div>
+    </header>
+
+    <main id="mainLibraryContent">
+      <section id="researchMapSection" class="research-map-section" aria-labelledby="researchMapHeading">
+        <div class="research-map-heading">
+          <div>
+            <h2 id="researchMapHeading">Research locations</h2>
+          </div>
+          <div class="research-map-heading-tools">
+            <div class="research-map-coverage" id="researchMapCoverage" aria-live="polite">Loading map data…</div>
+            <button type="button" id="researchMapSqueeze" class="research-map-squeeze" aria-expanded="true" aria-controls="researchMapLayout" title="Collapse the map">Squeeze map</button>
+          </div>
+        </div>
+        <div id="researchMapError" class="research-map-error" role="alert" hidden>
+          <div><strong>Research map data is unavailable.</strong><span id="researchMapErrorText">The map will appear when its location data loads.</span></div>
+          <button type="button" id="researchMapRetry">Try again</button>
+        </div>
+        <div class="research-map-layout" id="researchMapLayout">
+          <div class="research-map-main">
+            <div class="research-map-canvas-wrap" id="researchMapCanvasWrap">
+              <canvas id="researchMapCanvas" role="img" aria-label="Interactive world map. Select a location marker to view related research."></canvas>
+              <button type="button" id="researchMapPrint" class="research-map-squeeze research-map-print-btn" title="Print a light world map of the current selection" disabled>Print map</button>
+              <div id="researchMapTooltip" class="research-map-tooltip" role="tooltip" hidden></div>
+            </div>
+            <div class="research-map-browse" id="researchMapBrowse">
+              <h3 class="research-map-browse-heading">Browse places</h3>
+              <div class="research-map-quick" id="researchMapAustralia" aria-label="Place shortcuts"></div>
+            </div>
+            <div class="research-map-key">
+              <div class="research-map-legend" aria-label="Research record types"><span class="academic">Academic / peer-reviewed</span><span class="grey">Grey literature</span></div>
+              <p class="research-map-precision">Approximate city, region and country locations; dots align to the map grid. Paper details distinguish study sites, affiliations and report scope.</p>
+            </div>
+          </div>
+          <aside class="research-map-sidebar" aria-labelledby="researchMapResultsHeading">
+            <div class="research-map-sidebar-head">
+              <h3 id="researchMapResultsHeading">Papers</h3>
+              <p id="researchMapSelection">Loading…</p>
+            </div>
+            <div class="research-map-filters">
+              <label class="research-map-filter"><span class="sr-only">Type</span>
+                <select id="researchMapType" aria-label="Filter research by type">
+                  <option value="all">All types</option><option value="academic">Academic</option><option value="grey">Grey literature</option>
+                </select>
+              </label>
+              <label class="research-map-filter"><span class="sr-only">Contributor</span>
+                <select id="researchMapContributor" aria-label="Filter research by contributor"><option value="all">All contributors</option></select>
+              </label>
+              <label class="research-map-filter research-map-company"><span class="sr-only">Company / organization</span>
+                <select id="researchMapOrganization" aria-label="Filter research by company or organization"><option value="">All companies / organizations</option></select>
+              </label>
+              <div class="research-map-actions">
+                <button type="button" id="researchMapAll" class="research-map-quiet">All places</button>
+                <button type="button" id="researchMapUnmapped" class="research-map-quiet">Unmapped</button>
+              </div>
+            </div>
+            <div id="researchMapOrganizations" class="research-map-organizations" aria-label="Organizations at this location"></div>
+            <div id="researchMapTopPlaces" class="research-map-top-places"></div>
+            <div id="researchMapResults" class="research-map-results" aria-live="polite"></div>
+          </aside>
+        </div>
+        <div id="researchMapStatus" class="sr-only" role="status" aria-live="polite"></div>
+      </section>
+      <section
+        class="compiled-papers-panel"
+        id="compiledPapersPanel"
+        aria-labelledby="compiledPapersTitle"
+        hidden
+      >
+        <div class="compiled-papers-header">
+          <div>
+            <div class="compiled-papers-kicker">Compiled papers</div>
+            <h2 class="compiled-papers-title" id="compiledPapersTitle">
+              Compiled papers
+            </h2>
+          </div>
+          <div class="compiled-header-actions">
+            <div class="compiled-papers-count" id="compiledPapersCount"></div>
+            <button
+              type="button"
+              id="toggleCompiledBtn"
+              class="btn-squeeze-toggle"
+              onclick="toggleCompiledSection()"
+              title="Squeeze or expand compiled papers panel"
+            >
+              <span id="squeezeIcon">▲</span>
+              <span id="squeezeText">Squeeze</span>
+            </button>
+          </div>
+        </div>
+        <div class="compiled-shelves-container" id="compiledPapersList"></div>
+      </section>
 
       <!-- Library Navigation Tabs: Academic vs Grey Literature vs Instructor Mode -->
       <nav class="library-nav-tabs" role="tablist" aria-label="Library View Switcher">
@@ -167,65 +258,7 @@
           <span class="tab-label">Instructor Mode</span>
         </button>
       </nav>
-    </header>
 
-    <main id="mainLibraryContent">
-      <section id="researchMapSection" class="research-map-section" aria-labelledby="researchMapHeading">
-        <div class="research-map-heading">
-          <div>
-            <h2 id="researchMapHeading">Research locations</h2>
-          </div>
-          <div class="research-map-heading-tools">
-            <div class="research-map-coverage" id="researchMapCoverage" aria-live="polite">Loading map data…</div>
-            <button type="button" id="researchMapSqueeze" class="research-map-squeeze" aria-expanded="true" aria-controls="researchMapLayout" title="Collapse the map">Squeeze map</button>
-          </div>
-        </div>
-        <div id="researchMapError" class="research-map-error" role="alert" hidden>
-          <div><strong>Research map data is unavailable.</strong><span id="researchMapErrorText">The map will appear when its location data loads.</span></div>
-          <button type="button" id="researchMapRetry">Try again</button>
-        </div>
-        <div class="research-map-layout" id="researchMapLayout">
-          <div class="research-map-main">
-            <div class="research-map-canvas-wrap" id="researchMapCanvasWrap">
-              <canvas id="researchMapCanvas" role="img" aria-label="Interactive world map. Select a location marker to view related research."></canvas>
-              <div id="researchMapTooltip" class="research-map-tooltip" role="tooltip" hidden></div>
-            </div>
-            <div class="research-map-legend" aria-label="Research record types"><span class="academic">Academic / peer-reviewed</span><span class="grey">Grey literature</span></div>
-            <p class="research-map-precision">Approximate city, region and country locations; dots align to the map grid. Paper details distinguish study sites, affiliations and report scope.</p>
-          </div>
-          <aside class="research-map-sidebar" aria-labelledby="researchMapResultsHeading">
-            <div class="research-map-sidebar-head">
-              <h3 id="researchMapResultsHeading">Papers</h3>
-              <p id="researchMapSelection">Loading…</p>
-            </div>
-            <div class="research-map-filters">
-              <label class="research-map-filter">Type
-                <select id="researchMapType" aria-label="Filter research by type">
-                  <option value="all">All types</option><option value="academic">Academic</option><option value="grey">Grey literature</option>
-                </select>
-              </label>
-              <label class="research-map-filter">Contributor
-                <select id="researchMapContributor" aria-label="Filter research by contributor"><option value="all">All contributors</option></select>
-              </label>
-              <label class="research-map-filter research-map-company">Company / organization
-                <select id="researchMapOrganization" aria-label="Filter research by company or organization"><option value="">All companies / organizations</option></select>
-              </label>
-              <div class="research-map-actions">
-                <button type="button" id="researchMapAll" class="research-map-quiet">All places</button>
-                <button type="button" id="researchMapUnmapped" class="research-map-quiet">Unmapped</button>
-              </div>
-            </div>
-            <details class="research-map-browse" id="researchMapBrowse">
-              <summary>Browse places</summary>
-              <div class="research-map-quick" id="researchMapAustralia" aria-label="Place shortcuts"></div>
-            </details>
-            <div id="researchMapOrganizations" class="research-map-organizations" aria-label="Organizations at this location"></div>
-            <div id="researchMapTopPlaces" class="research-map-top-places"></div>
-            <div id="researchMapResults" class="research-map-results" aria-live="polite"></div>
-          </aside>
-        </div>
-        <div id="researchMapStatus" class="sr-only" role="status" aria-live="polite"></div>
-      </section>
       <!-- ========================================== -->
       <!-- SECTION 1: Academic Literature             -->
       <!-- ========================================== -->
@@ -294,58 +327,41 @@
           </div>
         </div>
 
-        <section
-          class="compiled-papers-panel"
-          id="compiledPapersPanel"
-          aria-labelledby="compiledPapersTitle"
-          hidden
-        >
-          <div class="compiled-papers-header">
-            <div>
-              <div class="compiled-papers-kicker">Compiled papers</div>
-              <h2 class="compiled-papers-title" id="compiledPapersTitle">
-                Compiled papers
-              </h2>
-            </div>
-            <div class="compiled-header-actions">
-              <div class="compiled-papers-count" id="compiledPapersCount"></div>
-              <button
-                type="button"
-                id="toggleCompiledBtn"
-                class="btn-squeeze-toggle"
-                onclick="toggleCompiledSection()"
-                title="Squeeze or expand compiled papers panel"
-              >
-                <span id="squeezeIcon">▲</span>
-                <span id="squeezeText">Squeeze</span>
-              </button>
-            </div>
-          </div>
-          <div class="compiled-shelves-container" id="compiledPapersList"></div>
-        </section>
-
         <div class="library-view-bar">
           <h2 class="library-view-heading" id="academicViewHeading">Peer-reviewed papers</h2>
+          <select id="academicSort" class="library-sort" aria-label="Sort">
+            <option value="newest" selected>Newest first</option>
+            <option value="oldest">Oldest first</option>
+            <option value="title">Title A–Z</option>
+            <option value="contributor">Contributor</option>
+          </select>
           <div class="library-view-toggle" role="group" aria-label="Academic display" data-library-view="academic">
-            <button type="button" class="library-view-btn" data-view-option="list" aria-pressed="false">List</button>
-            <button type="button" class="library-view-btn" data-view-option="tiles" aria-pressed="true">Tiles</button>
+            <button type="button" class="library-view-btn" data-view-option="list" aria-pressed="true">List</button>
+            <button type="button" class="library-view-btn" data-view-option="tiles" aria-pressed="false">Tiles</button>
           </div>
         </div>
 
-        <div class="table-container" id="papersTableContainer" data-view="tiles">
+        <div class="table-container" id="papersTableContainer" data-view="list">
           <table id="papersTable">
             <thead>
               <tr>
-                <th style="width: 50px">#</th>
+                <th>#</th>
                 <th>Research Paper & Authors</th>
-                <th style="width: 180px">Category</th>
-                <th style="width: 320px">Interactive Actions</th>
+                <th>Category</th>
+                <th>Contributor</th>
+                <th>Actions</th>
               </tr>
             </thead>
             <tbody id="tableBody">
               <!-- Dynamically Populated / Statically Listed -->
             </tbody>
           </table>
+          <div id="academicEmptyState" class="library-empty" hidden>
+            <div class="library-empty-icon">🔍</div>
+            <h3>No matching papers found</h3>
+            <p>Try clearing your search or choosing a different topic or contributor.</p>
+            <button type="button" class="btn-action btn-scholar library-empty-reset" onclick="resetAcademicFilters()">Reset Filters</button>
+          </div>
         </div>
       </section>
 
@@ -415,7 +431,7 @@
                 type="button"
                 class="btn-action btn-scholar"
                 onclick="resetGreyLitFilters()"
-                style="padding: 10px 18px; font-size: 13px; height: 42px; white-space: nowrap;"
+                style="padding: 10px 18px; font-size: var(--fs-ui); height: 42px; white-space: nowrap;"
               >
                 Reset Filters
               </button>
@@ -426,6 +442,12 @@
 
         <div class="library-view-bar">
           <h2 class="library-view-heading" id="greyViewHeading">Reports and documents</h2>
+          <select id="greySort" class="library-sort" aria-label="Sort" onchange="filterAndRenderGreyLit()">
+            <option value="newest" selected>Newest first</option>
+            <option value="oldest">Oldest first</option>
+            <option value="title">Title A–Z</option>
+            <option value="contributor">Contributor</option>
+          </select>
           <div class="library-view-toggle" role="group" aria-label="Grey literature display" data-library-view="grey">
             <button type="button" class="library-view-btn" data-view-option="list" aria-pressed="false">List</button>
             <button type="button" class="library-view-btn" data-view-option="tiles" aria-pressed="true">Tiles</button>
@@ -436,7 +458,7 @@
           Loading reports...
         </div>
 
-        <div class="grey-lit-grid" id="greyLitGrid">
+        <div class="grey-lit-grid" id="greyLitGrid" data-view="tiles">
           <!-- Populated dynamically via js/grey-literature.js -->
         </div>
       </section>
@@ -491,7 +513,7 @@
                 justify-content: center;
                 font-weight: 700;
                 color: #070d17;
-                font-size: 15px;
+                font-size: var(--fs-ui);
               "
               id="modalProfileAvatar"
             >
@@ -504,7 +526,7 @@
               <div
                 class="modal-meta"
                 id="modalProfileDevice"
-                style="font-size: 11px; opacity: 0.65; color: var(--text-muted)"
+                style="font-size: var(--fs-meta); opacity: 0.65; color: var(--text-muted)"
               >
                 Device
               </div>
@@ -637,21 +659,21 @@
       </div>
     </div>
 
-    <script src="js/bundled-data.js"></script>
-    <script src="js/data.js"></script>
-    <script src="js/papers.js"></script>
-    <script src="js/filters.js"></script>
+    <script src="js/bundled-data.js?v=sort-v1"></script>
+    <script src="js/data.js?v=sort-v1"></script>
+    <script src="js/papers.js?v=layout-v7"></script>
+    <script src="js/filters.js?v=layout-v9"></script>
     <script src="js/modals.js"></script>
     <script src="js/browser-identity.js"></script>
     <script src="js/profile.js"></script>
     <script src="js/annotations.js"></script>
-    <script src="js/grey-literature.js"></script>
-    <script src="js/instructor.js"></script>
+    <script src="js/grey-literature.js?v=layout-v10"></script>
+    <script src="js/instructor.js?v=layout-v10"></script>
     <script src="js/main.js"></script>
-    <script src="js/library-views.js?v=tiles-v2"></script>
+    <script src="js/library-views.js?v=layout-v4"></script>
     <script src="js/world-land.js"></script>
     <script src="js/research-geography-data.js"></script>
-    <script src="js/research-map.js"></script>
+    <script src="js/research-map.js?v=layout-v16"></script>
   </body>
 </html>
 

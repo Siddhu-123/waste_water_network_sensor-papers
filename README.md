@@ -1,6 +1,6 @@
 # Wastewater Research Corpus
 
-This repository contains the Paper 1 wastewater-sensor literature viewer. It stores research-paper PDFs, 8-step summaries, contributor metadata, and topic-level compiled papers across **55 research papers**, **4 contributor compiled reviews**, and **1 team-wide compiled paper** (60 total documents).
+This repository contains the Paper 1 wastewater-sensor literature viewer. It stores research-paper PDFs, 8-step summaries, contributor metadata, topic-level compiled papers, and industry grey literature across **55 research papers**, **4 contributor compiled reviews**, **1 team-wide compiled paper**, and **65 grey literature / utility reports** (125 total documents).
 
 Open [`index.html`](./index.html) to use the viewer.
 
@@ -22,6 +22,7 @@ sensor_papers/
 │   ├── modals.js                      8-step research summary dialog controller
 │   ├── profile.js                     Contributor profile dashboard, device & welcome banner
 │   ├── annotations.js                 Annotation counts and live table badges
+│   ├── grey-literature.js             Grey literature catalog, filters, utility themes & modal rendering
 │   └── main.js                        Bootstrap and lifecycle initialization
 ├── pdf-viewer.html                    PDF.js viewer with shared highlights & sticker notes
 ├── annotation-config.js               Optional Vercel API URL for GitHub Pages
@@ -36,11 +37,15 @@ sensor_papers/
 │   ├── manifest.json                  Registered contributors & team compiled paper entry
 │   ├── team_compiled_paper.pdf        Team-wide compiled paper PDF
 │   ├── team_compiled_paper.json       Team compiled paper metadata
-│   ├── _template/papers.json          Copy this for a new contribution
+│   ├── _template/
+│   │   ├── papers.json                Copy this for new research/compiled paper contributions
+│   │   └── grey-literature.json       Copy this for new grey literature contributions
 │   └── <contributor>/
 │       ├── papers.json                Research-paper and compiled-paper metadata
 │       ├── papers/                    Individual research-paper PDFs
-│       └── compiled-papers/           Topic-level compiled-paper PDFs
+│       ├── compiled-papers/           Topic-level compiled-paper PDFs
+│       ├── grey-literature.json       Industry reports & utility grey literature metadata
+│       └── grey/                      Grey literature report PDFs (standards, utility guidelines, manuals)
 ```
 
 All paper records across contributors are loaded dynamically from their respective JSON files. `index.html` contains no hardcoded paper data.
@@ -207,6 +212,91 @@ When two or three teammates collaborate on a compiled paper, `assignedTo` can be
 ```
 *Co-authored papers will automatically appear when filtering by either teammate's name, and will list all co-authors on the card.*
 
+## Add grey literature & utility reports
+
+Grey literature encompasses water utility engineering reports, overflow mitigation case studies, design standards (e.g. ASCE MOP 60, WSA 02), regulatory guidelines (e.g. UK DWMP, US EPA CSO/SSO), manufacturer sensor manuals (e.g. Siemens SITRANS, Pulsar), and municipal drainage master plans. These provide empirical ground truth and industry operational benchmarks alongside academic research.
+
+Follow these steps to add grey literature or utility reports to the repository:
+
+1. **Place the PDF in your contributor directory:**
+   - Save the PDF into `contributors/<your-slug>/grey/`.
+   - Name the file using standard descriptive naming: `GL_<Year>_<Org>_<ShortTitle>.pdf` (for example, `GL_2024_SydneyWater_WWOM_Synthesis_Report.pdf` or `GL_2017_USEPA_SWMM_Reference_Manual_Vol2_Hydraulics.pdf`).
+   - *Note:* If a document is only available via a web portal without an open PDF download, you can link it directly via `url` and set `pdfUrl` to `"#"` (or omit `pdfUrl`).
+
+2. **Register your grey literature file in `manifest.json`:**
+   Open [`contributors/manifest.json`](./contributors/manifest.json) and verify that your contributor entry defines `"greyLiteratureFile"`. If it doesn't already exist, add it:
+   ```json
+   {
+     "name": "Your Name",
+     "slug": "your-slug",
+     "file": "./your-slug/papers.json",
+     "greyLiteratureFile": "./your-slug/grey-literature.json"
+   }
+   ```
+   *(Optional)* If you author an overarching executive synthesis or multi-section report in markdown, you can also register it via `"findingsDocument": "./your-slug/compiled-papers/GREY_LITERATURE_FINDINGS.md"`.
+
+3. **Add the entry to `contributors/<your-slug>/grey-literature.json`:**
+   Copy the template from [`contributors/_template/grey-literature.json`](./contributors/_template/grey-literature.json) or add a new record to the `"greyLiterature"` array in your JSON file:
+
+   ```json
+   {
+     "id": "GL-01",
+     "title": "Sydney Water Wastewater Overflow Model (WWOM) 2016–2024 Synthesis Report",
+     "organization": "Sydney Water",
+     "year": 2024,
+     "category": "Network Overflows & Surcharging",
+     "summary": "Synthesizes Sydney Water's strategic pivot from storage-based containment (>A$18B, 350+ yrs) to I&I source control (17x cheaper). Evaluates network-wide level sensor rollouts.",
+     "assignedTo": "Your Name",
+     "pdfUrl": "./contributors/your-slug/grey/GL_2024_SydneyWater_WWOM_Synthesis_Report.pdf",
+     "url": "https://www.sydneywater.com.au",
+     "pages": 45,
+     "size": "2.4 MB",
+     "keyTakeaways": [
+       "Storage containment rejected as unaffordable; pivoted to I&I source control target 2060.",
+       "Operating licence target reformed from spill frequency to -6% wet-weather overflow volume.",
+       "Active network sensing: 8,000+ level sensors deployed, detecting 300–370 blockages before spills occur."
+     ],
+     "steps": {
+       "citation": "Sydney Water Corporation (2024). Wastewater Overflow Model 2016–2024 Synthesis Report. Sydney, NSW.",
+       "intro": "Why the utility commissioned the study and the core regulatory/operational problem.",
+       "methods": "Hydraulic modeling, monitoring network design, and multi-criteria assessment methods used.",
+       "scope": "Geographical network scope, pipe asset classes, and weather scenario assumptions.",
+       "usefulness": "Direct engineering value and insights for sewer sensor placement and overflow mitigation.",
+       "limitations": "Model uncertainties, boundary conditions, data availability gaps, or local constraints.",
+       "conclusions": "Primary policy or engineering conclusions reached by the utility.",
+       "reflection": "Relevance to our capstone sensor placement algorithms and South Australian network application."
+     }
+   }
+   ```
+
+   **Field requirements and options:**
+   - `id` *(string, required)*: Unique identifier string within the corpus (e.g. `"GL-01"`, `"SATYA-GL-01"`).
+   - `title` *(string, required)*: Complete report or guideline title (validated by `validate_repo.py`).
+   - `organization` *(string, required)*: Authoring utility, agency, or publisher (e.g. `"Sydney Water"`, `"SA Water"`, `"WSAA"`, `"Icon Water"`, `"Watercare"`, `"US EPA"`, `"Siemens"`, `"ASCE"`, `"Water UK"`). The viewer matches this to utility brand colors and styled badges automatically (validated by `validate_repo.py`).
+   - `year` *(integer, optional)*: Year of publication (e.g. `2024`).
+   - `category` *(string, optional)*: Thematic category used for dynamic filter pills (e.g. `"Hydraulic Simulators & Modeling"`, `"Network Overflows & Surcharging"`, `"Standards & Codes"`, `"Sensors & Equipment"`).
+   - `summary` *(string, optional)*: High-level executive overview of the report.
+   - `assignedTo` *(string, optional)*: Registered contributor name responsible for review.
+   - `pdfUrl` *(string, optional)*: Relative path to the PDF beginning with `./contributors/...` (validated for file existence), or `"#"`.
+   - `url` *(string, optional)*: External agency URL or official web download portal.
+   - `pages` *(integer, optional)* & `size` *(string, optional)*: Page count and human-readable file size.
+   - `keyTakeaways` *(array of strings, optional)*: Bullet points shown when users click **Details (AI)** on the card.
+   - `steps` *(object, optional)*: 8-step structured summary matching academic papers (`citation`, `intro`, `methods`, `scope`, `usefulness`, `limitations`, `conclusions`, `reflection`). When provided, the modal renders all 8 numbered steps; if omitted, the modal cleanly falls back to `summary` and `keyTakeaways`.
+
+4. **Update `totalCount`:**
+   Update the `"totalCount"` property at the top of your `grey-literature.json` to reflect the total number of items in the array.
+
+5. **Validate and test locally:**
+   Run the repository validator before committing:
+   ```bash
+   python3 scripts/validate_repo.py
+   ```
+   Start the local preview:
+   ```bash
+   python3 -m http.server 8000
+   ```
+   Open `http://localhost:8000` and click the **🏢 Grey Literature & Utility Reports** tab to confirm that the report renders with correct badges, category filters, PDF links, and summary modals.
+
 ## How the viewer and filters work
 
 - **Topic:** Shows topics found in research papers and compiled papers. Selecting a topic dynamically refines the user dropdown and category pills.
@@ -259,7 +349,10 @@ Check that:
 - compiled-paper IDs are unique;
 - contributor names match the manifest exactly;
 - co-authored `assignedTo` lists contain valid registered contributors;
-- `topic`, `filterCategory`, and `assignedTo` are correct.
+- `topic`, `filterCategory`, and `assignedTo` are correct;
+- grey literature entries contain required `title` and `organization` fields;
+- `greyLiteratureFile` and `findingsDocument` paths in `manifest.json` resolve to existing files;
+- grey literature `pdfUrl` paths beginning with `./` point to existing PDFs in the repository.
 
 Run the repository validator before committing:
 

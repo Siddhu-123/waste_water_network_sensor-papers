@@ -8,6 +8,7 @@ let activeContributorFilter = "all";
 let activeCategoryFilter = "all";
 let greyLitSearchQuery = "";
 let findingsMarkdownCache = "";
+let openTakeawaysId = null;
 
 // Distinct color styling for major water utilities & engineering bodies
 const UTILITY_THEMES = {
@@ -288,49 +289,54 @@ function resetGreyLitFilters() {
 function renderGreyLitCards() {
   const grid = document.getElementById("greyLitGrid");
   if (!grid) return;
+  openTakeawaysId = null;
+
+  const header = `<div class="grey-list-header">
+    <span>#</span><span>Title &amp; Organisation</span><span>Category</span><span>Contributor</span><span>Actions</span>
+  </div>`;
 
   if (filteredGreyLitData.length === 0) {
-    grid.innerHTML = `
-      <div class="grey-lit-empty">
-        <div style="font-size: 32px; margin-bottom: 12px;">🔍</div>
+    grid.innerHTML = header + `
+      <div class="grey-lit-empty library-empty">
+        <div class="library-empty-icon">🔍</div>
         <h3>No matching grey literature found</h3>
         <p>Try clearing your search query or selecting a different category.</p>
-        <button class="btn-action btn-scholar" style="margin-top: 14px;" onclick="resetGreyLitFilters()">Reset Filters</button>
+        <button class="btn-action btn-scholar library-empty-reset" onclick="resetGreyLitFilters()">Reset Filters</button>
       </div>
     `;
     return;
   }
 
-  let html = "";
-  filteredGreyLitData.forEach((item) => {
+  let html = header;
+  const sort = document.getElementById("greySort")?.value || "newest";
+  sortLibraryItems(filteredGreyLitData, sort).forEach((item, index) => {
     const theme = getUtilityTheme(item.organization || "");
     const isPdf = Boolean(item.pdfUrl && item.pdfUrl !== "#");
     const externalLink = item.url || item.externalUrl;
     const hasExternal = Boolean(externalLink);
     const hasTakeaways = Array.isArray(item.keyTakeaways) && item.keyTakeaways.length > 0;
-    const hasSteps = Boolean(item.steps && (item.steps.citation || item.steps.intro || item.steps.methods || item.steps.usefulness));
 
     const pdfViewerUrl = isPdf
       ? `./pdf-viewer.html?paper=${encodeURIComponent(item.id)}&pdf=${encodeURIComponent(item.pdfUrl)}&title=${encodeURIComponent(item.title)}&topic=Grey%20Literature`
       : "#";
 
     html += `
-      <article class="grey-lit-card" id="card-${item.id}">
-        <div class="grey-lit-header">
-          <div class="grey-lit-badges">
-            <span class="org-badge" style="background: ${theme.bg}; border-color: ${theme.border}; color: ${theme.text};">
-              ${escapeHtml(item.organization || "Industry Body")}
-            </span>
-            <span class="year-badge">${item.year || "Report"}</span>
-            <span class="category-tag">📂 ${escapeHtml(item.category || "General")}</span>
-          </div>
-          <span class="doctype-pill" style="opacity: 0.85;">👤 ${escapeHtml(item.assignedTo || "Contributor")}</span>
+      <article class="grey-lit-card" id="card-${item.id}" data-user="${escapeHtml(item.assignedTo || "")}" data-year="${getLibraryYear(item)}" data-title="${escapeHtml(getLibraryTitle(item.title))}" title="Record ${escapeHtml(item.id)}">
+        <span class="col-num grey-lit-num">${String(index + 1).padStart(2, "0")}</span>
+        <div class="grey-lit-header library-tile-top">
+          <span class="category-tag" title="${escapeHtml(item.category || "General")}">📂 ${escapeHtml(item.category || "General")}</span>
+          <span class="year-badge">${item.year || "Report"}</span>
         </div>
-
-        <h3 class="grey-lit-title">${escapeHtml(item.title)}</h3>
+        <div class="grey-lit-main">
+          <h3 class="grey-lit-title" title="${escapeHtml(item.title)}">${escapeHtml(item.title)}</h3>
+          <div class="library-byline">
+            <span class="org-badge" style="background: ${theme.bg}; border-color: ${theme.border}; color: ${theme.text};">${escapeHtml(item.organization || "Industry Body")}</span><span class="library-list-year">${item.year || "Report"}</span>
+          </div>
+        </div>
 
         <p class="grey-lit-summary">${escapeHtml(item.summary || "")}</p>
 
+        <span class="doctype-pill library-contributor" style="opacity: 0.85;">👤 ${escapeHtml(item.assignedTo || "Contributor")}</span>
         ${
           hasTakeaways
             ? `
@@ -348,31 +354,30 @@ function renderGreyLitCards() {
 
         <div class="grey-lit-footer">
           <div class="grey-lit-meta">
-            <span>ID: <code>${escapeHtml(item.id)}</code></span>
             ${item.pages ? `<span>📄 ${item.pages}p</span>` : ""}
           </div>
           <div class="grey-lit-actions">
+            <button type="button" class="btn-action btn-summary" onclick="openGreyLitSummary('${item.id}')" title="Open 8-step summary" aria-label="Summary">
+              <span aria-hidden="true">📝</span><span class="action-label">Summary</span>
+            </button>
             ${
               isPdf
-                ? `<a href="${escapeHtml(pdfViewerUrl)}" target="_blank" rel="noopener" class="btn-action btn-pdf" title="Open PDF in Viewer with Sticky Notes">
-                    📄 Read PDF
+                ? `<a href="${escapeHtml(pdfViewerUrl)}" target="_blank" rel="noopener" class="btn-action btn-pdf" title="Open PDF in Viewer with Sticky Notes" aria-label="PDF">
+                    <span aria-hidden="true">📄</span><span class="action-label">PDF</span>
                    </a>`
                 : ""
             }
             ${
               hasExternal
-                ? `<a href="${escapeHtml(externalLink)}" target="_blank" rel="noopener" class="btn-action btn-scholar" title="Visit Agency Source Portal">
-                    🔗 Agency Portal
+                ? `<a href="${escapeHtml(externalLink)}" target="_blank" rel="noopener" class="btn-action btn-scholar" title="Open the publisher's page" aria-label="Source">
+                    <span aria-hidden="true">🔗</span><span class="action-label">Source</span>
                    </a>`
                 : ""
             }
-            <button type="button" class="btn-action btn-summary" onclick="openGreyLitSummary('${item.id}')" title="Open Detailed Summary">
-              📝 ${hasSteps ? "8-Step Summary" : "Summary"}
-            </button>
             ${
               hasTakeaways
-                ? `<button type="button" class="btn-action btn-scholar" id="btn-takeaways-${item.id}" onclick="toggleTakeaways('${item.id}')" title="Toggle AI Key Findings">
-                    💡 Details <span class="ai-badge-sm">AI</span>
+                ? `<button type="button" class="btn-action btn-scholar" id="btn-takeaways-${item.id}" onclick="toggleTakeaways('${item.id}')" title="Toggle AI Key Findings" aria-label="Details" aria-expanded="false" aria-controls="takeaways-${item.id}">
+                    <span aria-hidden="true">💡</span><span class="action-label">Details <span class="ai-badge-sm">AI</span></span>
                    </button>`
                 : ""
             }
@@ -385,24 +390,80 @@ function renderGreyLitCards() {
   grid.innerHTML = html;
 }
 
+function fitOpenTakeaways() {
+  if (!openTakeawaysId) return;
+  const card = document.getElementById(`card-${openTakeawaysId}`);
+  const grid = document.getElementById("greyLitGrid");
+  const container = document.getElementById(`takeaways-${openTakeawaysId}`);
+  if (!card || !grid || !container) return;
+
+  // Measure the unexpanded grid slot again after a resize or a view change.
+  delete card.dataset.expand;
+  card.style.removeProperty("--tile-width");
+  card.style.removeProperty("--tile-height");
+  container.style.display = "none";
+  if (grid.dataset.view === "tiles" && grid.offsetWidth) {
+    const columns = getComputedStyle(grid).gridTemplateColumns.split(" ").length;
+    if (columns > 1) {
+      const bounds = card.getBoundingClientRect();
+      const gridBounds = grid.getBoundingClientRect();
+      const gap = parseFloat(getComputedStyle(grid).columnGap) || 0;
+      card.style.setProperty("--tile-width", `${bounds.width}px`);
+      card.style.setProperty("--tile-height", `${bounds.height}px`);
+      card.dataset.expand = bounds.right + bounds.width + gap > gridBounds.right + 1
+        ? "left" : "right";
+    }
+  }
+  container.style.display = "block";
+}
+
 function toggleTakeaways(id) {
   const container = document.getElementById(`takeaways-${id}`);
   const btn = document.getElementById(`btn-takeaways-${id}`);
   if (!container) return;
   const isHidden = container.style.display === "none" || !container.style.display;
   if (isHidden) {
-    container.style.display = "block";
+    if (openTakeawaysId && openTakeawaysId !== id) toggleTakeaways(openTakeawaysId);
+    openTakeawaysId = id;
+    fitOpenTakeaways();
     if (btn) {
-      btn.innerHTML = `✕ Hide Details <span class="ai-badge-sm">AI</span>`;
+      btn.innerHTML = `<span aria-hidden="true">✕</span><span class="action-label">Hide Details <span class="ai-badge-sm">AI</span></span>`;
+      btn.setAttribute("aria-expanded", "true");
       btn.classList.add("active");
     }
   } else {
     container.style.display = "none";
+    const card = document.getElementById(`card-${id}`);
+    if (card) {
+      delete card.dataset.expand;
+      card.style.removeProperty("--tile-width");
+      card.style.removeProperty("--tile-height");
+    }
+    if (openTakeawaysId === id) openTakeawaysId = null;
     if (btn) {
-      btn.innerHTML = `💡 Details <span class="ai-badge-sm">AI</span>`;
+      btn.innerHTML = `<span aria-hidden="true">💡</span><span class="action-label">Details <span class="ai-badge-sm">AI</span></span>`;
+      btn.setAttribute("aria-expanded", "false");
       btn.classList.remove("active");
     }
   }
+}
+
+document.addEventListener("keydown", (event) => {
+  if (event.key === "Escape" && openTakeawaysId) toggleTakeaways(openTakeawaysId);
+});
+
+let takeawaysResizeFrame = 0;
+window.addEventListener("resize", () => {
+  cancelAnimationFrame(takeawaysResizeFrame);
+  takeawaysResizeFrame = requestAnimationFrame(fitOpenTakeaways);
+});
+
+const takeawaysGrid = document.getElementById("greyLitGrid");
+if (takeawaysGrid) {
+  new MutationObserver(fitOpenTakeaways).observe(takeawaysGrid, {
+    attributes: true,
+    attributeFilter: ["data-view"],
+  });
 }
 
 // -------------------------------------------------------------
@@ -569,8 +630,8 @@ async function openFindingsModal() {
   if (findingsMarkdownCache) {
     bodyContent.innerHTML = `
       <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 20px; padding: 10px 14px; background: rgba(168, 85, 247, 0.12); border: 1px solid rgba(168, 85, 247, 0.35); border-radius: 8px;">
-        <span style="font-size: 16px;">🤖</span>
-        <span style="font-size: 12px; color: #d8b4fe; font-weight: 500;">
+        <span style="font-size: var(--fs-ui);">🤖</span>
+        <span style="font-size: var(--fs-body); color: #d8b4fe; font-weight: 500;">
           <strong>AI-Assisted Cross-Utility Synthesis:</strong> The following matrix and findings have been extracted and synthesized with AI assistance from primary utility reports and design standards.
         </span>
         <span class="ai-badge" style="margin-left: auto;">AI</span>
@@ -611,6 +672,7 @@ function renderMarkdownToHtml(md) {
   let html = "";
   let inTable = false;
   let tableHeaderParsed = false;
+  let tableHeaders = [];
   let inList = false;
 
   for (let i = 0; i < lines.length; i++) {
@@ -625,6 +687,7 @@ function renderMarkdownToHtml(md) {
       if (!inTable) {
         inTable = true;
         tableHeaderParsed = false;
+        tableHeaders = [];
         html += '<div class="findings-table-wrap"><table class="findings-table">\n';
       }
 
@@ -640,15 +703,20 @@ function renderMarkdownToHtml(md) {
         .map((c) => c.trim());
 
       if (!tableHeaderParsed) {
+        tableHeaders = cells.map((c) => {
+          const header = document.createElement("span");
+          header.innerHTML = formatInlineMarkdown(c);
+          return header.textContent;
+        });
         html += "  <thead><tr>\n";
         cells.forEach((c) => {
-          html += `    <th>${formatInlineMarkdown(c)}</th>\n`;
+          html += `    <th scope="col">${formatInlineMarkdown(c)}</th>\n`;
         });
         html += "  </tr></thead>\n  <tbody>\n";
       } else {
         html += "  <tr>\n";
-        cells.forEach((c) => {
-          html += `    <td>${formatInlineMarkdown(c)}</td>\n`;
+        cells.forEach((c, index) => {
+          html += `    <td data-label="${escapeHtml(tableHeaders[index] || "")}">${formatInlineMarkdown(c)}</td>\n`;
         });
         html += "  </tr>\n";
       }

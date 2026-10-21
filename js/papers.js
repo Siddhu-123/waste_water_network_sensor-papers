@@ -11,39 +11,41 @@ function renderTable() {
     academicTabCountEl.innerText = papersData.length;
   }
 
-  papersData.forEach((paper) => {
+  const sort = document.getElementById("academicSort")?.value || "newest";
+  sortLibraryItems(papersData, sort, true).forEach((paper, index) => {
     const tr = document.createElement("tr");
+    const year = getLibraryYear(paper, true);
     tr.dataset.user = paper.assignedTo;
+    tr.dataset.year = year;
+    tr.dataset.title = getLibraryTitle(paper.title);
     tr.dataset.topic = paper.topic;
     tr.dataset.filterCategory = paper.filterCategory;
     tr.innerHTML = `
-              <td class="col-num" style="color: var(--text-muted); font-family: 'JetBrains Mono', monospace;">${String(paper.id).padStart(2, "0")}</td>
+              <td class="col-num" style="color: var(--text-muted); font-family: inherit; font-variant-numeric: tabular-nums;">${String(index + 1).padStart(2, "0")}</td>
               <td class="col-main">
-                  <div class="mobile-card-header">
-                      <span class="mobile-num">#${String(paper.id).padStart(2, "0")}</span>
-                      <div class="mobile-badges">
-                          <span class="badge-tag">${paper.categoryLabel}</span>
-                      </div>
+                  <div class="library-tile-top">
+                      <span class="badge-tag" title="${escapeHtml(paper.categoryLabel)}">${paper.categoryLabel}</span>
+                      <span class="year-badge">${year}</span>
                   </div>
-                  <div class="paper-title">${paper.title}${duplicateIndicatorHtml(paper)}</div>
-                  <div class="paper-meta">
-                      <span>${paper.authors}</span> &bull; 
-                      <span><em>${paper.journal}</em></span>
+                  <div class="paper-title" title="${escapeHtml(getLibraryTitle(paper.title))}">${paper.title}${duplicateIndicatorHtml(paper)}</div>
+                  <div class="paper-meta library-byline">
+                      <span>${paper.authors}</span>${year && !String(paper.authors || "").includes(year) ? `<span class="library-list-year">${year}</span>` : ""}
                   </div>
-                  <div class="paper-meta" style="margin-top: 7px">
-                      <span class="meta-chip">User: ${escapeHtml(paper.assignedTo)}</span>
-                      <span class="meta-chip topic-chip">Topic: ${escapeHtml(paper.topic)}</span>
-                      <span class="meta-chip filter-chip">Filter: ${escapeHtml(paper.filterCategory)}</span>
+                  <div class="paper-meta library-journal"><em>${paper.journal}</em></div>
+                  <div class="paper-meta library-extra-chips">
+                      <span class="meta-chip topic-chip">${escapeHtml(paper.topic)}</span>
+                      <span class="meta-chip filter-chip">${escapeHtml(paper.filterCategory)}</span>
                       ${paper.pages ? `<span class="meta-chip info-chip">📄 ${paper.pages}p</span>` : ""}
                       ${paper.size ? `<span class="meta-chip info-chip">💾 ${escapeHtml(paper.size)}</span>` : ""}
                   </div>
               </td>
-              <td class="col-cat"><span class="badge-tag">${paper.categoryLabel}</span></td>
+              <td class="col-cat"><span class="badge-tag" title="${escapeHtml(paper.categoryLabel)}">${paper.categoryLabel}</span></td>
+              <td class="col-contributor"><span class="meta-chip library-contributor">${escapeHtml(paper.assignedTo)}</span></td>
               <td class="col-actions">
                   <div class="action-btns mobile-actions">
-                      <button class="btn-action btn-summary" onclick="openSummary(${paper.id})" title="View 8-Step Research Summary">📝 Summary</button>
-                      <a class="btn-action btn-pdf" id="paper-pdf-btn-${paper.id}" href="${escapeHtml(getPdfViewerUrl(paper))}" target="_blank" rel="noopener" title="Read paper and annotations">📄 PDF <span class="notes-count-pill" id="paper-badge-${paper.id}" style="display:none;"></span></a>
-                      <a class="btn-action btn-scholar" href="${paper.scholarUrl}" target="_blank" rel="noopener" title="Search on Google Scholar">🔍 Scholar</a>
+                      <button class="btn-action btn-summary" onclick="openSummary(${paper.id})" title="View 8-Step Research Summary" aria-label="Summary"><span aria-hidden="true">📝</span><span class="action-label">Summary</span></button>
+                      <a class="btn-action btn-pdf" id="paper-pdf-btn-${paper.id}" href="${escapeHtml(getPdfViewerUrl(paper))}" target="_blank" rel="noopener" title="Read paper and annotations" aria-label="PDF"><span aria-hidden="true">📄</span><span class="action-label">PDF</span><span class="notes-count-pill" id="paper-badge-${paper.id}" style="display:none;"></span></a>
+                      <a class="btn-action btn-scholar" href="${paper.scholarUrl}" target="_blank" rel="noopener" title="Search on Google Scholar" aria-label="Source"><span aria-hidden="true">🔗</span><span class="action-label">Source</span></a>
                   </div>
               </td>
           `;
@@ -51,11 +53,17 @@ function renderTable() {
   });
 }
 
+document.getElementById("academicSort")?.addEventListener("change", () => {
+  renderTable();
+  filterTable();
+  if (typeof updateAllPaperBadges === "function") updateAllPaperBadges();
+});
+
 function renderCompiledPaperCard(paper) {
   const isTeam = isTeamPaper(paper);
   const authors = formatAuthors(paper);
   const teamBadge = isTeam
-    ? '<span class="badge-tag" style="background: rgba(37, 99, 235, 0.15); color: #60a5fa; border: 1px solid rgba(96, 165, 250, 0.3); font-size: 11px; padding: 2px 8px; border-radius: 4px; font-weight: 600;">👥 Team Compiled</span>'
+    ? '<span class="badge-tag" style="background: rgba(37, 99, 235, 0.15); color: #60a5fa; border: 1px solid rgba(96, 165, 250, 0.3); font-size: var(--fs-ui); padding: 2px 8px; border-radius: 4px; font-weight: 600;">👥 Team Compiled</span>'
     : "";
 
   return `

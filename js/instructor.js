@@ -140,7 +140,7 @@ function renderInstructorDashboard() {
       <div class="instructor-kpi-card">
         <div class="kpi-icon">📝</div>
         <div class="kpi-content">
-          <div class="kpi-value" style="color: #2dd4bf;">${stats.reviewedCount} <span style="font-size: 14px; opacity: 0.7;">/ ${stats.assignedCount}</span></div>
+          <div class="kpi-value" style="color: #2dd4bf;">${stats.reviewedCount} <span style="font-size: var(--fs-micro); opacity: 0.7;">/ ${stats.assignedCount}</span></div>
           <div class="kpi-label">Papers with Notes</div>
         </div>
       </div>
@@ -214,25 +214,25 @@ function renderInstructorDashboard() {
               <span class="student-avatar-small">${student.name.slice(0, 2).toUpperCase()}</span>
               <div>
                 <strong>${escapeHtml(student.name)}</strong>
-                <div style="font-size: 11px; color: var(--text-muted);">${escapeHtml(getStudentAssignedTopics(student.name))}</div>
+                <div class="student-topics">${escapeHtml(getStudentAssignedTopics(student.name))}</div>
               </div>
             </div>
           </td>
-          <td><span class="badge-number">${sStats.assignedCount}</span></td>
-          <td><strong style="color: #2dd4bf;">${sStats.reviewedCount}</strong> / ${sStats.assignedCount}</td>
-          <td><span class="badge-notes">${sStats.totalNotesCount} notes</span></td>
-          <td>${sStats.compiledCount}</td>
-          <td>${sStats.greyCount}</td>
-          <td style="min-width: 140px;">
-            <div style="display: flex; align-items: center; gap: 8px;">
+          <td data-label="Assigned Papers"><span class="badge-number">${sStats.assignedCount}</span></td>
+          <td data-label="Reviewed with Notes"><strong class="instructor-reviewed-count">${sStats.reviewedCount}</strong> / ${sStats.assignedCount}</td>
+          <td data-label="Total Notes"><span class="badge-notes">${sStats.totalNotesCount} notes</span></td>
+          <td data-label="Compiled Papers">${sStats.compiledCount}</td>
+          <td data-label="Grey Literature">${sStats.greyCount}</td>
+          <td class="instructor-coverage-cell" data-label="Review Coverage">
+            <div class="instructor-coverage-row">
               <div class="instructor-table-progress-bar">
                 <div class="instructor-table-progress-fill" style="width: ${sStats.progressPct}%;"></div>
               </div>
-              <span style="font-size: 11px; font-weight: 600; font-family: 'JetBrains Mono', monospace;">${sStats.progressPct}%</span>
+              <span class="instructor-coverage-pct">${sStats.progressPct}%</span>
             </div>
           </td>
           <td>
-            <button type="button" class="btn-action btn-scholar" style="padding: 4px 10px; font-size: 12px;" onclick="setInstructorStudent('${escapeHtml(student.name)}')">
+            <button type="button" class="btn-action btn-scholar instructor-inspect-btn" onclick="setInstructorStudent('${escapeHtml(student.name)}')">
               Inspect →
             </button>
           </td>
@@ -320,7 +320,7 @@ function renderInstructorDashboard() {
   if (stats.notes.length === 0) {
     html += `
       <div class="instructor-empty-activity">
-        <div style="font-size: 28px; margin-bottom: 8px;">📝</div>
+        <div style="font-size: var(--fs-h1); margin-bottom: 8px;">📝</div>
         <p>No notes recorded yet. Annotations created in the PDF reader will appear here.</p>
       </div>
     `;

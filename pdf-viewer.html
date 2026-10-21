@@ -9,7 +9,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
       rel="stylesheet"
     />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf_viewer.min.css" />
@@ -19,6 +19,13 @@
     <style>
       :root {
         color-scheme: dark;
+        --fs-h1: clamp(1.4375rem, 1.1625rem + 1vw, 2.1875rem);
+        --fs-h2: clamp(1.3125rem, 1.1625rem + 0.5vw, 1.6875rem);
+        --fs-title: clamp(1.0625rem, 0.9625rem + 0.25vw, 1.25rem);
+        --fs-body: clamp(1rem, 0.9125rem + 0.2vw, 1.125rem);
+        --fs-meta: clamp(0.9375rem, 0.8625rem + 0.18vw, 1.0625rem);
+        --fs-ui: clamp(0.875rem, 0.8125rem + 0.14vw, 0.96875rem);
+        --fs-micro: clamp(0.75rem, 0.7625rem + 0.12vw, 0.9375rem);
         --bg: #070d17;
         --header-bg: rgba(11, 20, 36, 0.95);
         --sidebar-bg: #0d182b;
@@ -34,6 +41,18 @@
         --warning: #fbbf24;
         --danger: #f87171;
       }
+      /* Laptop and wider: every role one point smaller; the smallest text still stays at least 12px. */
+      @media (min-width: 1024px) {
+        :root {
+          --fs-h1: clamp(1.4375rem - 1pt, 1.1625rem + 1vw - 1pt, 2.1875rem - 1pt);
+          --fs-h2: clamp(1.3125rem - 1pt, 1.1625rem + 0.5vw - 1pt, 1.6875rem - 1pt);
+          --fs-title: clamp(1.0625rem - 1pt, 0.9625rem + 0.25vw - 1pt, 1.25rem - 1pt);
+          --fs-body: clamp(1rem - 1pt, 0.9125rem + 0.2vw - 1pt, 1.125rem - 1pt);
+          --fs-meta: clamp(0.9375rem - 1pt, 0.8625rem + 0.18vw - 1pt, 1.0625rem - 1pt);
+          --fs-ui: clamp(0.875rem - 1pt, 0.8125rem + 0.14vw - 1pt, 0.96875rem - 1pt);
+          --fs-micro: max(0.75rem, clamp(0.75rem - 1pt, 0.7625rem + 0.12vw - 1pt, 0.9375rem - 1pt));
+        }
+      }
 
       * {
         box-sizing: border-box;
@@ -44,7 +63,9 @@
         min-width: 320px;
         background: var(--bg);
         color: var(--text);
-        font-family: "DM Sans", -apple-system, BlinkMacSystemFont, sans-serif;
+        font-family: "Inter", sans-serif;
+        font-size: var(--fs-body);
+        line-height: 1.5;
         overflow-x: hidden;
       }
 
@@ -100,7 +121,7 @@
         gap: 4px;
         color: var(--accent);
         text-decoration: none;
-        font-size: 12px;
+        font-size: var(--fs-micro);
         font-weight: 700;
         padding: 5px 8px;
         border-radius: 6px;
@@ -123,7 +144,7 @@
       }
 
       .doc-title {
-        font-size: 13px;
+        font-size: var(--fs-ui);
         font-weight: 700;
         color: var(--text);
         white-space: nowrap;
@@ -154,7 +175,7 @@
         border-radius: 4px;
         display: grid;
         place-items: center;
-        font-size: 11px;
+        font-size: var(--fs-micro);
         transition: all 120ms ease;
       }
 
@@ -169,7 +190,7 @@
       }
 
       .page-indicator {
-        font-size: 11.5px;
+        font-size: var(--fs-micro);
         font-weight: 600;
         color: var(--text);
         padding: 0 4px;
@@ -193,7 +214,7 @@
         background: transparent;
         color: var(--muted);
         cursor: pointer;
-        font-size: 12px;
+        font-size: var(--fs-micro);
         font-weight: 600;
         height: 26px;
         padding: 0 9px;
@@ -250,7 +271,7 @@
         border-radius: 12px;
         background: rgba(14, 26, 46, 0.9);
         border: 1px solid var(--line);
-        font-size: 11.5px;
+        font-size: var(--fs-micro);
         font-weight: 600;
         color: var(--text);
         cursor: pointer;
@@ -278,7 +299,7 @@
 
       /* Sync Status Pill */
       .sync-pill {
-        font-size: 11px;
+        font-size: var(--fs-micro);
         font-weight: 600;
         color: #94a3b8;
         display: inline-flex;
@@ -324,7 +345,7 @@
         background: var(--panel);
         color: var(--text);
         cursor: pointer;
-        font-size: 12px;
+        font-size: var(--fs-micro);
         font-weight: 600;
         height: 28px;
         padding: 0 10px;
@@ -348,7 +369,7 @@
       .btn-icon {
         width: 28px;
         padding: 0;
-        font-size: 13px;
+        font-size: var(--fs-ui);
       }
 
       .btn-primary {
@@ -385,7 +406,7 @@
       .badge-count {
         background: rgba(45, 212, 191, 0.25);
         color: #5eead4;
-        font-size: 10px;
+        font-size: var(--fs-micro);
         font-weight: 700;
         padding: 1px 5px;
         border-radius: 10px;
@@ -427,7 +448,7 @@
       }
 
       .outline-title {
-        font-size: 12.5px;
+        font-size: var(--fs-ui);
         font-weight: 700;
         color: var(--text);
         display: flex;
@@ -448,7 +469,7 @@
         gap: 8px;
         padding: 7px 10px;
         border-radius: 6px;
-        font-size: 12px;
+        font-size: var(--fs-micro);
         color: #cbd5e1;
         cursor: pointer;
         transition: all 120ms ease;
@@ -468,13 +489,13 @@
 
       .outline-item.depth-2 {
         padding-left: 22px;
-        font-size: 11.5px;
+        font-size: var(--fs-micro);
         color: #94a3b8;
       }
 
       .outline-item.depth-3 {
         padding-left: 34px;
-        font-size: 11px;
+        font-size: var(--fs-micro);
         color: #64748b;
       }
 
@@ -486,8 +507,9 @@
       }
 
       .outline-page-num {
-        font-family: "JetBrains Mono", monospace;
-        font-size: 10.5px;
+        font-family: "Inter", sans-serif;
+        font-variant-numeric: tabular-nums;
+        font-size: var(--fs-micro);
         color: var(--muted);
         background: rgba(255, 255, 255, 0.05);
         padding: 1px 5px;
@@ -504,7 +526,7 @@
 
       .pdf-pages {
         display: flex;
-        align-items: center;
+        align-items: safe center;
         flex-direction: column;
         gap: 20px;
         min-height: 250px;
@@ -526,7 +548,7 @@
         left: 50%;
         transform: translate(-50%, -50%);
         color: #94a3b8;
-        font-size: 13px;
+        font-size: var(--fs-ui);
         font-weight: 600;
         letter-spacing: 0.03em;
         pointer-events: none;
@@ -710,8 +732,8 @@
       }
 
       .sticky-note .sticker-icon {
-        font-size: 9px;
-        line-height: 1;
+        font-size: var(--fs-micro);
+        line-height: 1.5;
         opacity: 0.7;
       }
 
@@ -744,6 +766,7 @@
       .sticky-note-expanded {
         position: absolute;
         width: 220px;
+        max-width: calc(100% - 16px);
         min-height: 160px;
         background: linear-gradient(155deg, #fffbeb 0%, #fef08a 100%);
         border-radius: 3px 3px 5px 3px;
@@ -786,7 +809,7 @@
         align-items: center;
         justify-content: space-between;
         margin-bottom: 6px;
-        font-size: 11.5px;
+        font-size: var(--fs-micro);
         font-weight: 600;
         color: #78350f;
         user-select: none;
@@ -808,7 +831,7 @@
         background: transparent;
         border: none;
         color: #92400e;
-        font-size: 13px;
+        font-size: var(--fs-ui);
         cursor: pointer;
         padding: 1px 5px;
         border-radius: 3px;
@@ -829,8 +852,8 @@
         border: none;
         outline: none;
         resize: none;
-        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-        font-size: 13px;
+        font-family: "Inter", sans-serif;
+        font-size: var(--fs-ui);
         line-height: 1.5;
         color: #1c1917;
         padding: 0;
@@ -850,7 +873,7 @@
         margin-top: 6px;
         padding-top: 4px;
         border-top: 1px dashed rgba(180, 83, 9, 0.25);
-        font-size: 10px;
+        font-size: var(--fs-micro);
         color: #92400e;
         opacity: 0.85;
         user-select: none;
@@ -895,7 +918,7 @@
       }
 
       .dustbin-icon {
-        font-size: 38px;
+        font-size: var(--fs-h1);
         transition: transform 180ms ease;
         filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.3));
       }
@@ -910,18 +933,18 @@
       }
 
       .dustbin-title {
-        font-size: 13.5px;
+        font-size: var(--fs-ui);
         font-weight: 700;
         letter-spacing: 0.02em;
         text-transform: uppercase;
       }
 
       .dustbin-subtitle {
-        font-size: 10.5px;
+        font-size: var(--fs-micro);
         color: rgba(255, 255, 255, 0.85);
         text-align: center;
         padding: 0 8px;
-        line-height: 1.25;
+        line-height: 1.5;
       }
 
       .red-dustbin-zone.hover-over .dustbin-subtitle {
@@ -970,7 +993,7 @@
         background: transparent;
         border: none;
         color: var(--muted);
-        font-size: 11.5px;
+        font-size: var(--fs-micro);
         font-weight: 600;
         padding: 4px 8px;
         border-radius: 4px;
@@ -993,7 +1016,7 @@
         border: none;
         color: var(--muted);
         cursor: pointer;
-        font-size: 15px;
+        font-size: var(--fs-meta);
         padding: 2px 6px;
         border-radius: 4px;
       }
@@ -1015,7 +1038,7 @@
       .drawer-empty {
         text-align: center;
         color: var(--muted);
-        font-size: 12px;
+        font-size: var(--fs-micro);
         padding: 30px 10px;
       }
 
@@ -1054,17 +1077,18 @@
       }
 
       .note-card-title {
-        font-size: 12.5px;
+        font-size: var(--fs-ui);
         font-weight: 700;
         color: #ffffff;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
+        min-width: 0;
+        white-space: normal;
+        overflow-wrap: anywhere;
+        line-height: 1.35;
         flex: 1;
       }
 
       .note-card-page {
-        font-size: 10.5px;
+        font-size: var(--fs-micro);
         font-weight: 600;
         color: var(--muted);
         background: rgba(148, 163, 184, 0.12);
@@ -1084,7 +1108,7 @@
         display: inline-flex;
         align-items: center;
         gap: 4px;
-        font-size: 10.5px;
+        font-size: var(--fs-micro);
         font-weight: 600;
         padding: 2px 7px;
         border-radius: 10px;
@@ -1097,7 +1121,7 @@
       }
 
       .note-card-text {
-        font-size: 12px;
+        font-size: var(--fs-micro);
         line-height: 1.45;
         color: #cbd5e1;
         white-space: pre-wrap;
@@ -1119,7 +1143,7 @@
       }
 
       .btn-restore {
-        font-size: 11px;
+        font-size: var(--fs-micro);
         padding: 2px 8px;
         height: 24px;
         color: #5eead4;
@@ -1127,7 +1151,7 @@
       }
 
       .btn-purge {
-        font-size: 11px;
+        font-size: var(--fs-micro);
         padding: 2px 8px;
         height: 24px;
         color: var(--danger);
@@ -1174,7 +1198,7 @@
       }
 
       .note-popover-author {
-        font-size: 12px;
+        font-size: var(--fs-micro);
         font-weight: 700;
         display: flex;
         align-items: center;
@@ -1186,7 +1210,7 @@
         border: none;
         color: var(--muted);
         cursor: pointer;
-        font-size: 14px;
+        font-size: var(--fs-meta);
         padding: 2px 5px;
         border-radius: 4px;
       }
@@ -1203,13 +1227,13 @@
       }
 
       .note-view-title {
-        font-size: 13.5px;
+        font-size: var(--fs-ui);
         font-weight: 700;
         color: #ffffff;
       }
 
       .note-view-content {
-        font-size: 13px;
+        font-size: var(--fs-ui);
         line-height: 1.5;
         color: #e2e8f0;
         white-space: pre-wrap;
@@ -1231,7 +1255,7 @@
         border: 1px solid var(--line);
         border-radius: 6px;
         color: var(--text);
-        font-size: 12.5px;
+        font-size: var(--fs-ui);
         font-weight: 600;
       }
 
@@ -1248,7 +1272,7 @@
         border: 1px solid var(--line);
         border-radius: 6px;
         color: var(--text);
-        font-size: 13px;
+        font-size: var(--fs-ui);
         line-height: 1.45;
         resize: vertical;
       }
@@ -1269,7 +1293,7 @@
         color: var(--text);
         padding: 6px 14px;
         border-radius: 20px;
-        font-size: 12px;
+        font-size: var(--fs-micro);
         font-weight: 600;
         box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
         z-index: 100;
@@ -1313,6 +1337,23 @@
         display: none;
       }
 
+      .header-center, .header-right, .tools-segment, .nav-group {
+        flex-shrink: 0;
+      }
+
+      .pdf-viewport {
+        min-width: 0;
+      }
+
+      .note-card-actions, .drawer-tabs {
+        flex-wrap: wrap;
+      }
+
+      .author-badge {
+        max-width: 100%;
+        overflow-wrap: anywhere;
+      }
+
       /* Mobile Backdrop for Sidebar & Drawer (STRICTLY MOBILE ONLY) */
       .mobile-backdrop {
         display: none !important;
@@ -1322,10 +1363,8 @@
         .app-header {
           height: auto;
           display: grid;
-          grid-template-columns: 1fr auto;
-          grid-template-areas:
-            "left right"
-            "center center";
+          grid-template-columns: minmax(0, 1fr);
+          grid-template-areas: "left" "right" "center";
           gap: 6px;
           padding: 6px 10px;
         }
@@ -1340,13 +1379,14 @@
 
         .nav-back {
           padding: 3px 6px;
-          font-size: 11.5px;
+          font-size: var(--fs-micro);
           white-space: nowrap;
         }
 
         .doc-title {
-          font-size: 12.5px;
-          max-width: calc(100vw - 190px);
+          font-size: var(--fs-ui);
+          max-width: none;
+          flex: 1;
           white-space: nowrap;
           overflow: hidden;
           text-overflow: ellipsis;
@@ -1362,6 +1402,7 @@
           align-items: center;
           gap: 4px;
           margin-left: 0;
+          flex-wrap: wrap;
         }
 
         .header-center {
@@ -1370,8 +1411,8 @@
           align-items: center;
           gap: 5px;
           width: 100%;
-          overflow-x: auto;
-          -webkit-overflow-scrolling: touch;
+          flex-wrap: wrap;
+          overflow: visible;
           padding: 2px 0;
           scrollbar-width: none;
         }
@@ -1386,38 +1427,38 @@
 
         #saveButton {
           padding: 4px 8px;
-          font-size: 11.5px;
+          font-size: var(--fs-micro);
           height: 30px;
         }
 
         #userSelectorBtn {
           padding: 3px 6px;
-          font-size: 11px;
+          font-size: var(--fs-micro);
           height: 30px;
-          max-width: 90px;
+          max-width: none;
         }
 
         #toggleNotesDrawerBtn {
           padding: 4px 8px;
-          font-size: 11.5px;
+          font-size: var(--fs-micro);
           height: 30px;
         }
 
         .nav-btn {
           width: 28px;
           height: 28px;
-          font-size: 11px;
+          font-size: var(--fs-micro);
         }
 
         .page-indicator {
-          font-size: 11px;
+          font-size: var(--fs-micro);
           padding: 0 4px;
           min-width: 36px;
         }
 
         .tool-btn {
           padding: 3px 6px;
-          font-size: 11px;
+          font-size: var(--fs-micro);
           height: 28px;
           white-space: nowrap;
         }
@@ -1558,7 +1599,7 @@
         <div class="mobile-backdrop" id="mobileBackdrop"></div>
 
         <!-- Left Table of Contents Sidebar -->
-        <aside class="outline-sidebar" id="outlineSidebar">
+        <aside class="outline-sidebar collapsed" id="outlineSidebar">
           <div class="outline-header">
             <div class="outline-title">📑 Table of Contents</div>
             <button class="nav-btn" type="button" id="closeOutlineBtn" title="Close outline">✕</button>
@@ -1567,6 +1608,12 @@
             <div class="outline-item" style="color: var(--muted); font-style: italic;">Loading headings…</div>
           </div>
         </aside>
+
+        <script>
+          if (!window.matchMedia("(max-width: 768px)").matches) {
+            document.getElementById("outlineSidebar").classList.remove("collapsed");
+          }
+        </script>
 
         <!-- PDF Viewport -->
         <main class="pdf-viewport" id="pdfViewport">
@@ -2120,7 +2167,7 @@
                 </div>
                 <div class="note-card-text">${escapeHtml(ann.text || "")}</div>
                 <div class="note-card-actions">
-                  <button class="btn btn-icon" data-del="${ann.id}" title="Delete note" style="width:24px;height:24px;font-size:11px;color:var(--danger)">🗑</button>
+                  <button class="btn btn-icon" data-del="${ann.id}" title="Delete note" style="width:24px;height:24px;font-size: var(--fs-micro);color:var(--danger)">🗑</button>
                 </div>
               `;
 
@@ -2177,7 +2224,7 @@
                     <span class="author-badge-dot" style="background:${palette.light};"></span>
                     ${escapeHtml(author)}
                   </span>
-                  ${isDel ? `<span style="color:var(--danger);font-size:10.5px;font-weight:700;">Deleted by ${escapeHtml(ann.deletedBy || "Team")}</span>` : ""}
+                  ${isDel ? `<span style="color:var(--danger);font-size: var(--fs-micro);font-weight:700;">Deleted by ${escapeHtml(ann.deletedBy || "Team")}</span>` : ""}
                 </div>
                 <div class="note-card-text" style="${isDel ? "color:var(--muted);" : ""}">${escapeHtml(ann.text || "")}</div>
                 <div class="note-card-actions">
@@ -2185,7 +2232,7 @@
                     <button class="btn btn-restore" data-restore="${ann.id}">↩ Restore</button>
                     <button class="btn btn-purge" data-purge="${ann.id}">🗑 Delete Permanently</button>
                   ` : `
-                    <button class="btn btn-icon" data-del="${ann.id}" title="Delete note" style="width:24px;height:24px;font-size:11px;color:var(--danger)">🗑</button>
+                    <button class="btn btn-icon" data-del="${ann.id}" title="Delete note" style="width:24px;height:24px;font-size: var(--fs-micro);color:var(--danger)">🗑</button>
                   `}
                 </div>
               `;
@@ -2377,15 +2424,11 @@
                 const expanded = document.createElement("div");
                 expanded.className = "annotation sticky-note-expanded";
                 expanded.dataset.annotationId = annotation.id;
-                expanded.style.left = (annotation.x * 100) + "%";
+                expanded.style.left = `clamp(8px, ${annotation.x * 100}%, calc(100% - 228px))`;
                 expanded.style.top = (annotation.y * 100) + "%";
 
                 let transformStr = "rotate(-0.8deg)";
-                if (annotation.x > 0.62 && annotation.y > 0.68) {
-                  transformStr = "translate(-85%, -85%) rotate(-0.8deg)";
-                } else if (annotation.x > 0.62) {
-                  transformStr = "translate(-85%, 0) rotate(-0.8deg)";
-                } else if (annotation.y > 0.68) {
+                if (annotation.y > 0.68) {
                   transformStr = "translate(0, -85%) rotate(-0.8deg)";
                 }
                 expanded.style.transform = transformStr;
@@ -2438,7 +2481,7 @@
                 const element = document.createElement("div");
                 element.className = "annotation sticky-note" + (selectedAnnotationId === annotation.id ? " selected" : "");
                 element.dataset.annotationId = annotation.id;
-                element.style.left = (annotation.x * 100) + "%";
+                element.style.left = `clamp(8px, ${annotation.x * 100}%, calc(100% - 52px))`;
                 element.style.top = (annotation.y * 100) + "%";
                 element.title = `${shortTitle} (${author}): ${annotation.text}`;
                 element.setAttribute("aria-label", `Sticky Note: ${shortTitle}`);
@@ -2533,7 +2576,7 @@
 
             dragNoteSession.annotation.x = nextX;
             dragNoteSession.annotation.y = nextY;
-            dragNoteSession.element.style.left = (nextX * 100) + "%";
+            dragNoteSession.element.style.left = `clamp(8px, ${nextX * 100}%, calc(100% - 52px))`;
             dragNoteSession.element.style.top = (nextY * 100) + "%";
 
             if (elements.redDustbinZone) {
@@ -2933,6 +2976,12 @@
         }, { passive: true });
 
         /* Zoom Controls & Gestures */
+        function getPdfPageWidth(zoom = currentZoomLevel) {
+          const style = getComputedStyle(elements.viewport);
+          const availableWidth = elements.viewport.clientWidth - parseFloat(style.paddingLeft) - parseFloat(style.paddingRight);
+          return Math.max(1, Math.floor(Math.min(availableWidth, 960) * zoom));
+        }
+
         function setZoom(factor) {
           currentZoomLevel = clamp(factor, 0.65, 2.0);
           elements.zoomIndicator.textContent = Math.round(currentZoomLevel * 100) + "%";
@@ -2942,7 +2991,7 @@
           renderedPages.clear();
           elements.pages.querySelectorAll(".pdf-page").forEach((el) => {
             el.classList.remove("rendered");
-            const width = Math.min(window.innerWidth - 30, Math.round(960 * currentZoomLevel));
+            const width = getPdfPageWidth();
             el.style.width = width + "px";
             el.style.minHeight = Math.round(width * basePageRatio) + "px";
           });
@@ -2968,7 +3017,7 @@
             elements.zoomInBtn.disabled = targetPinchZoom >= 1.95;
 
             elements.pages.querySelectorAll(".pdf-page").forEach((el) => {
-              const width = Math.min(window.innerWidth - 30, Math.round(960 * targetPinchZoom));
+              const width = getPdfPageWidth(targetPinchZoom);
               el.style.width = width + "px";
               el.style.minHeight = Math.round(width * basePageRatio) + "px";
             });
@@ -3309,7 +3358,7 @@
             const firstPage = await pdfDoc.getPage(1);
             const firstVp = firstPage.getViewport({ scale: 1 });
             basePageRatio = firstVp.height / firstVp.width;
-            const baseWidth = Math.min(elements.viewport.clientWidth - 30, 960);
+            const baseWidth = getPdfPageWidth();
             const placeholderHeight = Math.round(baseWidth * basePageRatio);
 
             updatePageIndicator(1);

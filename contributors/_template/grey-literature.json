@@ -1,0 +1,33 @@
+{
+  "contributor": "Your Name",
+  "totalCount": 1,
+  "greyLiterature": [
+    {
+      "id": "GL-01",
+      "title": "Document Title",
+      "organization": "Utility or Agency Name",
+      "year": 2024,
+      "category": "Network Overflows & Surcharging",
+      "summary": "Executive summary of the industry report or utility case study.",
+      "assignedTo": "Your Name",
+      "pdfUrl": "./contributors/your-slug/grey/GL_2024_Org_ShortTitle.pdf",
+      "url": "https://example.org",
+      "pages": 25,
+      "size": "1.8 MB",
+      "keyTakeaways": [
+        "Key takeaway or empirical finding 1",
+        "Key takeaway or empirical finding 2"
+      ],
+      "steps": {
+        "citation": "Author / Organisation (Year). Title. Publication details.",
+        "intro": "Context and problem definition.",
+        "methods": "Technical methods, hydraulic modeling, or regulatory standards used.",
+        "scope": "Catchment, network, or geographical scope.",
+        "usefulness": "Relevance to wastewater sensing, OSP, or hydrodynamic modeling.",
+        "limitations": "Operating constraints, uncertainties, or data gaps.",
+        "conclusions": "Key outcomes, recommendations, or operational benchmarks.",
+        "reflection": "Relevance to research objectives and network application."
+      }
+    }
+  ]
+}

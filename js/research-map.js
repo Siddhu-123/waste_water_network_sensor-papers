@@ -8,17 +8,18 @@
     tooltip: $("researchMapTooltip"), results: $("researchMapResults"), top: $("researchMapTopPlaces"),
     selection: $("researchMapSelection"), status: $("researchMapStatus"), organizations: $("researchMapOrganizations"),
     type: $("researchMapType"), contributor: $("researchMapContributor"), organization: $("researchMapOrganization"),
-    australia: $("researchMapAustralia"), browse: $("researchMapBrowse"), section: $("researchMapSection"), squeeze: $("researchMapSqueeze"),
+    australia: $("researchMapAustralia"), browse: $("researchMapBrowse"), section: $("researchMapSection"), squeeze: $("researchMapSqueeze"), print: $("researchMapPrint"),
   };
   if (!el.canvas || !el.wrap) return;
 
   el.sidebar = document.querySelector(".research-map-sidebar");
   const ctx = el.canvas.getContext("2d", { alpha: false });
   const map = { width: 0, height: 0, dpr: 1, mask: null, landDots: [], pins: [], pointer: null, hover: null, raf: 0, lens: 150, zoom: 4, mapTop: 0, mapHeight: 0, base: null, client: null };
-  // Land dots and the solid core of research markers share one radius.
+  // Research markers have a larger core; the land grid keeps its original radius.
   const DOT_RADIUS = 1.65;
-  const HIT_RADIUS = { base: 12, lens: 28, touch: 20 };
-  const GLOW_RADIUS = { base: 6.5, lens: 7.5 };
+  const MARKER_RADIUS = 2.4;
+  const HIT_RADIUS = { base: 14, lens: 28, touch: 20 };
+  const GLOW_RADIUS = { base: 8.5, lens: 9.8 };
   const TYPE_RGB = { academic: [56, 189, 248], grey: [245, 158, 11] };
   const desktopQuery = window.matchMedia("(min-width: 1024px) and (hover: hover) and (pointer: fine)");
   const isDesktop = () => desktopQuery.matches;
@@ -38,9 +39,6 @@
   const latMax = 84;
   const MAP_RATIO = (latMax - latMin) / 360;
   const MAP_MARGIN_X = 18, MAP_MARGIN_Y = 12;
-  const MAP_MIN_HEIGHT = 340;
-  // Window height kept free for the page header, section heading, panel padding and legend.
-  const MAP_VIEWPORT_RESERVE = 190;
 
   const escapeHtml = (value) => String(value ?? "").replace(/[&<>"']/g, (ch) => ({
     "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;",
@@ -163,6 +161,7 @@
   });
 
   function showError(message) {
+    el.print.disabled = true;
     el.layout.hidden = true;
     el.error.hidden = false;
     el.errorText.textContent = message;
@@ -199,6 +198,7 @@
     observeResize();
     setSize();
     render();
+    el.print.disabled = false;
     return true;
   }
 
@@ -258,7 +258,7 @@
       const active = selectedPlace && String(selectedPlace.id) === String(place.id) && !unmappedMode;
       return `<button type="button" data-place="${escapeHtml(place.id)}"${active ? ' class="active" aria-pressed="true"' : ' aria-pressed="false"'}>${escapeHtml(place.name)}<b>${recordsAtPlace(place).length}</b></button>`;
     };
-    const group = (label, list) => list.length ? `<span class="research-map-quick-label">${label}</span>${list.map(button).join("")}` : "";
+    const group = (label, list) => list.length ? `<div class="research-map-quick-group"><span class="research-map-quick-label">${label}</span><div class="research-map-quick-items">${list.map(button).join("")}</div></div>` : "";
     el.australia.innerHTML = group("Cities", shortcuts.cities) + group("Countries", shortcuts.countries);
   }
 
@@ -330,27 +330,20 @@
     return pins.map((pin) => ({ ...pin, point: nearestDot(pin.sourcePoint, dots) || pin.sourcePoint }));
   }
 
-  // Canvas height follows the map's natural ratio plus margins, never below MAP_MIN_HEIGHT, and is
-  // capped by the window height (not the scroll position, so scrolling never resizes the map).
-  function canvasHeight(width) {
-    const natural = Math.ceil((width - MAP_MARGIN_X * 2) * MAP_RATIO + MAP_MARGIN_Y * 2);
-    const available = Math.floor(window.innerHeight - MAP_VIEWPORT_RESERVE);
-    return Math.max(MAP_MIN_HEIGHT, Math.min(natural, available));
-  }
+  // Height follows width only, so observing the wrap cannot trigger a resize loop.
   function needsResize() {
     const width = el.canvas.getBoundingClientRect().width;
-    return width > 0 && (!map.mask || Math.abs(width - map.width) >= 0.5 || canvasHeight(width) !== map.height);
+    return width > 0 && (!map.mask || Math.abs(width - map.width) >= 0.5 || Math.min(window.devicePixelRatio || 1, 2) !== map.dpr);
   }
 
   function setSize() {
     const rect = el.canvas.getBoundingClientRect();
     if (!rect.width) return;
     map.width = rect.width;
-    map.height = canvasHeight(rect.width);
-    map.mapHeight = Math.min(map.height - MAP_MARGIN_Y * 2, (map.width - MAP_MARGIN_X * 2) * MAP_RATIO);
+    map.height = Math.round((map.width - MAP_MARGIN_X * 2) * MAP_RATIO + MAP_MARGIN_Y * 2);
+    map.mapHeight = (map.width - MAP_MARGIN_X * 2) * MAP_RATIO;
     map.mapTop = (map.height - map.mapHeight) / 2;
     map.dpr = Math.min(window.devicePixelRatio || 1, 2);
-    el.canvas.style.height = `${map.height}px`;
     el.canvas.width = Math.round(map.width * map.dpr);
     el.canvas.height = Math.round(map.height * map.dpr);
     ctx.setTransform(map.dpr, 0, 0, map.dpr, 0, 0);
@@ -438,6 +431,137 @@
     draw();
   }
 
+  // Print from the filtered, unsnapped places, independently of the screen canvas.
+  function printMap() {
+    if (!data || el.print.disabled) return;
+    const sheet = document.createElement("div");
+    sheet.id = "researchMapPrintSheet";
+    const date = new Date().toLocaleDateString("en-AU", { day: "numeric", month: "long", year: "numeric" });
+    const pins = [...map.pins].sort((a, b) => b.count - a.count || a.place.name.localeCompare(b.place.name));
+    const filters = [el.type, el.contributor, el.organization].map((select) => select.options[select.selectedIndex]?.textContent || "").join(" · ");
+    const australia = pins.filter((pin) => placeCountry(pin.place) === "Australia" && Number(pin.place.lon) >= 110 && Number(pin.place.lon) <= 157 && Number(pin.place.lat) >= -45 && Number(pin.place.lat) <= -9);
+    const chunkSize = Math.max(1, Math.ceil(pins.length / 3));
+    const columns = [];
+    for (let i = 0; i < pins.length; i += chunkSize) {
+      const rows = pins.slice(i, i + chunkSize).map((pin) => `<div class="research-map-print-row"><div class="research-map-print-place"><span class="research-map-print-name">${escapeHtml(pin.place.name)}</span>${placeCountry(pin.place) && placeCountry(pin.place) !== pin.place.name ? ` <span class="research-map-print-country">${escapeHtml(placeCountry(pin.place))}</span>` : ""}</div><div>${pin.typeCounts.academic || 0}</div><div>${pin.typeCounts.grey || 0}</div><div>${pin.count}</div></div>`).join("");
+      columns.push(`<div class="research-map-print-column"><div class="research-map-print-row research-map-print-column-head"><div>Place / country</div><div>Papers</div><div>Reports</div><div>Total</div></div>${rows}</div>`);
+    }
+    const sizeKey = [1, 5, 20].map((count) => `<span><svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true"><circle cx="12" cy="12" r="${printRadius(count)}" fill="#64748b" stroke="#fff" stroke-width="0.8"/></svg>${count} ${count === 1 ? "record" : "records"}</span>`).join("");
+    sheet.innerHTML = `<div class="research-map-print-header"><div class="research-map-print-title" role="heading" aria-level="1">Research locations</div><div class="research-map-print-note">${escapeHtml(filters)}</div><div class="research-map-print-note">${escapeHtml(el.coverage.textContent)}</div><div class="research-map-print-date">Printed ${escapeHtml(date)}</div></div>
+      <div class="research-map-print-map-block" role="region" aria-label="Maps and legend"><div class="research-map-print-world">${printWorld(pins)}${australia.length ? printAustralia(australia) : ""}</div>
+      <div class="research-map-print-legend"><span><i class="academic"></i>${escapeHtml(typeLabel("academic"))}</span><span><i class="grey"></i>${escapeHtml(typeLabel("grey"))}</span><span><i class="both"></i>Both types</span>${sizeKey}</div></div>
+      <div class="research-map-print-footer">${escapeHtml(document.title)} · Land outlines: Natural Earth 1:110m (public domain) · Printed ${escapeHtml(date)}</div>
+      <div class="research-map-print-places"><div class="research-map-print-subtitle" role="heading" aria-level="2">Mapped places</div><div class="research-map-print-note">Sorted by total records, highest first. A record may appear in more than one place.</div><div class="research-map-print-columns">${columns.join("") || "<div>No places match the current filters.</div>"}</div></div>`;
+    // Replace previous content on another click; afterprint owns cleanup of the active sheet.
+    const previous = $("researchMapPrintSheet");
+    if (previous) previous.replaceWith(sheet);
+    else document.body.append(sheet);
+    document.body.classList.add("research-map-printing");
+    window.print();
+  }
+
+  const printNumber = (number) => Number(number).toFixed(1);
+  const printRadius = (count) => Math.min(8.5, 2.4 + 1.1 * Math.sqrt(count));
+  function printMarker(pin, project) {
+    const [x, y] = project([Number(pin.place.lon), Number(pin.place.lat)]);
+    const r = printNumber(printRadius(pin.count));
+    const academic = pin.typeCounts.academic || 0, grey = pin.typeCounts.grey || 0;
+    const discs = academic && grey
+      ? `<path d="M0,-${r}A${r},${r} 0 0 0 0,${r}Z" fill="#0369a1"/><path d="M0,-${r}A${r},${r} 0 0 1 0,${r}Z" fill="#d97706"/>`
+      : `<circle r="${r}" fill="${academic ? "#0369a1" : "#d97706"}"/>`;
+    return `<g data-place-id="${escapeHtml(pin.place.id)}" transform="translate(${printNumber(x)} ${printNumber(y)})" stroke="#fff" stroke-width="0.8"><title>${escapeHtml(pin.place.name)}: ${academic} papers, ${grey} reports; ${pin.count} total records</title>${discs}</g>`;
+  }
+
+  // Clip geographic rings before projection, retaining holes with evenodd filling.
+  function printLand(project, bounds) {
+    const clip = (ring, axis, edge, above) => {
+      const output = [];
+      for (let i = 0; i < ring.length; i++) {
+        const a = ring[(i + ring.length - 1) % ring.length], b = ring[i];
+        const insideA = above ? a[axis] >= edge : a[axis] <= edge;
+        const insideB = above ? b[axis] >= edge : b[axis] <= edge;
+        if (insideA !== insideB) {
+          const t = (edge - a[axis]) / (b[axis] - a[axis]);
+          output.push([a[0] + t * (b[0] - a[0]), a[1] + t * (b[1] - a[1])]);
+        }
+        if (insideB) output.push(b);
+      }
+      return output;
+    };
+    const paths = [];
+    for (const feature of window.RESEARCH_WORLD_LAND.features) {
+      const geometry = feature.geometry;
+      const polygons = geometry?.type === "Polygon" ? [geometry.coordinates] : geometry?.type === "MultiPolygon" ? geometry.coordinates : [];
+      for (const polygon of polygons) for (let ring of polygon) {
+        for (const [axis, edge, above] of [[0, bounds.west, true], [0, bounds.east, false], [1, bounds.south, true], [1, bounds.north, false]]) ring = clip(ring, axis, edge, above);
+        if (ring.length >= 3) paths.push(printLine(ring, project) + "Z");
+      }
+    }
+    return `<path class="research-map-print-land" fill="#e6eaef" stroke="#a9b4c2" stroke-width="0.4pt" fill-rule="evenodd" d="${paths.join("")}"/>`;
+  }
+
+  function printLine(coords, project) {
+    return coords.map((coord, index) => { const [x, y] = project(coord); return `${index ? "L" : "M"}${printNumber(x)},${printNumber(y)}`; }).join("");
+  }
+  function printRange(start, end, step) {
+    const values = [];
+    for (let value = start; step > 0 ? value < end : value > end; value += step) values.push(value);
+    values.push(end);
+    return values;
+  }
+  function equalEarth([lon, lat]) {
+    const lambda = lon * Math.PI / 180, phi = lat * Math.PI / 180;
+    const A1 = 1.340264, A2 = -0.081106, A3 = 0.000893, A4 = 0.003796;
+    const theta = Math.asin(Math.sqrt(3) / 2 * Math.sin(phi));
+    return [2 * Math.sqrt(3) * lambda * Math.cos(theta) / (3 * (9 * A4 * theta ** 8 + 7 * A3 * theta ** 6 + 3 * A2 * theta ** 2 + A1)), -(A4 * theta ** 9 + A3 * theta ** 7 + A2 * theta ** 3 + A1 * theta)];
+  }
+  function printWorld(pins) {
+    const west = -180, east = 180, south = latMin, north = latMax;
+    const scale = 992 / (equalEarth([180, 0])[0] * 2);
+    const top = equalEarth([0, north])[1], bottom = equalEarth([0, south])[1];
+    const height = (bottom - top) * scale + 8;
+    const project = (coord) => { const [x, y] = equalEarth(coord); return [500 + x * scale, 4 + (y - top) * scale]; };
+    const boundary = [...printRange(west, east, 2).map((lon) => [lon, north]), ...printRange(north, south, -2).map((lat) => [east, lat]), ...printRange(east, west, -2).map((lon) => [lon, south]), ...printRange(south, north, 2).map((lat) => [west, lat])];
+    const frame = printLine(boundary, project) + "Z";
+    const grid = [];
+    for (let lon = -150; lon <= 150; lon += 30) grid.push(printLine(printRange(south, north, 2).map((lat) => [lon, lat]), project));
+    for (let lat = -30; lat <= 60; lat += 30) grid.push(printLine(printRange(west, east, 2).map((lon) => [lon, lat]), project));
+    return `<svg id="researchMapPrintWorld" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 ${printNumber(height)}" role="img" aria-label="World research locations"><defs><clipPath id="researchMapPrintWorldClip"><path d="${frame}"/></clipPath></defs><path d="${frame}" fill="#f3f7fb" stroke="#a9b4c2" stroke-width="0.4pt"/><g clip-path="url(#researchMapPrintWorldClip)"><path d="${grid.join("")}" fill="none" stroke="#dfe6ee" stroke-width="0.4pt"/>${printLand(project, { west, east, south, north })}${pins.map((pin) => printMarker(pin, project)).join("")}</g></svg>`;
+  }
+
+  function printAustralia(pins) {
+    const west = 110, east = 157, south = -45, north = -9;
+    const scale = 280 / ((east - west) * Math.cos(27 * Math.PI / 180));
+    const project = ([lon, lat]) => [10 + (lon - west) * Math.cos(27 * Math.PI / 180) * scale, 30 + (north - lat) * scale];
+    const height = (north - south) * scale;
+    const measure = document.createElement("canvas").getContext("2d");
+    measure.font = "9.5px Inter, sans-serif";
+    // Reserve the caption and label boxes; crowded cities keep their marker without a label.
+    const boxes = [{ x: 8, y: 4, width: 68, height: 19 }];
+    const labels = [];
+    for (const pin of pins.filter((pin) => pin.place.kind === "city")) {
+      const [x, y] = project([Number(pin.place.lon), Number(pin.place.lat)]);
+      const width = measure.measureText(pin.place.name).width + 4, labelHeight = 15;
+      const gap = printRadius(pin.count) + 3;
+      const candidates = [[x + gap, y - labelHeight / 2], [x - gap - width, y - labelHeight / 2], [x - width / 2, y - gap - labelHeight], [x - width / 2, y + gap]];
+      const candidate = candidates.find(([left, top]) => left >= 4 && left + width <= 296 && top >= 4 && top + labelHeight <= 276 && !boxes.some((box) => left < box.x + box.width && left + width > box.x && top < box.y + box.height && top + labelHeight > box.y));
+      if (!candidate) continue;
+      const [left, top] = candidate;
+      boxes.push({ x: left, y: top, width, height: labelHeight });
+      labels.push(`<text class="research-map-print-city" x="${printNumber(left + 2)}" y="${printNumber(top + 10.5)}">${escapeHtml(pin.place.name)}</text>`);
+    }
+    const grid = [];
+    for (const lon of [120, 150]) grid.push(printLine([[lon, south], [lon, north]], project));
+    grid.push(printLine([[west, -30], [east, -30]], project));
+    return `<svg id="researchMapPrintAustralia" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 280" role="img" aria-label="Australian research locations"><defs><clipPath id="researchMapPrintAustraliaClip"><rect x="10" y="30" width="280" height="${printNumber(height)}"/></clipPath></defs><g clip-path="url(#researchMapPrintAustraliaClip)">${printLand(project, { west, east, south, north })}<path d="${grid.join("")}" fill="none" stroke="#dfe6ee" stroke-width="0.4pt"/>${pins.map((pin) => printMarker(pin, project)).join("")}</g><text class="research-map-print-inset-title" x="10" y="18">Australia</text>${labels.join("")}</svg>`;
+  }
+
+  el.print.addEventListener("click", printMap);
+  window.addEventListener("afterprint", () => {
+    $("researchMapPrintSheet")?.remove();
+    document.body.classList.remove("research-map-printing");
+  });
+
   function groupPins(pins) {
     const groups = new Map();
     const recordTypes = new Map(records.map((record) => [recordKey(record), record.type]));
@@ -465,7 +589,7 @@
     el.results.innerHTML = `<ul class="research-map-titles">${entries.slice().sort(byTitle).map(({ record, locations }, index) => {
       const key = recordKey(record);
       rowData.set(key, { record, locations, selected });
-      return `<li><button type="button" class="research-map-title-row ${escapeHtml(record.type)}" data-record="${escapeHtml(key)}" tabindex="0" aria-controls="researchMapDetail"><span class="research-map-title-text">${escapeHtml(record.title || `Record ${record.id}`)}</span><span class="research-map-title-meta">${titleMeta(record)}</span></button></li>`;
+      return `<li><button type="button" class="research-map-title-row ${escapeHtml(record.type)}" data-record="${escapeHtml(key)}" tabindex="0" aria-controls="researchMapDetail" title="${escapeHtml(record.title || `Record ${record.id}`)}"><span class="research-map-title-text">${escapeHtml(record.title || `Record ${record.id}`)}</span><span class="research-map-title-meta">${titleMeta(record)}</span></button></li>`;
     }).join("")}</ul>`;
     detail.roving = el.results.querySelector(".research-map-title-row");
   }
@@ -563,7 +687,7 @@
     }
     const unmapped = matchedLocations.length === 0 ? `<p class="research-map-unmapped-reason">${escapeHtml(record.unmappedReason || "No location assigned")}</p>` : "";
     const assignedTo = contributorsFor(record).join(", ");
-    return `<article class="research-map-record"><div class="research-map-record-top"><span class="research-map-type ${escapeHtml(record.type)}">${escapeHtml(typeLabel(record.type))}</span>${assignedTo ? `<span class="research-map-assignee">${escapeHtml(assignedTo)}</span>` : ""}</div><h4>${escapeHtml(record.title || `Record ${record.id}`)}</h4>${authors}${organization}${relation}${unmapped}<div class="research-map-record-links">${links.join("")}</div></article>`;
+    return `<article class="research-map-record"><div class="research-map-record-top"><span class="research-map-type ${escapeHtml(record.type)}">${escapeHtml(typeLabel(record.type))}</span>${assignedTo ? `<span class="research-map-assignee" title="${escapeHtml(assignedTo)}">${escapeHtml(assignedTo)}</span>` : ""}</div><h4>${escapeHtml(record.title || `Record ${record.id}`)}</h4>${authors}${organization}${relation}${unmapped}<div class="research-map-record-links">${links.join("")}</div></article>`;
   }
 
   // The static layer (background, land dots, graticule, markers) is painted once per layout or filter
@@ -616,8 +740,8 @@
       const types = typesOf(group);
       types.forEach((type, index) => {
         const [r, gr, b] = TYPE_RGB[type];
-        const halo = g.createRadialGradient(x, y, DOT_RADIUS * 0.5, x, y, glow);
-        halo.addColorStop(0, `rgba(${r}, ${gr}, ${b}, .55)`);
+        const halo = g.createRadialGradient(x, y, MARKER_RADIUS * 0.5, x, y, glow);
+        halo.addColorStop(0, `rgba(${r}, ${gr}, ${b}, .7)`);
         halo.addColorStop(1, `rgba(${r}, ${gr}, ${b}, 0)`);
         wedge(x, y, index, types.length, glow);
         g.fillStyle = halo; g.fill();
@@ -628,14 +752,14 @@
       const types = typesOf(group);
       types.forEach((type, index) => {
         const [r, gr, b] = TYPE_RGB[type];
-        wedge(x, y, index, types.length, DOT_RADIUS);
+        wedge(x, y, index, types.length, MARKER_RADIUS);
         g.fillStyle = `rgb(${r}, ${gr}, ${b})`; g.fill();
       });
       if (lens) for (const pin of group.pins) if (/^(Adelaide|Melbourne|Sydney)$/.test(pin.place.name)) {
-        g.font = "600 11px Inter, sans-serif"; g.textBaseline = "middle";
+        g.font = `600 ${getComputedStyle(el.coverage).fontSize} Inter, sans-serif`; g.textBaseline = "middle";
         const labelWidth = g.measureText(pin.place.name).width;
-        const labelX = Math.max(bounds.left + 5, Math.min(bounds.right - labelWidth - 5, x + 8));
-        const labelY = Math.max(bounds.top + 10, Math.min(bounds.bottom - 10, y - 7));
+        const labelX = Math.max(bounds.left + 5, Math.min(bounds.right - labelWidth - 5, x + GLOW_RADIUS.lens + 3));
+        const labelY = Math.max(bounds.top + 10, Math.min(bounds.bottom - 10, y - GLOW_RADIUS.lens - 2));
         g.lineWidth = 3; g.strokeStyle = "#07101a"; g.strokeText(pin.place.name, labelX, labelY);
         g.fillStyle = "#f2fcff"; g.fillText(pin.place.name, labelX, labelY);
       }
@@ -859,22 +983,26 @@
   detail.panel.hidden = true;
   document.body.append(detail.panel);
 
-  const DETAIL_WIDTH = 360;
+  // In em so the panel grows with the fluid type scale and the header row keeps fitting.
+  const DETAIL_WIDTH_EM = 26;
   const DETAIL_EDGE = 8;
   const DETAIL_GAP = 4;
   // Fixed overlay, so it takes no layout space. It sits to the right of the sidebar when there
-  // is room, otherwise it slides left over the sidebar edge to stay inside the viewport.
+  // is room, otherwise it opens to the left over the map, leaving the list clear.
   function positionDetail() {
     if (!detail.row || detail.panel.hidden) return;
     const vw = document.documentElement.clientWidth, vh = document.documentElement.clientHeight;
     const rowBox = detail.row.getBoundingClientRect();
     const anchor = (el.sidebar || el.results).getBoundingClientRect();
-    const width = Math.min(DETAIL_WIDTH, vw - DETAIL_EDGE * 2);
+    const width = Math.min(Math.round(DETAIL_WIDTH_EM * parseFloat(getComputedStyle(detail.panel).fontSize)), vw - DETAIL_EDGE * 2);
     const maxHeight = vh - DETAIL_EDGE * 2;
     detail.panel.style.width = `${width}px`;
     detail.panel.style.maxHeight = `${maxHeight}px`;
     const height = Math.min(detail.panel.offsetHeight, maxHeight);
-    const left = Math.max(DETAIL_EDGE, Math.min(anchor.right + DETAIL_GAP, vw - width - DETAIL_EDGE));
+    const opensRight = anchor.right + DETAIL_GAP + width <= vw - DETAIL_EDGE;
+    const preferredLeft = opensRight ? anchor.right + DETAIL_GAP : anchor.left - DETAIL_GAP - width;
+    const left = Math.max(DETAIL_EDGE, Math.min(preferredLeft, vw - width - DETAIL_EDGE));
+    detail.panel.classList.toggle("opens-left", !opensRight);
     const top = Math.max(DETAIL_EDGE, Math.min(rowBox.top, vh - height - DETAIL_EDGE));
     detail.panel.style.left = `${left}px`;
     detail.panel.style.top = `${top}px`;
@@ -893,7 +1021,8 @@
     detail.row?.classList.remove("active");
     detail.row = row; detail.key = row.dataset.record;
     row.classList.add("active");
-    detail.panel.innerHTML = '<div class="research-map-detail-body">' + renderRecord(entry.record, entry.locations, entry.selected) + '<button type="button" class="research-map-detail-close">Close</button></div>';
+    detail.panel.innerHTML = '<div class="research-map-detail-body">' + renderRecord(entry.record, entry.locations, entry.selected) + '</div>';
+    detail.panel.querySelector(".research-map-record-top").insertAdjacentHTML("beforeend", '<button type="button" class="research-map-detail-close" aria-label="Close" title="Close">×</button>');
     detail.panel.hidden = false;
     detail.panel.firstElementChild.scrollTop = 0;
     positionDetail();
@@ -980,13 +1109,13 @@
         markerCount: map.pins.length, baseLandDotCount: map.landDots.length, lensLandDotCount: map.lensDots?.length || 0,
         baseGrid: { startX: 4, startY: 4, step: 6.1 },
         lensGrid: bounds ? { startX: Math.floor(bounds.left / 5.2) * 5.2, startY: Math.floor(bounds.top / 5.2) * 5.2, step: 5.2, bounds, sourcePointer: { x: map.pointer.x, y: map.pointer.y }, zoom: map.zoom } : null,
-        markerRadius: DOT_RADIUS, lensMarkerRadius: DOT_RADIUS,
+        markerRadius: MARKER_RADIUS, lensMarkerRadius: MARKER_RADIUS,
       };
     },
     getMarkers() {
       return map.pins.map((pin, index) => {
         const lensPin = map.pointer && !map.pointer.touch ? map.lensPins?.find((entry) => entry.place.id === pin.place.id) : null;
-        return { id: pin.place.id, name: pin.place.name, kind: pin.place.kind || "place", original: { lat: Number(pin.place.lat), lon: Number(pin.place.lon) }, base: { x: pin.point.x, y: pin.point.y, radius: DOT_RADIUS, onLandDot: map.landDots.some((dot) => dot.x === pin.point.x && dot.y === pin.point.y) }, lens: lensPin ? { x: lensPin.point.x, y: lensPin.point.y, radius: DOT_RADIUS, onLandDot: (map.lensDots || []).some((dot) => dot.x === lensPin.point.x && dot.y === lensPin.point.y) } : null, typeCounts: { ...pin.typeCounts }, recordCount: pin.count };
+        return { id: pin.place.id, name: pin.place.name, kind: pin.place.kind || "place", original: { lat: Number(pin.place.lat), lon: Number(pin.place.lon) }, base: { x: pin.point.x, y: pin.point.y, radius: MARKER_RADIUS, onLandDot: map.landDots.some((dot) => dot.x === pin.point.x && dot.y === pin.point.y) }, lens: lensPin ? { x: lensPin.point.x, y: lensPin.point.y, radius: MARKER_RADIUS, onLandDot: (map.lensDots || []).some((dot) => dot.x === lensPin.point.x && dot.y === lensPin.point.y) } : null, typeCounts: { ...pin.typeCounts }, recordCount: pin.count };
       });
     },
   };

@@ -180,6 +180,7 @@ function refreshNestedFilters() {
 
 function setTopic(topic) {
   currentTopic = topic;
+  document.getElementById("topicFilter").value = topic;
   currentFilterCategory = "all";
   populateUserOptions();
   renderNestedFilters();
@@ -192,6 +193,13 @@ function setFilterCategory(category) {
   filterTable();
 }
 
+function resetAcademicFilters() {
+  document.getElementById("searchInput").value = "";
+  setTopic("all");
+  document.getElementById("userFilter").value = "all";
+  filterTable();
+}
+
 function filterTable() {
   const query = document
     .getElementById("searchInput")
@@ -199,6 +207,7 @@ function filterTable() {
   const selectedUser = document.getElementById("userFilter").value;
   const rows = document.querySelectorAll("#papersTable tbody tr");
 
+  let visibleCount = 0;
   rows.forEach((row) => {
     const text = row.innerText.toLowerCase();
     const matchesSearch = text.includes(query);
@@ -217,11 +226,13 @@ function filterTable() {
       matchesFilterCategory
     ) {
       row.style.display = "";
+      visibleCount++;
     } else {
       row.style.display = "none";
     }
   });
 
+  document.getElementById("academicEmptyState").hidden = visibleCount > 0;
   updateFilterSummary();
   renderCompiledPapers();
 }

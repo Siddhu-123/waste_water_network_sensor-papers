@@ -25,7 +25,7 @@
   color: var(--text-primary);
   padding: 12px 16px 12px 42px;
   border-radius: 10px;
-  font-size: var(--fs-control);
+  font-size: var(--fs-ui);
   outline: none;
   transition:
     border-color 0.2s,
@@ -59,7 +59,7 @@
   color: var(--text-secondary);
   padding: 0.5em 0.9em;
   border-radius: 8px;
-  font-size: var(--fs-control);
+  font-size: var(--fs-ui);
   font-weight: 500;
   cursor: pointer;
   transition: all 0.2s;
@@ -84,7 +84,7 @@
   border-radius: 8px;
   color: var(--text-primary);
   cursor: pointer;
-  font-size: var(--fs-control);
+  font-size: var(--fs-ui);
   font-weight: 500;
   min-height: 2.5rem;
   outline: none;

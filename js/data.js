@@ -6,6 +6,38 @@ let papersData = [];
 const CONTRIBUTOR_MANIFEST_URL = "./contributors/manifest.json";
 let compiledPapersData = [];
 
+const librarySortCollator = new Intl.Collator("en", { sensitivity: "base", numeric: true });
+
+function getLibraryYear(item, academic = false) {
+  const year = String(item.year ?? "").trim();
+  if (/^\d{4}$/.test(year)) return year;
+  return academic ? String(item.authors || "").match(/\b(?:19|20)\d{2}\b/)?.[0] || "" : "";
+}
+
+function getLibraryTitle(title) {
+  const element = document.createElement("template");
+  element.innerHTML = title || "";
+  return element.content.textContent.trim();
+}
+
+function sortLibraryItems(items, mode = "newest", academic = false) {
+  return items.map((item) => ({
+    item,
+    year: getLibraryYear(item, academic),
+    title: getLibraryTitle(item.title),
+  })).sort((a, b) => {
+    const titleOrder = librarySortCollator.compare(a.title, b.title);
+    if (mode === "title") return titleOrder;
+    if (mode === "contributor") {
+      const contributorOrder = librarySortCollator.compare(a.item.assignedTo || "", b.item.assignedTo || "");
+      if (contributorOrder) return contributorOrder;
+    }
+    if (!a.year || !b.year) return a.year ? -1 : b.year ? 1 : titleOrder;
+    const yearOrder = mode === "oldest" ? Number(a.year) - Number(b.year) : Number(b.year) - Number(a.year);
+    return yearOrder || titleOrder;
+  }).map(({ item }) => item);
+}
+
 function applyPaperMetadata(sharedMetadata = {}) {
   papersData.forEach((paper) => {
     const shared =

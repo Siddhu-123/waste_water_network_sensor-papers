@@ -265,7 +265,7 @@
     {
       "id": "SATYA-GL-28",
       "title": "Do et al. / SA Water: Early Detection of Wastewater Overflows in Stonyfell",
-      "organization": "SA Water Corporation & University of Adelaide",
+      "organization": "SA Water Corporation & Adelaide University",
       "year": 2023,
       "category": "Inflow & Infiltration (I&I)",
       "summary": "The landmark SA Water smart sewer pilot: deployed 62 Pulsar ultrasonic level sensors across 11.3 km of network in Stonyfell, Adelaide. Used the Finding Irregular Duration (FID) algorithm to catch chokes 32.6 days before spills.",

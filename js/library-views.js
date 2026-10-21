@@ -9,13 +9,13 @@
   const SECTIONS = [
     {
       name: "academic",
-      storageKey: "libraryView.v2.academic",
-      fallback: "tiles",
+      storageKey: "libraryView.v4.academic",
+      fallback: "list",
       targetId: "papersTableContainer",
     },
     {
       name: "grey",
-      storageKey: "libraryView.v2.grey",
+      storageKey: "libraryView.v4.grey",
       fallback: "tiles",
       targetId: "greyLitGrid",
     },
@@ -23,6 +23,11 @@
 
   function readPreference(section) {
     try {
+      const params = new URLSearchParams(window.location.search);
+      const urlView = params.get(section.name + "View") || (section.name === "grey" ? params.get("view") : "");
+      if (urlView && VIEWS.indexOf(urlView) !== -1) {
+        return urlView;
+      }
       const saved = window.localStorage.getItem(section.storageKey);
       return VIEWS.indexOf(saved) !== -1 ? saved : section.fallback;
     } catch (err) {
