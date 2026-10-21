@@ -39,7 +39,8 @@
     {
       "name": "Wimukthi",
       "slug": "wimukthi",
-      "file": "./wimukthi/papers.json"
+      "file": "./wimukthi/papers.json",
+      "greyLiteratureFile": "./wimukthi/grey-literature.json"
     }
   ]
 }

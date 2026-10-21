@@ -42,7 +42,8 @@ window.__BUNDLED_DATA__ = {
       {
         "name": "Wimukthi",
         "slug": "wimukthi",
-        "file": "./wimukthi/papers.json"
+        "file": "./wimukthi/papers.json",
+        "greyLiteratureFile": "./wimukthi/grey-literature.json"
       }
     ]
   },
@@ -3302,6 +3303,520 @@ window.__BUNDLED_DATA__ = {
         "Directly links connection permit approvals to verified residual hydraulic headroom.",
         "Exemplifies modern utility practice in managing growth-driven overcapacity."
       ]
+    },
+    {
+      "id": "WIMUKTHI-GL-01",
+      "title": "Guidelines for Sewerage Systems: Sewerage System Overflows (National Water Quality Management Strategy)",
+      "organization": "Natural Resource Management Ministerial Council (NRMMC), Australian Government",
+      "year": 2004,
+      "category": "Network Overflows & Surcharging",
+      "summary": "Australia's national guideline for managing the health and environmental impacts of sewer overflows. It lists the causes of overflows (blockages, pumping stations, infiltration/inflow, system growth, system condition), sets out regulatory and asset-management approaches, and describes short- and long-term overflow abatement plans, monitoring and emergency response. Cited by Ninh et al. (2025).",
+      "assignedTo": "Wimukthi",
+      "url": "https://www.waterquality.gov.au/guidelines/sewerage-systems",
+      "keyTakeaways": [
+        "Names system growth as a cause of overflows: sewers and pumping stations too small for new subdivisions when growth is not foreseen.",
+        "Says sewer problems can hold back new development until capacity is increased.",
+        "Overflow abatement plans should use flow monitoring and hydraulic modelling, and report outcomes such as flows and overflow frequency."
+      ],
+      "steps": {
+        "citation": "Natural Resource Management Ministerial Council (2004). Guidelines for Sewerage Systems: Sewerage System Overflows. National Water Quality Management Strategy, Canberra.",
+        "intro": "A national guideline written because sewer overflows harm public health, the environment and amenity, and practice differed between states and territories.",
+        "methods": "A policy and practice guideline: causes and impacts of overflows, a management framework (integrated catchment management, ecologically sustainable development), regulatory approaches (presumption, demonstration, prohibition, best practice) and an overflow abatement planning process.",
+        "scope": "Whole sewerage systems in Australia, excluding internal building plumbing.",
+        "usefulness": "The Australian reference for why overflows matter and how utilities are expected to manage them. Its list of causes includes growth, which is our use case.",
+        "limitations": "From 2004 and general; it does not say where to place sensors. The PDF is a scan, so some text extraction is imperfect.",
+        "conclusions": "Utilities should run overflow abatement programs combining monitoring, modelling, maintenance, upgrades and emergency response, agreed with the regulator.",
+        "reflection": "Supports the business case for SA Water: growth-driven overcapacity is a recognised national overflow cause, and monitoring is part of the expected abatement plan."
+      },
+      "pdfUrl": "./contributors/wimukthi/grey/GL_2004_NRMMC_Guidelines_Sewerage_System_Overflows.pdf",
+      "pages": 62,
+      "size": "4.0 MB"
+    },
+    {
+      "id": "WIMUKTHI-GL-02",
+      "title": "Report to Congress: Impacts and Control of CSOs and SSOs (EPA 833-R-04-001)",
+      "organization": "US Environmental Protection Agency (US EPA)",
+      "year": 2004,
+      "category": "Network Overflows & Surcharging",
+      "summary": "EPA's national report on combined sewer overflows (CSOs) and sanitary sewer overflows (SSOs): how often they occur, their causes, their health and environmental impacts, and the money and technology used to control them. Cited by Malek Mohammadi et al. (2020).",
+      "assignedTo": "Wimukthi",
+      "url": "https://www.epa.gov/npdes/npdes-cso-reports-congress",
+      "keyTakeaways": [
+        "EPA estimates 23,000–75,000 SSOs a year in the US, releasing 3–10 billion gallons of untreated wastewater; CSOs release about 850 billion gallons a year.",
+        "Of SSO events with a known cause, 48% were from full or partial blockages and 26% from wet weather and infiltration/inflow.",
+        "Most SSO events come from blockages, but most SSO volume comes from wet weather and excessive infiltration/inflow."
+      ],
+      "steps": {
+        "citation": "US EPA (2004). Report to Congress: Impacts and Control of CSOs and SSOs. EPA 833-R-04-001, Office of Water, Washington, DC.",
+        "intro": "Required by Congress to describe the extent, impacts and control of combined and sanitary sewer overflows across the United States.",
+        "methods": "National data compilation: EPA's SSO data management system, the Clean Watersheds Needs Survey, permits and case studies, with analysis of causes, volumes and impacts.",
+        "scope": "United States combined and separate sanitary sewer systems.",
+        "usefulness": "Gives the scale of the overflow problem and the split between blockage-driven events and wet-weather-driven volume.",
+        "limitations": "US data from the early 2000s; reporting differs between communities, and EPA notes small blockage overflows are likely under-reported elsewhere.",
+        "conclusions": "Overflows are widespread; blockages cause most events and wet weather causes most volume, so control needs both maintenance and capacity measures.",
+        "reflection": "Supports separating blockage and capacity mechanisms, as Vineeth asked in Meeting 3. Our growth case is a capacity problem made worse in wet weather."
+      },
+      "pdfUrl": "./contributors/wimukthi/grey/GL_2004_USEPA_Report_to_Congress_CSOs_SSOs.pdf",
+      "pages": 640,
+      "size": "18.0 MB"
+    },
+    {
+      "id": "WIMUKTHI-GL-03",
+      "title": "White Paper on Condition Assessment of Wastewater Collection Systems (EPA/600/R-09/049)",
+      "organization": "US Environmental Protection Agency (US EPA)",
+      "year": 2009,
+      "category": "Asset Condition & Deterioration",
+      "summary": "EPA review of condition assessment technology for sewers: pipe failure mechanisms, defect types, CCTV and emerging inspection methods, and a summary of EPA's 2008 Technology Forum. Part of EPA's 'Innovation and Research for Water Infrastructure for the 21st Century' program (2007). Cited by Lundberg et al. (2026).",
+      "assignedTo": "Wimukthi",
+      "url": "https://cfpub.epa.gov/si/si_public_record_report.cfm?Lab=NRMRL&dirEntryId=209530",
+      "keyTakeaways": [
+        "Condition assessment supplies the physical condition, remaining service life and asset value needed for asset management.",
+        "Defects are classified with a standard coding system, then pipe condition is graded systematically.",
+        "Reviews wireless and remote-sensing monitoring from other industries for use in sewers."
+      ],
+      "steps": {
+        "citation": "US EPA (2009). White Paper on Condition Assessment of Wastewater Collection Systems. EPA/600/R-09/049, Office of Research and Development, Cincinnati, OH.",
+        "intro": "One of the first outputs of EPA Task Order 59 under the 2007 research program on aging water infrastructure.",
+        "methods": "Technology review and expert forum (September 2008).",
+        "scope": "Wastewater collection systems in the US; inspection and condition-assessment technologies.",
+        "usefulness": "Background on pipe-condition data (CCTV grades) that feeds the pipe-attribute risk weights.",
+        "limitations": "Focuses on structural condition, not hydraulic capacity or growth; technology status is as of 2009.",
+        "conclusions": "Utilities need consistent condition coding and better inspection technology to plan renewal.",
+        "reflection": "Relevant to the risk-weighting work (osp_risk.js) and to Vineeth's point that blockage history can be a weighting parameter, not the core model."
+      },
+      "pdfUrl": "./contributors/wimukthi/grey/GL_2009_USEPA_Condition_Assessment_Wastewater_Collection_White_Paper.pdf",
+      "pages": 74,
+      "size": "572 KB"
+    },
+    {
+      "id": "WIMUKTHI-GL-04",
+      "title": "SSOAP: A USEPA Toolbox for Sanitary Sewer Overflow Analysis and Control Planning",
+      "organization": "US Environmental Protection Agency (US EPA) and Camp Dresser & McKee",
+      "year": 2008,
+      "category": "Inflow & Infiltration (I&I)",
+      "summary": "Describes EPA's public-domain SSOAP Toolbox for analysing rainfall-derived infiltration and inflow (RDII), running sewer capacity analyses and building SSO control plans, developed with Camp Dresser & McKee. Cited by Yong et al. (2024). Companion to EPA/600/R-07/111 and EPA/600/R-08/010, already in the library.",
+      "assignedTo": "Wimukthi",
+      "url": "https://www.epa.gov/water-research/sanitary-sewer-overflow-analysis-and-planning-ssoap-toolbox",
+      "keyTakeaways": [
+        "Between one-third and two-thirds of US sanitary sewer systems have SSO or excessive peak-flow problems.",
+        "Estimated US cost to mitigate SSOs over 20 years: $164 billion (2007 dollars) for zero overflows, $119 billion for one and $96 billion for two overflows per year per municipality.",
+        "The toolbox links RDII analysis to SWMM-based capacity assessment and control planning."
+      ],
+      "steps": {
+        "citation": "Vallabhaneni, S., Lai, F. H., Chan, C., Burgess, E. H. & Field, R. (2008). SSOAP – a USEPA toolbox for SSO analysis and control planning. World Environmental and Water Resources Congress 2008, ASCE.",
+        "intro": "EPA needed proven, public tools to characterise RDII and develop SSO control plans.",
+        "methods": "A cooperative research agreement (2002) with CDM produced the toolbox and a technical guide.",
+        "scope": "Separate sanitary sewer systems in the US.",
+        "usefulness": "Shows how capacity analysis and RDII are handled in practice, with costed targets per overflow level.",
+        "limitations": "A conference paper describing software; US cost figures.",
+        "conclusions": "Communities can use the toolbox to quantify RDII, assess capacity and plan SSO controls.",
+        "reflection": "Matches our wet-weather scenario. The cost-per-overflow-target figures are useful for the business case (D7)."
+      },
+      "pdfUrl": "./contributors/wimukthi/grey/GL_2008_USEPA_SSOAP_Toolbox_SSO_Analysis_Planning.pdf",
+      "pages": 10,
+      "size": "214 KB"
+    },
+    {
+      "id": "WIMUKTHI-GL-05",
+      "title": "Storm Water Management Model User's Manual Version 5.0 (EPA/600/R-05/040)",
+      "organization": "US Environmental Protection Agency (US EPA)",
+      "year": 2010,
+      "category": "Hydraulic Simulators & Modeling",
+      "summary": "The user's manual for EPA SWMM 5.0 by L. A. Rossman: how to build, run and read SWMM models (hydrology, hydraulics and water quality). Cited by Crowley et al. (2025). Complements the SWMM Reference Manuals already in the library.",
+      "assignedTo": "Wimukthi",
+      "url": "https://www.epa.gov/water-research/storm-water-management-model-swmm",
+      "keyTakeaways": [
+        "Primary documentation for the SWMM engine behind the team's Sim 2.5 growth simulation.",
+        "Covers input objects (junctions, conduits, pumps, outfalls), dry-weather inflows and RDII, and simulation options.",
+        "Revised July 2010."
+      ],
+      "pdfUrl": "./contributors/wimukthi/grey/GL_2010_USEPA_SWMM5_Users_Manual.pdf",
+      "pages": 295,
+      "size": "5.0 MB"
+    },
+    {
+      "id": "WIMUKTHI-GL-06",
+      "title": "An Evaluation of Condition Assessment Protocols for Sewer Management (Client Report B-5123.6)",
+      "organization": "National Research Council Canada (NRC), Institute for Research in Construction",
+      "year": 2004,
+      "category": "Asset Condition & Deterioration",
+      "summary": "Compares the UK WRc sewer condition protocol with NRC guidelines and protocols used by Canadian municipalities: defect codes, deduct values, condition grades and priority rankings. Includes a survey of municipalities. Cited by Malek Mohammadi et al. (2020) and Lundberg et al. (2026).",
+      "assignedTo": "Wimukthi",
+      "url": "https://nrc-publications.canada.ca/eng/view/object/?id=93ed3e91-be5e-452d-b79d-c20d4ac77002",
+      "keyTakeaways": [
+        "Sewer condition protocols are inconsistent in defect coding, deduct values and grading.",
+        "Maintenance priority depends on criticality and consequence of failure, not condition alone.",
+        "Calls for one integrated, consistent protocol to prioritise repair and renewal."
+      ],
+      "steps": {
+        "citation": "Rahman, S. & Vanier, D. J. (2004). An evaluation of condition assessment protocols for sewer management. Client Report B-5123.6, NRC Institute for Research in Construction, Ottawa.",
+        "intro": "Canadian municipalities used different condition protocols, making results hard to compare.",
+        "methods": "Protocol comparison plus a municipal survey.",
+        "scope": "WRc, NRC and Canadian municipal protocols.",
+        "usefulness": "Explains why condition data from different utilities cannot be pooled directly, which matters when borrowing factor weights from other studies.",
+        "limitations": "Canadian focus; 2004.",
+        "conclusions": "An integrated, consistent protocol is needed.",
+        "reflection": "Supports our choice to borrow factor ordering but not thresholds from overseas condition models."
+      },
+      "pdfUrl": "./contributors/wimukthi/grey/GL_2004_NRC_Canada_Condition_Assessment_Protocols_Sewer_Management.pdf",
+      "pages": 31,
+      "size": "4.5 MB"
+    },
+    {
+      "id": "WIMUKTHI-GL-07",
+      "title": "Guidelines for Condition Assessment and Rehabilitation of Large Sewers",
+      "organization": "National Research Council Canada (NRC), Institute for Research in Construction",
+      "year": 2001,
+      "category": "Asset Condition & Deterioration",
+      "summary": "NRC guidelines, developed with 10 municipalities and two consultancies, for impact assessment, condition assessment and rehabilitation of large sewers (>900 mm) and access holes. The attached PDF is the NRC companion paper (McDonald & Zhao, NRCC-44696, 2001) summarising the guidelines; the full guideline is not openly available. Cited by Lundberg et al. (2026).",
+      "assignedTo": "Wimukthi",
+      "url": "https://www.researchgate.net/publication/44061549_Guidelines_for_Condition_Assessment_and_Rehabilitation_of_Large_Sewers",
+      "keyTakeaways": [
+        "Gives a consistent approach for assessing the impact of pipe failure, coding defects and prioritising rehabilitation.",
+        "Unified terminology and defect coding let utilities pool scarce condition data.",
+        "Covers access holes as well as pipes."
+      ],
+      "pdfUrl": "./contributors/wimukthi/grey/GL_2001_NRC_Canada_Condition_Assessment_Rehabilitation_Large_Sewers.pdf",
+      "pages": 11,
+      "size": "669 KB"
+    },
+    {
+      "id": "WIMUKTHI-GL-08",
+      "title": "Investment Needs and Future Costs of Municipal Water and Wastewater 2022–2040 (Report R2023-02)",
+      "organization": "Svenskt Vatten (Swedish Water & Wastewater Association)",
+      "year": 2023,
+      "category": "Regulation & Funding",
+      "summary": "Swedish industry association report (in Swedish) estimating the investment needed in municipal water and wastewater to 2040 and the effect on tariffs. Cited by Lundberg et al. (2026).",
+      "assignedTo": "Wimukthi",
+      "url": "https://vattenbokhandeln.svensktvatten.se/",
+      "keyTakeaways": [
+        "Annual investment need is about SEK 31 billion against actual investment of about SEK 20–21 billion: a recurring shortfall of about SEK 10 billion a year.",
+        "About SEK 560 billion is needed up to 2040; about SEK 17 billion a year is for pipe networks.",
+        "Renewal of existing infrastructure is a large share of the need."
+      ],
+      "pdfUrl": "./contributors/wimukthi/grey/GL_2023_SvensktVatten_Investment_Needs_2022-2040.pdf",
+      "pages": 58,
+      "size": "1.5 MB"
+    },
+    {
+      "id": "WIMUKTHI-GL-09",
+      "title": "Pipe Material in Swedish Water and Sewer Pipelines: Characteristics and Life-Time Expectations (SVU Report 2011-14)",
+      "organization": "Svenskt Vatten Utveckling (Swedish Water & Wastewater Association)",
+      "year": 2011,
+      "category": "Asset Condition & Deterioration",
+      "summary": "Malm et al. compile the properties, strengths, weaknesses and expected lifetimes of water and sewer pipe materials in Sweden (in Swedish, English summary). Cited by Lundberg et al. (2026), whose reference gives the report number as 2021-14; the correct number is 2011-14.",
+      "assignedTo": "Wimukthi",
+      "url": "https://vattenbokhandeln.svensktvatten.se/produkt/svenskt-vatten-utveckling/rormaterial-i-svenska-va-ledningar-egenskaper-och-livslangd/",
+      "keyTakeaways": [
+        "Sewer materials covered: concrete, PE, PVC, PP, GRP, double-wall corrugated and ceramic (vitrified clay) pipes.",
+        "Pipe life depends on the material, the joints and the function the pipe must serve, not on age alone.",
+        "Includes break-rate statistics by material from several Swedish cities."
+      ],
+      "pdfUrl": "./contributors/wimukthi/grey/GL_2011_SvensktVatten_Pipe_Materials_Lifetimes_SVU_2011-14.pdf",
+      "pages": 60,
+      "size": "2.5 MB"
+    },
+    {
+      "id": "WIMUKTHI-GL-10",
+      "title": "2017 Infrastructure Report Card: Wastewater (Grade D+)",
+      "organization": "American Society of Civil Engineers (ASCE)",
+      "year": 2017,
+      "category": "Regulation & Funding",
+      "summary": "ASCE's 2017 grading of US wastewater infrastructure (D+), covering capacity, condition, funding and future need. Cited by Malek Mohammadi et al. (2020) and Li et al. (2023).",
+      "assignedTo": "Wimukthi",
+      "url": "https://www.infrastructurereportcard.org/",
+      "keyTakeaways": [
+        "56 million more users are expected to connect to centralised treatment by 2032, a 23% increase in demand.",
+        "An estimated $271 billion is needed to meet current and future wastewater demands.",
+        "Over 800,000 miles of public sewers; as new users connect, older systems must carry more flow."
+      ],
+      "pdfUrl": "./contributors/wimukthi/grey/GL_2017_ASCE_Infrastructure_Report_Card_Wastewater.pdf",
+      "pages": 6,
+      "size": "522 KB"
+    },
+    {
+      "id": "WIMUKTHI-GL-11",
+      "title": "The Economic Benefits of Investing in Water Infrastructure: How a Failure to Act Would Affect the US Economic Recovery",
+      "organization": "American Society of Civil Engineers (ASCE) and the Value of Water Campaign",
+      "year": 2020,
+      "category": "Regulation & Funding",
+      "summary": "ASCE 'Failure to Act' report on the cost to the US economy of under-investing in drinking water, wastewater and stormwater infrastructure. Cited by Lundberg et al. (2026).",
+      "assignedTo": "Wimukthi",
+      "url": "https://infrastructurereportcard.org/",
+      "keyTakeaways": [
+        "2019: water infrastructure needs were $129 billion against $48 billion invested, an $81 billion gap, projected to reach $136 billion a year by 2039.",
+        "Closing the gap needs about $109 billion a year for 20 years.",
+        "Closing it would create about 800,000 jobs and raise household disposable income by about $2,000."
+      ],
+      "pdfUrl": "./contributors/wimukthi/grey/GL_2020_ASCE_Failure_to_Act_Water_Wastewater.pdf",
+      "pages": 40,
+      "size": "2.6 MB"
+    },
+    {
+      "id": "WIMUKTHI-GL-12",
+      "title": "Sewerage Manual Part 1: Key Planning Issues and Gravity Collection System (3rd edition, with Eurocodes)",
+      "organization": "Drainage Services Department (DSD), Hong Kong SAR Government",
+      "year": 2013,
+      "category": "Utility Codes & Design Standards",
+      "summary": "Hong Kong's design and planning manual for public gravity sewers: planning and investigation, flow and load estimation, sewer design, manholes, and operation and maintenance. Cited by Lin et al. (2025).",
+      "assignedTo": "Wimukthi",
+      "url": "https://www.dsd.gov.hk/EN/HTML/218.html",
+      "keyTakeaways": [
+        "Surcharged sewers are undesirable because peak flow recurs daily, grease clogs submerged sewers, and modelling is uncertain.",
+        "Existing sewers found surcharged at peak flow, even with freeboard, should be treated as under capacity.",
+        "Sewage flows for planning follow EPD's Guidelines for Estimating Sewage Flows (GESF)."
+      ],
+      "pdfUrl": "./contributors/wimukthi/grey/GL_2013_HK_DSD_Sewerage_Manual_Part1.pdf",
+      "pages": 107,
+      "size": "579 KB"
+    },
+    {
+      "id": "WIMUKTHI-GL-13",
+      "title": "Stormwater Drainage Manual: Planning, Design and Management (5th edition)",
+      "organization": "Drainage Services Department (DSD), Hong Kong SAR Government",
+      "year": 2018,
+      "category": "Utility Codes & Design Standards",
+      "summary": "Hong Kong's stormwater drainage manual: rainfall and sea-level analysis, flood protection standards, runoff estimation, hydraulic analysis, pipe and manhole design, and operation and maintenance. Cited by Lin et al. (2025).",
+      "assignedTo": "Wimukthi",
+      "url": "https://www.dsd.gov.hk/EN/HTML/218.html",
+      "keyTakeaways": [
+        "Reference for hydraulic analysis and frictional resistance equations for drainage pipes.",
+        "Sets design return periods based on flood levels.",
+        "Stormwater, not sewage; useful mainly for the hydraulics behind the soft-sensor papers."
+      ],
+      "pdfUrl": "./contributors/wimukthi/grey/GL_2018_HK_DSD_Stormwater_Drainage_Manual.pdf",
+      "pages": 193,
+      "size": "16.7 MB"
+    },
+    {
+      "id": "WIMUKTHI-GL-14",
+      "title": "IoT as a Digital Enabler of a Hyper-Connected Water Utility",
+      "organization": "Sydney Water",
+      "year": 2019,
+      "category": "Sensors & Monitoring Hardware",
+      "summary": "Sydney Water's report (Water e-Journal 4(3), Australian Water Association) on its IoT pilot, including sewer blockage and overflow detection with about 330 sensors in Liverpool, NSW. Cited by Drenoyanis et al. (2022).",
+      "assignedTo": "Wimukthi",
+      "url": "https://doi.org/10.21139/wej.2019.015",
+      "keyTakeaways": [
+        "Three sewer sensor types were deployed: level switches, ultrasonic level sensors and flow sensors; 15 sensor/transmitter models were tested over LoRa and NB-IoT.",
+        "Initial placement rule of thumb: a level switch every 3rd access chamber, an analogue level sensor every 30th and a flow sensor every 200th, then refined with business rules.",
+        "Sydney Water states there is no generally accepted rule for how many chambers to monitor or which technology to use."
+      ],
+      "steps": {
+        "citation": "Prackwieser, C., Cash, D. & Wassell, M. (2019). IoT as a digital enabler of a hyper-connected water utility. Water e-Journal 4(3), Australian Water Association. https://doi.org/10.21139/wej.2019.015",
+        "intro": "Sydney Water's Customer Hub wanted to detect service faults before customers do.",
+        "methods": "IoT pilot across five use cases, testing devices and networks against an evaluation framework.",
+        "scope": "Sydney Water water and wastewater assets; sewer use cases in the Liverpool area.",
+        "usefulness": "A real Australian utility's sensor mix and spacing rule. Directly answers Vineeth's question about which sensor and how far apart.",
+        "limitations": "Pilot results; the spacing rule is a starting heuristic, not optimised.",
+        "conclusions": "IoT is viable for sewer monitoring, but challenges include water ingress, gases, rodents and poor reception under iron covers.",
+        "reflection": "A practical baseline to compare our placement method against: blanket spacing (every 3rd/30th/200th chamber) versus placement at capacity-limiting pipes."
+      },
+      "pdfUrl": "./contributors/wimukthi/grey/GL_2019_SydneyWater_IoT_Hyper-Connected_Utility.pdf",
+      "pages": 10,
+      "size": "3.7 MB"
+    },
+    {
+      "id": "WIMUKTHI-GL-15",
+      "title": "Wipes in Sewer Blockage Study: Final Report",
+      "organization": "Water UK (with Defra and EDANA); press release by Severn Trent Water",
+      "year": 2017,
+      "category": "Network Overflows & Surcharging",
+      "summary": "UK study of 54 sewer blockages, funded by Water UK, Defra and EDANA. Severn Trent's press release 'New proof that flushing wipes is a major cause of sewer blockages' (2017), cited by Ninh et al. (2026), reports this study.",
+      "assignedTo": "Wimukthi",
+      "url": "https://www.water.org.uk/news-views-publications/publications/wipes-sewer-blockage-study-final-report",
+      "keyTakeaways": [
+        "Wipes made up about 93% of blockage material; baby wipes were over 75% by weight of identifiable products.",
+        "Products designed to be flushed were under 1% of blockage material.",
+        "The UK has about 300,000 sewer blockages a year, costing about £100 million."
+      ],
+      "pdfUrl": "./contributors/wimukthi/grey/GL_2017_WaterUK_Wipes_in_Sewer_Blockage_Study.pdf",
+      "pages": 20,
+      "size": "530 KB"
+    },
+    {
+      "id": "WIMUKTHI-GL-16",
+      "title": "MCERTS Performance Standards and Test Procedures for Continuous Water Monitoring Equipment, Part 3: Water Flowmeters (Version 4)",
+      "organization": "Environment Agency (England)",
+      "year": 2020,
+      "category": "Sensors & Monitoring Hardware",
+      "summary": "The UK certification standard for water flowmeters, including velocity-area and level-based instruments. Cited by Crowley et al. (2025). The 2020 PDF has been withdrawn: in August 2026 the scheme was replaced by two parts (open channel; closed conduit) based on EN 17694:2023. The link points to the current version.",
+      "assignedTo": "Wimukthi",
+      "url": "https://www.gov.uk/government/publications/mcerts-performance-standards-and-test-procedures-for-water-flowmeters--2",
+      "keyTakeaways": [
+        "Current Part 1 (open channel instruments) applies to sewers flowing part-full.",
+        "Level sensor classes: bias ±0.1% (Class 1), ±0.3% (Class 2), ±1% (Class 3).",
+        "Integrated velocity-area instruments: bias ±1.5%, ±4% and ±6.5% for Classes 1–3."
+      ],
+      "pdfUrl": "#"
+    },
+    {
+      "id": "WIMUKTHI-GL-17",
+      "title": "A Guide to Short Term Flow Surveys of Sewer Systems",
+      "organization": "WRc (Water Research Centre), UK",
+      "year": 1987,
+      "category": "Hydraulic Simulators & Modeling",
+      "summary": "WRc guide (132 pages) to planning and running short-term sewer flow surveys, processing the data and reporting, used to verify hydraulic models of existing sewers. Still a reference for UK flow-survey practice. Cited by Crowley et al. (2025). Not openly available.",
+      "assignedTo": "Wimukthi",
+      "url": "https://www.thenbs.com/PublicationIndex/documents/details?Pub=WRc&DocID=253789",
+      "keyTakeaways": [
+        "The industry method for calibrating and verifying sewer hydraulic models against measured flows.",
+        "Covers survey planning, field work, data processing and the final report.",
+        "Relevant when SA Water data arrives and Sim 2.5 needs calibration."
+      ],
+      "pdfUrl": "#"
+    },
+    {
+      "id": "WIMUKTHI-GL-18",
+      "title": "Sewerage Rehabilitation Manual (now the Sewerage Risk Management website)",
+      "organization": "WRc (Water Research Centre), UK",
+      "year": 2020,
+      "category": "Asset Condition & Deterioration",
+      "summary": "WRc's Sewerage Rehabilitation Manual, first published in 1980, became the base for sewer condition assessment protocols worldwide. The 4th edition was developed into the online Sewerage Risk Management (SRM) site, funded by eleven UK sewerage utilities with Defra and Ofwat support. Cited by Malek Mohammadi et al. (2020) and Lundberg et al. (2026). Subscription access.",
+      "assignedTo": "Wimukthi",
+      "url": "http://srm.wrcplc.co.uk/",
+      "keyTakeaways": [
+        "The origin of WRc condition grading; condition models typically grade pipes from 1 (new) to 5 (failed).",
+        "Covers rehabilitation planning and sewer renovation.",
+        "Most condition-prediction studies reviewed by Malek Mohammadi et al. use WRc or PACP grading."
+      ],
+      "pdfUrl": "#"
+    },
+    {
+      "id": "WIMUKTHI-GL-19",
+      "title": "D1.2 Review of Sewer Deterioration Models (SEMA project)",
+      "organization": "Kompetenzzentrum Wasser Berlin (KWB)",
+      "year": 2013,
+      "category": "Asset Condition & Deterioration",
+      "summary": "Kley & Caradot's review of sewer deterioration models for the SEMA project (Asset Management Strategies for Sewer Systems), covering deterministic, statistical and artificial-intelligence approaches. Cited by Malek Mohammadi et al. (2020). The KWB site could not be reached when this entry was added; check the link.",
+      "assignedTo": "Wimukthi",
+      "url": "https://publications.kompetenz-wasser.de/en/publication/663/",
+      "keyTakeaways": [
+        "Groups deterioration models into deterministic, statistical and AI-based.",
+        "Background for choosing a simple, explainable risk weighting over data-hungry models."
+      ],
+      "pdfUrl": "#"
+    },
+    {
+      "id": "WIMUKTHI-GL-20",
+      "title": "Analysis of Defects in 180 km of Pipe Sewers in Southern Water Authority (TRRL Research Report 172)",
+      "organization": "Transport and Road Research Laboratory (TRRL), UK, with Southern Water Authority",
+      "year": 1989,
+      "category": "Asset Condition & Deterioration",
+      "summary": "O'Reilly, Rosbrook, Cox & McCloskey's analysis of defects found in 180 km of sewers in the Southern Water Authority area. An early large utility dataset on sewer condition factors. Cited by Malek Mohammadi et al. (2020). Not openly available.",
+      "assignedTo": "Wimukthi",
+      "keyTakeaways": [
+        "One of the early large utility datasets used in sewer condition-factor research.",
+        "From the predecessor of Southern Water, where Vineeth worked."
+      ],
+      "pdfUrl": "#"
+    },
+    {
+      "id": "WIMUKTHI-GL-21",
+      "title": "Kortbedömning av TV-inspekterade avloppsledningar (Evaluation of TV-Inspected Sewer Pipes), VA-Forsk Report 1994-12",
+      "organization": "VA-Forsk / Svenskt Vatten (Swedish Water & Wastewater Association)",
+      "year": 1994,
+      "category": "Asset Condition & Deterioration",
+      "summary": "Nilsson & Stahre's Swedish system for quickly grading CCTV-inspected gravity sewers, giving an operational grade and a pipe grade from weighted defects, to help municipalities plan renewal. Cited by Lundberg et al. (2026).",
+      "assignedTo": "Wimukthi",
+      "url": "https://vattenbokhandeln.svensktvatten.se/produkt/kortbedomning-av-tv-inspekterade-avloppsledningar",
+      "keyTakeaways": [
+        "Separates operational (blockage-type) grades from structural pipe grades.",
+        "Still used as a framework for Swedish CCTV grading."
+      ],
+      "pdfUrl": "#"
+    },
+    {
+      "id": "WIMUKTHI-GL-22",
+      "title": "Hong Kong Conduit Condition Evaluation Codes (HKCCEC), 2009 version",
+      "organization": "Utility Training Institute (UTI), Hong Kong",
+      "year": 2009,
+      "category": "Asset Condition & Deterioration",
+      "summary": "Hong Kong's code for evaluating conduit condition from CCTV and man-entry surveys. The 2009 version added a Structural Performance Grade. Later issued as the Conduit Condition Evaluation Codes (5th edition, 2019). Cited by Ma et al. (2026). No open copy found.",
+      "assignedTo": "Wimukthi",
+      "keyTakeaways": [
+        "The Hong Kong grading code referenced in Ma et al. (2026)'s review of AI sewer condition models.",
+        "Shows why Hong Kong condition thresholds should not be applied directly to Adelaide."
+      ],
+      "pdfUrl": "#"
+    },
+    {
+      "id": "WIMUKTHI-GL-23",
+      "title": "Analysing Sewer Flow Patterns to Detect Blockages and Overflows (OzWater'21, Adelaide)",
+      "organization": "Sydney Water",
+      "year": 2021,
+      "category": "Network Overflows & Surcharging",
+      "summary": "Januszek, Rahman & Cheung's OzWater'21 paper on detecting overflows and blockages upstream of sewage pumping stations from pump-station data. Described in, and cited by, Drenoyanis et al. (2022). The conference paper is not openly available; the link is the Drenoyanis article that summarises it.",
+      "assignedTo": "Wimukthi",
+      "url": "https://info.awa.asn.au/water-e-journal/detecting-wastewater-blockages-with-digital-water-meters-a-survey-of-methods-used-by-sydney-water",
+      "keyTakeaways": [
+        "Compares wet-well inflow rates and pump run times with historical diurnal patterns and flags abnormally low inflow.",
+        "Works only if the lost flow is large relative to normal pump-station inflow; small chokes look like natural variation.",
+        "An 'identify before prevent' method using data SA Water already holds (pump-station SCADA)."
+      ],
+      "pdfUrl": "#"
+    },
+    {
+      "id": "WIMUKTHI-GL-24",
+      "title": "Keeping Our Sewers Healthy",
+      "organization": "SA Water",
+      "year": 2022,
+      "category": "Network Overflows & Surcharging",
+      "summary": "SA Water's public page on blockages and overflows: what should and should not be flushed, fats and oils, its sewer cleaning program and smart sensor trials. Cited by Ninh et al. (2026).",
+      "assignedTo": "Wimukthi",
+      "url": "https://www.sawater.com.au/my-home/leaks-or-blockages/tips-for-happy-pipes",
+      "keyTakeaways": [
+        "In 2022-23, 'unflushables' caused more than 3,500 blockages across metropolitan Adelaide.",
+        "Wet wipes and feminine hygiene products are about 90% of material removed from blocked sewers; they tangle in tree roots.",
+        "More than two-thirds of overflows occur inside customers' properties. SA Water cleans a 9,000 km network and is trialling smart sewer sensors."
+      ],
+      "pdfUrl": "#"
+    },
+    {
+      "id": "WIMUKTHI-GL-25",
+      "title": "What's Really Going Down Adelaide's Sewers?",
+      "organization": "South Australian Government (We Are SA) with SA Water",
+      "year": 2025,
+      "category": "Network Overflows & Surcharging",
+      "summary": "SA Government news article on record wet-wipe blockages in Adelaide's sewers and unusual items found by SA Water crews. Cited by Ninh et al. (2026). The page blocks automated access; figures are taken from search summaries and should be checked on the page.",
+      "assignedTo": "Wimukthi",
+      "url": "https://www.weare.sa.gov.au/news/whats-really-going-down-adelaides-sewers",
+      "keyTakeaways": [
+        "Reports 1,667 wet-wipe blockages in Adelaide by mid-November 2024, beating the 2022 record of 1,344.",
+        "Context for SA Water's blockage problem, which is separate from the growth use case."
+      ],
+      "pdfUrl": "#"
+    },
+    {
+      "id": "WIMUKTHI-GL-26",
+      "title": "DSD Sustainability Report 2019-20: Innovation for Sustainability of Water Purification and Flood Protection",
+      "organization": "Drainage Services Department (DSD), Hong Kong SAR Government",
+      "year": 2020,
+      "category": "Regulation & Funding",
+      "summary": "DSD's annual sustainability report (GRI Standards) on its sewerage and drainage work in 2019-20, including innovative maintenance technology. Cited by Ma et al. (2025).",
+      "assignedTo": "Wimukthi",
+      "url": "https://www.dsd.gov.hk/EN/Publicity_and_Publications/Publicity/DSD_Sustainability_Reports/20/key_statistics_and_data.html",
+      "keyTakeaways": [
+        "Hong Kong utility context for the Ma et al. sewer-condition dataset.",
+        "Includes remote-controlled desilting robots for confined, submerged drains."
+      ],
+      "pdfUrl": "#"
+    },
+    {
+      "id": "WIMUKTHI-GL-27",
+      "title": "Sewage Strategy",
+      "organization": "Drainage Services Department (DSD), Hong Kong SAR Government",
+      "year": 2019,
+      "category": "Urban Growth & Sewer Capacity",
+      "summary": "DSD's overview of Hong Kong's sewerage strategy: network size, Sewerage Master Plans and the Harbour Area Treatment Scheme. Cited by Ma et al. (2025).",
+      "assignedTo": "Wimukthi",
+      "url": "https://www.dsd.gov.hk/EN/Sewerage/Sewerage_Strategy/index.html",
+      "keyTakeaways": [
+        "About 93% of the population is served by about 1,700 km of public sewers and around 300 pumping stations and treatment facilities.",
+        "Older urban sewerage was not upgraded for later development; Sewerage Master Plans upgrade 16 catchments one at a time.",
+        "A growth-driven capacity upgrade programme at city scale."
+      ],
+      "pdfUrl": "#"
     }
   ],
   "findingsMarkdown": "# Grey Literature Findings: How Water Utilities Handle Sewer Overflows, Capacity and Growth\n\n**What this is:** a stand-alone summary of *everything found so far in the grey literature*: documents published by water utilities,\nutility associations, regulators and government agencies. It is the source text for the LaTeX write-up\n`grey_literature/grey_literature_review.tex` (+ `grey_literature.bib`).\n\n**Built from:**\n- `grey_literature/GREY_LITERATURE_TRACKER.md`: GL-01…GL-59, sewer case studies worldwide (**45 PDFs** in `grey_literature/0923/`,\n  about 40 web/news pages; the former `corpus_copies/` folder was deleted 2026-09-24).\n- `modelling/grey_literature/GREY_LITERATURE_LINKS.md`: growth → capacity → monitoring sources (**24 PDFs** in `modelling/grey_literature/`,\n  about 25 web/news pages), collected for `modelling/08`.\n\nEvery grey-literature PDF is named `GL_<Year>_<Org>_<ShortTitle>.pdf`. Look up links and local paths in the two index files. This file only cites\nthe GL ID or the filename.\n\n**Date:** 2026-09-24 · **Evidence grades:** ✔ = checked in the primary document · [N] = news or search summary only (verify before citing).\n\n---\n\n## 1. Executive summary\n\n1. **Growth-driven overcapacity is real and acknowledged by utilities, but it is episodic.** Utilities name \"incremental growth beyond\n   pipe/pump capacity\" (Icon Water, GL-07), infill densification (Watercare, GL-08), capacity reached \"sooner than originally projected\"\n   (SA Water, Adelaide north, via ESCOSA 2024) and \"insufficient residual capacity to accommodate future growth\" (Sydney Water, GL-13) as\n   drivers of overflows and capital programs. Where capacity runs out, **development is stopped**: Auckland connection pauses, and US\n   moratoria in Anne Arundel County MD and Mooresville NC in 2026.\n2. **Blockages dominate incident counts, but capacity events dominate overflow volume.** US EPA 2004: 48% of SSO events are blockages vs 26% wet-weather/capacity,\n   but capacity events carry about ¾ of the volume. Tree roots cause ~65% of SA blockages [N].\n3. **Wet-weather I&I is the multiplier that turns growth into overflow.** New development often exceeds its I&I allowance (York Region:\n   ~24% of young basins exceed 0.26 L/s/ha). Excess I&I uses up capacity *reserved for growth* (Metro Vancouver, allowance 11,200 L/ha/d;\n   King County). Utilities are moving from storage to **source control** (Sydney Water: 17× cheaper; Unitywater smoke-tested 70k+ properties).\n4. **Australian design codes give usable capacity thresholds, and they differ by utility:**\n   - Icon Water / WSA 02: Manning full-pipe capacity ≥ PWWF.\n   - TasWater: design d/D = 0.7 and 5-yr ARI containment.\n   - Sydney Water planning: PDWF depth < 60% of pipe height, and wet-weather manhole surcharge ≤ 5 in 10 yrs.\n   - Containment targets: 1-in-5-yr ARI in Melbourne, 1-in-10 in Canberra, an average of 2 spills per location per year in Auckland.\n   - England: at most 10 spills a year per overflow by 2050.\n5. **Monitoring has scaled up enormously, but site selection is ad hoc.** Sydney Water has 8,000+ level sensors (15k more planned), United Utilities ~20k,\n   and Yorkshire Water 27k level monitors + 45k customer alarms (2025–30). SA Water had 82–88 at Stonyfell, HK DSD 250+, and South Bend ~150.\n   The only published placement rules are coarse, e.g. \"suburbs with higher than average blockage rates\" (SA Water) or \"areas at high risk of flooding\" (Yorkshire).\n   **No utility document describes an optimisation-based placement method**; the closest is ASCE MOP 60's meter-siting checklist.\n6. **Monitoring pays when it feeds control or re-planning.** South Bend: CSO −70%, ~US$500 m capex avoided. Louisville RTC: US$200–300 m avoided.\n   Kansas City updates its system model every year from monitoring data (adaptive management under a consent decree). Anne Arundel's moratorium was lifted partly because the regulator\n   accepted **measured peak flows** instead of design assumptions.\n7. **Regulators now prefer risk-weighted objectives to blanket targets.** Examples: Sydney Water's EPA point system (PRP 307), Icon Water's risk MCA (saved ~A$173 m),\n   Melbourne Water's deferred augmentation, and effects- and outcomes-based studies (Hunter, Yarra Valley Water). UK DWMPs screen every catchment for growth, urban creep\n   and climate using a common risk-based method. This supports a **weighted-coverage** OSP objective.\n8. **Ageing and corrosion are the long-tail risk** (Yashio 2025 collapse; Tokyo 23% → 69% of sewers past 50 years). These are out of scope for capacity OSP,\n   but relevant to sensor survival and maintenance.\n\n---\n\n## 2. Growth → capacity → overflow: what utilities report\n\n| Evidence | Source | Grade |\n|---|---|---|\n| Design performance lost \"due to incremental growth in the sewage catchment beyond pipe/pump capacity, failures in power supply … or climate change\" | Icon Water, WSAA CS7 (GL-07) | ✔ |\n| Quarter-acre lots → 2–4 houses, a dozen townhouses or 4–5-storey blocks; overflows at 219 locations → target 10; NZ$1.2 bn Central Interceptor | Watercare, WSAA CS8 (GL-08) | ✔ |\n| Victorian interceptors sized for ~4 M people, London now ~9 M; by 2011 as little as 2 mm of rain triggered a discharge; Tideway aims for −95% | Thames Tideway (GL-32) | [N] |\n| Growth Servicing Plan 2025–30 for 377k homes (NSW Housing Accord); the Operating Licence requires 10-yr disclosure of wastewater capacity constraints | Sydney Water (GL-13/14) | ✔ |\n| SAWRD24 Metropolitan Growth project **$1,070 M**; SA Water \"$1.2 bn to support housing growth\"; Adelaide north \"at capacity sooner than originally projected\" | ESCOSA 2024; SA Water AR 2023–24; ABC [N] | ✔ / [N] |\n| Target 85% of new housing in established areas by 2045 (infill); regional plan locates 315k homes | Living Adelaide 2017; PlanSA 2025 | ✔ |\n| SA Water cannot confirm trunk capacity for 340 homes at Kadina; decision deferred to the 2028 pricing cycle | The Good Builder 2026 | [N] |\n| \"Timing of maximum development capacity being reached is unknown\", so upgrade timing is hard (MDRS intensification) | Waikato DC, Variation 3 | ✔ |\n| Capacity is \"monitored … and assessed against discharge consent limits, including wastewater overflow frequency\"; 4-category capacity maps | Watercare Growth Servicing Policy 2026 | ✔ |\n| Sewer capacity moratorium (2 Mar – 3 Jun 2026) triggered by switching from average-day to **peak-flow** accounting; lifted after the regulator accepted **actual peak-flow data** | Anne Arundel County MD | ✔ |\n| A pump station at full capacity gives up to a 35-month pause on development | Mooresville NC | [N] |\n| Capacity certification required before new connections (consent-decree Capacity Assurance Program) | Chattanooga TN (2016) | ✔ (TOC) |\n| New development brings I&I above allowance: ~24% of basins < 20 yrs exceed 0.26 L/s/ha; some systems reach 80% of design capacity 11 yrs early | York Region 2019 | ✔ |\n| Counter-evidence: established Melbourne sewers usually absorb infill, but wet-weather flows bind and loads \"will at some stage exceed the capacity\" | Infrastructure Victoria 2019 | ✔ |\n| Bottlenecks raise the HGL upstream (backwater); separate *root-cause* bottleneck pipes from backwater-affected pipes | Scotts Valley CA master plan | ✔ |\n| UK DWMPs: 25-yr plans against growth, urban creep and climate; Anglian Water risk-assessed ~600 catchments to 2050 (≤ £5 bn) | Water UK (GL-33/34); Anglian (GL-38) | ✔ / [N] |\n| US 20-yr needs US$630 bn, of which conveyance repair and new conveyance ≈ US$151 bn | US EPA CWNS 2022 | ◻ |\n\n**Take-away.** Growth overcapacity is **low-frequency, high-consequence and predictable**. It becomes major when fast or unplanned growth lands on an\nold or small trunk or pump station **and** wet-weather I&I is high. Its costs show up as capital programs and development holds more than as incident counts.\n\n---\n\n## 3. Capacity and performance criteria used in practice\n\n| Criterion | Value | Source |\n|---|---|---|\n| Capacity test (new design) | Manning full-pipe capacity ≥ PWWF; surcharge = water above the obvert | Icon Water WSA 02 supplement (`iconwater2025wsa02`) |\n| Design depth | **d/D = 0.7** (Colebrook–White, k = 1.5 mm) | TasWater WSA 02 supplement (GL-58) |\n| Planning depth trigger | **PDWF depth < 60% of pipe-full** | Sydney Water planning guideline (GL-12) |\n| Wet-weather surcharge | Manhole surcharge within a property ≤ 5 times in 10 yrs (2-yr ARI); no repeat internal surcharge | GL-12 |\n| Containment standard | 1-in-5-yr (Victoria; TasWater 5-yr ARI) · 1-in-10-yr ARI (Canberra) | GL-01b, GL-58, GL-07 |\n| Overflow frequency limits | EPL/SOLP per system, e.g. St Marys 35 → 20 in 10 yrs (Sydney) · average 2/yr per location (Auckland consent) · ≤ 10 spills/yr by 2050 (England SODRP) | GL-12, GL-08, GL-39 |\n| Residential load | 150 L/p/d for new residents (Sydney) · 150 / 180 L/d/EP new / existing = 450 / 540 L/ET/d (TasWater) · 180 L/EP/d (Icon Water) | GL-12, GL-58, `iconwater2025wsa02` |\n| Commercial load | 0.225 EP per employee (Sydney) | GL-12 |\n| Dry-weather peaking | Sydney: `d = 0.01(logA)^4 − 0.19(logA)^3 + 1.4(logA)^2 − 4.66(logA) + 7.57` (A = gross area, ha) | GL-12 |\n| I&I for new areas | 2% (gravity), 1% (pressure sewer); existing I/I extrapolated from its 10-yr trend with 20 yrs of deterioration | GL-12 |\n| I&I allowance | 11,200 L/ha/d (Metro Vancouver) · 0.26 L/s/ha upper RDII design allowance (York) | GL-20, York |\n| When infill needs its own model sub-catchment | ≥ ~200 dwellings (infill); > 500 dwellings (major development → extend the model); ±10% growth sensitivity | GL-12 |\n| Pump-station resilience | ≥ 4 h emergency storage at PDWF | GL-12 |\n\n**Take-away.** The *headroom* signal must be defined against a **utility-specific threshold** (0.6 / 0.7 / 1.0 of full depth). For SA Water this is an open\nclient question (`modelling/06`).\n\n---\n\n## 4. Monitoring deployments: scale, purpose and how sites were chosen\n\n| Utility / programme | Scale | Main purpose | How sites were chosen (as published) | Reported result |\n|---|---|---|---|---|\n| SA Water, Stonyfell (2018–) (GL-01, `do2023overflow`) | 82–88 level sensors over 11 km + weather station; Gawler: 88 odour sensors | Blockages → overflows; odour | Suburb with **higher than average blockage rates**; expert judgement within it | ~10 overflows prevented/yr; 24% sensor failures in year 1 |\n| Sydney Water (GL-10) | 4,600 (2022) → **8,000+**, +15,000 planned | Blockage detection | Not published | ~20 blockages/month; 300–370+ caught before overflow; ~A$400k/month avoided; meter vs level r = 0.97 (dry days) |\n| Yarra Valley Water (GL-19) | Network-wide IoT (≈20,000 km water + sewer) | Blockages → spills; pressure-sewer control | Not published | [N] |\n| Unitywater + GHD (GL-18) | ML on radar + SPS data | SPS overflow prediction | Pump-station level | Faster than hydraulic models (trial) [N] |\n| United Utilities, DNM (GL-30) | ~19–20k manhole sensors (2021–22), 78,000 km | Blockages, flooding, pollution | \"Key points on the sewer pipes\" | Preston pilot −80% blockages [N] |\n| Yorkshire Water (GL-31) | 27k level monitors + 45k customer alarms + 20k replacements (2025–30), £53 m | Flooding, pollution | \"Areas with a high risk of flooding\" (hyper-local rainfall modelling) | 35+ pollution incidents prevented, −15% reactive visits [N] |\n| England EDM / Scottish Water (GL-39/39c) | Every storm overflow (EDM); Scotland +1,009 sites, live API | Regulatory transparency | All overflows (regulatory) | 3.6 M spill hours in 2024 |\n| Hong Kong DSD (GL-46) | 250+ rain/level sensors | Flooding, blockage | Not published | −70–75% emergency overflows in trial areas [N, unverified] |\n| South Bend CSOnet (GL-40) | 110 → ~150 wireless sensors, 9 valves, 3 weirs | CSO RTC | Engineering + control needs | CSO −70%; ~US$500 m capex avoided |\n| Louisville MSD (GL-43) | System-wide RTC (Csoft) | CSO | RTC design | −247 MG/yr; US$200–300 m avoided |\n| Singapore PUB (GL-47) | ~50 km fibre-optic strain/temperature sensing | Tunnel structural health | Whole deep-tunnel length | — |\n| **ASCE MOP 60 §3.7.2 (GL-59)** | Guidance | Flow/I&I studies | Homogeneous upstream land use; hydraulically clean manhole; **upstream footage isolatable** for I/I; rain gauges | — |\n\n**Take-away.** The gap in practice is not sensors but **where to put them**. Published rules are hotspot heuristics (incident rate, flood risk) or\nengineering checklists. An optimisation that is **explainable** (reason per site), **risk-weighted** and **re-run when growth arrives** matches what\nregulators already accept (risk-based licensing, adaptive management).\n\n---\n\n## 5. Wet weather, I&I and overflows\n\n- **Sydney Water WWOM 2016–24 (GL-11):** meeting the 2000-era frequency targets by storage would cost **> A$18 bn** and take **> 350 yrs**, so the utility shifted to\n  **I&I source control** (17× cheaper, complete by 2060). The new licence target is **−6% (1.6 GL) of WWO volume**. Sewers in rock/clay trenches channel stormwater into defects.\n- **Unitywater (GL-06):** overflows at 50–100 mm of rain. Up to half of RDI comes from private plumbing. 90 hotspot overflows were abated. Screening KPIs are built from *existing* data\n  (SCADA, Maximo, GIS) before any field work.\n- **Metro Vancouver (GL-20/21), King County (GL-22):** I&I above allowance consumes growth capacity. The barrier is priority, not tools. King County chose project-specific\n  I/I reduction over regional targets.\n- **Illegal stormwater connections:** smoke-testing programs (Hunter Water, TasWater, East Gippsland), Bengaluru (15,000 connections removed, overflows persist), and Brazil\n  (separate systems that behave as combined).\n- **Surface-water removal / GI:** Welsh Water RainScape (−85% discharge volume at Cambrian SPS), Philadelphia \"Greened Acres\", DC Water's Environmental Impact Bond (payment\n  tied to measured runoff reduction), Copenhagen (disconnect 30% of impervious area; 300 surface projects).\n\n## 6. Blockages\n\n- Blockages are the most frequent sewer incident everywhere: Thames Water ~75,000/yr (wipes the #1 cause, ~£18 m/yr); SA 17,392 tree-root blockages in 2025–26 [N];\n  US EPA 2004 found 48% of SSO events are blockages.\n- Responses: **level sensors + analytics** (Sydney Water, SA Water, UU, Yorkshire, YVW) and **behaviour campaigns** (Anglian \"Keep it Clear\": −80% blockages after a 7-week\n  Peterborough trial; Sydney \"Toilet Blockers Anonymous\").\n- Implication: the **same level sensors** detect blockages (fast, local, dry weather) and capacity stress (slow, wet-weather, growth-driven). An OSP that\n  serves both has a stronger business case.\n\n## 7. Planning, prioritisation and regulation frameworks\n\n| Framework | Idea | Relevance to OSP |\n|---|---|---|\n| Risk-based licensing (Sydney Water PRP 307; GL-05/11) | Category-1 overflows first; a point system replaces frequency targets; spatial risk tool (GIS + model + mobile-phone data) | Weights for coverage (receptor sensitivity × likelihood) |\n| Environmental duty MCA (Icon Water; GL-07) | Asset-level risk; options from \"monitoring + alarms + ops\" to upsizing; saved ~A$173 m | Monitoring is an accepted *alternative* to augmentation |\n| Effects / outcomes-based studies (Hunter, YVW, Melbourne Water; GL-01b/03/04) | Spend where harm is; sewage often < 1% of the pollutant load | Receiving-environment weights |\n| UK DWMP RBCS + BRAVA (GL-33–37) | Screen every catchment (flooding, collapses, blockages, spill triggers, **planned development above thresholds**, 1/10 km hexagons) → detailed risk to 2050 | Two-stage screen → place; hexagon grid for reporting coverage |\n| Adaptive management (KC Water; GL-42) | Model updated annually from monitoring; projects re-evaluated at design | Precedent for **growth-triggered re-placement** |\n| Capacity assurance (US CMOM, Chattanooga; GL-23) | Certify capacity before connection | Sensors provide the evidence base for certification |\n| Capacity disclosure (Sydney Operating Licence; Watercare capacity maps) | Publish constraints per (sub)catchment | Monitoring data defines capacity status |\n\n## 8. Ageing, corrosion and failure\n\n- **Yashio, Saitama (Jan 2025):** a 4.74 m RC trunk (1983) collapsed from H₂S corrosion. The sinkhole grew to ~40 m, the driver died, and 1.2 M people were affected. MLIT's nationwide\n  survey found 201 km of emergency-I and 547 km of emergency-II pipe (GL-50).\n- **Tokyo (GL-45):** 16,200 km, 82% combined; 23% past the 50-yr life, rising to 69% in 20 yrs.\n- **WSAA SCORe (GL-15/16):** A$21 m research program; corrosion models and dosing tools.\n- **South Africa (GL-48):** failures driven by underfunded O&M (sewer faults tripled in eThekwini). Monitoring alone cannot fix it.\n\n## 9. Regional contrasts\n\n| Region | Dominant problem | Dominant response |\n|---|---|---|\n| Australia | Wet-weather overflows in **separate** systems; blockages (tree roots); growth on fringe and infill | Risk-based licensing, I&I source control, large level-sensor rollouts, growth servicing plans |\n| New Zealand | Infill densification + combined/partly separated legacy; overflow consents | Tunnels (Central Interceptor), capacity maps, connection limits |\n| UK / Ireland | Storm overflows (combined), public pressure | EDM everywhere, SODRP targets, DWMPs, 20–70k network sensors |\n| US / Canada | CSO/SSO consent decrees; I&I | Tunnels, GI, RTC, adaptive management, capacity assurance, moratoria |\n| Continental Europe | Cloudbursts, CSOs | Surface (blue-green) solutions, radar-based RTC |\n| Japan / Asia | Ageing (Japan), flooding (HK), rapid growth (India) | Reconstruction, inspection mandates, deep tunnels (SG), IoT level networks (HK) |\n| Africa / Latin America | Under-funded O&M; illegal connections | Backlog funding; enforcement |\n\n---\n\n## 10. Implications for the capstone (OSP for growth-driven overcapacity, SA Water)\n\n1. **Novelty holds in practice as well as in research.** Utilities deploy thousands of sensors without a published optimisation method. SA Water's own rule\n   (incident-rate hotspot) and ASCE's siting checklist are the **baselines to beat**.\n2. **Headroom threshold:** make it a parameter (0.6 Sydney PDWF / 0.7 TasWater / 1.0 Icon full pipe) and ask SA Water which one applies (`modelling/06`).\n3. **Growth load recipe:** EP-based ΔQ with 150–180 L/EP/d, peaking factor, and 2% I&I for new areas (York shows new areas often exceed that, so run a sensitivity case).\n4. **Objective:** risk-weighted coverage (receptor sensitivity × overflow likelihood × growth exposure), consistent with PRP 307, DWMP BRAVA and the Icon MCA.\n5. **Two-stage design:** screen catchments with existing data (Unitywater KPIs, DWMP RBCS), then place sensors. Report coverage on a hexagon grid (DWMP style).\n6. **Re-placement:** adaptive management (Kansas City) and the Anne Arundel \"actual peak data\" decision justify **augmenting the network when growth is approved**\n   and using measured peaks to re-rate capacity.\n7. **Dual use:** show that the same placement also covers blockage hotspots (a stronger business case).\n8. **Sensor reliability:** plan for failures (24% in year 1 at Stonyfell) through redundancy or robustness in the objective.\n\n## 11. Evidence quality and caveats\n\n- Utility documents are **self-reported** and written for regulators or the public. Results (e.g. \"−80% blockages\") are rarely independently evaluated.\n- Several numbers come from **news or vendor pages** ([N]): Preston −80%, HK −70–75%, Mooresville, Kadina. Verify before citing in the report.\n- Vendor case studies (Detectronic, StormHarvester, Iota, Xylem) carry commercial bias.\n- Some text layers are garbled (TasWater table, Icon Water equations). Confirm values in the PDFs.\n- ASCE MOP 60 is a **commercial** manual: cite it, but don't redistribute it.\n\n## 12. Gaps still open\n\n- The WSAA *Managing Wet Weather Overflows* guideline and Case Study 9; SA Water's own capacity/planning criteria; WRF 5297 and the WRF sensor-network optimisation reports;\n  Watercare Code of Practice (◻ not read); SIAAP/Berlin/RIONED (non-English); China sponge-city evaluations.\n- No grey-literature source quantifies **how infill changes overflow frequency in a separate system using monitoring data**. That is still the evidence gap the capstone can target.\n"
