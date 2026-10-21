@@ -157,7 +157,8 @@ def main() -> int:
             error(f"{label}: unknown source identity {kind}:{record_id}")
         else:
             for field in ("title", "pdfUrl"):
-                if record.get(field) != source.get(field):
+                # pdfUrl is optional; the build writes "" for a record without one.
+                if (record.get(field) or "") != (source.get(field) or ""):
                     error(f"{label}: {field} does not match source metadata")
 
         pdf_url = record.get("pdfUrl")
