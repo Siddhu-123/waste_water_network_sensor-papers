@@ -585,6 +585,14 @@ window.RESEARCH_GEOGRAPHY_DATA = {
       "lat": 37.50914,
       "lon": 122.11356,
       "kind": "city"
+    },
+    {
+      "id": "sweden",
+      "name": "Sweden",
+      "country": "Sweden",
+      "lat": 60.1282,
+      "lon": 18.6435,
+      "kind": "country"
     }
   ],
   "records": [
@@ -1226,7 +1234,7 @@ window.RESEARCH_GEOGRAPHY_DATA = {
       "title": "Do et al. / SA Water: Early Detection of Wastewater Overflows in Stonyfell",
       "authors": "",
       "assignedTo": "Satya Siddhartha",
-      "organization": "SA Water Corporation & University of Adelaide",
+      "organization": "SA Water Corporation & Adelaide University",
       "pdfUrl": "./contributors/abraham/papers/2023_Do_Stonyfell-SA-overflow-detection.pdf",
       "url": "https://doi.org/10.1061/JWRMD5.WRENG-5589",
       "locations": [
@@ -1243,7 +1251,8 @@ window.RESEARCH_GEOGRAPHY_DATA = {
           "source": "contributors/satya-siddhartha/grey-literature.json"
         }
       ],
-      "unmappedReason": ""
+      "unmappedReason": "",
+      "sourceChanged": true
     },
     {
       "id": "SATYA-GL-30",
@@ -3038,6 +3047,723 @@ window.RESEARCH_GEOGRAPHY_DATA = {
       ],
       "unmappedReason": "",
       "sourceChanged": true
+    },
+    {
+      "id": "WIMUKTHI-GL-01",
+      "type": "grey",
+      "title": "Guidelines for Sewerage Systems: Sewerage System Overflows (National Water Quality Management Strategy)",
+      "authors": "",
+      "assignedTo": "Wimukthi",
+      "organization": "Natural Resource Management Ministerial Council (NRMMC), Australian Government",
+      "pdfUrl": "./contributors/wimukthi/grey/GL_2004_NRMMC_Guidelines_Sewerage_System_Overflows.pdf",
+      "url": "https://www.waterquality.gov.au/guidelines/sewerage-systems",
+      "locations": [
+        {
+          "placeId": "australia",
+          "relation": "scope",
+          "evidence": "Australia's national guideline (National Water Quality Management Strategy) for sewerage system overflows; scope is whole sewerage systems in Australia.",
+          "source": "contributors/wimukthi/grey-literature.json"
+        }
+      ],
+      "unmappedReason": ""
+    },
+    {
+      "id": "WIMUKTHI-GL-02",
+      "type": "grey",
+      "title": "Report to Congress: Impacts and Control of CSOs and SSOs (EPA 833-R-04-001)",
+      "authors": "",
+      "assignedTo": "Wimukthi",
+      "organization": "US Environmental Protection Agency (US EPA)",
+      "pdfUrl": "./contributors/wimukthi/grey/GL_2004_USEPA_Report_to_Congress_CSOs_SSOs.pdf",
+      "url": "https://www.epa.gov/npdes/npdes-cso-reports-congress",
+      "locations": [
+        {
+          "placeId": "united-states",
+          "relation": "scope",
+          "evidence": "US EPA Report to Congress on combined and sanitary sewer overflows across United States sewer systems.",
+          "source": "contributors/wimukthi/grey-literature.json"
+        }
+      ],
+      "unmappedReason": ""
+    },
+    {
+      "id": "WIMUKTHI-GL-03",
+      "type": "grey",
+      "title": "White Paper on Condition Assessment of Wastewater Collection Systems (EPA/600/R-09/049)",
+      "authors": "",
+      "assignedTo": "Wimukthi",
+      "organization": "US Environmental Protection Agency (US EPA)",
+      "pdfUrl": "./contributors/wimukthi/grey/GL_2009_USEPA_Condition_Assessment_Wastewater_Collection_White_Paper.pdf",
+      "url": "https://cfpub.epa.gov/si/si_public_record_report.cfm?Lab=NRMRL&dirEntryId=209530",
+      "locations": [
+        {
+          "placeId": "united-states",
+          "relation": "scope",
+          "evidence": "Review of condition assessment technology for wastewater collection systems in the United States.",
+          "source": "contributors/wimukthi/grey-literature.json"
+        },
+        {
+          "placeId": "cincinnati",
+          "relation": "organization",
+          "evidence": "The white paper identifies the US EPA National Risk Management Research Laboratory in Cincinnati, Ohio. This marks the publishing organization, not a field study site.",
+          "source": "./contributors/wimukthi/grey/GL_2009_USEPA_Condition_Assessment_Wastewater_Collection_White_Paper.pdf",
+          "page": 3
+        }
+      ],
+      "unmappedReason": ""
+    },
+    {
+      "id": "WIMUKTHI-GL-04",
+      "type": "grey",
+      "title": "SSOAP: A USEPA Toolbox for Sanitary Sewer Overflow Analysis and Control Planning",
+      "authors": "",
+      "assignedTo": "Wimukthi",
+      "organization": "US Environmental Protection Agency (US EPA) and Camp Dresser & McKee",
+      "pdfUrl": "./contributors/wimukthi/grey/GL_2008_USEPA_SSOAP_Toolbox_SSO_Analysis_Planning.pdf",
+      "url": "https://www.epa.gov/water-research/sanitary-sewer-overflow-analysis-and-planning-ssoap-toolbox",
+      "locations": [
+        {
+          "placeId": "united-states",
+          "relation": "scope",
+          "evidence": "EPA toolbox for RDII analysis and SSO control planning in separate sanitary sewer systems in the United States.",
+          "source": "contributors/wimukthi/grey-literature.json"
+        }
+      ],
+      "unmappedReason": ""
+    },
+    {
+      "id": "WIMUKTHI-GL-05",
+      "type": "grey",
+      "title": "Storm Water Management Model User's Manual Version 5.0 (EPA/600/R-05/040)",
+      "authors": "",
+      "assignedTo": "Wimukthi",
+      "organization": "US Environmental Protection Agency (US EPA)",
+      "pdfUrl": "./contributors/wimukthi/grey/GL_2010_USEPA_SWMM5_Users_Manual.pdf",
+      "url": "https://www.epa.gov/water-research/storm-water-management-model-swmm",
+      "locations": [
+        {
+          "placeId": "cincinnati",
+          "relation": "organization",
+          "evidence": "The manual identifies the US EPA National Risk Management Research Laboratory in Cincinnati, OH. This marks the publishing organization, not a field study site.",
+          "source": "./contributors/wimukthi/grey/GL_2010_USEPA_SWMM5_Users_Manual.pdf",
+          "page": 1
+        }
+      ],
+      "unmappedReason": ""
+    },
+    {
+      "id": "WIMUKTHI-GL-06",
+      "type": "grey",
+      "title": "An Evaluation of Condition Assessment Protocols for Sewer Management (Client Report B-5123.6)",
+      "authors": "",
+      "assignedTo": "Wimukthi",
+      "organization": "National Research Council Canada (NRC), Institute for Research in Construction",
+      "pdfUrl": "./contributors/wimukthi/grey/GL_2004_NRC_Canada_Condition_Assessment_Protocols_Sewer_Management.pdf",
+      "url": "https://nrc-publications.canada.ca/eng/view/object/?id=93ed3e91-be5e-452d-b79d-c20d4ac77002",
+      "locations": [
+        {
+          "placeId": "canada",
+          "relation": "scope",
+          "evidence": "Compares sewer condition assessment protocols used by Canadian municipalities with the UK WRc protocol, including a survey of municipalities in Canada.",
+          "source": "contributors/wimukthi/grey-literature.json"
+        }
+      ],
+      "unmappedReason": ""
+    },
+    {
+      "id": "WIMUKTHI-GL-07",
+      "type": "grey",
+      "title": "Guidelines for Condition Assessment and Rehabilitation of Large Sewers",
+      "authors": "",
+      "assignedTo": "Wimukthi",
+      "organization": "National Research Council Canada (NRC), Institute for Research in Construction",
+      "pdfUrl": "./contributors/wimukthi/grey/GL_2001_NRC_Canada_Condition_Assessment_Rehabilitation_Large_Sewers.pdf",
+      "url": "https://www.researchgate.net/publication/44061549_Guidelines_for_Condition_Assessment_and_Rehabilitation_of_Large_Sewers",
+      "locations": [
+        {
+          "placeId": "canada",
+          "relation": "scope",
+          "evidence": "NRC Canada guidelines developed with 10 municipalities and two consulting companies; pooled sewer condition data from municipalities across Canada.",
+          "source": "./contributors/wimukthi/grey/GL_2001_NRC_Canada_Condition_Assessment_Rehabilitation_Large_Sewers.pdf",
+          "page": 3
+        }
+      ],
+      "unmappedReason": ""
+    },
+    {
+      "id": "WIMUKTHI-GL-08",
+      "type": "grey",
+      "title": "Investment Needs and Future Costs of Municipal Water and Wastewater 2022–2040 (Report R2023-02)",
+      "authors": "",
+      "assignedTo": "Wimukthi",
+      "organization": "Svenskt Vatten (Swedish Water & Wastewater Association)",
+      "pdfUrl": "./contributors/wimukthi/grey/GL_2023_SvensktVatten_Investment_Needs_2022-2040.pdf",
+      "url": "https://vattenbokhandeln.svensktvatten.se/",
+      "locations": [
+        {
+          "placeId": "sweden",
+          "relation": "scope",
+          "evidence": "Svenskt Vatten estimate of investment needs for municipal water and wastewater in Sweden to 2040.",
+          "source": "contributors/wimukthi/grey-literature.json"
+        }
+      ],
+      "unmappedReason": ""
+    },
+    {
+      "id": "WIMUKTHI-GL-09",
+      "type": "grey",
+      "title": "Pipe Material in Swedish Water and Sewer Pipelines: Characteristics and Life-Time Expectations (SVU Report 2011-14)",
+      "authors": "",
+      "assignedTo": "Wimukthi",
+      "organization": "Svenskt Vatten Utveckling (Swedish Water & Wastewater Association)",
+      "pdfUrl": "./contributors/wimukthi/grey/GL_2011_SvensktVatten_Pipe_Materials_Lifetimes_SVU_2011-14.pdf",
+      "url": "https://vattenbokhandeln.svensktvatten.se/produkt/svenskt-vatten-utveckling/rormaterial-i-svenska-va-ledningar-egenskaper-och-livslangd/",
+      "locations": [
+        {
+          "placeId": "sweden",
+          "relation": "scope",
+          "evidence": "Properties and expected lifetimes of pipe materials in Swedish water and sewer pipelines.",
+          "source": "contributors/wimukthi/grey-literature.json"
+        }
+      ],
+      "unmappedReason": ""
+    },
+    {
+      "id": "WIMUKTHI-GL-10",
+      "type": "grey",
+      "title": "2017 Infrastructure Report Card: Wastewater (Grade D+)",
+      "authors": "",
+      "assignedTo": "Wimukthi",
+      "organization": "American Society of Civil Engineers (ASCE)",
+      "pdfUrl": "./contributors/wimukthi/grey/GL_2017_ASCE_Infrastructure_Report_Card_Wastewater.pdf",
+      "url": "https://www.infrastructurereportcard.org/",
+      "locations": [
+        {
+          "placeId": "united-states",
+          "relation": "scope",
+          "evidence": "ASCE 2017 Infrastructure Report Card grade (D+) for wastewater infrastructure in the United States.",
+          "source": "contributors/wimukthi/grey-literature.json"
+        }
+      ],
+      "unmappedReason": ""
+    },
+    {
+      "id": "WIMUKTHI-GL-11",
+      "type": "grey",
+      "title": "The Economic Benefits of Investing in Water Infrastructure: How a Failure to Act Would Affect the US Economic Recovery",
+      "authors": "",
+      "assignedTo": "Wimukthi",
+      "organization": "American Society of Civil Engineers (ASCE) and the Value of Water Campaign",
+      "pdfUrl": "./contributors/wimukthi/grey/GL_2020_ASCE_Failure_to_Act_Water_Wastewater.pdf",
+      "url": "https://infrastructurereportcard.org/",
+      "locations": [
+        {
+          "placeId": "united-states",
+          "relation": "scope",
+          "evidence": "ASCE estimate of the cost to the US economy of under-investing in water, wastewater and stormwater infrastructure.",
+          "source": "contributors/wimukthi/grey-literature.json"
+        }
+      ],
+      "unmappedReason": ""
+    },
+    {
+      "id": "WIMUKTHI-GL-12",
+      "type": "grey",
+      "title": "Sewerage Manual Part 1: Key Planning Issues and Gravity Collection System (3rd edition, with Eurocodes)",
+      "authors": "",
+      "assignedTo": "Wimukthi",
+      "organization": "Drainage Services Department (DSD), Hong Kong SAR Government",
+      "pdfUrl": "./contributors/wimukthi/grey/GL_2013_HK_DSD_Sewerage_Manual_Part1.pdf",
+      "url": "https://www.dsd.gov.hk/EN/HTML/218.html",
+      "locations": [
+        {
+          "placeId": "hong-kong",
+          "relation": "scope",
+          "evidence": "Drainage Services Department design and planning manual for public gravity sewers in Hong Kong.",
+          "source": "contributors/wimukthi/grey-literature.json"
+        }
+      ],
+      "unmappedReason": ""
+    },
+    {
+      "id": "WIMUKTHI-GL-13",
+      "type": "grey",
+      "title": "Stormwater Drainage Manual: Planning, Design and Management (5th edition)",
+      "authors": "",
+      "assignedTo": "Wimukthi",
+      "organization": "Drainage Services Department (DSD), Hong Kong SAR Government",
+      "pdfUrl": "./contributors/wimukthi/grey/GL_2018_HK_DSD_Stormwater_Drainage_Manual.pdf",
+      "url": "https://www.dsd.gov.hk/EN/HTML/218.html",
+      "locations": [
+        {
+          "placeId": "hong-kong",
+          "relation": "scope",
+          "evidence": "Drainage Services Department stormwater drainage manual for Hong Kong.",
+          "source": "contributors/wimukthi/grey-literature.json"
+        }
+      ],
+      "unmappedReason": ""
+    },
+    {
+      "id": "WIMUKTHI-GL-14",
+      "type": "grey",
+      "title": "IoT as a Digital Enabler of a Hyper-Connected Water Utility",
+      "authors": "",
+      "assignedTo": "Wimukthi",
+      "organization": "Sydney Water",
+      "pdfUrl": "./contributors/wimukthi/grey/GL_2019_SydneyWater_IoT_Hyper-Connected_Utility.pdf",
+      "url": "https://doi.org/10.21139/wej.2019.015",
+      "locations": [
+        {
+          "placeId": "sydney",
+          "relation": "study",
+          "evidence": "Sydney Water's IoT pilot installed around 330 sewer sensors in the Liverpool area of south-western Sydney, NSW. The marker represents Sydney, not the Liverpool catchment itself.",
+          "source": "./contributors/wimukthi/grey/GL_2019_SydneyWater_IoT_Hyper-Connected_Utility.pdf",
+          "page": 5
+        }
+      ],
+      "unmappedReason": ""
+    },
+    {
+      "id": "WIMUKTHI-GL-15",
+      "type": "grey",
+      "title": "Wipes in Sewer Blockage Study: Final Report",
+      "authors": "",
+      "assignedTo": "Wimukthi",
+      "organization": "Water UK (with Defra and EDANA); press release by Severn Trent Water",
+      "pdfUrl": "./contributors/wimukthi/grey/GL_2017_WaterUK_Wipes_in_Sewer_Blockage_Study.pdf",
+      "url": "https://www.water.org.uk/news-views-publications/publications/wipes-sewer-blockage-study-final-report",
+      "locations": [
+        {
+          "placeId": "united-kingdom",
+          "relation": "scope",
+          "evidence": "Water UK study of sewer blockages for statutory water and wastewater providers in England, Scotland, Wales and Northern Ireland.",
+          "source": "contributors/wimukthi/grey-literature.json"
+        }
+      ],
+      "unmappedReason": ""
+    },
+    {
+      "id": "WIMUKTHI-GL-16",
+      "type": "grey",
+      "title": "MCERTS Performance Standards and Test Procedures for Continuous Water Monitoring Equipment, Part 3: Water Flowmeters (Version 4)",
+      "authors": "",
+      "assignedTo": "Wimukthi",
+      "organization": "Environment Agency (England)",
+      "pdfUrl": "#",
+      "url": "https://www.gov.uk/government/publications/mcerts-performance-standards-and-test-procedures-for-water-flowmeters--2",
+      "locations": [
+        {
+          "placeId": "england",
+          "relation": "scope",
+          "evidence": "Environment Agency (England) MCERTS certification standard for continuous water flowmeters.",
+          "source": "contributors/wimukthi/grey-literature.json"
+        }
+      ],
+      "unmappedReason": ""
+    },
+    {
+      "id": "WIMUKTHI-GL-17",
+      "type": "grey",
+      "title": "A Guide to Short Term Flow Surveys of Sewer Systems",
+      "authors": "",
+      "assignedTo": "Wimukthi",
+      "organization": "WRc (Water Research Centre), UK",
+      "pdfUrl": "#",
+      "url": "https://www.thenbs.com/PublicationIndex/documents/details?Pub=WRc&DocID=253789",
+      "locations": [
+        {
+          "placeId": "united-kingdom",
+          "relation": "scope",
+          "evidence": "WRc guide to short-term sewer flow surveys; a reference for UK flow-survey practice.",
+          "source": "contributors/wimukthi/grey-literature.json"
+        }
+      ],
+      "unmappedReason": ""
+    },
+    {
+      "id": "WIMUKTHI-GL-18",
+      "type": "grey",
+      "title": "Sewerage Rehabilitation Manual (now the Sewerage Risk Management website)",
+      "authors": "",
+      "assignedTo": "Wimukthi",
+      "organization": "WRc (Water Research Centre), UK",
+      "pdfUrl": "#",
+      "url": "http://srm.wrcplc.co.uk/",
+      "locations": [
+        {
+          "placeId": "united-kingdom",
+          "relation": "scope",
+          "evidence": "WRc Sewerage Rehabilitation Manual, developed into the Sewerage Risk Management site funded by eleven UK sewerage utilities with Defra and Ofwat support.",
+          "source": "contributors/wimukthi/grey-literature.json"
+        }
+      ],
+      "unmappedReason": ""
+    },
+    {
+      "id": "WIMUKTHI-GL-19",
+      "type": "grey",
+      "title": "D1.2 Review of Sewer Deterioration Models (SEMA project)",
+      "authors": "",
+      "assignedTo": "Wimukthi",
+      "organization": "Kompetenzzentrum Wasser Berlin (KWB)",
+      "pdfUrl": "#",
+      "url": "https://publications.kompetenz-wasser.de/en/publication/663/",
+      "locations": [
+        {
+          "placeId": "berlin",
+          "relation": "organization",
+          "evidence": "Review published by Kompetenzzentrum Wasser Berlin (KWB) for the SEMA project. This marks the publishing organization, not a field study site.",
+          "source": "contributors/wimukthi/grey-literature.json"
+        }
+      ],
+      "unmappedReason": ""
+    },
+    {
+      "id": "WIMUKTHI-GL-20",
+      "type": "grey",
+      "title": "Analysis of Defects in 180 km of Pipe Sewers in Southern Water Authority (TRRL Research Report 172)",
+      "authors": "",
+      "assignedTo": "Wimukthi",
+      "organization": "Transport and Road Research Laboratory (TRRL), UK, with Southern Water Authority",
+      "pdfUrl": "#",
+      "url": "",
+      "locations": [
+        {
+          "placeId": "england",
+          "relation": "study",
+          "evidence": "Analysis of defects in 180 km of pipe sewers in the Southern Water Authority area of southern England. The marker represents England, not a specific catchment.",
+          "source": "contributors/wimukthi/grey-literature.json"
+        }
+      ],
+      "unmappedReason": ""
+    },
+    {
+      "id": "WIMUKTHI-GL-21",
+      "type": "grey",
+      "title": "Kortbedömning av TV-inspekterade avloppsledningar (Evaluation of TV-Inspected Sewer Pipes), VA-Forsk Report 1994-12",
+      "authors": "",
+      "assignedTo": "Wimukthi",
+      "organization": "VA-Forsk / Svenskt Vatten (Swedish Water & Wastewater Association)",
+      "pdfUrl": "#",
+      "url": "https://vattenbokhandeln.svensktvatten.se/produkt/kortbedomning-av-tv-inspekterade-avloppsledningar",
+      "locations": [
+        {
+          "placeId": "sweden",
+          "relation": "scope",
+          "evidence": "Swedish VA-Forsk system for grading CCTV-inspected gravity sewers, for use by Swedish municipalities.",
+          "source": "contributors/wimukthi/grey-literature.json"
+        }
+      ],
+      "unmappedReason": ""
+    },
+    {
+      "id": "WIMUKTHI-GL-22",
+      "type": "grey",
+      "title": "Hong Kong Conduit Condition Evaluation Codes (HKCCEC), 2009 version",
+      "authors": "",
+      "assignedTo": "Wimukthi",
+      "organization": "Utility Training Institute (UTI), Hong Kong",
+      "pdfUrl": "#",
+      "url": "",
+      "locations": [
+        {
+          "placeId": "hong-kong",
+          "relation": "scope",
+          "evidence": "Hong Kong's code for evaluating conduit condition from CCTV and man-entry surveys.",
+          "source": "contributors/wimukthi/grey-literature.json"
+        }
+      ],
+      "unmappedReason": ""
+    },
+    {
+      "id": "WIMUKTHI-GL-23",
+      "type": "grey",
+      "title": "Analysing Sewer Flow Patterns to Detect Blockages and Overflows (OzWater'21, Adelaide)",
+      "authors": "",
+      "assignedTo": "Wimukthi",
+      "organization": "Sydney Water",
+      "pdfUrl": "#",
+      "url": "https://info.awa.asn.au/water-e-journal/detecting-wastewater-blockages-with-digital-water-meters-a-survey-of-methods-used-by-sydney-water",
+      "locations": [
+        {
+          "placeId": "sydney",
+          "relation": "study",
+          "evidence": "Sydney Water method for detecting blockages and overflows upstream of sewage pumping stations in its network, as described by Drenoyanis et al. (2022). The OzWater'21 venue (Adelaide) is not the study site.",
+          "source": "contributors/wimukthi/grey-literature.json"
+        }
+      ],
+      "unmappedReason": ""
+    },
+    {
+      "id": "WIMUKTHI-GL-24",
+      "type": "grey",
+      "title": "Keeping Our Sewers Healthy",
+      "authors": "",
+      "assignedTo": "Wimukthi",
+      "organization": "SA Water",
+      "pdfUrl": "#",
+      "url": "https://www.sawater.com.au/my-home/leaks-or-blockages/tips-for-happy-pipes",
+      "locations": [
+        {
+          "placeId": "south-australia",
+          "relation": "scope",
+          "evidence": "SA Water's public guidance on sewer blockages, overflows, cleaning and smart sensor trials for its South Australian network.",
+          "source": "contributors/wimukthi/grey-literature.json"
+        },
+        {
+          "placeId": "adelaide",
+          "relation": "organization",
+          "evidence": "SA Water is headquartered in Adelaide, South Australia.",
+          "source": "contributors/wimukthi/grey-literature.json"
+        }
+      ],
+      "unmappedReason": ""
+    },
+    {
+      "id": "WIMUKTHI-GL-25",
+      "type": "grey",
+      "title": "What's Really Going Down Adelaide's Sewers?",
+      "authors": "",
+      "assignedTo": "Wimukthi",
+      "organization": "South Australian Government (We Are SA) with SA Water",
+      "pdfUrl": "#",
+      "url": "https://www.weare.sa.gov.au/news/whats-really-going-down-adelaides-sewers",
+      "locations": [
+        {
+          "placeId": "adelaide",
+          "relation": "scope",
+          "evidence": "South Australian Government article on wet-wipe blockages found by SA Water crews in Adelaide's sewers.",
+          "source": "contributors/wimukthi/grey-literature.json"
+        }
+      ],
+      "unmappedReason": ""
+    },
+    {
+      "id": "WIMUKTHI-GL-26",
+      "type": "grey",
+      "title": "DSD Sustainability Report 2019-20: Innovation for Sustainability of Water Purification and Flood Protection",
+      "authors": "",
+      "assignedTo": "Wimukthi",
+      "organization": "Drainage Services Department (DSD), Hong Kong SAR Government",
+      "pdfUrl": "#",
+      "url": "https://www.dsd.gov.hk/EN/Publicity_and_Publications/Publicity/DSD_Sustainability_Reports/20/key_statistics_and_data.html",
+      "locations": [
+        {
+          "placeId": "hong-kong",
+          "relation": "scope",
+          "evidence": "Drainage Services Department sustainability report on sewerage and drainage work in Hong Kong, 2019-20.",
+          "source": "contributors/wimukthi/grey-literature.json"
+        }
+      ],
+      "unmappedReason": ""
+    },
+    {
+      "id": "WIMUKTHI-GL-27",
+      "type": "grey",
+      "title": "Sewage Strategy",
+      "authors": "",
+      "assignedTo": "Wimukthi",
+      "organization": "Drainage Services Department (DSD), Hong Kong SAR Government",
+      "pdfUrl": "#",
+      "url": "https://www.dsd.gov.hk/EN/Sewerage/Sewerage_Strategy/index.html",
+      "locations": [
+        {
+          "placeId": "hong-kong",
+          "relation": "scope",
+          "evidence": "Drainage Services Department overview of Hong Kong's sewerage strategy, Sewerage Master Plans and the Harbour Area Treatment Scheme.",
+          "source": "contributors/wimukthi/grey-literature.json"
+        }
+      ],
+      "unmappedReason": ""
+    },
+    {
+      "id": "ASHIS-GL-01",
+      "type": "grey",
+      "title": "Sewerage Code of Australia: SA Water Supplementary Documentation, Part 1 Design (Issue 03)",
+      "authors": "",
+      "assignedTo": "Ashis Jose",
+      "organization": "SA Water",
+      "pdfUrl": "./contributors/ashis-jose/grey/ASHIS-GL-01_SAWater_Sewerage_Code_Supplement_Pt1_Design.pdf",
+      "url": "https://www.sawater.com.au/__data/assets/pdf_file/0005/65435/SCM-WSAA-Code-Supplement-Pt-1-Design.pdf",
+      "locations": [],
+      "unmappedReason": "The study-site name 'SA Water' is not in the gazetteer, so no coordinates were assigned."
+    },
+    {
+      "id": "ASHIS-GL-02",
+      "type": "grey",
+      "title": "Torbay 2032: An Assessment of Future Sewer Capacity in Torbay",
+      "authors": "",
+      "assignedTo": "Ashis Jose",
+      "organization": "AECOM for Torbay Council and South West Water",
+      "pdfUrl": "./contributors/ashis-jose/grey/ASHIS-GL-02_Torbay_2032_Sewer_Capacity_Assessment.pdf",
+      "url": "https://www.torbay.gov.uk/media/21953/torbay2032sewercapacityassessment.pdf",
+      "locations": [],
+      "unmappedReason": "No explicit study-site sentence found; header affiliations, reference lists and publisher text were excluded."
+    },
+    {
+      "id": "ASHIS-GL-03",
+      "type": "grey",
+      "title": "CIWEM UDG Code of Practice for the Hydraulic Modelling of Urban Drainage Systems (Version 01)",
+      "authors": "",
+      "assignedTo": "Ashis Jose",
+      "organization": "Chartered Institution of Water and Environmental Management (CIWEM), Urban Drainage Group",
+      "pdfUrl": "./contributors/ashis-jose/grey/ASHIS-GL-03_CIWEM_Code_of_Practice_Hydraulic_Modelling_2017.pdf",
+      "url": "https://www.ciwem.org/assets/pdf/Special%20Interest%20Groups/Urban%20Drainage%20Group/Code%20of%20Practice%20for%20the%20Hydraulic%20Modelling%20of%20Ur.pdf",
+      "locations": [],
+      "unmappedReason": "No explicit study-site sentence found; header affiliations, reference lists and publisher text were excluded."
+    },
+    {
+      "id": "ASHIS-GL-04",
+      "type": "grey",
+      "title": "Review of Sewer Design Criteria and RDII Prediction Methods (EPA/600/R-08/010)",
+      "authors": "",
+      "assignedTo": "Ashis Jose",
+      "organization": "US Environmental Protection Agency (US EPA)",
+      "pdfUrl": "./contributors/ashis-jose/grey/ASHIS-GL-04_USEPA_Review_of_Sewer_Design_Criteria_and_RDII_Methods.pdf",
+      "url": "https://www.epa.gov/water-research/sanitary-sewer-overflow-analysis-and-planning-ssoap-toolbox",
+      "locations": [],
+      "unmappedReason": "The title or abstract describes a review or survey; no single study site was mapped."
+    },
+    {
+      "id": "ASHIS-GL-05",
+      "type": "grey",
+      "title": "Computer Tools for Sanitary Sewer System Capacity Analysis and Planning (EPA/600/R-07/111)",
+      "authors": "",
+      "assignedTo": "Ashis Jose",
+      "organization": "US Environmental Protection Agency (US EPA) and Camp Dresser & McKee",
+      "pdfUrl": "./contributors/ashis-jose/grey/ASHIS-GL-05_USEPA_Computer_Tools_Sanitary_Sewer_Capacity_Analysis_SSOAP.pdf",
+      "url": "https://www.epa.gov/water-research/sanitary-sewer-overflow-analysis-and-planning-ssoap-toolbox",
+      "locations": [],
+      "unmappedReason": "No explicit study-site sentence found; header affiliations, reference lists and publisher text were excluded."
+    },
+    {
+      "id": "ASHIS-GL-06",
+      "type": "grey",
+      "title": "Land Supply Report for Greater Adelaide: Residential (July 2023)",
+      "authors": "",
+      "assignedTo": "Ashis Jose",
+      "organization": "South Australian Government (State Planning Commission / PlanSA)",
+      "pdfUrl": "./contributors/ashis-jose/grey/ASHIS-GL-06_PlanSA_Residential_Land_Supply_Report.pdf",
+      "url": "https://plan.sa.gov.au/__data/assets/pdf_file/0007/1267486/Residential-Land-Supply-Report-for-Greater-Adelaide.pdf",
+      "locations": [],
+      "unmappedReason": "No explicit study-site sentence found; header affiliations, reference lists and publisher text were excluded."
+    },
+    {
+      "id": "ASHIS-GL-07",
+      "type": "grey",
+      "title": "Land Supply Report for Greater Adelaide, Part 2: Urban Infill (June 2021)",
+      "authors": "",
+      "assignedTo": "Ashis Jose",
+      "organization": "South Australian Government (State Planning Commission / PlanSA)",
+      "pdfUrl": "./contributors/ashis-jose/grey/ASHIS-GL-07_PlanSA_Land_Supply_Urban_Infill_2021.pdf",
+      "url": "https://plan.sa.gov.au/__data/assets/pdf_file/0006/830985/Land_Supply_Report_for_Greater_Adelaide_-_Urban_Infill.pdf",
+      "locations": [],
+      "unmappedReason": "No explicit study-site sentence found; header affiliations, reference lists and publisher text were excluded."
+    },
+    {
+      "id": "ASHIS-GL-08",
+      "type": "grey",
+      "title": "SA Water Regulatory Determination 2024: Final Determination, Statement of Reasons",
+      "authors": "",
+      "assignedTo": "Ashis Jose",
+      "organization": "Essential Services Commission of South Australia (ESCOSA)",
+      "pdfUrl": "./contributors/ashis-jose/grey/ASHIS-GL-08_ESCOSA_SAWRD24_Final_Determination_Statement_of_Reasons.pdf",
+      "url": "https://www.escosa.sa.gov.au/ArticleDocuments/22067/20240625-Water-SAWRD24-SAWaterRegulatoryDetermination2024-FinalDetermination-StatementOfReasons.pdf",
+      "locations": [
+        {
+          "placeId": "australia",
+          "relation": "study",
+          "evidence": "This was undertaken to account for the compounding of investment returns, given that, in Australia, yields on AGS are typically derived from semi-annual rates of return.",
+          "source": "./contributors/ashis-jose/grey/ASHIS-GL-08_ESCOSA_SAWRD24_Final_Determination_Statement_of_Reasons.pdf",
+          "page": 326
+        }
+      ],
+      "unmappedReason": ""
+    },
+    {
+      "id": "ASHIS-GL-09",
+      "type": "grey",
+      "title": "Fact Sheet: SA Water Regulatory Determination 2024 Overview",
+      "authors": "",
+      "assignedTo": "Ashis Jose",
+      "organization": "Essential Services Commission of South Australia (ESCOSA)",
+      "pdfUrl": "./contributors/ashis-jose/grey/ASHIS-GL-09_ESCOSA_SAWRD24_Overview_Factsheet.pdf",
+      "url": "https://www.escosa.sa.gov.au/ArticleDocuments/22067/20240625-Water-SAWRD24-RegulatoryDetermination2024Overview-FactSheet.pdf",
+      "locations": [],
+      "unmappedReason": "The title or abstract describes a review or survey; no single study site was mapped."
+    },
+    {
+      "id": "ASHIS-GL-11",
+      "type": "grey",
+      "title": "Infrastructure Provision in Different Development Settings, Metropolitan Melbourne, Volume 1 Technical Paper",
+      "authors": "",
+      "assignedTo": "Ashis Jose",
+      "organization": "Infrastructure Victoria",
+      "pdfUrl": "./contributors/ashis-jose/grey/ASHIS-GL-11_Infrastructure_Victoria_Infrastructure_Provision_Development_Settings_Vol1.pdf",
+      "url": "https://infrastructurevictoria.com.au/resources/infrastructure-provision-in-different-development-settings",
+      "locations": [],
+      "unmappedReason": "The study-site name 'Melbourne' matches several places (Australia, United States) and the text gives no country."
+    },
+    {
+      "id": "ASHIS-GL-12",
+      "type": "grey",
+      "title": "Rethinking 70/30: The Cost of Building Where We Already Live",
+      "authors": "",
+      "assignedTo": "Ashis Jose",
+      "organization": "Prepared for the Urban Development Institute of Australia (UDIA) Victoria",
+      "pdfUrl": "./contributors/ashis-jose/grey/ASHIS-GL-12_UDIA_Rethinking_70-30_2026.pdf",
+      "url": "https://udiavic.com.au/wp-content/uploads/2026/05/Rethinking-7030-The-Cost-of-Building-Where-We-Already-Live.pdf",
+      "locations": [],
+      "unmappedReason": "No explicit study-site sentence found; header affiliations, reference lists and publisher text were excluded."
+    },
+    {
+      "id": "ASHIS-GL-13",
+      "type": "grey",
+      "title": "Greater Adelaide Regional Plan Fact Sheet: Housing and Land Supply Targets",
+      "authors": "",
+      "assignedTo": "Ashis Jose",
+      "organization": "South Australian Government (Department for Housing and Urban Development)",
+      "pdfUrl": "./contributors/ashis-jose/grey/ASHIS-GL-13_GARP_Housing_Targets_Factsheet.pdf",
+      "url": "https://dit.sa.gov.au/__data/assets/pdf_file/0019/1411246/GARP-fact-sheet-housing-and-land-supply-targets.pdf",
+      "locations": [],
+      "unmappedReason": "No explicit study-site sentence found; header affiliations, reference lists and publisher text were excluded."
+    },
+    {
+      "id": "ASHIS-GL-14",
+      "type": "grey",
+      "title": "Greater Adelaide Regional Plan Summary (2025)",
+      "authors": "",
+      "assignedTo": "Ashis Jose",
+      "organization": "South Australian Government",
+      "pdfUrl": "./contributors/ashis-jose/grey/ASHIS-GL-14_GARP_Summary_2025.pdf",
+      "url": "https://dit.sa.gov.au/__data/assets/pdf_file/0005/1407389/GARP-Summary.pdf",
+      "locations": [],
+      "unmappedReason": "No explicit study-site sentence found; header affiliations, reference lists and publisher text were excluded."
+    },
+    {
+      "id": "ASHIS-GL-15",
+      "type": "grey",
+      "title": "Infrastructure and Land Development Cost Comparison Technical Note (GARP Discussion Paper)",
+      "authors": "",
+      "assignedTo": "Ashis Jose",
+      "organization": "Infrastructure SA and Planning and Land Use Services (PlanSA)",
+      "pdfUrl": "./contributors/ashis-jose/grey/ASHIS-GL-15_PlanSA_Infrastructure_Cost_Technical_Note.pdf",
+      "url": "https://plan.sa.gov.au/__data/assets/pdf_file/0003/1263486/Infrastructure-and-land-development-cost-comparison-technical-note-Greater-Adelaide-Regional-Plan-Discussion-Paper.pdf",
+      "locations": [],
+      "unmappedReason": "No explicit study-site sentence found; header affiliations, reference lists and publisher text were excluded."
+    },
+    {
+      "id": "ASHIS-GL-16",
+      "type": "grey",
+      "title": "Data-Driven Blockage Detection in Sewer Collection Systems (conference abstract)",
+      "authors": "",
+      "assignedTo": "Ashis Jose",
+      "organization": "Water Environment Federation (WEF), Access Water proceedings",
+      "pdfUrl": "",
+      "url": "https://www.accesswater.org/publications/proceedings/-10117329/data-driven-blockage-detection-in-sewer-collection-systems",
+      "locations": [],
+      "unmappedReason": "No local PDF in the library, so no full text was read."
     }
   ]
 };

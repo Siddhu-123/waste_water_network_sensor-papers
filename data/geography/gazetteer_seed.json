@@ -589,6 +589,14 @@
       "lat": 37.50914,
       "lon": 122.11356,
       "kind": "city"
+    },
+    {
+      "id": "sweden",
+      "name": "Sweden",
+      "country": "Sweden",
+      "lat": 60.1282,
+      "lon": 18.6435,
+      "kind": "country"
     }
   ]
 }
