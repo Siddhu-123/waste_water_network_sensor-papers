@@ -545,23 +545,6 @@ tr:hover td {
     padding: 3px 8px;
   }
 
-  .profile-stats-grid {
-    grid-template-columns: repeat(3, 1fr);
-    gap: 6px;
-  }
-
-  .profile-stat-box {
-    padding: 8px 6px;
-  }
-
-  .profile-stat-number {
-    font-size: var(--fs-h2);
-  }
-
-  .profile-stat-label {
-    font-size: var(--fs-micro);
-  }
-
   .step-item {
     flex-direction: row;
     gap: 12px;
@@ -577,13 +560,10 @@ tr:hover td {
 /* Extra Small Screen Optimization (< 480px) */
 @media (max-width: 480px) {
   .filter-panel-header {
-    align-items: stretch;
-    flex-direction: column;
+    align-items: center;
   }
 
-  .filter-panel-header .btn-squeeze-toggle {
-    align-self: flex-start;
-  }
+  .library-heading-group { flex-basis: 100%; }
 
   .filter-select {
     flex-basis: 100%;
@@ -608,11 +588,6 @@ tr:hover td {
   .btn-action {
     width: 100%;
     padding: 0.45em 0.3em;
-  }
-
-  .profile-modal-card .profile-paper-item {
-    flex-direction: column;
-    align-items: stretch;
   }
 
   .step-item {
@@ -1976,10 +1951,10 @@ tr:hover td {
   outline-offset: 2px;
 }
 
-/* Shared record geometry. The table keeps its existing nodes and roles. */
+/* Reserve the actions' content width and let the title column shrink. */
 #papersTableContainer,
 #greyLitGrid {
-  --library-columns: 28px minmax(0, 1fr) 150px 168px 350px;
+  --library-columns: 28px minmax(0, 1fr) 150px 168px minmax(350px, max-content);
   --library-gap: 18px;
   min-width: 0;
 }
@@ -2598,3 +2573,28 @@ tr:hover td {
   font-size: var(--fs-ui);
   line-height: 1.5;
 }
+
+#papersTableContainer .badge-tag,
+#greyLitGrid .category-tag {
+  display: inline-block;
+  vertical-align: middle;
+  white-space: normal;
+  overflow: visible;
+  overflow-wrap: anywhere;
+  text-overflow: clip;
+}
+#greyLitGrid .category-tag {
+  line-height: 1.4;
+}
+#papersTableContainer .category-dot,
+#greyLitGrid .category-dot {
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  margin-right: 5px;
+  vertical-align: middle;
+}
+#filterPanel,
+#greyLitFilterPanel { margin-bottom: 8px; }
+#greyLitFilterPanel .grey-lit-controls-container { gap: 8px; margin: 0; }

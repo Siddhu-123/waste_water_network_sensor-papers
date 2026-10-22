@@ -15,6 +15,8 @@ function renderTable() {
   sortLibraryItems(papersData, sort, true).forEach((paper, index) => {
     const tr = document.createElement("tr");
     const year = getLibraryYear(paper, true);
+    const { group, sub } = window.categoryGroupOf("academic", paper);
+    const categoryBadge = `<span class="badge-tag" title="${escapeHtml(paper.categoryLabel)}"><i class="category-dot" style="background:${escapeHtml(group.color)}" aria-hidden="true"></i>${escapeHtml(sub.label)}</span>`;
     tr.dataset.user = paper.assignedTo;
     tr.dataset.year = year;
     tr.dataset.title = getLibraryTitle(paper.title);
@@ -24,7 +26,7 @@ function renderTable() {
               <td class="col-num" style="color: var(--text-muted); font-family: inherit; font-variant-numeric: tabular-nums;">${String(index + 1).padStart(2, "0")}</td>
               <td class="col-main">
                   <div class="library-tile-top">
-                      <span class="badge-tag" title="${escapeHtml(paper.categoryLabel)}">${paper.categoryLabel}</span>
+                      ${categoryBadge}
                       <span class="year-badge">${year}</span>
                   </div>
                   <div class="paper-title" title="${escapeHtml(getLibraryTitle(paper.title))}">${paper.title}${duplicateIndicatorHtml(paper)}</div>
@@ -39,7 +41,7 @@ function renderTable() {
                       ${paper.size ? `<span class="meta-chip info-chip">💾 ${escapeHtml(paper.size)}</span>` : ""}
                   </div>
               </td>
-              <td class="col-cat"><span class="badge-tag" title="${escapeHtml(paper.categoryLabel)}">${paper.categoryLabel}</span></td>
+              <td class="col-cat">${categoryBadge}</td>
               <td class="col-contributor"><span class="meta-chip library-contributor">${escapeHtml(paper.assignedTo)}</span></td>
               <td class="col-actions">
                   <div class="action-btns mobile-actions">

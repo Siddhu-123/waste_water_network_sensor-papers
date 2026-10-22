@@ -5,7 +5,8 @@
 let greyLitData = [];
 let filteredGreyLitData = [];
 let activeContributorFilter = "all";
-let activeCategoryFilter = "all";
+let greyMajor = "all";
+let greySub = "all";
 let greyLitSearchQuery = "";
 let findingsMarkdownCache = "";
 let openTakeawaysId = null;
@@ -141,17 +142,15 @@ async function loadGreyLiterature() {
 }
 
 // -------------------------------------------------------------
-// Populate Filter Controls & Category Pills
+// Populate Contributor & Group Controls
 // -------------------------------------------------------------
 function populateGreyLitFilters() {
   const contributorSelect = document.getElementById("greyLitContributorFilter");
 
   const contributors = new Set();
-  const categories = new Set();
 
   greyLitData.forEach((item) => {
     if (item.assignedTo) contributors.add(item.assignedTo);
-    if (item.category) categories.add(item.category);
   });
 
   // Populate contributor dropdown
@@ -170,56 +169,44 @@ function populateGreyLitFilters() {
     }
   }
 
-  renderGreyLitCategoryPills(categories);
+  renderCategoryBar("grey", greyLitData, setGreyLitMajor);
+  renderCategorySubBar("grey", greyLitData, greyMajor, setGreyLitSub);
+  updateGreyLitCategorySelection();
 }
 
-function renderGreyLitCategoryPills(categorySet) {
-  const container = document.getElementById("greyLitCategoryPills");
-  if (!container) return;
-
-  const categories = categorySet && categorySet.size > 0
-    ? Array.from(categorySet).sort()
-    : Array.from(new Set(greyLitData.map((g) => g.category).filter(Boolean))).sort();
-
-  let html = `
-    <button type="button" class="grey-lit-category-pill ${activeCategoryFilter === 'all' ? 'active' : ''}" onclick="setGreyLitCategory('all')">
-      All <span class="pill-count">${greyLitData.length}</span>
-    </button>
-  `;
-
-  categories.forEach((cat) => {
-    const count = greyLitData.filter((g) => g.category === cat).length;
-    const isActive = activeCategoryFilter === cat;
-    html += `
-      <button type="button" class="grey-lit-category-pill ${isActive ? 'active' : ''}" onclick="setGreyLitCategory('${escapeHtml(cat)}')">
-        ${escapeHtml(cat)} <span class="pill-count">${count}</span>
-      </button>
-    `;
-  });
-
-  container.innerHTML = html;
+function updateGreyLitCategorySelection() {
+  markCategorySelection(document.getElementById("greyCategoryBar"), "major", greyMajor);
+  markCategorySelection(document.getElementById("greySubBar"), "sub", greySub);
 }
 
-function setGreyLitCategory(cat) {
-  activeCategoryFilter = cat;
-  updateGreyLitCategoryPills();
+function setGreyLitMajor(major) {
+  greyMajor = major;
+  greySub = "all";
+  renderCategorySubBar("grey", greyLitData, major, setGreyLitSub);
+  updateGreyLitCategorySelection();
   filterAndRenderGreyLit();
 }
 
-function updateGreyLitCategoryPills() {
-  const container = document.getElementById("greyLitCategoryPills");
-  if (!container) return;
-  const pills = container.querySelectorAll(".grey-lit-category-pill");
-  pills.forEach((pill) => {
-    const pillText = pill.textContent || "";
-    if (activeCategoryFilter === "all" && pillText.trim().startsWith("All")) {
-      pill.classList.add("active");
-    } else if (activeCategoryFilter !== "all" && pillText.includes(activeCategoryFilter)) {
-      pill.classList.add("active");
-    } else {
-      pill.classList.remove("active");
-    }
-  });
+function setGreyLitSub(sub) {
+  greySub = sub;
+  updateGreyLitCategorySelection();
+  filterAndRenderGreyLit();
+}
+
+// Retain the category entry point for existing callers.
+function setGreyLitCategory(category) {
+  if (category === "all") {
+    setGreyLitMajor("all");
+    return;
+  }
+  const record = greyLitData.find((item) => item.category === category);
+  if (!record) return;
+  const { group, sub } = categoryGroupOf("grey", record);
+  greyMajor = group.key;
+  greySub = sub.key;
+  renderCategorySubBar("grey", greyLitData, greyMajor, setGreyLitSub);
+  updateGreyLitCategorySelection();
+  filterAndRenderGreyLit();
 }
 
 // -------------------------------------------------------------
@@ -238,10 +225,9 @@ function filterAndRenderGreyLit() {
       return false;
     }
 
-    // Category filter
-    if (activeCategoryFilter !== "all" && item.category !== activeCategoryFilter) {
-      return false;
-    }
+    const { group, sub } = categoryGroupOf("grey", item);
+    if (greyMajor !== "all" && group.key !== greyMajor) return false;
+    if (greySub !== "all" && sub.key !== greySub) return false;
 
     // Search query match
     if (greyLitSearchQuery) {
@@ -263,12 +249,13 @@ function filterAndRenderGreyLit() {
     return true;
   });
 
-  // Update counter
-  const countEl = document.getElementById("greyLitResultsCount");
-  if (countEl) {
-    countEl.innerHTML = `Showing <strong>${filteredGreyLitData.length}</strong> of ${greyLitData.length} industry reports and utility documents`;
+  const summary = document.getElementById("greyResultsSummary");
+  if (summary) {
+    const selection = greyMajor === "all" ? "All reports" : categorySelectionLabel("grey", greyLitData, greyMajor, greySub);
+    const user = activeContributorFilter === "all" ? "" : ` · ${activeContributorFilter}`;
+    const filtered = greyMajor !== "all" || activeContributorFilter !== "all" || Boolean(greyLitSearchQuery);
+    summary.textContent = `${selection}${user} · ${filteredGreyLitData.length}${filtered ? ` of ${greyLitData.length}` : ""}`;
   }
-
   renderGreyLitCards();
 }
 
@@ -278,9 +265,7 @@ function resetGreyLitFilters() {
   const contributorSelect = document.getElementById("greyLitContributorFilter");
   if (contributorSelect) contributorSelect.value = "all";
   activeContributorFilter = "all";
-  activeCategoryFilter = "all";
-  updateGreyLitCategoryPills();
-  filterAndRenderGreyLit();
+  setGreyLitMajor("all");
 }
 
 // -------------------------------------------------------------
@@ -311,6 +296,7 @@ function renderGreyLitCards() {
   const sort = document.getElementById("greySort")?.value || "newest";
   sortLibraryItems(filteredGreyLitData, sort).forEach((item, index) => {
     const theme = getUtilityTheme(item.organization || "");
+    const { group, sub } = window.categoryGroupOf("grey", item);
     const isPdf = Boolean(item.pdfUrl && item.pdfUrl !== "#");
     const externalLink = item.url || item.externalUrl;
     const hasExternal = Boolean(externalLink);
@@ -324,7 +310,7 @@ function renderGreyLitCards() {
       <article class="grey-lit-card" id="card-${item.id}" data-user="${escapeHtml(item.assignedTo || "")}" data-year="${getLibraryYear(item)}" data-title="${escapeHtml(getLibraryTitle(item.title))}" title="Record ${escapeHtml(item.id)}">
         <span class="col-num grey-lit-num">${String(index + 1).padStart(2, "0")}</span>
         <div class="grey-lit-header library-tile-top">
-          <span class="category-tag" title="${escapeHtml(item.category || "General")}">📂 ${escapeHtml(item.category || "General")}</span>
+          <span class="category-tag" title="${escapeHtml(item.category || "General")}"><i class="category-dot" style="background:${escapeHtml(group.color)}" aria-hidden="true"></i>${escapeHtml(sub.label)}</span>
           <span class="year-badge">${item.year || "Report"}</span>
         </div>
         <div class="grey-lit-main">

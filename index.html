@@ -14,9 +14,9 @@
       rel="stylesheet"
     />
     <link rel="stylesheet" href="css/base.css?v=layout-v15" />
-    <link rel="stylesheet" href="css/controls.css?v=layout-v8" />
-    <link rel="stylesheet" href="css/papers.css?v=layout-v12" />
-    <link rel="stylesheet" href="css/modals.css?v=layout-v9" />
+    <link rel="stylesheet" href="css/controls.css?v=section-v1" />
+    <link rel="stylesheet" href="css/papers.css?v=section-v2" />
+    <link rel="stylesheet" href="css/modals.css?v=section-v1" />
     <link rel="stylesheet" href="css/research-map.css?v=layout-v17" />
   </head>
   <body>
@@ -264,25 +264,21 @@
       <!-- ========================================== -->
       <section id="academicSection" aria-label="Peer-Reviewed Academic Literature">
         <div class="filter-panel" id="filterPanel">
-          <div class="filter-panel-header">
-            <div>
-              <div class="filter-panel-kicker">Research filters</div>
-              <div class="filter-panel-summary" id="filterPanelSummary">
-                All topics · All users · All categories
-              </div>
+          <div class="library-view-bar filter-panel-header">
+            <div class="library-heading-group">
+              <h2 class="library-view-heading" id="academicViewHeading">Peer-reviewed papers</h2>
+              <span class="library-results-summary" id="academicResultsSummary" aria-live="polite">All papers</span>
             </div>
-            <button
-              type="button"
-              id="toggleFiltersBtn"
-              class="btn-squeeze-toggle"
-              onclick="toggleFilterSection()"
-              aria-controls="filterControls"
-              aria-expanded="true"
-              title="Squeeze or expand research filters"
-            >
-              <span id="filterSqueezeIcon">▲</span>
-              <span id="filterSqueezeText">Squeeze filters</span>
-            </button>
+            <select id="academicSort" class="library-sort" aria-label="Sort">
+              <option value="newest" selected>Newest first</option>
+              <option value="oldest">Oldest first</option>
+              <option value="title">Title A–Z</option>
+              <option value="contributor">Contributor</option>
+            </select>
+            <div class="library-view-toggle" role="group" aria-label="Academic display" data-library-view="academic">
+              <button type="button" class="library-view-btn" data-view-option="list" aria-pressed="true">List</button>
+              <button type="button" class="library-view-btn" data-view-option="tiles" aria-pressed="false">Tiles</button>
+            </div>
           </div>
           <div class="controls-bar" id="filterControls">
             <div class="search-box">
@@ -309,9 +305,9 @@
             </div>
             <select
               id="topicFilter"
+              hidden
               class="filter-select"
               aria-label="Filter papers by research topic"
-              onchange="setTopic(this.value)"
             >
               <option value="all">Topic: All</option>
             </select>
@@ -323,23 +319,11 @@
             >
               <option value="all">User: All</option>
             </select>
-            <div class="filter-group" id="nestedFilterGroup"></div>
+            <div class="category-bar" id="academicCategoryBar" role="group" aria-label="Research groups"></div>
+            <div class="category-bar category-sub-bar" id="academicSubBar" role="group" aria-label="Research sub-groups" hidden></div>
           </div>
         </div>
 
-        <div class="library-view-bar">
-          <h2 class="library-view-heading" id="academicViewHeading">Peer-reviewed papers</h2>
-          <select id="academicSort" class="library-sort" aria-label="Sort">
-            <option value="newest" selected>Newest first</option>
-            <option value="oldest">Oldest first</option>
-            <option value="title">Title A–Z</option>
-            <option value="contributor">Contributor</option>
-          </select>
-          <div class="library-view-toggle" role="group" aria-label="Academic display" data-library-view="academic">
-            <button type="button" class="library-view-btn" data-view-option="list" aria-pressed="true">List</button>
-            <button type="button" class="library-view-btn" data-view-option="tiles" aria-pressed="false">Tiles</button>
-          </div>
-        </div>
 
         <div class="table-container" id="papersTableContainer" data-view="list">
           <table id="papersTable">
@@ -387,12 +371,20 @@
         </div>
 
         <div class="filter-panel" id="greyLitFilterPanel">
-          <div class="filter-panel-header">
-            <div>
-              <div class="filter-panel-kicker">Industry & Utility filters</div>
-              <div class="filter-panel-summary">
-                Filter by research category or team contributor
-              </div>
+          <div class="library-view-bar filter-panel-header">
+            <div class="library-heading-group">
+              <h2 class="library-view-heading" id="greyViewHeading">Reports and documents</h2>
+              <span class="library-results-summary" id="greyResultsSummary" aria-live="polite">All reports</span>
+            </div>
+            <select id="greySort" class="library-sort" aria-label="Sort" onchange="filterAndRenderGreyLit()">
+              <option value="newest" selected>Newest first</option>
+              <option value="oldest">Oldest first</option>
+              <option value="title">Title A–Z</option>
+              <option value="contributor">Contributor</option>
+            </select>
+            <div class="library-view-toggle" role="group" aria-label="Grey literature display" data-library-view="grey">
+              <button type="button" class="library-view-btn" data-view-option="list" aria-pressed="false">List</button>
+              <button type="button" class="library-view-btn" data-view-option="tiles" aria-pressed="true">Tiles</button>
             </div>
           </div>
           <div class="grey-lit-controls-container">
@@ -436,26 +428,9 @@
                 Reset Filters
               </button>
             </div>
-            <div class="grey-lit-category-pills" id="greyLitCategoryPills" aria-label="Category quick filter pills"></div>
+            <div class="category-bar" id="greyCategoryBar" role="group" aria-label="Industry and utility groups"></div>
+            <div class="category-bar category-sub-bar" id="greySubBar" role="group" aria-label="Industry and utility sub-groups" hidden></div>
           </div>
-        </div>
-
-        <div class="library-view-bar">
-          <h2 class="library-view-heading" id="greyViewHeading">Reports and documents</h2>
-          <select id="greySort" class="library-sort" aria-label="Sort" onchange="filterAndRenderGreyLit()">
-            <option value="newest" selected>Newest first</option>
-            <option value="oldest">Oldest first</option>
-            <option value="title">Title A–Z</option>
-            <option value="contributor">Contributor</option>
-          </select>
-          <div class="library-view-toggle" role="group" aria-label="Grey literature display" data-library-view="grey">
-            <button type="button" class="library-view-btn" data-view-option="list" aria-pressed="false">List</button>
-            <button type="button" class="library-view-btn" data-view-option="tiles" aria-pressed="true">Tiles</button>
-          </div>
-        </div>
-
-        <div class="grey-lit-count-bar" id="greyLitResultsCount">
-          Loading reports...
         </div>
 
         <div class="grey-lit-grid" id="greyLitGrid" data-view="tiles">
@@ -491,7 +466,6 @@
       </section>
     </main>
 
-
     <!-- Contributor Profile Modal -->
     <div
       class="modal-overlay"
@@ -499,69 +473,27 @@
       style="display: none"
       onclick="closeProfileModalOnOverlay(event)"
     >
-      <div class="modal-card profile-modal-card">
-        <div class="modal-header">
-          <div style="display: flex; align-items: center; gap: 12px">
-            <div
-              style="
-                width: 38px;
-                height: 38px;
-                border-radius: 50%;
-                background: #2dd4bf;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                font-weight: 700;
-                color: #070d17;
-                font-size: var(--fs-ui);
-              "
-              id="modalProfileAvatar"
-            >
-              U
-            </div>
-            <div>
-              <div class="modal-title" id="modalProfileName">
-                Contributor Profile
-              </div>
-              <div
-                class="modal-meta"
-                id="modalProfileDevice"
-                style="font-size: var(--fs-meta); opacity: 0.65; color: var(--text-muted)"
-              >
-                Device
-              </div>
-            </div>
+      <div class="modal-card profile-modal-card profile-sheet" role="dialog" aria-modal="true" aria-labelledby="modalProfileName" tabindex="-1">
+        <div class="modal-header profile-header">
+          <div class="profile-avatar" id="modalProfileAvatar">U</div>
+          <div class="profile-heading">
+            <h2 id="modalProfileName">Contributor Profile</h2>
+            <div id="modalProfileFocus" class="profile-truncate"></div>
           </div>
-          <button
-            class="modal-close"
-            type="button"
-            onclick="closeProfileModal()"
-          >
-            &times;
-          </button>
+          <button class="modal-close" type="button" aria-label="Close contributor profile" onclick="closeProfileModal()">&times;</button>
         </div>
-        <div
-          class="modal-body"
-          id="modalProfileBody"
-          style="max-height: 70vh; overflow-y: auto"
-        >
+        <div class="modal-body" id="modalProfileBody">
           <!-- Injected via JavaScript -->
         </div>
-        <div class="modal-footer">
-          <button
-            class="btn-action btn-scholar"
-            type="button"
-            onclick="promptSwitchUser()"
-          >
-            Change Name
-          </button>
-          <button
-            class="btn-action btn-summary"
-            type="button"
-            onclick="closeProfileModal()"
-          >
-            Close
-          </button>
+        <div class="modal-footer profile-footer">
+          <div class="profile-footer-info">
+            <div id="modalProfileDevice"></div>
+            <div id="modalProfileSecurity"></div>
+          </div>
+          <div class="profile-footer-actions">
+            <button type="button" onclick="promptSwitchUser()">Switch person</button>
+            <button class="profile-done" type="button" onclick="closeProfileModal()">Done</button>
+          </div>
         </div>
       </div>
     </div>
@@ -661,13 +593,14 @@
 
     <script src="js/bundled-data.js?v=sort-v1"></script>
     <script src="js/data.js?v=sort-v1"></script>
-    <script src="js/papers.js?v=layout-v8"></script>
-    <script src="js/filters.js?v=layout-v9"></script>
+    <script src="js/papers.js?v=section-v1"></script>
+    <script src="js/category-groups.js?v=groups-v1"></script>
+    <script src="js/filters.js?v=section-v1"></script>
     <script src="js/modals.js"></script>
     <script src="js/browser-identity.js"></script>
-    <script src="js/profile.js?v=layout-v1"></script>
+    <script src="js/profile.js?v=section-v1"></script>
     <script src="js/annotations.js?v=layout-v1"></script>
-    <script src="js/grey-literature.js?v=layout-v10"></script>
+    <script src="js/grey-literature.js?v=section-v1"></script>
     <script src="js/instructor.js?v=layout-v10"></script>
     <script src="js/main.js"></script>
     <script src="js/library-views.js?v=layout-v4"></script>

@@ -112,28 +112,190 @@
   margin-bottom: 8px;
 }
 
-.filter-panel-kicker {
-  color: var(--accent-blue);
-  font-size: var(--fs-micro);
-  font-weight: 700;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-}
-
-.filter-panel-summary {
-  color: var(--text-muted);
-  font-size: var(--fs-meta);
-  margin-top: 2px;
-}
-
-.filter-panel.is-squeezed {
+/* Research groups: quiet segmented tracks, with detail revealed on selection. */
+#filterPanel,
+#greyLitFilterPanel {
+  min-width: 0;
   padding-bottom: 12px;
 }
 
-.filter-panel.is-squeezed .filter-panel-header {
-  margin-bottom: 0;
+#filterControls > .search-box {
+  min-width: 0;
 }
 
-.filter-panel.is-squeezed .controls-bar {
+#topicFilter[hidden],
+.category-bar[hidden] {
   display: none;
 }
+
+.category-bar {
+  display: flex;
+  align-items: flex-end;
+  flex: 1 1 100%;
+  gap: 6px;
+  width: 100%;
+  min-width: 0;
+  max-width: 100%;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  padding: 5px;
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  background: var(--bg-secondary);
+  scrollbar-width: thin;
+}
+
+.category-pillar {
+  display: flex;
+  flex: 0 0 auto;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.category-pillar + .category-pillar {
+  padding-left: 6px;
+  border-left: 1px solid var(--border-color);
+}
+
+.category-pillar-label {
+  padding-left: 10px;
+  color: var(--text-muted);
+  font-size: var(--fs-micro);
+  font-weight: 600;
+  letter-spacing: 0.04em;
+}
+
+.category-pillar-segments {
+  display: flex;
+  gap: 4px;
+}
+
+.category-segment {
+  display: inline-flex;
+  flex: 0 0 auto;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  min-height: 36px;
+  padding: 8px 10px;
+  border: 1px solid transparent;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--text-secondary);
+  font-family: inherit;
+  font-size: var(--fs-ui);
+  font-weight: 500;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s, border-color 0.15s;
+}
+
+.category-segment:hover {
+  background: var(--bg-card);
+  color: var(--text-primary);
+}
+
+.category-segment[aria-pressed="true"] {
+  border-color: var(--accent-indigo);
+  background: var(--accent-indigo);
+  color: white;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
+}
+
+.category-segment:focus-visible {
+  outline: 2px solid var(--accent-blue);
+  outline-offset: 1px;
+}
+
+.category-dot {
+  flex: 0 0 6px;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+}
+
+.category-count {
+  font-variant-numeric: tabular-nums;
+  opacity: 0.8;
+}
+
+.category-sub-bar {
+  align-items: center;
+  padding: 3px;
+  background: transparent;
+  border-color: transparent;
+}
+
+.category-sub-bar .category-segment {
+  min-height: 32px;
+  padding: 6px 9px;
+  font-size: var(--fs-micro);
+}
+
+.category-sub-bar .category-segment[aria-pressed="true"] {
+  border-color: var(--border-color);
+  background: var(--bg-secondary);
+  color: var(--text-primary);
+  box-shadow: none;
+}
+
+@media (width < 1024px) {
+  .category-bar {
+    flex-wrap: wrap;
+    overflow: visible;
+    row-gap: 8px;
+  }
+
+  .category-pillar {
+    min-width: 0;
+    max-width: 100%;
+  }
+
+  .category-pillar-segments {
+    flex-wrap: wrap;
+    row-gap: 8px;
+  }
+}
+
+@media (width < 600px) {
+  .category-pillar {
+    flex: 1 1 100%;
+  }
+
+  .category-pillar + .category-pillar {
+    padding-left: 0;
+    border-left: 0;
+  }
+}
+
+@media (min-width: 1024px) {
+  .category-bar {
+    gap: 4px;
+  }
+
+  .category-segment {
+    padding-inline: 8px;
+  }
+}
+
+/* The heading and controls share a compact library card. */
+.filter-panel .library-view-bar {
+  margin: 0 0 10px;
+}
+.library-heading-group {
+  display: flex;
+  flex: 1 1 250px;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 2px 12px;
+  min-width: 0;
+}
+.library-heading-group .library-view-heading { margin: 0; }
+.library-results-summary {
+  display: block;
+  color: var(--text-muted);
+  font-size: var(--fs-meta);
+  line-height: 1.4;
+}
+.filter-panel .library-sort { margin-left: 0; }
+.filter-panel .controls-bar { gap: 8px 12px; margin-bottom: 0; }
