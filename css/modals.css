@@ -249,13 +249,28 @@
 /* Contributor Profile Modal */
 .profile-modal-card {
   max-width: 680px;
+  overflow: hidden;
+}
+
+.profile-modal-card > .modal-header,
+.profile-modal-card > .modal-footer {
+  flex-shrink: 0;
+}
+
+.profile-modal-card > .modal-body {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+}
+
+.profile-modal-card > .modal-body > * {
+  flex-shrink: 0;
 }
 
 .profile-stats-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
   gap: 12px;
-  margin-bottom: 20px;
 }
 
 .profile-stat-box {
@@ -294,8 +309,7 @@
   display: flex;
   flex-direction: column;
   gap: 8px;
-  max-height: 200px;
-  overflow-y: auto;
+  flex-shrink: 0;
 }
 
 .profile-paper-item {
@@ -307,6 +321,17 @@
   align-items: center;
   justify-content: space-between;
   gap: 10px;
+}
+
+.profile-paper-info {
+  flex: 1;
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.profile-paper-item > .btn-action {
+  flex-shrink: 0;
+  white-space: nowrap;
 }
 
 .profile-paper-info strong {
@@ -324,8 +349,7 @@
   display: flex;
   flex-direction: column;
   gap: 8px;
-  max-height: 220px;
-  overflow-y: auto;
+  flex-shrink: 0;
 }
 
 .profile-note-card {

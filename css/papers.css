@@ -545,13 +545,6 @@ tr:hover td {
     padding: 3px 8px;
   }
 
-  .profile-modal-card {
-    width: 95vw;
-    max-width: 95vw;
-    margin: 10px auto;
-    padding: 16px;
-  }
-
   .profile-stats-grid {
     grid-template-columns: repeat(3, 1fr);
     gap: 6px;
@@ -615,6 +608,11 @@ tr:hover td {
   .btn-action {
     width: 100%;
     padding: 0.45em 0.3em;
+  }
+
+  .profile-modal-card .profile-paper-item {
+    flex-direction: column;
+    align-items: stretch;
   }
 
   .step-item {

@@ -203,7 +203,7 @@ function openProfileModal() {
   bodyHtml += `</div>`;
 
   bodyHtml += `
-    <div class="profile-section-title" style="margin-top: 20px;">📌 My Notes & Activity</div>
+    <div class="profile-section-title">📌 My Notes & Activity</div>
     <div class="profile-notes-feed">
   `;
 
