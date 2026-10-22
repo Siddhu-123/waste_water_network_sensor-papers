@@ -140,12 +140,14 @@ function promptSwitchUser() {
 // Profile sheet. All view state belongs to this opening of the sheet.
 let profileReturnFocus = null;
 let profileBodyOverflow = "";
+let profileLayoutCleanup = null;
 function openProfileModal() {
   const modal = document.getElementById("profileModal");
   if (modal.style.display !== "flex") {
     profileReturnFocus = document.activeElement;
     profileBodyOverflow = document.body.style.overflow;
   }
+  profileLayoutCleanup?.();
   const user = getActiveUser();
   const belongsToUser = (name) => String(name || "").trim().toLowerCase() === user.trim().toLowerCase();
   const esc = escapeHtml;
@@ -199,6 +201,7 @@ function openProfileModal() {
       ${["Overview", "Library", "Notes"].map((name, i) => `<button type="button" role="tab" id="profile-tab-${name.toLowerCase()}" data-profile-tab="${name.toLowerCase()}" aria-controls="profile-panel-${name.toLowerCase()}" aria-selected="${i === 0}" tabindex="${i === 0 ? 0 : -1}">${name}${i ? ` <span>${i === 1 ? totalItems : notes.length}</span>` : ""}</button>`).join("")}
     </div>
     <section id="profile-panel-overview" class="profile-panel" role="tabpanel" aria-labelledby="profile-tab-overview" tabindex="0">
+      <div class="profile-overview-summary">
       <div class="profile-stats-grid">
         ${[["papers", library.papers.length, "Papers"], ["reports", library.grey.length, "Reports"], ["annotated", annotated, "Annotated"], ["notes", notes.length, "Notes"]].map(([key, value, label]) => `<button type="button" class="profile-stat" data-stat="${key}"><span class="profile-stat-value">${value}</span><span class="profile-stat-label">${label}</span></button>`).join("")}
       </div>
@@ -209,8 +212,11 @@ function openProfileModal() {
           <div class="profile-focus-bar" aria-label="${kind === "papers" ? "Papers" : "Reports"} by research group">${focus[kind].map(g => `<span class="profile-focus-seg" style="width:${g.count / library[kind].length * 100}%;background:${esc(g.color)}" title="${esc(g.label)}: ${g.count}"></span>`).join("")}</div>
           <div class="profile-focus-legend">${focus[kind].map(g => `<div title="${esc(g.label)}: ${g.count}"><i style="background:${esc(g.color)}"></i><span class="profile-truncate">${esc(g.label)}</span><span>${g.count}</span></div>`).join("")}</div>
         </div>`).join("") : empty("Assigned papers and reports will appear here.")}
-      <h3 class="profile-section-title">Recent notes</h3>
-      <div class="profile-recent-list">${notes.slice(0, 3).map(n => `<a class="profile-recent-note" href="${esc(noteUrl(n))}" target="_blank" rel="noopener"><strong class="profile-truncate" title="${esc(titleOf(n.paperId))}">${esc(titleOf(n.paperId))}</strong><span class="profile-recent-text"><span>Page ${pageOf(n)}</span><span class="profile-truncate" title="${esc(snippet(n))}">${esc(snippet(n))}</span></span></a>`).join("") || empty("No notes yet. Open a paper to add your first thought.")}</div>
+      </div>
+      <div class="profile-overview-recent">
+        <h3 class="profile-section-title">Recent notes</h3>
+        <div class="profile-recent-list"></div>
+      </div>
     </section>
     <section id="profile-panel-library" class="profile-panel" role="tabpanel" aria-labelledby="profile-tab-library" tabindex="0" hidden>
       <div class="profile-library-toggle" role="group" aria-label="Library kind">
@@ -220,29 +226,76 @@ function openProfileModal() {
       <div class="profile-library-list"></div><div class="profile-library-pagination"></div>
     </section>
     <section id="profile-panel-notes" class="profile-panel" role="tabpanel" aria-labelledby="profile-tab-notes" tabindex="0" hidden>
+      <div class="profile-notes-master">
       <input class="profile-notes-search" type="search" aria-label="Search your notes" placeholder="Search notes and paper titles…">
       <div class="profile-notes-list"></div><div class="profile-notes-pagination"></div>
+      </div>
+      <div class="profile-notes-detail" aria-label="Selected paper notes"></div>
     </section>`;
 
-  let kind = "papers", libraryPage = 0, notesPage = 0;
+  let kind = "papers", libraryPage = 0, notesPage = 0, selectedPaper = null;
+  let split = window.matchMedia("(min-width: 1024px)").matches;
+  const outerHeight = el => {
+    const style = getComputedStyle(el);
+    return el.offsetHeight + 0.5 + parseFloat(style.marginTop) + parseFloat(style.marginBottom);
+  };
+  const availableHeight = (panel, controls) => {
+    const style = getComputedStyle(panel);
+    return panel.clientHeight - parseFloat(style.paddingTop) - parseFloat(style.paddingBottom)
+      - controls.reduce((sum, el) => sum + outerHeight(el), 0);
+  };
+  function renderRecent() {
+    const list = body.querySelector(".profile-recent-list");
+    const render = size => {
+      list.innerHTML = notes.slice(0, size).map(n => `<a class="profile-recent-note" href="${esc(noteUrl(n))}" target="_blank" rel="noopener"><strong class="profile-truncate" title="${esc(titleOf(n.paperId))}">${esc(titleOf(n.paperId))}</strong><span class="profile-recent-text"><span>Page ${pageOf(n)}</span><span class="profile-truncate" title="${esc(snippet(n))}">${esc(snippet(n))}</span></span></a>`).join("") || empty("No notes yet. Open a paper to add your first thought.");
+    };
+    render(3);
+    if (split && notes.length) {
+      const panel = body.querySelector("#profile-panel-overview");
+      const heading = body.querySelector(".profile-overview-recent h3");
+      const rowHeight = outerHeight(list.firstElementChild) + 1;
+      render(Math.max(5, Math.floor((availableHeight(panel, [heading]) - 2) / rowHeight)));
+    }
+  }
   const pager = (page, size, total, label) => `<div class="profile-pager" aria-label="${label} pages"><span aria-live="polite">${total ? page * size + 1 : 0}–${Math.min((page + 1) * size, total)} of ${total}</span><div><button type="button" data-page="prev" aria-label="Previous ${label} page" ${page === 0 ? "disabled" : ""}>Previous</button><button type="button" data-page="next" aria-label="Next ${label} page" ${(page + 1) * size >= total ? "disabled" : ""}>Next</button></div></div>`;
   function renderLibrary() {
     const list = body.querySelector(".profile-library-list");
     const items = [...library[kind]].sort((a, b) => a.group.label.localeCompare(b.group.label) || a.record.title.localeCompare(b.record.title));
-    const groups = new Map();
-    items.slice(libraryPage * 8, libraryPage * 8 + 8).forEach(item => {
-      if (!groups.has(item.group.key)) groups.set(item.group.key, { group: item.group, items: [] });
-      groups.get(item.group.key).items.push(item);
-    });
-    list.innerHTML = [...groups.values()].map(({ group, items }) => `<section class="profile-lib-group"><h3 class="profile-truncate" title="${esc(group.label)}">${esc(group.label)}</h3>${items.map(({ record: r, sub }) => {
-      const count = noteCounts.get(String(r.id)) || 0;
-      const url = kind === "papers" ? profileViewerUrl(r.id) : r.pdfUrl && r.pdfUrl !== "#"
-        ? `${profileViewerUrl(r.id)}&pdf=${encodeURIComponent(r.pdfUrl)}&title=${encodeURIComponent(r.title)}&topic=Grey%20Literature`
-        : r.url || r.externalUrl;
-      const meta = `${sub.label}${count ? ` · ${count} note${count === 1 ? "" : "s"}` : ""}`;
-      return `<div class="profile-lib-row"><div class="profile-row-copy"><strong class="profile-truncate" title="${esc(r.title)}">${esc(r.title)}</strong><span class="profile-truncate profile-row-meta" title="${esc(meta)}">${esc(meta)}</span></div>${url ? `<a href="${esc(url)}" target="_blank" rel="noopener" aria-label="Open ${esc(r.title)}">Open ↗</a>` : `<span class="profile-row-meta">No link yet</span>`}</div>`;
-    }).join("")}</section>`).join("") || empty(`No ${kind === "papers" ? "papers" : "reports"} assigned yet.`);
-    body.querySelector(".profile-library-pagination").innerHTML = pager(libraryPage, 8, items.length, "library");
+    const draw = size => {
+      libraryPage = Math.max(0, Math.min(libraryPage, Math.ceil(items.length / size) - 1));
+      const groups = new Map();
+      items.slice(libraryPage * size, (libraryPage + 1) * size).forEach(item => {
+        if (!groups.has(item.group.key)) groups.set(item.group.key, { group: item.group, items: [] });
+        groups.get(item.group.key).items.push(item);
+      });
+      list.innerHTML = [...groups.values()].map(({ group, items }) => `<section class="profile-lib-group"><h3 class="profile-truncate" title="${esc(group.label)}">${esc(group.label)}</h3>${items.map(({ record: r, sub }) => {
+        const count = noteCounts.get(String(r.id)) || 0;
+        const url = kind === "papers" ? profileViewerUrl(r.id) : r.pdfUrl && r.pdfUrl !== "#"
+          ? `${profileViewerUrl(r.id)}&pdf=${encodeURIComponent(r.pdfUrl)}&title=${encodeURIComponent(r.title)}&topic=Grey%20Literature`
+          : r.url || r.externalUrl;
+        const meta = `${sub.label}${count ? ` · ${count} note${count === 1 ? "" : "s"}` : ""}`;
+        return `<div class="profile-lib-row"><div class="profile-row-copy"><strong class="profile-truncate" title="${esc(r.title)}">${esc(r.title)}</strong><span class="profile-truncate profile-row-meta" title="${esc(meta)}">${esc(meta)}</span></div>${url ? `<a href="${esc(url)}" target="_blank" rel="noopener" aria-label="Open ${esc(r.title)}">Open ↗</a>` : `<span class="profile-row-meta">No link yet</span>`}</div>`;
+      }).join("")}</section>`).join("") || empty(`No ${kind === "papers" ? "papers" : "reports"} assigned yet.`);
+      body.querySelector(".profile-library-pagination").innerHTML = pager(libraryPage, size, items.length, "library");
+    };
+    draw(5);
+    const panel = body.querySelector("#profile-panel-library");
+    if (panel.hidden || !items.length) return;
+    const room = availableHeight(panel, [body.querySelector(".profile-library-toggle"), body.querySelector(".profile-library-pagination")]);
+    const rowHeight = outerHeight(list.querySelector(".profile-lib-row"));
+    const headingHeight = outerHeight(list.querySelector(".profile-lib-group h3"));
+    // Include headings at every page boundary, so later pages fit just as well.
+    let size = Math.max(5, Math.floor(room / rowHeight));
+    for (; size > 5; size--) {
+      let fits = true;
+      for (let start = 0; start < items.length; start += size) {
+        const page = items.slice(start, start + size);
+        const headings = new Set(page.map(item => item.group.key)).size;
+        if (page.length * rowHeight + headings * headingHeight > room - 1) { fits = false; break; }
+      }
+      if (fits) break;
+    }
+    draw(size);
   }
   function renderNotes() {
     const query = body.querySelector(".profile-notes-search").value.trim().toLowerCase();
@@ -252,17 +305,51 @@ function openProfileModal() {
       if (!groups.has(id)) groups.set(id, []);
       groups.get(id).push(n);
     });
-    // Search exposes all matching paper headings together; the browse view is paged.
-    const size = query ? Math.max(6, groups.size) : 6;
-    const visible = [...groups.entries()].slice(notesPage * size, (notesPage + 1) * size);
-    body.querySelector(".profile-notes-list").classList.toggle("is-searching", Boolean(query));
-    body.querySelector(".profile-notes-list").innerHTML = visible.map(([id, groupNotes], i) => {
-      const title = titleOf(id);
-      const pages = [...new Set(groupNotes.map(pageOf))].sort((a, b) => a - b).join(", ");
-      const meta = `${groupNotes.length} note${groupNotes.length === 1 ? "" : "s"} · pages ${pages}`;
-      return `<section class="profile-note-group"><button class="profile-note-heading" type="button" aria-expanded="false" aria-controls="profile-note-content-${i}"><span class="profile-row-copy"><strong class="profile-truncate" title="${esc(title)}">${esc(title)}</strong><span class="profile-row-meta profile-truncate" title="${esc(meta)}">${esc(meta)}</span></span><span class="profile-chevron" aria-hidden="true">›</span></button><div id="profile-note-content-${i}" class="profile-note-content" hidden>${groupNotes.map(n => `<article class="profile-note-card"><div class="profile-note-top"><strong class="profile-truncate" title="${esc(n.title || "Note")}">${esc(n.title || "Note")}</strong><a href="${esc(noteUrl(n))}" target="_blank" rel="noopener" aria-label="Open ${esc(n.title || "note")} at page ${pageOf(n)}">Page ${pageOf(n)} ↗</a></div><div class="profile-note-snippet profile-truncate" title="${esc(snippet(n))}">${esc(snippet(n))}</div></article>`).join("")}</div></section>`;
-    }).join("") || empty(notes.length ? "No matching notes. Try a different word." : "No notes yet. Open a paper to add your first thought.");
-    body.querySelector(".profile-notes-pagination").innerHTML = pager(notesPage, size, groups.size, "notes");
+    const panel = body.querySelector("#profile-panel-notes");
+    const master = body.querySelector(".profile-notes-master");
+    const list = body.querySelector(".profile-notes-list");
+    const pagination = body.querySelector(".profile-notes-pagination");
+    const cards = groupNotes => groupNotes.map(n => `<article class="profile-note-card"><div class="profile-note-top"><strong class="profile-truncate" title="${esc(n.title || "Note")}">${esc(n.title || "Note")}</strong><a href="${esc(noteUrl(n))}" target="_blank" rel="noopener" aria-label="Open ${esc(n.title || "note")} at page ${pageOf(n)}">Page ${pageOf(n)} ↗</a></div><div class="profile-note-snippet profile-truncate" title="${esc(snippet(n))}">${esc(snippet(n))}</div></article>`).join("");
+    const draw = size => {
+      notesPage = Math.max(0, Math.min(notesPage, Math.ceil(groups.size / size) - 1));
+      const visible = [...groups.entries()].slice(notesPage * size, (notesPage + 1) * size);
+      if (!visible.some(([id]) => id === selectedPaper)) selectedPaper = split ? visible[0]?.[0] : null;
+      list.innerHTML = visible.map(([id, groupNotes], i) => {
+        const title = titleOf(id);
+        const pages = [...new Set(groupNotes.map(pageOf))].sort((a, b) => a - b).join(", ");
+        const meta = `${groupNotes.length} note${groupNotes.length === 1 ? "" : "s"} · pages ${pages}`;
+        const active = id === selectedPaper;
+        return `<section class="profile-note-group" data-paper-id="${esc(id)}"><button class="profile-note-heading" type="button" aria-expanded="${active}" aria-controls="${split ? "profile-note-detail" : `profile-note-content-${i}`}"><span class="profile-row-copy"><strong class="profile-truncate" title="${esc(title)}">${esc(title)}</strong><span class="profile-row-meta profile-truncate" title="${esc(meta)}">${esc(meta)}</span></span><span class="profile-chevron" aria-hidden="true">›</span></button><div id="profile-note-content-${i}" class="profile-note-content" ${split || !active ? "hidden" : ""}>${split ? "" : cards(groupNotes)}</div></section>`;
+      }).join("") || empty(notes.length ? "No matching notes. Try a different word." : "No notes yet. Open a paper to add your first thought.");
+      pagination.innerHTML = pager(notesPage, size, groups.size, "notes");
+      renderDetail();
+    };
+    function renderDetail() {
+      const detail = body.querySelector(".profile-notes-detail");
+      detail.id = "profile-note-detail";
+      detail.innerHTML = split && selectedPaper ? `<h3 class="profile-detail-title" title="${esc(titleOf(selectedPaper))}">${esc(titleOf(selectedPaper))}</h3><div class="profile-note-content">${cards(groups.get(selectedPaper) || [])}</div>` : "";
+      detail.scrollTop = 0;
+    }
+    // Keep the heading nodes in place when selecting, including keyboard focus.
+    list.onclick = event => {
+      const heading = event.target.closest(".profile-note-heading");
+      if (!heading) return;
+      const id = heading.closest(".profile-note-group").dataset.paperId;
+      selectedPaper = split || selectedPaper !== id ? id : null;
+      list.querySelectorAll(".profile-note-heading").forEach(header => {
+        const active = header.closest(".profile-note-group").dataset.paperId === selectedPaper;
+        header.setAttribute("aria-expanded", String(active));
+        if (!split) document.getElementById(header.getAttribute("aria-controls")).hidden = !active;
+      });
+      renderDetail();
+    };
+    draw(5);
+    if (panel.hidden || !groups.size) return;
+    const room = availableHeight(split ? master : panel, [body.querySelector(".profile-notes-search"), pagination]);
+    const rowHeight = outerHeight(list.querySelector(".profile-note-group"));
+    // In accordion mode, measure a closed heading rather than any open cards.
+    const closedHeight = split ? rowHeight : outerHeight(list.querySelector(".profile-note-heading")) + 1;
+    draw(Math.max(5, Math.floor((room - 1) / closedHeight)));
   }
   function selectTab(name) {
     body.querySelectorAll("[role=tab]").forEach(tab => {
@@ -271,6 +358,9 @@ function openProfileModal() {
       tab.tabIndex = active ? 0 : -1;
     });
     body.querySelectorAll("[role=tabpanel]").forEach(panel => { panel.hidden = panel.id !== `profile-panel-${name}`; });
+    if (name === "overview") renderRecent();
+    else if (name === "library") renderLibrary();
+    else renderNotes();
     body.querySelector(`[data-profile-tab="${name}"]`).focus({ preventScroll: true });
   }
   body.onclick = event => {
@@ -301,14 +391,6 @@ function openProfileModal() {
       panel.scrollTop = 0;
       panel.querySelector(`[data-page="${button.dataset.page}"]`)?.focus({ preventScroll: true });
     }
-    if (button.classList.contains("profile-note-heading")) {
-      const expanded = button.getAttribute("aria-expanded") !== "true";
-      body.querySelectorAll(".profile-note-heading").forEach(header => {
-        const active = header === button && expanded;
-        header.setAttribute("aria-expanded", String(active));
-        document.getElementById(header.getAttribute("aria-controls")).hidden = !active;
-      });
-    }
   };
   body.querySelector(".profile-notes-search").oninput = () => { notesPage = 0; renderNotes(); };
   body.querySelector("[role=tablist]").onkeydown = event => {
@@ -320,9 +402,20 @@ function openProfileModal() {
     selectTab(tabs[next].dataset.profileTab);
     tabs[next].focus();
   };
-  renderLibrary();
-  renderNotes();
   modal.style.display = "flex";
+  renderRecent();
+  const resize = () => {
+    const nextSplit = window.matchMedia("(min-width: 1024px)").matches;
+    if (split !== nextSplit) selectedPaper = null;
+    split = nextSplit;
+    const active = body.querySelector('[role="tab"][aria-selected="true"]').dataset.profileTab;
+    if (active === "overview") renderRecent();
+    else if (active === "library") renderLibrary();
+    else renderNotes();
+  };
+  const observer = new ResizeObserver(resize);
+  observer.observe(modal.querySelector(".profile-sheet"));
+  profileLayoutCleanup = () => observer.disconnect();
   document.body.style.overflow = "hidden";
   body.querySelector("[role=tab]").focus({ preventScroll: true });
   modal.onkeydown = event => {
@@ -336,6 +429,8 @@ function openProfileModal() {
 }
 
 function closeProfileModal() {
+  profileLayoutCleanup?.();
+  profileLayoutCleanup = null;
   document.getElementById("profileModal").style.display = "none";
   document.body.style.overflow = profileBodyOverflow;
   if (profileReturnFocus?.isConnected) profileReturnFocus.focus({ preventScroll: true });

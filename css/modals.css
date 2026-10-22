@@ -249,10 +249,12 @@
 /* Contributor Profile Modal */
 #profileModal { padding: 0; }
 #profileModal .profile-sheet {
-  width: min(820px, calc(100vw - 32px));
-  height: min(720px, 92vh);
-  max-width: 820px;
-  max-height: min(720px, 92vh);
+  width: min(1320px, calc(100vw - 48px));
+  min-width: min(1240px, 88vw);
+  height: calc(100vh - 48px);
+  min-height: 88vh;
+  max-width: none;
+  max-height: none;
   overflow: hidden;
   background: var(--bg-secondary);
   color: var(--text-primary);
@@ -380,7 +382,10 @@
 .profile-recent-note:hover { background: var(--bg-card); text-decoration: none !important; }
 .profile-recent-text { display: flex; min-width: 0; gap: 10px; margin-top: 4px; font-size: var(--fs-micro); color: var(--text-secondary); }
 .profile-recent-text > :first-child { flex-shrink: 0; }
-.profile-library-toggle { display: flex; gap: 4px; margin-bottom: 10px; }
+#profile-panel-library { display: flex; flex-direction: column; }
+.profile-library-list { flex: 1 0 auto; }
+.profile-lib-group { display: flow-root; }
+.profile-library-toggle { flex: 0 0 auto; display: flex; gap: 4px; margin-bottom: 10px; }
 .profile-library-toggle button {
   background: transparent;
   border: 1px solid transparent;
@@ -405,7 +410,6 @@
 .profile-note-heading { display: flex; width: 100%; align-items: center; gap: 10px; text-align: left; padding: 4px 0; background: transparent; color: var(--text-primary); border: 0; }
 .profile-chevron { font-size: var(--fs-h2); color: var(--text-secondary); transition: transform .15s; }
 .profile-note-heading[aria-expanded="true"] .profile-chevron { transform: rotate(90deg); }
-.profile-notes-list.is-searching .profile-note-heading { padding: 2px 0; }
 .profile-note-content { display: grid; gap: 4px; padding: 2px 0 2px 12px; }
 .profile-note-card { min-width: 0; padding: 4px 10px; border-radius: 8px; background: var(--bg-card); border: 1px solid var(--border-color); }
 .profile-note-top { display: flex; align-items: center; gap: 8px; line-height: 17px; }
@@ -428,8 +432,27 @@
 .profile-footer-actions { display: flex; flex-shrink: 0; gap: 8px; }
 .profile-footer button { white-space: nowrap; padding: 8px 14px; font-weight: 550; }
 .profile-footer .profile-done { background: var(--accent-blue); border-color: var(--accent-blue); color: var(--bg-primary); }
+/* Wide sheets use their space for parallel content, without extra outer padding. */
+.profile-overview-summary, .profile-overview-recent, .profile-notes-master { min-width: 0; }
+.profile-notes-detail { display: none; }
+@media (min-width: 1024px) {
+  #profile-panel-overview { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 24px; align-content: start; }
+  .profile-overview-recent > .profile-section-title { margin-top: 0; }
+  #profile-panel-notes { display: grid; grid-template-columns: minmax(0, 2fr) minmax(0, 3fr); grid-template-rows: minmax(0, 1fr); gap: 24px; }
+  .profile-notes-master { display: flex; flex-direction: column; min-height: 0; }
+  .profile-notes-search, .profile-notes-pagination { flex: 0 0 auto; }
+  .profile-notes-list { flex: 1 0 auto; }
+  .profile-note-heading { padding: 3px 10px; border-radius: 8px; }
+  .profile-note-heading[aria-expanded="true"] { background: var(--bg-card); }
+  .profile-note-heading[aria-expanded="true"] .profile-chevron { transform: none; color: var(--accent-blue); }
+  .profile-notes-detail { display: block; min-width: 0; min-height: 0; padding: 0 2px 2px 24px; border-left: 1px solid var(--border-color); }
+  .profile-detail-title { margin: 0 0 14px; font-size: var(--fs-title); font-weight: 600; line-height: 1.35; }
+  .profile-notes-detail .profile-note-content { padding: 0; gap: 10px; }
+  .profile-notes-detail .profile-note-card { padding: 12px; }
+  .profile-notes-detail .profile-note-snippet { white-space: normal; line-height: 1.5; margin-top: 6px; }
+}
 @media (max-width: 599px) {
-  #profileModal .profile-sheet { width: 100vw; height: 100vh; max-width: none; max-height: none; border: 0; border-radius: 0; }
+  #profileModal .profile-sheet { width: 100vw; height: 100vh; min-width: 0; min-height: 0; max-width: none; max-height: none; border: 0; border-radius: 0; }
   .profile-sheet .profile-header { padding: max(18px, env(safe-area-inset-top)) 16px 16px; gap: 10px; }
   .profile-sheet > #modalProfileBody { padding: 0 14px; }
   .profile-heading h2 { font-size: var(--fs-title); }
