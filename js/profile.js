@@ -137,7 +137,7 @@ function promptSwitchUser() {
   }
 }
 
-// Profile sheet. All view state belongs to this opening of the sheet.
+// Profile sheet. View state and layout listeners belong to this opening.
 let profileReturnFocus = null;
 let profileBodyOverflow = "";
 let profileLayoutCleanup = null;
@@ -148,294 +148,286 @@ function openProfileModal() {
     profileBodyOverflow = document.body.style.overflow;
   }
   profileLayoutCleanup?.();
+  const sheet = modal.querySelector(".profile-sheet");
+  const el = id => document.getElementById(id);
+  const esc = value => escapeHtml(String(value ?? ""));
   const user = getActiveUser();
-  const belongsToUser = (name) => String(name || "").trim().toLowerCase() === user.trim().toLowerCase();
-  const esc = escapeHtml;
-  const titleOf = (id) => [...papersData, ...greyLitData].find(p => String(p.id) === String(id))?.title || `Paper ${id}`;
+  const belongs = name => String(name || "").trim().toLowerCase() === user.trim().toLowerCase();
+  const library = {
+    papers: papersData.filter(p => belongs(p.assignedTo)),
+    grey: greyLitData.filter(p => belongs(p.assignedTo)),
+  };
+  const records = new Map([...papersData, ...greyLitData].map(p => [String(p.id), p]));
   let summary = typeof annotationsSummary !== "undefined" ? annotationsSummary : null;
   if (!summary) {
-    try { summary = JSON.parse(localStorage.getItem("capstone_annotations_cache") || "null"); } catch (_) { /* Storage may be unavailable. */ }
+    try { summary = JSON.parse(localStorage.getItem("capstone_annotations_cache") || "null"); } catch (_) { /* Storage can be unavailable. */ }
   }
   const notes = (Array.isArray(summary?.notes) ? summary.notes : [])
-    .filter(n => n.createdBy && belongsToUser(n.createdBy) && n.status !== "deleted")
-    .sort((a, b) => (Date.parse(b.createdAt) || 0) - (Date.parse(a.createdAt) || 0));
-  const noteCounts = new Map();
-  notes.forEach(n => noteCounts.set(String(n.paperId), (noteCounts.get(String(n.paperId)) || 0) + 1));
-  const library = {
-    papers: papersData.filter(p => belongsToUser(p.assignedTo)).map(record => ({ record, ...window.categoryGroupOf("academic", record) })),
-    grey: greyLitData.filter(p => belongsToUser(p.assignedTo)).map(record => ({ record, ...window.categoryGroupOf("grey", record) })),
-  };
-  const focus = Object.fromEntries(Object.entries(library).map(([kind, items]) => {
-    const groups = new Map();
-    items.forEach(({ group }) => {
-      if (!groups.has(group.key)) groups.set(group.key, { ...group, count: 0 });
-      groups.get(group.key).count++;
+    .filter(n => n.createdBy && belongs(n.createdBy) && n.status !== "deleted");
+  const counts = new Map();
+  notes.forEach(n => counts.set(String(n.paperId), (counts.get(String(n.paperId)) || 0) + 1));
+  const count = id => counts.get(String(id)) || 0;
+  const category = (kind, p) => window.categoryGroupOf(kind === "papers" ? "academic" : "grey", p);
+  const groups = Object.fromEntries(Object.entries(library).map(([kind, list]) => {
+    const tally = new Map();
+    list.forEach(p => {
+      const { group } = category(kind, p);
+      if (!tally.has(group.key)) tally.set(group.key, { group, n: 0 });
+      tally.get(group.key).n++;
     });
-    return [kind, [...groups.values()].sort((a, b) => b.count - a.count || a.label.localeCompare(b.label))];
+    return [kind, [...tally.values()].sort((a, b) => b.n - a.n)];
   }));
-  const focusText = [focus.papers.length ? `Papers mostly ${focus.papers[0].label}` : "",
-    focus.grey.length ? `reports mostly ${focus.grey[0].label}` : ""].filter(Boolean).join(" · ") || "Your research starts here";
-  const nameEl = document.getElementById("modalProfileName");
-  nameEl.textContent = user;
-  nameEl.title = user;
-  const focusEl = document.getElementById("modalProfileFocus");
-  focusEl.textContent = focusText;
-  focusEl.title = focusText;
-  const avatar = document.getElementById("modalProfileAvatar");
-  avatar.textContent = user.trim().split(/\s+/).map(n => n[0]).join("").slice(0, 2).toUpperCase() || "U";
-  avatar.style.background = getPersonPalette(user).light;
-  document.getElementById("modalProfileDevice").textContent = `Device: ${currentDevice.label}`;
-  document.getElementById("modalProfileSecurity").textContent = BrowserIdentity.isPersistent()
+  const state = { tab: "library", kind: "papers", group: null, page: 0, ipage: 0, query: "", paper: null };
+  const yearOf = p => p.year || (String(p.authors || "").match(/\((\d{4})\)/) || [])[1] || "";
+  const pageOf = n => Math.max(1, Math.floor(Number(n.page) || 1));
+  const empty = text => `<div class="profile-empty">${esc(text)}</div>`;
+  const narrow = () => window.matchMedia("(max-width: 860px)").matches;
+  el("modalProfileName").textContent = user;
+  el("modalProfileName").title = user;
+  el("modalProfileAvatar").textContent = user.trim().split(/\s+/).map(w => w[0]).slice(0, 2).join("").toUpperCase() || "U";
+  el("modalProfileDevice").textContent = `Device: ${currentDevice.label}`;
+  el("modalProfileSecurity").textContent = BrowserIdentity.isPersistent()
     ? "Remembered in this browser (not a secure login)."
     : "This choice lasts until reload; browser storage is unavailable (not a secure login).";
-
-  const pageOf = n => Math.max(1, Math.floor(Number(n.page) || 1));
-  const noteUrl = n => `${profileViewerUrl(n.paperId)}&page=${pageOf(n)}`;
-  const snippet = n => String(n.text || "No note text yet.").replace(/\s+/g, " ").trim();
-  const empty = text => `<div class="profile-empty-msg">${esc(text)}</div>`;
-  const totalItems = library.papers.length + library.grey.length;
-  const annotated = papersData.filter(p => noteCounts.has(String(p.id))).length;
-  const body = document.getElementById("modalProfileBody");
-  body.innerHTML = `
-    <div class="profile-tabs" role="tablist" aria-label="Contributor profile">
-      ${["Overview", "Library", "Notes"].map((name, i) => `<button type="button" role="tab" id="profile-tab-${name.toLowerCase()}" data-profile-tab="${name.toLowerCase()}" aria-controls="profile-panel-${name.toLowerCase()}" aria-selected="${i === 0}" tabindex="${i === 0 ? 0 : -1}">${name}${i ? ` <span>${i === 1 ? totalItems : notes.length}</span>` : ""}</button>`).join("")}
-    </div>
-    <section id="profile-panel-overview" class="profile-panel" role="tabpanel" aria-labelledby="profile-tab-overview" tabindex="0">
-      <div class="profile-overview-summary">
-      <div class="profile-stats-grid">
-        ${[["papers", library.papers.length, "Papers"], ["reports", library.grey.length, "Reports"], ["annotated", annotated, "Annotated"], ["notes", notes.length, "Notes"]].map(([key, value, label]) => `<button type="button" class="profile-stat" data-stat="${key}"><span class="profile-stat-value">${value}</span><span class="profile-stat-label">${label}</span></button>`).join("")}
-      </div>
-      <h3 class="profile-section-title">Research focus</h3>
-      ${totalItems ? ["papers", "grey"].filter(kind => library[kind].length).map(kind => `
-        <div class="profile-focus-kind" data-focus-kind="${kind}">
-          <h4 class="profile-focus-label">${kind === "papers" ? "Papers" : "Reports"}</h4>
-          <div class="profile-focus-bar" aria-label="${kind === "papers" ? "Papers" : "Reports"} by research group">${focus[kind].map(g => `<span class="profile-focus-seg" style="width:${g.count / library[kind].length * 100}%;background:${esc(g.color)}" title="${esc(g.label)}: ${g.count}"></span>`).join("")}</div>
-          <div class="profile-focus-legend">${focus[kind].map(g => `<div title="${esc(g.label)}: ${g.count}"><i style="background:${esc(g.color)}"></i><span class="profile-truncate">${esc(g.label)}</span><span>${g.count}</span></div>`).join("")}</div>
-        </div>`).join("") : empty("Assigned papers and reports will appear here.")}
-      </div>
-      <div class="profile-overview-recent">
-        <h3 class="profile-section-title">Recent notes</h3>
-        <div class="profile-recent-list"></div>
-      </div>
-    </section>
-    <section id="profile-panel-library" class="profile-panel" role="tabpanel" aria-labelledby="profile-tab-library" tabindex="0" hidden>
-      <div class="profile-library-toggle" role="group" aria-label="Library kind">
-        <button type="button" data-library-kind="papers" aria-pressed="true">Papers ${library.papers.length}</button>
-        <button type="button" data-library-kind="grey" aria-pressed="false">Reports ${library.grey.length}</button>
-      </div>
-      <div class="profile-library-list"></div><div class="profile-library-pagination"></div>
-    </section>
-    <section id="profile-panel-notes" class="profile-panel" role="tabpanel" aria-labelledby="profile-tab-notes" tabindex="0" hidden>
-      <div class="profile-notes-master">
-      <input class="profile-notes-search" type="search" aria-label="Search your notes" placeholder="Search notes and paper titles…">
-      <div class="profile-notes-list"></div><div class="profile-notes-pagination"></div>
-      </div>
-      <div class="profile-notes-detail" aria-label="Selected paper notes"></div>
-    </section>`;
-
-  let kind = "papers", libraryPage = 0, notesPage = 0, selectedPaper = null;
-  let split = window.matchMedia("(min-width: 1024px)").matches;
-  const outerHeight = el => {
-    const style = getComputedStyle(el);
-    return el.offsetHeight + 0.5 + parseFloat(style.marginTop) + parseFloat(style.marginBottom);
-  };
-  const availableHeight = (panel, controls) => {
-    const style = getComputedStyle(panel);
-    return panel.clientHeight - parseFloat(style.paddingTop) - parseFloat(style.paddingBottom)
-      - controls.reduce((sum, el) => sum + outerHeight(el), 0);
-  };
-  function renderRecent() {
-    const list = body.querySelector(".profile-recent-list");
-    const render = size => {
-      list.innerHTML = notes.slice(0, size).map(n => `<a class="profile-recent-note" href="${esc(noteUrl(n))}" target="_blank" rel="noopener"><strong class="profile-truncate" title="${esc(titleOf(n.paperId))}">${esc(titleOf(n.paperId))}</strong><span class="profile-recent-text"><span>Page ${pageOf(n)}</span><span class="profile-truncate" title="${esc(snippet(n))}">${esc(snippet(n))}</span></span></a>`).join("") || empty("No notes yet. Open a paper to add your first thought.");
-    };
-    render(3);
-    if (split && notes.length) {
-      const panel = body.querySelector("#profile-panel-overview");
-      const heading = body.querySelector(".profile-overview-recent h3");
-      const rowHeight = outerHeight(list.firstElementChild) + 1;
-      render(Math.max(5, Math.floor((availableHeight(panel, [heading]) - 2) / rowHeight)));
-    }
+  const lead = groups.papers[0]?.group || groups.grey[0]?.group;
+  el("profileIdentity").style.removeProperty("--hero-tint");
+  el("modalProfileAvatar").style.removeProperty("--avatar-bg");
+  if (lead) {
+    el("profileIdentity").style.setProperty("--hero-tint", lead.color + "22");
+    const second = groups.papers[1]?.group || groups.grey[0]?.group || lead;
+    el("modalProfileAvatar").style.setProperty("--avatar-bg", `linear-gradient(135deg, ${lead.color}, ${second.color})`);
   }
-  const pager = (page, size, total, label) => `<div class="profile-pager" aria-label="${label} pages"><span aria-live="polite">${total ? page * size + 1 : 0}–${Math.min((page + 1) * size, total)} of ${total}</span><div><button type="button" data-page="prev" aria-label="Previous ${label} page" ${page === 0 ? "disabled" : ""}>Previous</button><button type="button" data-page="next" aria-label="Next ${label} page" ${(page + 1) * size >= total ? "disabled" : ""}>Next</button></div></div>`;
+  const total = library.papers.length + library.grey.length;
+  const annotated = new Set(notes.map(n => String(n.paperId))).size;
+  const focus = groups.papers[0]
+    ? ` Most of this work is on <b>${esc(groups.papers[0].group.label.toLowerCase())}</b>${groups.grey[0] ? ` and <b>${esc(groups.grey[0].group.label.toLowerCase())}</b>` : ""}.`
+    : groups.grey[0] ? ` Most of this work is on <b>${esc(groups.grey[0].group.label.toLowerCase())}</b>.` : "";
+  el("profileStory").innerHTML = `Added <b>${library.papers.length} papers</b> and <b>${library.grey.length} reports</b>`
+    + (notes.length ? `, and wrote <b>${notes.length} notes</b> across ${annotated} of them.` : ".") + focus;
+  el("profileLibraryCount").textContent = total;
+  el("profileNotesCount").textContent = notes.length;
+  el("profileRingTotal").textContent = total;
+  function ring(kind, radius) {
+    const circumference = 2 * Math.PI * radius;
+    let offset = 0;
+    return groups[kind].map(({ group, n }) => {
+      const length = n / library[kind].length * circumference;
+      const segment = `<circle class="seg" role="button" tabindex="0" data-kind="${kind}" data-group="${esc(group.key)}" aria-label="${esc(group.label)}: ${n} ${kind === "papers" ? "papers" : "reports"}" cx="120" cy="120" r="${radius}" stroke="${esc(group.color)}" stroke-width="20" stroke-dasharray="${Math.max(0, length - 6)} ${circumference}" stroke-dashoffset="${-offset}"><title>${esc(group.label)}: ${n}</title></circle>`;
+      offset += length;
+      return segment;
+    }).join("");
+  }
+  el("profileRingsSvg").innerHTML = `<circle cx="120" cy="120" r="104" fill="none" stroke="rgba(148,163,184,.08)" stroke-width="20"/><circle cx="120" cy="120" r="78" fill="none" stroke="rgba(148,163,184,.08)" stroke-width="20"/>` + ring("papers", 104) + ring("grey", 78);
+  el("profileLegend").innerHTML = ["papers", "grey"].map(kind => !library[kind].length ? "" :
+    `<div><h3><span>${kind === "papers" ? "Papers · outer ring" : "Reports · inner ring"}</span><span>${library[kind].length}</span></h3>${groups[kind].map(({ group, n }) =>
+      `<button type="button" class="profile-legend-row" data-kind="${kind}" data-group="${esc(group.key)}" aria-pressed="false" title="${esc(group.label)}: ${n}"><i style="background:${esc(group.color)}"></i><span>${esc(group.label)}</span><span>${n}</span></button>`).join("")}</div>`).join("");
+  el("profileNotes").querySelector("input").value = "";
+
+  function moveThumb(id) {
+    const control = el(id), on = control.querySelector('[aria-selected="true"]');
+    if (!on || control.hidden) return;
+    const thumb = control.querySelector(".profile-thumb");
+    thumb.style.left = on.offsetLeft + "px";
+    thumb.style.width = on.offsetWidth + "px";
+  }
+  function pager(id, page, pages) {
+    const control = el(id);
+    // Retain the pager's height even on a single page so the page size stays stable.
+    control.style.visibility = pages > 1 ? "visible" : "hidden";
+    control.innerHTML = `<button type="button" class="profile-arrow" data-page="prev" aria-label="Previous page" ${page === 0 ? "disabled" : ""}>‹</button><div class="profile-dots">${Array.from({ length: pages }, (_, i) => `<button type="button" data-profile-page="${i}" aria-label="Page ${i + 1}" aria-current="${i === page}"></button>`).join("")}</div><button type="button" class="profile-arrow" data-page="next" aria-label="Next page" ${page >= pages - 1 ? "disabled" : ""}>›</button>`;
+  }
   function renderLibrary() {
-    const list = body.querySelector(".profile-library-list");
-    const items = [...library[kind]].sort((a, b) => a.group.label.localeCompare(b.group.label) || a.record.title.localeCompare(b.record.title));
-    const draw = size => {
-      libraryPage = Math.max(0, Math.min(libraryPage, Math.ceil(items.length / size) - 1));
-      const groups = new Map();
-      items.slice(libraryPage * size, (libraryPage + 1) * size).forEach(item => {
-        if (!groups.has(item.group.key)) groups.set(item.group.key, { group: item.group, items: [] });
-        groups.get(item.group.key).items.push(item);
-      });
-      list.innerHTML = [...groups.values()].map(({ group, items }) => `<section class="profile-lib-group"><h3 class="profile-truncate" title="${esc(group.label)}">${esc(group.label)}</h3>${items.map(({ record: r, sub }) => {
-        const count = noteCounts.get(String(r.id)) || 0;
-        const url = kind === "papers" ? profileViewerUrl(r.id) : r.pdfUrl && r.pdfUrl !== "#"
-          ? `${profileViewerUrl(r.id)}&pdf=${encodeURIComponent(r.pdfUrl)}&title=${encodeURIComponent(r.title)}&topic=Grey%20Literature`
-          : r.url || r.externalUrl;
-        const meta = `${sub.label}${count ? ` · ${count} note${count === 1 ? "" : "s"}` : ""}`;
-        return `<div class="profile-lib-row"><div class="profile-row-copy"><strong class="profile-truncate" title="${esc(r.title)}">${esc(r.title)}</strong><span class="profile-truncate profile-row-meta" title="${esc(meta)}">${esc(meta)}</span></div>${url ? `<a href="${esc(url)}" target="_blank" rel="noopener" aria-label="Open ${esc(r.title)}">Open ↗</a>` : `<span class="profile-row-meta">No link yet</span>`}</div>`;
-      }).join("")}</section>`).join("") || empty(`No ${kind === "papers" ? "papers" : "reports"} assigned yet.`);
-      body.querySelector(".profile-library-pagination").innerHTML = pager(libraryPage, size, items.length, "library");
-    };
-    draw(5);
-    const panel = body.querySelector("#profile-panel-library");
-    if (panel.hidden || !items.length) return;
-    const room = availableHeight(panel, [body.querySelector(".profile-library-toggle"), body.querySelector(".profile-library-pagination")]);
-    const rowHeight = outerHeight(list.querySelector(".profile-lib-row"));
-    const headingHeight = outerHeight(list.querySelector(".profile-lib-group h3"));
-    // Include headings at every page boundary, so later pages fit just as well.
-    let size = Math.max(5, Math.floor(room / rowHeight));
-    for (; size > 5; size--) {
-      let fits = true;
-      for (let start = 0; start < items.length; start += size) {
-        const page = items.slice(start, start + size);
-        const headings = new Set(page.map(item => item.group.key)).size;
-        if (page.length * rowHeight + headings * headingHeight > room - 1) { fits = false; break; }
-      }
-      if (fits) break;
-    }
-    draw(size);
+    let list = library[state.kind];
+    if (state.group) list = list.filter(p => category(state.kind, p).group.key === state.group);
+    list = [...list].sort((a, b) => count(b.id) - count(a.id) || String(yearOf(b)).localeCompare(String(yearOf(a))));
+    const rows = el("profileRows");
+    const per = narrow() ? Math.max(5, Math.min(8, Math.floor((innerHeight - 230) / 72))) : Math.max(1, Math.floor((rows.clientHeight - 2) / 64));
+    if (!narrow()) rows.style.setProperty("--row-h", (rows.clientHeight - 2) / per + "px");
+    else rows.style.removeProperty("--row-h");
+    const pages = Math.max(1, Math.ceil(list.length / per));
+    state.page = Math.max(0, Math.min(state.page, pages - 1));
+    const slice = list.slice(state.page * per, (state.page + 1) * per);
+    const group = state.group && groups[state.kind].find(g => g.group.key === state.group)?.group;
+    el("profileShelfTitle").textContent = group ? group.label : state.kind === "papers" ? "Papers added" : "Reports added";
+    el("profileRange").textContent = `${list.length ? state.page * per + 1 : 0}–${state.page * per + slice.length} of ${list.length}`;
+    rows.innerHTML = slice.map(p => {
+      const { group, sub } = category(state.kind, p);
+      const authors = String(p.authors || "");
+      const meta = state.kind === "papers"
+        ? [authors.replace(/\s*\(\d{4}\).*/, "").split(",").slice(0, 2).join(",").trim() + (authors.split(",").length > 2 ? " et al." : ""), yearOf(p), String(p.journal || "").split(/[,(]/)[0]].filter(Boolean).join(" · ")
+        : [p.organization, yearOf(p)].filter(Boolean).join(" · ");
+      return `<a class="profile-row" style="--c:${esc(group.color)}" href="${esc(profileViewerUrl(p.id))}" target="_blank" rel="noopener" title="${esc(p.title)}"><i></i><div class="profile-row-main"><div class="profile-row-title" title="${esc(p.title)}">${esc(p.title)}</div><div class="profile-row-meta" title="${esc(meta)}">${esc(meta)}</div></div>${narrow() ? "" : `<span class="profile-row-sub" title="${esc(group.label)} · ${esc(sub.label)}">${esc(sub.label)}</span>`}<span class="profile-row-notes">${count(p.id) ? `<span class="profile-badge" title="${count(p.id)} notes">✎ ${count(p.id)}</span>` : ""}</span><span class="profile-row-go">›</span></a>`;
+    }).join("") || empty(`No ${state.kind === "papers" ? "papers" : "reports"} added yet.`);
+    pager("profileLibraryPager", state.page, pages);
   }
   function renderNotes() {
-    const query = body.querySelector(".profile-notes-search").value.trim().toLowerCase();
-    const groups = new Map();
-    notes.filter(n => !query || `${n.title || ""} ${n.text || ""} ${titleOf(n.paperId)}`.toLowerCase().includes(query)).forEach(n => {
-      const id = String(n.paperId);
-      if (!groups.has(id)) groups.set(id, []);
-      groups.get(id).push(n);
+    const query = state.query.trim().toLowerCase(), byPaper = new Map();
+    notes.forEach(n => {
+      const p = records.get(String(n.paperId));
+      if (!p || (state.group && category("papers", p).group.key !== state.group)) return;
+      if (query && ![n.title, n.text, p.title].some(t => String(t || "").toLowerCase().includes(query))) return;
+      const id = String(p.id);
+      if (!byPaper.has(id)) byPaper.set(id, { p, notes: [] });
+      byPaper.get(id).notes.push(n);
     });
-    const panel = body.querySelector("#profile-panel-notes");
-    const master = body.querySelector(".profile-notes-master");
-    const list = body.querySelector(".profile-notes-list");
-    const pagination = body.querySelector(".profile-notes-pagination");
-    const cards = groupNotes => groupNotes.map(n => `<article class="profile-note-card"><div class="profile-note-top"><strong class="profile-truncate" title="${esc(n.title || "Note")}">${esc(n.title || "Note")}</strong><a href="${esc(noteUrl(n))}" target="_blank" rel="noopener" aria-label="Open ${esc(n.title || "note")} at page ${pageOf(n)}">Page ${pageOf(n)} ↗</a></div><div class="profile-note-snippet profile-truncate" title="${esc(snippet(n))}">${esc(snippet(n))}</div></article>`).join("");
-    const draw = size => {
-      notesPage = Math.max(0, Math.min(notesPage, Math.ceil(groups.size / size) - 1));
-      const visible = [...groups.entries()].slice(notesPage * size, (notesPage + 1) * size);
-      if (!visible.some(([id]) => id === selectedPaper)) selectedPaper = split ? visible[0]?.[0] : null;
-      list.innerHTML = visible.map(([id, groupNotes], i) => {
-        const title = titleOf(id);
-        const pages = [...new Set(groupNotes.map(pageOf))].sort((a, b) => a - b).join(", ");
-        const meta = `${groupNotes.length} note${groupNotes.length === 1 ? "" : "s"} · pages ${pages}`;
-        const active = id === selectedPaper;
-        return `<section class="profile-note-group" data-paper-id="${esc(id)}"><button class="profile-note-heading" type="button" aria-expanded="${active}" aria-controls="${split ? "profile-note-detail" : `profile-note-content-${i}`}"><span class="profile-row-copy"><strong class="profile-truncate" title="${esc(title)}">${esc(title)}</strong><span class="profile-row-meta profile-truncate" title="${esc(meta)}">${esc(meta)}</span></span><span class="profile-chevron" aria-hidden="true">›</span></button><div id="profile-note-content-${i}" class="profile-note-content" ${split || !active ? "hidden" : ""}>${split ? "" : cards(groupNotes)}</div></section>`;
-      }).join("") || empty(notes.length ? "No matching notes. Try a different word." : "No notes yet. Open a paper to add your first thought.");
-      pagination.innerHTML = pager(notesPage, size, groups.size, "notes");
-      renderDetail();
-    };
-    function renderDetail() {
-      const detail = body.querySelector(".profile-notes-detail");
-      detail.id = "profile-note-detail";
-      detail.innerHTML = split && selectedPaper ? `<h3 class="profile-detail-title" title="${esc(titleOf(selectedPaper))}">${esc(titleOf(selectedPaper))}</h3><div class="profile-note-content">${cards(groups.get(selectedPaper) || [])}</div>` : "";
-      detail.scrollTop = 0;
+    const items = [...byPaper.values()].sort((a, b) => b.notes.length - a.notes.length);
+    const list = el("profileIndexList");
+    const per = narrow() ? 6 : Math.max(1, Math.floor(list.clientHeight / 60));
+    const pages = Math.max(1, Math.ceil(items.length / per));
+    state.ipage = Math.max(0, Math.min(state.ipage, pages - 1));
+    const slice = items.slice(state.ipage * per, (state.ipage + 1) * per);
+    if (!slice.some(({ p }) => String(p.id) === state.paper)) state.paper = slice[0] ? String(slice[0].p.id) : null;
+    list.innerHTML = slice.map(({ p, notes }) => {
+      const { group } = category("papers", p);
+      return `<button type="button" class="profile-index-item" role="option" aria-selected="${String(p.id) === state.paper}" data-paper-id="${esc(p.id)}" style="--c:${esc(group.color)}" title="${esc(p.title)}"><i></i><span class="profile-t">${esc(p.title)}</span><span class="profile-n">${notes.length}</span></button>`;
+    }).join("") || empty("No notes match.");
+    pager("profileIndexPager", state.ipage, pages);
+    const reader = el("profileReader"), open = byPaper.get(state.paper);
+    if (!open) {
+      reader.innerHTML = empty(notes.length ? "No notes match your search." : "No notes yet. Open a paper and add a note to see it here.");
+      return;
     }
-    // Keep the heading nodes in place when selecting, including keyboard focus.
-    list.onclick = event => {
-      const heading = event.target.closest(".profile-note-heading");
-      if (!heading) return;
-      const id = heading.closest(".profile-note-group").dataset.paperId;
-      selectedPaper = split || selectedPaper !== id ? id : null;
-      list.querySelectorAll(".profile-note-heading").forEach(header => {
-        const active = header.closest(".profile-note-group").dataset.paperId === selectedPaper;
-        header.setAttribute("aria-expanded", String(active));
-        if (!split) document.getElementById(header.getAttribute("aria-controls")).hidden = !active;
-      });
-      renderDetail();
-    };
-    draw(5);
-    if (panel.hidden || !groups.size) return;
-    const room = availableHeight(split ? master : panel, [body.querySelector(".profile-notes-search"), pagination]);
-    const rowHeight = outerHeight(list.querySelector(".profile-note-group"));
-    // In accordion mode, measure a closed heading rather than any open cards.
-    const closedHeight = split ? rowHeight : outerHeight(list.querySelector(".profile-note-heading")) + 1;
-    draw(Math.max(5, Math.floor((room - 1) / closedHeight)));
+    const { group, sub } = category("papers", open.p);
+    reader.style.setProperty("--c", group.color);
+    const authors = String(open.p.authors || "").replace(/\s*\(\d{4}\).*/, "");
+    reader.innerHTML = `<header class="profile-reader-head"><span class="profile-card-kicker">${esc(group.label)} · ${esc(sub.label)}</span><h2>${esc(open.p.title)}</h2><div class="profile-by"><span title="${esc(authors)}">${esc(authors)}</span><span>${esc(yearOf(open.p))}</span><a class="profile-open-pdf" href="${esc(profileViewerUrl(open.p.id))}" target="_blank" rel="noopener">Open PDF</a></div></header><div class="profile-reader-body">${[...open.notes].sort((a, b) => pageOf(a) - pageOf(b)).map(n => {
+      const date = new Date(n.createdAt);
+      const stamp = Number.isNaN(date.getTime()) ? "" : date.toLocaleDateString("en-AU", { day: "numeric", month: "short", year: "numeric" });
+      return `<article class="profile-quote"><div class="profile-quote-top"><h4>${esc(n.title && n.title !== "Note" ? n.title : `Page ${pageOf(n)}`)}</h4><a class="profile-page-pill" href="${esc(profileViewerUrl(n.paperId) + '&page=' + pageOf(n))}" target="_blank" rel="noopener">Open p. ${pageOf(n)} ↗</a></div><p>${esc(n.text)}</p><time>${esc(stamp)}</time></article>`;
+    }).join("")}</div>`;
   }
-  function selectTab(name) {
-    body.querySelectorAll("[role=tab]").forEach(tab => {
-      const active = tab.dataset.profileTab === name;
-      tab.setAttribute("aria-selected", String(active));
-      tab.tabIndex = active ? 0 : -1;
+  function fitIdentity() {
+    const rings = el("profileRings");
+    rings.style.removeProperty("width");
+    rings.style.removeProperty("height");
+    rings.querySelector(".profile-small").hidden = false;
+    rings.querySelector(".profile-big").style.removeProperty("font-size");
+    if (narrow()) return;
+    const identity = el("profileIdentity"), style = getComputedStyle(identity);
+    const wrap = rings.parentElement;
+    const room = identity.clientHeight - parseFloat(style.paddingTop) - parseFloat(style.paddingBottom)
+      - identity.querySelector(".profile-who").offsetHeight - identity.querySelector(".profile-identity-foot").offsetHeight
+      - el("profileLegend").offsetHeight - 2 * parseFloat(style.rowGap) - parseFloat(getComputedStyle(wrap).rowGap);
+    const diameter = Math.max(80, Math.min(rings.offsetWidth, Math.floor(room)));
+    rings.style.width = rings.style.height = diameter + "px";
+    if (diameter < 140) {
+      rings.querySelector(".profile-small").hidden = true;
+      rings.querySelector(".profile-big").style.fontSize = "30px";
+    }
+  }
+  function renderAll() {
+    sheet.querySelectorAll("[data-profile-tab]").forEach(b => {
+      const active = b.dataset.profileTab === state.tab;
+      b.setAttribute("aria-selected", active);
+      b.tabIndex = active ? 0 : -1;
     });
-    body.querySelectorAll("[role=tabpanel]").forEach(panel => { panel.hidden = panel.id !== `profile-panel-${name}`; });
-    if (name === "overview") renderRecent();
-    else if (name === "library") renderLibrary();
-    else renderNotes();
-    body.querySelector(`[data-profile-tab="${name}"]`).focus({ preventScroll: true });
+    ["library", "notes"].forEach(tab => {
+      const panel = el(tab === "library" ? "profileLibrary" : "profileNotes");
+      panel.hidden = state.tab !== tab;
+      panel.classList.toggle("active", state.tab === tab);
+    });
+    el("profileKinds").hidden = state.tab !== "library";
+    sheet.querySelectorAll("[data-profile-kind]").forEach(b => {
+      b.setAttribute("aria-pressed", b.dataset.profileKind === state.kind);
+      b.setAttribute("aria-selected", b.dataset.profileKind === state.kind);
+    });
+    const group = state.group && groups[state.kind].find(g => g.group.key === state.group)?.group;
+    const pill = el("profileFilterPill");
+    pill.classList.toggle("show", !!group);
+    if (group) {
+      pill.querySelector("i").style.background = group.color;
+      pill.querySelector("span").textContent = group.label;
+      pill.querySelector("span").title = group.label;
+    }
+    el("profileRings").classList.toggle("dim", !!state.group);
+    sheet.querySelectorAll(".seg, .profile-legend-row").forEach(b => {
+      const active = b.dataset.group === state.group && b.dataset.kind === state.kind;
+      b.classList.toggle("on", active);
+      b.setAttribute("aria-pressed", active);
+    });
+    // Establish pager space before measuring the lists on the first opening.
+    if (!el("profileLibraryPager").children.length) pager("profileLibraryPager", 0, 1);
+    if (!el("profileIndexPager").children.length) pager("profileIndexPager", 0, 1);
+    fitIdentity();
+    state.tab === "library" ? renderLibrary() : renderNotes();
+    moveThumb("profileTabs");
+    moveThumb("profileKinds");
   }
-  body.onclick = event => {
-    const button = event.target.closest("button");
-    if (!button) return;
-    if (button.dataset.profileTab) selectTab(button.dataset.profileTab);
-    if (button.dataset.stat) {
-      const stat = button.dataset.stat;
-      if (stat === "papers" || stat === "reports") {
-        kind = stat === "papers" ? "papers" : "grey";
-        libraryPage = 0;
-        body.querySelectorAll("[data-library-kind]").forEach(b => b.setAttribute("aria-pressed", String(b.dataset.libraryKind === kind)));
-        renderLibrary();
-        selectTab("library");
-      } else selectTab("notes");
-    }
-    if (button.dataset.libraryKind) {
-      kind = button.dataset.libraryKind;
-      libraryPage = 0;
-      body.querySelectorAll("[data-library-kind]").forEach(b => b.setAttribute("aria-pressed", String(b === button)));
-      renderLibrary();
-    }
-    if (button.dataset.page) {
-      const delta = button.dataset.page === "next" ? 1 : -1;
-      const panel = button.closest("[role=tabpanel]");
-      if (panel.id === "profile-panel-library") { libraryPage += delta; renderLibrary(); }
-      else { notesPage += delta; renderNotes(); }
-      panel.scrollTop = 0;
-      panel.querySelector(`[data-page="${button.dataset.page}"]`)?.focus({ preventScroll: true });
+  function selectTab(tab) {
+    state.tab = tab;
+    if (tab === "notes" && state.kind === "grey") { state.group = null; state.kind = "papers"; }
+    renderAll();
+  }
+  sheet.onclick = event => {
+    const b = event.target.closest("button, .seg");
+    if (!b) return;
+    if (b.dataset.group) {
+      state.group = state.group === b.dataset.group && state.kind === b.dataset.kind ? null : b.dataset.group;
+      state.kind = b.dataset.kind;
+      state.page = state.ipage = 0;
+      if (state.kind === "grey") state.tab = "library";
+      renderAll();
+    } else if (b.dataset.profileTab) selectTab(b.dataset.profileTab);
+    else if (b.dataset.profileKind) {
+      state.kind = b.dataset.profileKind; state.group = null; state.page = 0; renderAll();
+    } else if (b.closest("#profileFilterPill")) {
+      state.group = null; state.page = state.ipage = 0; renderAll();
+    } else if (b.dataset.paperId) {
+      state.paper = b.dataset.paperId; renderNotes();
+      [...el("profileIndexList").querySelectorAll("[data-paper-id]")].find(item => item.dataset.paperId === state.paper)?.focus({ preventScroll: true });
+    } else if (b.dataset.page || b.dataset.profilePage !== undefined) {
+      const field = b.closest("#profileIndexPager") ? "ipage" : "page";
+      state[field] = b.dataset.profilePage !== undefined ? Number(b.dataset.profilePage) : state[field] + (b.dataset.page === "next" ? 1 : -1);
+      state.tab === "library" ? renderLibrary() : renderNotes();
+      const control = el(field === "ipage" ? "profileIndexPager" : "profileLibraryPager");
+      const nextFocus = control.querySelector(b.dataset.page ? `[data-page="${b.dataset.page}"]` : `[aria-current="true"]`);
+      (nextFocus && !nextFocus.disabled ? nextFocus : control.querySelector('[aria-current="true"]'))?.focus({ preventScroll: true });
     }
   };
-  body.querySelector(".profile-notes-search").oninput = () => { notesPage = 0; renderNotes(); };
-  body.querySelector("[role=tablist]").onkeydown = event => {
-    const tabs = [...body.querySelectorAll("[role=tab]")];
+  el("profileNotes").querySelector("input").oninput = event => { state.query = event.target.value; state.ipage = 0; renderNotes(); };
+  el("profileTabs").onkeydown = event => {
+    const tabs = [...el("profileTabs").querySelectorAll("[role=tab]")];
     const index = tabs.indexOf(document.activeElement);
     const next = event.key === "Home" ? 0 : event.key === "End" ? tabs.length - 1 : event.key === "ArrowRight" ? (index + 1) % tabs.length : event.key === "ArrowLeft" ? (index + tabs.length - 1) % tabs.length : -1;
     if (next < 0) return;
-    event.preventDefault();
-    selectTab(tabs[next].dataset.profileTab);
-    tabs[next].focus();
+    event.preventDefault(); selectTab(tabs[next].dataset.profileTab); tabs[next].focus();
   };
-  modal.style.display = "flex";
-  renderRecent();
-  const resize = () => {
-    const nextSplit = window.matchMedia("(min-width: 1024px)").matches;
-    if (split !== nextSplit) selectedPaper = null;
-    split = nextSplit;
-    const active = body.querySelector('[role="tab"][aria-selected="true"]').dataset.profileTab;
-    if (active === "overview") renderRecent();
-    else if (active === "library") renderLibrary();
-    else renderNotes();
-  };
-  const observer = new ResizeObserver(resize);
-  observer.observe(modal.querySelector(".profile-sheet"));
-  profileLayoutCleanup = () => observer.disconnect();
-  document.body.style.overflow = "hidden";
-  body.querySelector("[role=tab]").focus({ preventScroll: true });
   modal.onkeydown = event => {
     if (event.key === "Escape") { event.preventDefault(); closeProfileModal(); }
+    if (event.target.matches(".seg") && ["Enter", " "].includes(event.key)) { event.preventDefault(); event.target.dispatchEvent(new MouseEvent("click", { bubbles: true })); }
     if (event.key !== "Tab") return;
-    const stops = [...modal.querySelectorAll('button:not(:disabled), a[href], input, [tabindex="0"]')].filter(el => el.getClientRects().length);
+    const stops = [...modal.querySelectorAll('button:not(:disabled), a[href], input, [tabindex="0"]')].filter(e => e.getClientRects().length && getComputedStyle(e).visibility !== "hidden" && e.tabIndex >= 0);
     const first = stops[0], last = stops[stops.length - 1];
-    if (event.shiftKey && document.activeElement === first) { event.preventDefault(); last.focus(); }
-    else if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first.focus(); }
+    if (event.shiftKey && document.activeElement === first) { event.preventDefault(); last?.focus(); }
+    else if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first?.focus(); }
   };
+  modal.style.display = "flex";
+  document.body.style.overflow = "hidden";
+  renderAll();
+  let frame = 0;
+  const resize = () => { cancelAnimationFrame(frame); frame = requestAnimationFrame(renderAll); };
+  const observer = new ResizeObserver(resize);
+  observer.observe(sheet);
+  window.addEventListener("resize", resize);
+  const escape = event => { if (event.key === "Escape") { event.preventDefault(); closeProfileModal(); } };
+  document.addEventListener("keydown", escape);
+  profileLayoutCleanup = () => {
+    observer.disconnect(); window.removeEventListener("resize", resize);
+    document.removeEventListener("keydown", escape); cancelAnimationFrame(frame);
+  };
+  el("profileTabs").querySelector("[role=tab]").focus({ preventScroll: true });
 }
 
 function closeProfileModal() {
+  const modal = document.getElementById("profileModal");
+  if (modal.style.display !== "flex") return;
   profileLayoutCleanup?.();
   profileLayoutCleanup = null;
-  document.getElementById("profileModal").style.display = "none";
+  modal.style.display = "none";
   document.body.style.overflow = profileBodyOverflow;
   if (profileReturnFocus?.isConnected) profileReturnFocus.focus({ preventScroll: true });
 }
 
-function closeProfileModalOnOverlay(e) {
-  if (e.target.id === "profileModal") closeProfileModal();
+function closeProfileModalOnOverlay(event) {
+  if (event.target.id === "profileModal") closeProfileModal();
 }

@@ -16,7 +16,7 @@
     <link rel="stylesheet" href="css/base.css?v=layout-v15" />
     <link rel="stylesheet" href="css/controls.css?v=section-v1" />
     <link rel="stylesheet" href="css/papers.css?v=section-v2" />
-    <link rel="stylesheet" href="css/modals.css?v=profile-room-v2" />
+    <link rel="stylesheet" href="css/modals.css?v=profile-prototype-v5" />
     <link rel="stylesheet" href="css/research-map.css?v=layout-v17" />
   </head>
   <body>
@@ -473,29 +473,58 @@
       style="display: none"
       onclick="closeProfileModalOnOverlay(event)"
     >
-      <div class="modal-card profile-modal-card profile-sheet" role="dialog" aria-modal="true" aria-labelledby="modalProfileName" tabindex="-1">
-        <div class="modal-header profile-header">
-          <div class="profile-avatar" id="modalProfileAvatar">U</div>
-          <div class="profile-heading">
-            <h2 id="modalProfileName">Contributor Profile</h2>
-            <div id="modalProfileFocus" class="profile-truncate"></div>
+      <section class="profile-sheet" role="dialog" aria-modal="true" aria-labelledby="modalProfileName" tabindex="-1">
+        <button class="profile-close" type="button" aria-label="Close profile" onclick="closeProfileModal()">✕</button>
+        <aside class="profile-identity" id="profileIdentity">
+          <div class="profile-who">
+            <div class="profile-avatar" id="modalProfileAvatar"></div>
+            <div><h1 class="profile-name" id="modalProfileName"></h1></div>
+            <p class="profile-story" id="profileStory"></p>
           </div>
-          <button class="modal-close" type="button" aria-label="Close contributor profile" onclick="closeProfileModal()">&times;</button>
-        </div>
-        <div class="modal-body" id="modalProfileBody">
-          <!-- Injected via JavaScript -->
-        </div>
-        <div class="modal-footer profile-footer">
-          <div class="profile-footer-info">
-            <div id="modalProfileDevice"></div>
-            <div id="modalProfileSecurity"></div>
+          <div class="profile-rings-wrap">
+            <div class="profile-rings" id="profileRings">
+              <svg viewBox="0 0 240 240" id="profileRingsSvg" aria-label="Research groups"></svg>
+              <div class="profile-rings-center"><div class="profile-big" id="profileRingTotal"></div><div class="profile-small">items added</div></div>
+            </div>
+            <div class="profile-legend" id="profileLegend"></div>
           </div>
-          <div class="profile-footer-actions">
-            <button type="button" onclick="promptSwitchUser()">Switch person</button>
-            <button class="profile-done" type="button" onclick="closeProfileModal()">Done</button>
+          <div class="profile-identity-foot">
+            <div><div id="modalProfileDevice"></div><div id="modalProfileSecurity"></div></div>
+            <button class="profile-link-btn" type="button" onclick="promptSwitchUser()">Switch person</button>
           </div>
+        </aside>
+        <div class="profile-work" id="modalProfileBody">
+          <div class="profile-work-head">
+            <div class="profile-segmented" role="tablist" aria-label="Contributor profile" id="profileTabs">
+              <span class="profile-thumb"></span>
+              <button type="button" role="tab" id="profileTabLibrary" data-profile-tab="library" aria-controls="profileLibrary" aria-selected="true">Library <span class="profile-count" id="profileLibraryCount"></span></button>
+              <button type="button" role="tab" id="profileTabNotes" data-profile-tab="notes" aria-controls="profileNotes" aria-selected="false" tabindex="-1">Notes <span class="profile-count" id="profileNotesCount"></span></button>
+            </div>
+            <div class="profile-segmented profile-small" id="profileKinds" role="group" aria-label="Library kind">
+              <span class="profile-thumb"></span>
+              <button type="button" data-profile-kind="papers" aria-pressed="true" aria-selected="true">Papers</button>
+              <button type="button" data-profile-kind="grey" aria-pressed="false" aria-selected="false">Reports</button>
+            </div>
+            <span class="profile-head-spacer"></span>
+            <span class="profile-filter-pill" id="profileFilterPill"><i></i><span></span><button type="button" aria-label="Clear filter">✕</button></span>
+          </div>
+          <section class="profile-view active" id="profileLibrary" role="tabpanel" aria-labelledby="profileTabLibrary">
+            <div class="profile-shelf-meta"><h2 class="profile-shelf-title" id="profileShelfTitle"></h2><span class="profile-range" id="profileRange" aria-live="polite"></span></div>
+            <div class="profile-rows" id="profileRows"></div>
+            <div class="profile-pager" id="profileLibraryPager"></div>
+          </section>
+          <section class="profile-view" id="profileNotes" role="tabpanel" aria-labelledby="profileTabNotes" hidden>
+            <div class="profile-notes">
+              <div class="profile-note-index">
+                <label class="profile-notes-search">⌕<input type="search" aria-label="Search your notes" placeholder="Search your notes"></label>
+                <div class="profile-index-list" id="profileIndexList" role="listbox" aria-label="Papers with notes"></div>
+                <div class="profile-pager" id="profileIndexPager"></div>
+              </div>
+              <article class="profile-reader" id="profileReader" aria-label="Selected paper notes"></article>
+            </div>
+          </section>
         </div>
-      </div>
+      </section>
     </div>
 
     <!-- 8-Step Annotated Summary Modal -->
@@ -598,7 +627,7 @@
     <script src="js/filters.js?v=section-v1"></script>
     <script src="js/modals.js"></script>
     <script src="js/browser-identity.js"></script>
-    <script src="js/profile.js?v=profile-room-v2"></script>
+    <script src="js/profile.js?v=profile-prototype-v3"></script>
     <script src="js/annotations.js?v=layout-v1"></script>
     <script src="js/grey-literature.js?v=section-v1"></script>
     <script src="js/instructor.js?v=layout-v10"></script>
