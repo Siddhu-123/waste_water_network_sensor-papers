@@ -804,7 +804,6 @@ function switchLibraryTab(tabName) {
 
   const tabAcademic = document.getElementById("tabAcademic");
   const tabGreyLit = document.getElementById("tabGreyLit");
-  const tabInstructor = document.getElementById("tabInstructor");
 
   if (!academicSection || !greyLitSection) return;
 
@@ -821,10 +820,6 @@ function switchLibraryTab(tabName) {
     tabGreyLit.classList.remove("active");
     tabGreyLit.setAttribute("aria-selected", "false");
   }
-  if (tabInstructor) {
-    tabInstructor.classList.remove("active");
-    tabInstructor.setAttribute("aria-selected", "false");
-  }
 
   if (tabName === "grey-literature" || tabName === "grey-lit") {
     greyLitSection.style.display = "block";
@@ -840,10 +835,6 @@ function switchLibraryTab(tabName) {
       return;
     }
     if (instructorSection) instructorSection.style.display = "block";
-    if (tabInstructor) {
-      tabInstructor.classList.add("active");
-      tabInstructor.setAttribute("aria-selected", "true");
-    }
     if (typeof updateInstructorPills === "function") {
       updateInstructorPills();
     }

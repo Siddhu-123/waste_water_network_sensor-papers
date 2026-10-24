@@ -141,7 +141,7 @@ function promptSwitchUser() {
 let profileReturnFocus = null;
 let profileBodyOverflow = "";
 let profileLayoutCleanup = null;
-function openProfileModal() {
+function openProfileModal(person) {
   const modal = document.getElementById("profileModal");
   if (modal.style.display !== "flex") {
     profileReturnFocus = document.activeElement;
@@ -151,19 +151,26 @@ function openProfileModal() {
   const sheet = modal.querySelector(".profile-sheet");
   const el = id => document.getElementById(id);
   const esc = value => escapeHtml(String(value ?? ""));
-  const user = getActiveUser();
+  const instructor = typeof isInstructorUser === "function" && isInstructorUser(getActiveUser());
+  const contributors = [...new Set([...papersData, ...greyLitData].map(p => p.assignedTo))]
+    .filter(name => name && name !== "Team");
+  const drilling = instructor && contributors.includes(person);
+  const team = instructor && !drilling;
+  const user = team ? "Karamjit Kaur" : drilling ? person : getActiveUser();
+  sheet.classList.toggle("profile-instructor", instructor);
   const belongs = name => String(name || "").trim().toLowerCase() === user.trim().toLowerCase();
   const library = {
-    papers: papersData.filter(p => belongs(p.assignedTo)),
-    grey: greyLitData.filter(p => belongs(p.assignedTo)),
+    papers: team ? papersData : papersData.filter(p => belongs(p.assignedTo)),
+    grey: team ? greyLitData : greyLitData.filter(p => belongs(p.assignedTo)),
   };
   const records = new Map([...papersData, ...greyLitData].map(p => [String(p.id), p]));
   let summary = typeof annotationsSummary !== "undefined" ? annotationsSummary : null;
   if (!summary) {
     try { summary = JSON.parse(localStorage.getItem("capstone_annotations_cache") || "null"); } catch (_) { /* Storage can be unavailable. */ }
   }
-  const notes = (Array.isArray(summary?.notes) ? summary.notes : [])
-    .filter(n => n.createdBy && belongs(n.createdBy) && n.status !== "deleted");
+  const teamNotes = (Array.isArray(summary?.notes) ? summary.notes : [])
+    .filter(n => n.status !== "deleted" && (instructor || n.createdBy));
+  const notes = team ? teamNotes : teamNotes.filter(n => belongs(n.createdBy));
   const counts = new Map();
   notes.forEach(n => counts.set(String(n.paperId), (counts.get(String(n.paperId)) || 0) + 1));
   const count = id => counts.get(String(id)) || 0;
@@ -184,6 +191,20 @@ function openProfileModal() {
   const narrow = () => window.matchMedia("(max-width: 860px)").matches;
   el("modalProfileName").textContent = user;
   el("modalProfileName").title = user;
+  sheet.querySelectorAll(".profile-role, .profile-back, [data-open-instructor]").forEach(node => node.remove());
+  if (team) {
+    el("modalProfileName").insertAdjacentHTML("afterend", '<div class="profile-role">Instructor</div>');
+  } else if (drilling) {
+    sheet.querySelector(".profile-who").insertAdjacentHTML("afterbegin", '<button type="button" class="profile-back"><span aria-hidden="true">←</span> Back to team</button>');
+  }
+  el("profileTabs").hidden = instructor;
+  el("profileTeam")?.remove();
+  el("profileTabTeam")?.remove();
+  el("profileDashboard")?.remove();
+  if (instructor) {
+    el("modalProfileBody").insertAdjacentHTML("beforeend", '<section id="profileDashboard" class="profile-dashboard" aria-label="Research progress"></section>');
+    ["profileRows", "profileIndexList", "profileReader", "profileLibraryPager", "profileIndexPager"].forEach(id => { el(id).innerHTML = ""; });
+  }
   el("modalProfileAvatar").textContent = user.trim().split(/\s+/).map(w => w[0]).slice(0, 2).join("").toUpperCase() || "U";
   el("modalProfileDevice").textContent = `Device: ${currentDevice.label}`;
   el("modalProfileSecurity").textContent = BrowserIdentity.isPersistent()
@@ -204,6 +225,7 @@ function openProfileModal() {
     : groups.grey[0] ? ` Most of this work is on <b>${esc(groups.grey[0].group.label.toLowerCase())}</b>.` : "";
   el("profileStory").innerHTML = `Added <b>${library.papers.length} papers</b> and <b>${library.grey.length} reports</b>`
     + (notes.length ? `, and wrote <b>${notes.length} notes</b> across ${annotated} of them.` : ".") + focus;
+  if (team) el("profileStory").innerHTML = `The team of <b>${contributors.length}</b> added <b>${library.papers.length} papers</b> and <b>${library.grey.length} reports</b> and wrote <b>${notes.length} notes</b>.`;
   el("profileLibraryCount").textContent = total;
   el("profileNotesCount").textContent = notes.length;
   el("profileRingTotal").textContent = total;
@@ -222,6 +244,62 @@ function openProfileModal() {
     `<div><h3><span>${kind === "papers" ? "Papers · outer ring" : "Reports · inner ring"}</span><span>${library[kind].length}</span></h3>${groups[kind].map(({ group, n }) =>
       `<button type="button" class="profile-legend-row" data-kind="${kind}" data-group="${esc(group.key)}" aria-pressed="false" title="${esc(group.label)}: ${n}"><i style="background:${esc(group.color)}"></i><span>${esc(group.label)}</span><span>${n}</span></button>`).join("")}</div>`).join("");
   el("profileNotes").querySelector("input").value = "";
+  el("profileNotes").querySelector("input").placeholder = team ? "Search team notes" : "Search your notes";
+  el("profileNotes").querySelector("input").setAttribute("aria-label", team ? "Search team notes" : "Search your notes");
+
+  if (instructor) renderDashboard();
+  function renderDashboard() {
+    const paperIds = new Set(papersData.map(p => String(p.id)));
+    const notedPaperIds = new Set(teamNotes.map(n => String(n.paperId)));
+    const stats = name => {
+      const ownNotes = name ? teamNotes.filter(n => n.createdBy === name) : teamNotes;
+      const ownPapers = name ? papersData.filter(p => p.assignedTo === name) : papersData;
+      return {
+        papers: ownPapers.length,
+        covered: ownPapers.filter(p => notedPaperIds.has(String(p.id))).length,
+        reports: name ? greyLitData.filter(p => p.assignedTo === name).length : greyLitData.length,
+        notes: ownNotes.length,
+        annotated: new Set(ownNotes.filter(n => paperIds.has(String(n.paperId))).map(n => String(n.paperId))).size,
+        latest: ownNotes.reduce((last, n) => Math.max(last, Date.parse(n.updatedAt || n.createdAt) || 0), 0),
+      };
+    };
+    const coverage = s => s.papers ? Math.min(100, Math.round(s.covered / s.papers * 100)) : 0;
+    const meter = (n, color = "var(--accent)") => `<span class="profile-meter" aria-hidden="true"><i style="width:${Math.min(100, n)}%;background:${esc(color)}"></i></span>`;
+    const current = stats(team ? null : user);
+    const tiles = [
+      ["papers", "Papers", current.papers], ["reports", "Reports", current.reports],
+      ["notes", "Notes", current.notes], ["annotated", "Papers annotated", current.annotated],
+      ...(team ? [["people", "People", contributors.length]] : []),
+    ];
+    let html = `<header class="profile-dashboard-head"><h2>${team ? "Team progress" : "Research progress"}</h2><p>${team ? "Select a person to explore their contributions." : "Contributions and note activity"}</p></header><div class="profile-kpis${team ? "" : " profile-kpis-person"}">${tiles.map(([key, label, value]) =>
+      `<div class="profile-kpi" data-kpi="${key}" data-value="${value}"><span>${label}</span><strong>${value}${key === "annotated" ? `<small> / ${current.papers}</small>` : ""}</strong>${key === "annotated" ? `<small>${coverage(current)}% of papers have notes</small>${meter(coverage(current))}` : ""}</div>`).join("")}</div>`;
+    if (team) {
+      const personStats = new Map(contributors.map(name => [name, stats(name)]));
+      html += `<div class="profile-table-wrap" tabindex="0" role="region" aria-label="Contributor comparison"><table class="profile-compare"><caption>Contributor comparison</caption><thead><tr>${["Person", "Papers", "Reports", "Notes", "Papers they annotated", "Their papers with notes", "Last note date"].map(label => `<th scope="col">${label}</th>`).join("")}</tr></thead><tbody>${contributors.map(name => {
+        const s = personStats.get(name);
+        const stamp = s.latest ? new Date(s.latest).toLocaleDateString("en-AU", { day: "numeric", month: "short", year: "numeric" }) : "—";
+        return `<tr data-person="${esc(name)}" tabindex="0" aria-label="View ${esc(name)}'s progress"><th scope="row">${esc(name)}</th>${[["papers", "Papers"], ["reports", "Reports"], ["notes", "Notes"], ["annotated", "Annotated"]].map(([key, label]) => `<td data-col="${key}" data-value="${s[key]}" data-label="${label}">${s[key]}</td>`).join("")}<td data-col="coverage" data-value="${coverage(s)}" data-label="Their papers with notes"><span>${coverage(s)}%</span>${meter(coverage(s))}</td><td data-col="latest" data-label="Last note date"><span class="profile-last-note">Last note </span>${esc(stamp)}<span class="profile-compare-go" aria-hidden="true">›</span></td></tr>`;
+      }).join("")}</tbody></table></div>`;
+      html += `<div class="profile-table-wrap" tabindex="0" role="region" aria-label="Who covered what"><table class="profile-matrix"><caption>Who covered what</caption><thead><tr><th scope="col">Research group</th>${contributors.map(name => `<th scope="col" title="${esc(name)}" aria-label="${esc(name)}"><span class="profile-person-name">${esc(name)}</span><span class="profile-person-initials" aria-hidden="true">${esc(name.trim().split(/\s+/).map(part => [...part][0]).join(""))}</span></th>`).join("")}<th scope="col">All</th></tr></thead><tbody>${["papers", "grey"].map(kind => groups[kind].map(({ group, n }) => {
+        const groupRecords = library[kind].filter(p => category(kind, p).group.key === group.key);
+        return `<tr><th scope="row"><span class="profile-group-label"><i style="background:${esc(group.color)}"></i>${esc(group.label)}</span><small>${kind === "papers" ? "Papers" : "Reports"}</small></th>${contributors.map(name => {
+          const count = groupRecords.filter(p => p.assignedTo === name).length;
+          return `<td data-n="${count}" aria-label="${count}">${count || "·"}</td>`;
+        }).join("")}<td>${n}</td></tr>`;
+      }).join("")).join("")}</tbody></table></div>`;
+    } else {
+      html += ["papers", "grey"].map(kind => !groups[kind].length ? "" : `<section class="profile-group-stats"><h3>${kind === "papers" ? "Paper groups" : "Report groups"}</h3>${groups[kind].map(({ group, n }) => `<div class="profile-group-bar"><span class="profile-group-label"><i style="background:${esc(group.color)}"></i>${esc(group.label)}</span><strong>${n}</strong>${meter(n / Math.max(...groups[kind].map(g => g.n)) * 100, group.color)}</div>`).join("")}</section>`).join("");
+      const months = new Map();
+      notes.forEach(n => {
+        const date = new Date(n.createdAt);
+        if (Number.isNaN(date.getTime())) return;
+        const key = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}`;
+        months.set(key, (months.get(key) || 0) + 1);
+      });
+      if (months.size) html += `<section class="profile-group-stats"><h3>Notes by month</h3>${[...months].sort(([a], [b]) => a.localeCompare(b)).map(([key, n]) => `<div class="profile-month"><span>${esc(new Date(key + "-01T12:00:00").toLocaleDateString("en-AU", { month: "long", year: "numeric" }))}</span><strong>${n}</strong></div>`).join("")}</section>`;
+    }
+    el("profileDashboard").innerHTML = html;
+  }
 
   function moveThumb(id) {
     const control = el(id), on = control.querySelector('[aria-selected="true"]');
@@ -241,7 +319,7 @@ function openProfileModal() {
     if (state.group) list = list.filter(p => category(state.kind, p).group.key === state.group);
     list = [...list].sort((a, b) => count(b.id) - count(a.id) || String(yearOf(b)).localeCompare(String(yearOf(a))));
     const rows = el("profileRows");
-    const per = narrow() ? Math.max(5, Math.min(8, Math.floor((innerHeight - 230) / 72))) : Math.max(1, Math.floor((rows.clientHeight - 2) / 64));
+    const per = narrow() ? Math.max(5, Math.min(8, Math.floor((innerHeight - 230) / (team ? 88 : 72)))) : Math.max(1, Math.floor((rows.clientHeight - 2) / (team ? 84 : 64)));
     if (!narrow()) rows.style.setProperty("--row-h", (rows.clientHeight - 2) / per + "px");
     else rows.style.removeProperty("--row-h");
     const pages = Math.max(1, Math.ceil(list.length / per));
@@ -256,7 +334,7 @@ function openProfileModal() {
       const meta = state.kind === "papers"
         ? [authors.replace(/\s*\(\d{4}\).*/, "").split(",").slice(0, 2).join(",").trim() + (authors.split(",").length > 2 ? " et al." : ""), yearOf(p), String(p.journal || "").split(/[,(]/)[0]].filter(Boolean).join(" · ")
         : [p.organization, yearOf(p)].filter(Boolean).join(" · ");
-      return `<a class="profile-row" style="--c:${esc(group.color)}" href="${esc(profileViewerUrl(p.id))}" target="_blank" rel="noopener" title="${esc(p.title)}"><i></i><div class="profile-row-main"><div class="profile-row-title" title="${esc(p.title)}">${esc(p.title)}</div><div class="profile-row-meta" title="${esc(meta)}">${esc(meta)}</div></div>${narrow() ? "" : `<span class="profile-row-sub" title="${esc(group.label)} · ${esc(sub.label)}">${esc(sub.label)}</span>`}<span class="profile-row-notes">${count(p.id) ? `<span class="profile-badge" title="${count(p.id)} notes">✎ ${count(p.id)}</span>` : ""}</span><span class="profile-row-go">›</span></a>`;
+      return `<a class="profile-row" style="--c:${esc(group.color)}" href="${esc(profileViewerUrl(p.id))}" target="_blank" rel="noopener" title="${esc(p.title)}"><i></i><div class="profile-row-main"><div class="profile-row-title" title="${esc(p.title)}">${esc(p.title)}</div><div class="profile-row-meta" title="${esc(meta)}">${esc(meta)}</div>${team ? `<div class="profile-row-who">${esc(p.assignedTo || "Team")}</div>` : ""}</div>${narrow() ? "" : `<span class="profile-row-sub" title="${esc(group.label)} · ${esc(sub.label)}">${esc(sub.label)}</span>`}<span class="profile-row-notes">${count(p.id) ? `<span class="profile-badge" title="${count(p.id)} notes">✎ ${count(p.id)}</span>` : ""}</span><span class="profile-row-go">›</span></a>`;
     }).join("") || empty(`No ${state.kind === "papers" ? "papers" : "reports"} added yet.`);
     pager("profileLibraryPager", state.page, pages);
   }
@@ -293,36 +371,58 @@ function openProfileModal() {
     reader.innerHTML = `<header class="profile-reader-head"><span class="profile-card-kicker">${esc(group.label)} · ${esc(sub.label)}</span><h2>${esc(open.p.title)}</h2><div class="profile-by"><span title="${esc(authors)}">${esc(authors)}</span><span>${esc(yearOf(open.p))}</span><a class="profile-open-pdf" href="${esc(profileViewerUrl(open.p.id))}" target="_blank" rel="noopener">Open PDF</a></div></header><div class="profile-reader-body">${[...open.notes].sort((a, b) => pageOf(a) - pageOf(b)).map(n => {
       const date = new Date(n.createdAt);
       const stamp = Number.isNaN(date.getTime()) ? "" : date.toLocaleDateString("en-AU", { day: "numeric", month: "short", year: "numeric" });
-      return `<article class="profile-quote"><div class="profile-quote-top"><h4>${esc(n.title && n.title !== "Note" ? n.title : `Page ${pageOf(n)}`)}</h4><a class="profile-page-pill" href="${esc(profileViewerUrl(n.paperId) + '&page=' + pageOf(n))}" target="_blank" rel="noopener">Open p. ${pageOf(n)} ↗</a></div><p>${esc(n.text)}</p><time>${esc(stamp)}</time></article>`;
+      return `<article class="profile-quote"><div class="profile-quote-top"><h4>${esc(n.title && n.title !== "Note" ? n.title : `Page ${pageOf(n)}`)}</h4><a class="profile-page-pill" href="${esc(profileViewerUrl(n.paperId) + '&page=' + pageOf(n))}" target="_blank" rel="noopener">Open p. ${pageOf(n)} ↗</a></div><p>${esc(n.text)}</p>${team ? `<span class="profile-quote-author">${esc(n.createdBy)}</span>` : ""}<time>${esc(stamp)}</time></article>`;
     }).join("")}</div>`;
   }
   function fitIdentity() {
     const rings = el("profileRings");
     rings.style.removeProperty("width");
     rings.style.removeProperty("height");
+    rings.style.removeProperty("--profile-ring-number-size");
     rings.querySelector(".profile-small").hidden = false;
     rings.querySelector(".profile-big").style.removeProperty("font-size");
-    if (narrow()) return;
-    const identity = el("profileIdentity"), style = getComputedStyle(identity);
-    const wrap = rings.parentElement;
-    const room = identity.clientHeight - parseFloat(style.paddingTop) - parseFloat(style.paddingBottom)
-      - identity.querySelector(".profile-who").offsetHeight - identity.querySelector(".profile-identity-foot").offsetHeight
-      - el("profileLegend").offsetHeight - 2 * parseFloat(style.rowGap) - parseFloat(getComputedStyle(wrap).rowGap);
-    const diameter = Math.max(80, Math.min(rings.offsetWidth, Math.floor(room)));
-    rings.style.width = rings.style.height = diameter + "px";
-    if (diameter < 140) {
-      rings.querySelector(".profile-small").hidden = true;
-      rings.querySelector(".profile-big").style.fontSize = "30px";
+    if (!narrow()) {
+      const identity = el("profileIdentity"), style = getComputedStyle(identity);
+      const wrap = rings.parentElement;
+      const room = identity.clientHeight - parseFloat(style.paddingTop) - parseFloat(style.paddingBottom)
+        - identity.querySelector(".profile-who").offsetHeight - identity.querySelector(".profile-identity-foot").offsetHeight
+        - el("profileLegend").offsetHeight - 2 * parseFloat(style.rowGap) - parseFloat(getComputedStyle(wrap).rowGap);
+      const diameter = Math.max(80, Math.min(rings.offsetWidth, Math.floor(room)));
+      rings.style.width = rings.style.height = diameter + "px";
     }
+    const label = rings.querySelector(".profile-small"), number = rings.querySelector(".profile-big");
+    const ring = rings.getBoundingClientRect();
+    const radius = ring.width * 68 / 240 - 3;
+    const cx = ring.left + ring.width / 2, cy = ring.top + ring.height / 2;
+    const fits = element => {
+      const b = element.getBoundingClientRect();
+      return [[b.left, b.top], [b.right, b.top], [b.left, b.bottom], [b.right, b.bottom]]
+        .every(([x, y]) => Math.hypot(x - cx, y - cy) <= radius);
+    };
+    if (!fits(label)) label.hidden = true;
+    // Keep the total inside the same hole, including on short desktop windows.
+    let size = parseFloat(getComputedStyle(number).fontSize);
+    while (!fits(number) && size > 12) {
+      rings.style.setProperty("--profile-ring-number-size", --size + "px");
+    }
+    if (!label.hidden && (!fits(label) || label.getBoundingClientRect().top < number.getBoundingClientRect().bottom + 3)) label.hidden = true;
   }
   function renderAll() {
+    if (instructor) {
+      el("profileLibrary").hidden = el("profileNotes").hidden = el("profileKinds").hidden = true;
+      sheet.querySelector(".profile-work-head").hidden = true;
+      fitIdentity();
+      return;
+    }
+    sheet.querySelector(".profile-work-head").hidden = false;
     sheet.querySelectorAll("[data-profile-tab]").forEach(b => {
       const active = b.dataset.profileTab === state.tab;
       b.setAttribute("aria-selected", active);
       b.tabIndex = active ? 0 : -1;
     });
-    ["library", "notes"].forEach(tab => {
-      const panel = el(tab === "library" ? "profileLibrary" : "profileNotes");
+    ["team", "library", "notes"].forEach(tab => {
+      const panel = el(tab === "team" ? "profileTeam" : tab === "library" ? "profileLibrary" : "profileNotes");
+      if (!panel) return;
       panel.hidden = state.tab !== tab;
       panel.classList.toggle("active", state.tab === tab);
     });
@@ -349,7 +449,8 @@ function openProfileModal() {
     if (!el("profileLibraryPager").children.length) pager("profileLibraryPager", 0, 1);
     if (!el("profileIndexPager").children.length) pager("profileIndexPager", 0, 1);
     fitIdentity();
-    state.tab === "library" ? renderLibrary() : renderNotes();
+    if (state.tab === "library") renderLibrary();
+    else if (state.tab === "notes") renderNotes();
     moveThumb("profileTabs");
     moveThumb("profileKinds");
   }
@@ -359,9 +460,13 @@ function openProfileModal() {
     renderAll();
   }
   sheet.onclick = event => {
-    const b = event.target.closest("button, .seg");
+    const b = event.target.closest("button, .seg, tr[data-person]");
     if (!b) return;
-    if (b.dataset.group) {
+    if (b.classList.contains("profile-back")) openProfileModal();
+    else if (team && b.matches("tr[data-person]")) openProfileModal(b.dataset.person);
+    else if (instructor) return;
+    else if (b.dataset.group) {
+      if (state.tab === "team") state.tab = "library";
       state.group = state.group === b.dataset.group && state.kind === b.dataset.kind ? null : b.dataset.group;
       state.kind = b.dataset.kind;
       state.page = state.ipage = 0;
@@ -386,7 +491,7 @@ function openProfileModal() {
   };
   el("profileNotes").querySelector("input").oninput = event => { state.query = event.target.value; state.ipage = 0; renderNotes(); };
   el("profileTabs").onkeydown = event => {
-    const tabs = [...el("profileTabs").querySelectorAll("[role=tab]")];
+    const tabs = [...el("profileTabs").querySelectorAll("[role=tab]:not([hidden])")];
     const index = tabs.indexOf(document.activeElement);
     const next = event.key === "Home" ? 0 : event.key === "End" ? tabs.length - 1 : event.key === "ArrowRight" ? (index + 1) % tabs.length : event.key === "ArrowLeft" ? (index + tabs.length - 1) % tabs.length : -1;
     if (next < 0) return;
@@ -394,7 +499,7 @@ function openProfileModal() {
   };
   modal.onkeydown = event => {
     if (event.key === "Escape") { event.preventDefault(); closeProfileModal(); }
-    if (event.target.matches(".seg") && ["Enter", " "].includes(event.key)) { event.preventDefault(); event.target.dispatchEvent(new MouseEvent("click", { bubbles: true })); }
+    if (event.target.matches(".seg, tr[data-person]") && ["Enter", " "].includes(event.key)) { event.preventDefault(); event.target.dispatchEvent(new MouseEvent("click", { bubbles: true })); }
     if (event.key !== "Tab") return;
     const stops = [...modal.querySelectorAll('button:not(:disabled), a[href], input, [tabindex="0"]')].filter(e => e.getClientRects().length && getComputedStyle(e).visibility !== "hidden" && e.tabIndex >= 0);
     const first = stops[0], last = stops[stops.length - 1];
@@ -415,7 +520,8 @@ function openProfileModal() {
     observer.disconnect(); window.removeEventListener("resize", resize);
     document.removeEventListener("keydown", escape); cancelAnimationFrame(frame);
   };
-  el("profileTabs").querySelector("[role=tab]").focus({ preventScroll: true });
+  sheet.scrollTop = 0;
+  sheet.querySelector(".profile-close").focus({ preventScroll: true });
 }
 
 function closeProfileModal() {

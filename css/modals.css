@@ -277,6 +277,8 @@
 :where(.profile-sheet) button { font: inherit; color: inherit; background: none; border: 0; cursor: pointer; padding: 0; }
 :where(.profile-sheet) a { color: inherit; text-decoration: none; }
 .profile-sheet [hidden] { display: none !important; }
+#profileModal, #profileModal .profile-sheet { outline: none !important; }
+.profile-sheet :is(button, a, input, [tabindex]):focus:not(:focus-visible) { outline: none; }
 .profile-sheet :is(button, a, input):focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
 .profile-sheet {
   position: fixed;
@@ -338,7 +340,9 @@
   position: absolute; inset: 0; display: grid; place-content: center; text-align: center; pointer-events: none;
 }
 .profile-rings-center .profile-big { font-size: 44px; font-weight: 700; letter-spacing: -1.5px; line-height: 1; }
-.profile-rings-center .profile-small { color: var(--text-3); font-size: 12px; margin-top: 6px; letter-spacing: .4px; text-transform: uppercase; }
+.profile-rings-center .profile-small { color: var(--text-3); font-size: 12px; margin-top: 4px; letter-spacing: .4px; text-transform: uppercase; width: max-content; justify-self: center; }
+#profileModal .profile-sheet .profile-rings-center .profile-big { line-height: 1; width: max-content; justify-self: center; }
+#profileModal .profile-sheet .profile-rings-center .profile-small { line-height: 1.2; }
 
 .profile-legend { width: 100%; display: grid; gap: 10px; }
 .profile-legend h3 {
@@ -580,14 +584,108 @@
 #profileModal .profile-sheet .profile-shelf-title { font-size: 22px; }
 #profileModal .profile-sheet :is(.profile-avatar, .profile-name) { font-size: 32px; }
 /* fitIdentity() sets an inline 30px size when the ring becomes compact. */
-#profileModal .profile-sheet .profile-big { font-size: 44px !important; }
-#profileModal .profile-sheet .profile-big[style*="font-size"] { font-size: 32px !important; }
+#profileModal .profile-sheet .profile-big { font-size: min(44px, var(--profile-ring-number-size, 44px)) !important; }
+
+/* Instructor overview and contributor drill-down. */
+#profileModal .profile-sheet :is(.profile-role, .profile-back) { font-size: 13px; line-height: 1.45; }
+.profile-role { color: var(--accent); margin-top: 6px; font-weight: 600; }
+.profile-sheet .profile-back { align-self: flex-start; justify-self: start; display: inline-flex; align-items: center; gap: 6px; padding: 6px 12px; border: 1px solid var(--line-strong); border-radius: 999px; background: var(--raised); color: var(--text); font-weight: 600; text-align: left; }
+.profile-sheet .profile-back:hover { background: var(--raised-2); border-color: var(--accent); }
 @media (min-width: 861px) and (max-height: 780px) {
   #profileModal .profile-sheet .profile-avatar { font-size: 22px; }
-  #profileModal .profile-sheet .profile-big { font-size: 32px !important; }
+  #profileModal .profile-sheet .profile-big { font-size: min(32px, var(--profile-ring-number-size, 32px)) !important; }
 }
 @media (max-width: 860px) {
+  .profile-back { grid-column: 1 / -1; }
   #profileModal .profile-sheet :is(.profile-avatar, .profile-name) { font-size: 22px; }
-  #profileModal .profile-sheet .profile-big { font-size: 32px !important; }
+  #profileModal .profile-sheet .profile-big { font-size: min(32px, var(--profile-ring-number-size, 32px)) !important; }
   #profileModal .profile-sheet :is(.profile-legend-row, .profile-legend-row span) { font-size: 13px; }
+}
+
+#profileModal .profile-instructor :where(*) { line-height: 1.4; }
+.profile-instructor .profile-work { overflow-y: auto; }
+.profile-dashboard { display: grid; gap: 24px; min-width: 0; width: 100%; }
+.profile-dashboard-head { padding-right: 28px; }
+.profile-dashboard-head h2, .profile-group-stats h3 { margin: 0; }
+.profile-dashboard-head p { margin: 6px 0 0; color: var(--text-2); }
+.profile-kpis { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 10px; }
+.profile-kpis-person { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+.profile-kpi { min-width: 0; display: flex; flex-direction: column; gap: 6px; padding: 14px 12px; border: 1px solid var(--line); border-radius: 12px; background: var(--raised); }
+.profile-kpi > span, .profile-kpi small { color: var(--text-2); }
+.profile-kpi strong { font-weight: 700; font-variant-numeric: tabular-nums; }
+.profile-kpi strong small { font-weight: 500; white-space: nowrap; }
+.profile-meter { display: block; height: 4px; width: 100%; border-radius: 4px; overflow: hidden; background: var(--line); }
+.profile-meter i { display: block; height: 100%; border-radius: inherit; }
+.profile-table-wrap { min-width: 0; max-width: 100%; border: 1px solid var(--line); border-radius: 12px; }
+.profile-dashboard table { display: table; width: 100%; min-width: 0; table-layout: fixed; border-collapse: collapse; text-align: left; font-variant-numeric: tabular-nums; }
+.profile-dashboard thead { display: table-header-group; }
+.profile-dashboard tbody { display: table-row-group; }
+.profile-dashboard tr { display: table-row; background: none; border: 0; border-radius: 0; margin: 0; padding: 0; box-shadow: none; }
+.profile-dashboard caption { text-align: left; font-weight: 600; padding: 14px; background: var(--raised); }
+.profile-dashboard th, .profile-dashboard td { display: table-cell; padding: 10px 8px; border-top: 1px solid var(--line); border-bottom: 0; overflow-wrap: anywhere; white-space: normal; vertical-align: middle; }
+.profile-dashboard th { background: none; text-transform: none; letter-spacing: normal; }
+.profile-dashboard thead th { color: var(--text-2); font-weight: 500; }
+.profile-dashboard tbody th { font-weight: 500; }
+.profile-compare th:first-child { width: 24%; }
+.profile-compare th:last-child { width: 17%; }
+.profile-compare tbody tr { position: relative; cursor: pointer; transition: background .15s; }
+#profileModal .profile-compare tbody :is(th, td) { color: #e8edf5; }
+#profileModal .profile-compare tbody th { font-weight: 600; }
+.profile-compare tbody tr:hover, .profile-compare tbody tr:focus-visible, .profile-compare tbody tr:focus-within { background: rgba(148, 163, 184, .18); }
+.profile-compare td:last-child { padding-right: 24px; }
+.profile-compare-go { position: absolute; right: 10px; top: 50%; transform: translateY(-50%); color: var(--text); }
+.profile-last-note { display: none; }
+.profile-compare .profile-meter { margin-top: 6px; }
+.profile-matrix th:first-child { width: 30%; }
+.profile-matrix td { text-align: center; }
+.profile-matrix th:not(:first-child) { text-align: center; }
+.profile-matrix td[data-n="0"] { color: var(--text-3); }
+.profile-matrix small { display: block; margin: 4px 0 0 18px; color: var(--text-3); }
+.profile-person-initials { display: none; }
+.profile-group-label { display: flex; align-items: baseline; gap: 8px; }
+.profile-group-label i { display: inline-block; flex: none; width: 10px; height: 10px; border-radius: 50%; }
+.profile-group-stats { display: grid; gap: 14px; padding: 18px; border: 1px solid var(--line); border-radius: 12px; }
+.profile-group-bar { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 6px 12px; }
+.profile-group-bar > .profile-meter { grid-column: 1 / -1; }
+.profile-group-label { min-width: 0; overflow-wrap: anywhere; }
+.profile-month { display: flex; justify-content: space-between; gap: 12px; color: var(--text-2); }
+#profileModal .profile-instructor :is(.profile-dashboard-head h2) { font-size: 22px; }
+#profileModal .profile-instructor .profile-kpi strong { font-size: 32px; }
+#profileModal .profile-instructor :is(.profile-group-stats h3, .profile-dashboard caption) { font-size: 18px; }
+#profileModal .profile-instructor :is(.profile-dashboard th, .profile-dashboard td, .profile-kpi > span, .profile-dashboard-head p) { font-size: 13px; }
+#profileModal .profile-instructor :is(.profile-kpi small, .profile-matrix small) { font-size: 12px; }
+#profileModal .profile-instructor :is(.profile-dashboard th *, .profile-dashboard td *) { font-size: inherit; }
+#profileModal .profile-instructor :is(tr[data-person], .profile-table-wrap):focus-visible { outline: 2px solid var(--accent); outline-offset: -2px; }
+@media (min-width: 861px) and (max-width: 1180px) {
+  .profile-instructor .profile-work { padding: 30px 20px 24px; }
+  .profile-kpi { padding: 12px 8px; }
+}
+@media (max-width: 860px) {
+  .profile-instructor { grid-template-columns: minmax(0, 1fr); }
+  .profile-instructor .profile-work { overflow: visible; }
+  .profile-kpis { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .profile-kpi:last-child:nth-child(odd) { grid-column: 1 / -1; }
+}
+@media (width < 700px) {
+  .profile-dashboard .profile-compare,
+  .profile-compare caption,
+  .profile-compare tbody { display: block; }
+  .profile-compare thead { position: absolute; width: 1px; height: 1px; padding: 0; overflow: hidden; clip-path: inset(50%); }
+  .profile-compare tr[data-person] { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; padding: 12px; border-top: 1px solid var(--line); }
+  .profile-dashboard .profile-compare :is(th, td) { display: block; min-width: 0; width: auto; padding: 0; border: 0; }
+  .profile-compare tbody th { grid-column: 1 / -1; padding-right: 18px; }
+  .profile-compare td[data-col="coverage"] { grid-column: 1 / 3; display: flex; align-items: center; gap: 6px; }
+  .profile-compare td[data-col="latest"] { grid-column: 3 / -1; text-align: right; white-space: nowrap; }
+  .profile-compare td[data-value]:not([data-col="coverage"])::before { content: attr(data-label); display: block; margin-bottom: 2px; color: var(--text-2); font-size: 12px; font-weight: 500; }
+  .profile-compare .profile-meter { flex: 1; width: auto; margin: 0; }
+  .profile-compare-go { top: 12px; right: 12px; transform: none; }
+  .profile-last-note { display: inline; }
+  #profileModal .profile-instructor .profile-compare td[data-col="latest"] { font-size: 12px; }
+  .profile-matrix .profile-person-name { display: none; }
+  .profile-matrix .profile-person-initials { display: inline; }
+  .profile-dashboard .profile-matrix :is(th, td) { padding: 8px 3px; }
+  .profile-matrix th:first-child { width: 40%; }
+  .profile-matrix .profile-group-label { gap: 5px; }
+  .profile-matrix .profile-group-label i { width: 6px; height: 6px; }
+  .profile-matrix small { margin-left: 11px; }
 }

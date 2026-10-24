@@ -400,13 +400,8 @@ function isInstructorUser(name) {
 
 function syncInstructorVisibility() {
   const activeUser = typeof getActiveUser === "function" ? getActiveUser() : "";
-  const tabInstructor = document.getElementById("tabInstructor");
   const instructorSection = document.getElementById("instructorSection");
   const isInstructor = isInstructorUser(activeUser);
-
-  if (tabInstructor) {
-    tabInstructor.style.display = isInstructor ? "inline-flex" : "none";
-  }
 
   // If instructor section is active but current user is not an instructor, revert to academic
   if (!isInstructor && instructorSection && instructorSection.style.display !== "none") {
