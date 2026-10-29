@@ -127,14 +127,81 @@ function checkWelcomeBanner() {
 }
 
 function promptSwitchUser() {
-  const current = getActiveUser();
-  const next = prompt("Enter your contributor name:", current === "Unknown User" ? "" : current);
-  if (next && next.trim()) {
-    setActiveUser(next.trim());
-    if (document.getElementById("profileModal").style.display === "flex") {
-      openProfileModal();
-    }
+  const existing = document.querySelector(".switch-person-dialog");
+  if (existing) {
+    existing.querySelector('[aria-current="true"], [data-person-option]')?.focus();
+    return;
   }
+  const opener = document.activeElement;
+  const current = getActiveUser();
+  const people = [...new Set([...papersData, ...greyLitData].map(p => p.assignedTo)
+    .filter(name => name && name !== "Team").concat("Karamjit Kaur"))];
+  const esc = value => escapeHtml(String(value));
+  const overlay = document.createElement("div");
+  overlay.className = "switch-person-overlay";
+  const dialog = document.createElement("div");
+  dialog.className = "switch-person-dialog";
+  dialog.setAttribute("role", "dialog");
+  dialog.setAttribute("aria-modal", "true");
+  dialog.setAttribute("aria-labelledby", "switchPersonHeading");
+  dialog.innerHTML = `
+    <header class="switch-person-header">
+      <h2 id="switchPersonHeading">Switch person</h2>
+      <button type="button" class="switch-person-close" aria-label="Close switch person">✕</button>
+    </header>
+    <div class="switch-person-options">${people.map(name => {
+      const active = name.trim().toLowerCase() === current.trim().toLowerCase();
+      const initials = name.trim().split(/\s+/).map(w => w[0]).slice(0, 2).join("").toUpperCase();
+      return `<button type="button" data-person-option="${esc(name)}"${active ? ' aria-current="true"' : ""}>
+        <span class="switch-person-avatar" aria-hidden="true" style="--person-color:${getPersonPalette(name).light}">${esc(initials)}</span>
+        <span class="switch-person-name">${esc(name)}${name === "Karamjit Kaur" ? '<small class="switch-person-tag">Instructor</small>' : ""}</span>
+        ${active ? '<small class="switch-person-current">Current</small>' : ""}
+      </button>`;
+    }).join("")}</div>
+    <form class="switch-person-form">
+      <label for="switchPersonName">Or type a name</label>
+      <input id="switchPersonName" name="person" type="text" autocomplete="name" placeholder="Or type a name">
+      <button type="submit">Use this name</button>
+    </form>`;
+  const bodyOverflow = document.body.style.overflow;
+  const background = [...document.body.children].map(node => [node, node.inert]);
+  function close(name) {
+    const next = name?.trim();
+    if (next) setActiveUser(next);
+    overlay.remove();
+    background.forEach(([node, inert]) => { node.inert = inert; });
+    document.body.style.overflow = bodyOverflow;
+    if (next && document.getElementById("profileModal").style.display === "flex") openProfileModal();
+    if (opener?.isConnected) opener.focus({ preventScroll: true });
+  }
+  dialog.querySelector(".switch-person-close").onclick = () => close();
+  dialog.querySelectorAll("[data-person-option]").forEach(button => {
+    button.onclick = () => close(button.dataset.personOption);
+  });
+  dialog.querySelector("form").onsubmit = event => {
+    event.preventDefault();
+    const name = dialog.querySelector("input").value.trim();
+    if (name) close(name);
+  };
+  overlay.onclick = event => { if (event.target === overlay) close(); };
+  dialog.onkeydown = event => {
+    if (event.key === "Escape") {
+      event.preventDefault(); event.stopPropagation(); close();
+    } else if (event.key === "Tab") {
+      const stops = [...dialog.querySelectorAll("button, input")];
+      const first = stops[0], last = stops[stops.length - 1];
+      if (event.shiftKey && document.activeElement === first) {
+        event.preventDefault(); last.focus();
+      } else if (!event.shiftKey && document.activeElement === last) {
+        event.preventDefault(); first.focus();
+      }
+    }
+  };
+  background.forEach(([node]) => { node.inert = true; });
+  overlay.append(dialog);
+  document.body.append(overlay);
+  document.body.style.overflow = "hidden";
+  dialog.querySelector('[aria-current="true"], [data-person-option]').focus({ preventScroll: true });
 }
 
 // Profile sheet. View state and layout listeners belong to this opening.

@@ -247,6 +247,42 @@
 }
 
 /* Contributor Profile Modal — approved prototype */
+.switch-person-overlay { position: fixed; inset: 0; z-index: 1100; display: flex; background: rgba(4, 7, 14, .78); backdrop-filter: blur(8px); }
+.switch-person-dialog {
+  box-sizing: border-box;
+  width: min(440px, calc(100% - 24px));
+  max-height: calc(100dvh - 32px);
+  margin: auto;
+  padding: 22px;
+  overflow-y: auto;
+  color: #f8fafc;
+  background: #0e1424;
+  border: 1px solid rgba(148, 163, 184, .24);
+  border-radius: 22px;
+  box-shadow: 0 24px 80px rgba(0, 0, 0, .55);
+  font: 15px/1.45 Inter, -apple-system, BlinkMacSystemFont, "SF Pro Text", system-ui, sans-serif;
+}
+.switch-person-dialog * { box-sizing: border-box; line-height: 1.45; }
+.switch-person-dialog button, .switch-person-dialog input { font: inherit; color: inherit; }
+.switch-person-dialog button { cursor: pointer; }
+.switch-person-dialog :is(button, input):focus-visible { outline: 2px solid #38bdf8; outline-offset: 3px; }
+.switch-person-header { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 18px; }
+.switch-person-header h2 { margin: 0; font-size: 22px; }
+.switch-person-dialog .switch-person-close { flex: none; width: 32px; height: 32px; padding: 0; border: 0; border-radius: 50%; background: #1a2440; font-size: 18px; }
+.switch-person-options { display: grid; gap: 8px; }
+.switch-person-dialog [data-person-option] { display: flex; align-items: center; gap: 12px; width: 100%; padding: 10px; border: 1px solid rgba(148, 163, 184, .14); border-radius: 12px; background: #141c31; text-align: left; font-size: 14px; }
+.switch-person-dialog [data-person-option]:hover { background: #1a2440; }
+.switch-person-dialog [aria-current="true"] { border-color: #38bdf8; background: #162b40; }
+.switch-person-avatar { flex: none; display: grid; place-items: center; width: 40px; height: 40px; border-radius: 50%; background: var(--person-color); color: #04121c; font-size: 18px; font-weight: 600; }
+.switch-person-name { min-width: 0; flex: 1; overflow-wrap: anywhere; }
+.switch-person-tag { display: block; width: fit-content; margin-top: 3px; padding: 1px 6px; border-radius: 6px; background: #1a3449; color: #7dd3fc; font-size: 12px; }
+.switch-person-current { flex: none; color: #7dd3fc; font-size: 12px; }
+.switch-person-form { display: grid; gap: 10px; margin-top: 20px; padding-top: 18px; border-top: 1px solid rgba(148, 163, 184, .14); }
+.switch-person-form label { color: #a8b3c7; font-size: 13px; }
+.switch-person-form input { width: 100%; min-width: 0; padding: 10px 12px; border: 1px solid rgba(148, 163, 184, .24); border-radius: 10px; background: #090d16; }
+.switch-person-form input::placeholder { color: #a8b3c7; }
+.switch-person-form button { padding: 10px 14px; border: 0; border-radius: 10px; background: #38bdf8; color: #04121c; font-size: 13px; font-weight: 600; }
+
 .profile-sheet {
   --bg: #090d16;
   --sheet: #0e1424;
