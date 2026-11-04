@@ -1001,10 +1001,10 @@ window.__BUNDLED_DATA__ = {
       "topic": "OSP",
       "filterCategory": "Compiled Review",
       "assignedTo": "Wimukthi",
-      "description": "Wimukthi's compiled review synthesising six studies on sewer condition assessment, deterioration factors and sensor placement.",
+      "description": "Wimukthi's compiled review synthesising nineteen studies on sensor placement formulations, blockage and overflow detection, sewer condition and inflow/infiltration, and sensor reliability, cost and data value.",
       "pdfUrl": "./contributors/wimukthi/compiled-papers/paper.pdf",
-      "pages": 13,
-      "size": "330 KB"
+      "pages": 26,
+      "size": "160 KB"
     },
     {
       "id": "team-compiled-paper",
