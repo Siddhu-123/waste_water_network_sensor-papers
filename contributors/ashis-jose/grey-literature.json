@@ -1,6 +1,6 @@
 {
   "contributor": "Ashis Jose",
-  "totalCount": 15,
+  "totalCount": 17,
   "greyLiterature": [
     {
       "id": "ASHIS-GL-01",
@@ -389,6 +389,58 @@
         "limitations": "Abstract only; full paper is behind WEF access. Combined sewer system. Results not yet fully validated at the time of the abstract.",
         "conclusions": "Level sensor data can detect blockages in under an hour with methods that need little training data.",
         "reflection": "Future work only (blockage detection with the same sensors)."
+      }
+    },
+    {
+      "id": "ASHIS-GL-17",
+      "title": "Optimal Sensor Placement for Sewer Capacity Risk Management (PhD dissertation)",
+      "organization": "Colorado State University (H. R. Kimbrough)",
+      "year": 2019,
+      "category": "Sensors & Monitoring Hardware",
+      "summary": "A PhD dissertation on finding the few sewer locations with unacceptable capacity risk by placing level sensors and moving them over time. It scores risk as severity times likelihood, estimates likelihood from level data at 456 US manholes, and compares search strategies in a simulated 400-manhole network.",
+      "assignedTo": "Ashis Jose",
+      "pdfUrl": "./contributors/ashis-jose/grey/ASHIS-GL-17_Kimbrough_2019_Sewer_Capacity_Risk_Sensor_Placement_Dissertation.pdf",
+      "url": "https://mountainscholar.org/handle/10217/195315",
+      "keyTakeaways": [
+        "Risk is scored as severity times occurrence (FMEA), with occurrence linked to how often a pipe runs at or above 0.7 d/D.",
+        "About 30 days of level data ranked risky locations with roughly 80% accuracy.",
+        "Moving sensors with a multi-phase search found high-risk sites at about one seventh of the cost of a sequential search."
+      ],
+      "steps": {
+        "citation": "Kimbrough, H. R. (2019). Optimal sensor placement for sewer capacity risk management [Doctoral dissertation, Colorado State University].",
+        "intro": "Sewer overflows and basement backups are common, and most could be prevented if failing pipes were found early. Risk depends on consequence and likelihood, but the likelihood of a given pipe failing is hard to estimate because networks are large and data is scarce. Failure is defined as surcharge (d/D above 1).",
+        "methods": "Adapts Failure Modes and Effects Analysis, scoring each location by severity times occurrence. Occurrence comes from logistic regression on level data from 456 manholes in seven US systems; severity from aerial imagery. Spatial clustering of overflows is tested with Moran's I, and an agent-based simulation on a synthetic 400-manhole network compares simulated annealing, sequential, greedy and multi-phase search.",
+        "scope": "Capacity failure (surcharge) from maintenance problems, mainly blockages, in US sanitary sewers. Structural failure, odour and infiltration and inflow are excluded. Placement strategies are tested in simulation only.",
+        "usefulness": "The closest source found on sensor placement for sewer capacity risk. The severity times likelihood score and the 0.7 d/D threshold were used in our Simulation 2.6, and the 30-day finding supports asking SA Water for a short period of level records.",
+        "limitations": "Validated only in simulation on a synthetic network under static conditions. Assumes failures cluster in space. The 30-day period was chosen somewhat arbitrarily, severity ignores overflow size, and all data is from the US. The author works for a flow-monitoring company.",
+        "conclusions": "An FMEA-based framework can be applied to sewer capacity risk, level monitors find at-risk pipes before they fail, and a multi-phase search of moving sensors was the most robust and easiest to explain to operators.",
+        "reflection": "His risk is already in the network, while ours arrives with new housing over several years, but both come down to a pipe running out of free capacity. A mix of a few fixed sensors and one or two moved each month is worth testing in our cost step."
+      }
+    },
+    {
+      "id": "ASHIS-GL-18",
+      "title": "Applying Kimbrough (2019) to the Growth Scenario (team report)",
+      "organization": "Capstone team PG-S2-22 (A. J. Kalathil)",
+      "year": 2026,
+      "category": "Urban Growth & Sewer Capacity",
+      "summary": "A short team report on ASHIS-GL-17. Part A summarises Kimbrough's dissertation. Part B shows how the team's growth simulation works and proposes weighting each growth event by severity times likelihood, so sensors are placed to notice the growth most likely to cause an overflow.",
+      "assignedTo": "Ashis Jose",
+      "pdfUrl": "./contributors/ashis-jose/grey/ASHIS-GL-18_Kalathil_2026_Applying_Kimbrough_to_Growth_Scenario.pdf",
+      "pages": 4,
+      "keyTakeaways": [
+        "In Simulation 2.5 every growth event counts the same, whether it lifts a nearly empty pipe or pushes a nearly full one towards surcharge.",
+        "Simulation 2.6 showed the growth plan and the risk plan choose different places (with three sensors, 39% vs 28% of growth noticed and 7% vs 14% of risk watched).",
+        "Proposed: score each growth event by how far it pushes a pipe towards 0.7 d/D times severity, and place sensors by weighted coverage, using the saved runs with no new SWMM runs."
+      ],
+      "steps": {
+        "citation": "Kalathil, A. J. (2026). Applying Kimbrough (2019) to the growth scenario. Capstone team PG-S2-22 report, Optimal Sensor Placement for Wastewater Network Monitoring.",
+        "intro": "Kimbrough's risk framework finds existing pipes at risk of surcharge. This report asks how the same idea could guide sensor placement for overflow risk from new housing.",
+        "methods": "Reviews the dissertation, then describes the team's growth simulation (8,200 SWMM runs) and adapts R = S x O so that occurrence is the chance a growth event pushes a pipe past 0.7 d/D.",
+        "scope": "The Walkerville growth scenario in the team's uncalibrated SWMM model, within the agreed overflow-from-growth scope.",
+        "usefulness": "Merges the separate growth and risk placement goals into one and uses severity and likelihood wording that utilities already know.",
+        "limitations": "Severity is a simple stand-in, the 0.7 threshold comes from US data, the model is not calibrated, and using the threshold for future growth has not been tested in the literature.",
+        "conclusions": "Risk-weighted growth coverage is a practical next step that can be built by rescoring the saved runs.",
+        "reflection": "Read together with ASHIS-GL-17. The next step was to build this as a new simulation version and compare its locations with the growth and risk plans."
       }
     }
   ]
