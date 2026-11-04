@@ -176,6 +176,38 @@
       "scholarUrl": "https://scholar.google.com/scholar?q=Comparative+Study+of+AI-Based+Methods+Analyzing+Inflow+and+Infiltration+in+Sanitary+Sewer+Subcatchments",
       "pages": 15,
       "size": "3.1 MB"
+    },
+    {
+      "id": 56,
+      "title": "Optimal sensor placement for the routine monitoring of urban drainage systems: A re-clustering method",
+      "authors": "Siyi Wang, Xiangwei Zhang, Jiaying Wang, Tao Tao, Kunlun Xin, Hexiang Yan, Shuping Li",
+      "journal": "Journal of Environmental Management, Vol. 335, Art. 117579 (2023)",
+      "categoryKey": "sensor-placement",
+      "categoryLabel": "Sensor Placement Optimization",
+      "topic": "OSP",
+      "filterCategory": "Clustering-Based Placement",
+      "assignedTo": "Wimukthi",
+      "doi": "10.1016/j.jenvman.2023.117579",
+      "pdfUrl": "./contributors/wimukthi/papers/Siyi_2023_Optimal-Sensor-Placement-for-the-Routine-Monitoring-of-Urban-Drainage-Systems.pdf",
+      "scholarUrl": "https://scholar.google.com/scholar?q=Optimal+sensor+placement+for+the+routine+monitoring+of+urban+drainage+systems+A+re-clustering+method",
+      "pages": 12,
+      "size": "11.2 MB"
+    },
+    {
+      "id": 57,
+      "title": "Parameter estimation of urban drainage models using binary observations from low-cost sensors",
+      "authors": "Omar Wani, Frank Blumensaat, Andreas Scheidegger, Tobias Doppler, Jörg Rieckermann",
+      "journal": "Extended abstract, International Urban Drainage Modelling Conference (UDM2015), Calibration session (2015)",
+      "categoryKey": "low-cost-sensors",
+      "categoryLabel": "Low-Cost Binary Sensors",
+      "topic": "Sensors",
+      "filterCategory": "Model Calibration",
+      "assignedTo": "Wimukthi",
+      "doi": "",
+      "pdfUrl": "./contributors/wimukthi/papers/Omar_2015_Parameter-Estimation-of-Urban-Drainage-Models-Using-Binary-Observations.pdf",
+      "scholarUrl": "https://scholar.google.com/scholar?q=Parameter+estimation+of+urban+drainage+models+using+binary+observations+from+low-cost+sensors",
+      "pages": 7,
+      "size": "629 KB"
     }
   ],
   "compiledPapers": [

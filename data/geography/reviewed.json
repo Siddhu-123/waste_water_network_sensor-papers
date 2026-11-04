@@ -2831,6 +2831,40 @@
       "unmappedReason": "",
       "pdfSha256": null,
       "metadataSha256": "a0f6bc71d33485e4fb43ae55bac16e7bb098ba1de10cb534b281023c2ff1960a"
+    },
+    {
+      "type": "academic",
+      "id": 56,
+      "organization": "Tongji University; Wenzhou Drainage Co., Ltd.",
+      "locations": [
+        {
+          "placeId": "geonames-1791388",
+          "relation": "study",
+          "evidence": "WZ is a city located in the southeast coastal district of China with a subtropical monsoon climate. X is a small industrial park in WZ, which has a separate sewerage network. (The authors' affiliation names Wenzhou Drainage Co., Wenzhou; the SWMM Example 8 network is a textbook case with no location.)",
+          "source": "./contributors/wimukthi/papers/Siyi_2023_Optimal-Sensor-Placement-for-the-Routine-Monitoring-of-Urban-Drainage-Systems.pdf",
+          "page": 6
+        }
+      ],
+      "unmappedReason": "",
+      "pdfSha256": "1c8db15cd2a7d7bd14454c7afcf78fbb7199baed4984c7e263b44d8fedcde4a4",
+      "metadataSha256": "5f2d68e03cb19be61f38725e955b2f9e99a17dc3bc80700473895e5d2af2cb54"
+    },
+    {
+      "type": "academic",
+      "id": 57,
+      "organization": "ETH Zurich; Eawag",
+      "locations": [
+        {
+          "placeId": "geonames-2661861",
+          "relation": "study",
+          "evidence": "We demonstrate the potential of the suggested technique by calibrating a rainfall-runoff model for the small urban drainage system of Adliswil near Zurich.",
+          "source": "./contributors/wimukthi/papers/Omar_2015_Parameter-Estimation-of-Urban-Drainage-Models-Using-Binary-Observations.pdf",
+          "page": 3
+        }
+      ],
+      "unmappedReason": "",
+      "pdfSha256": "f5b5547e203a07cc9ec8c7cfd664a5e01bf5a874a1837e685e56e88f1d367d84",
+      "metadataSha256": "88459ecfcbb676c9b0b9e57d73a185d72e11c297dc038ebf205fa8f46c61c3f6"
     }
   ]
 }

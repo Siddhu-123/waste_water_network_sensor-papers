@@ -927,6 +927,38 @@ window.__BUNDLED_DATA__ = {
       "scholarUrl": "https://scholar.google.com/scholar?q=Comparative+Study+of+AI-Based+Methods+Analyzing+Inflow+and+Infiltration+in+Sanitary+Sewer+Subcatchments",
       "pages": 15,
       "size": "3.1 MB"
+    },
+    {
+      "id": 56,
+      "title": "Optimal sensor placement for the routine monitoring of urban drainage systems: A re-clustering method",
+      "authors": "Siyi Wang, Xiangwei Zhang, Jiaying Wang, Tao Tao, Kunlun Xin, Hexiang Yan, Shuping Li",
+      "journal": "Journal of Environmental Management, Vol. 335, Art. 117579 (2023)",
+      "categoryKey": "sensor-placement",
+      "categoryLabel": "Sensor Placement Optimization",
+      "topic": "OSP",
+      "filterCategory": "Clustering-Based Placement",
+      "assignedTo": "Wimukthi",
+      "doi": "10.1016/j.jenvman.2023.117579",
+      "pdfUrl": "./contributors/wimukthi/papers/Siyi_2023_Optimal-Sensor-Placement-for-the-Routine-Monitoring-of-Urban-Drainage-Systems.pdf",
+      "scholarUrl": "https://scholar.google.com/scholar?q=Optimal+sensor+placement+for+the+routine+monitoring+of+urban+drainage+systems+A+re-clustering+method",
+      "pages": 12,
+      "size": "11.2 MB"
+    },
+    {
+      "id": 57,
+      "title": "Parameter estimation of urban drainage models using binary observations from low-cost sensors",
+      "authors": "Omar Wani, Frank Blumensaat, Andreas Scheidegger, Tobias Doppler, Jörg Rieckermann",
+      "journal": "Extended abstract, International Urban Drainage Modelling Conference (UDM2015), Calibration session (2015)",
+      "categoryKey": "low-cost-sensors",
+      "categoryLabel": "Low-Cost Binary Sensors",
+      "topic": "Sensors",
+      "filterCategory": "Model Calibration",
+      "assignedTo": "Wimukthi",
+      "doi": "",
+      "pdfUrl": "./contributors/wimukthi/papers/Omar_2015_Parameter-Estimation-of-Urban-Drainage-Models-Using-Binary-Observations.pdf",
+      "scholarUrl": "https://scholar.google.com/scholar?q=Parameter+estimation+of+urban+drainage+models+using+binary+observations+from+low-cost+sensors",
+      "pages": 7,
+      "size": "629 KB"
     }
   ],
   "compiledPapers": [
@@ -1702,6 +1734,32 @@ window.__BUNDLED_DATA__ = {
       "limitations": "Abstract-level access only (paywalled, and very recently published, so limited secondary commentary exists yet to cross-check against). I don't have the case-study network(s), the specific perceptibility metric formulas for IPD/APD, or comparative results against the group's own earlier methods (48, 49) or against other papers in this set.",
       "conclusions": "Not independently verifiable beyond the stated IPD/APD framework without full-text access.",
       "reflection": "Given it's the newest and apparently most general framework in the set, this is worth flagging to SA Water/the review as the paper most likely to still be actively cited when the rest of this literature has aged — but that judgement rests on the abstract's framing alone and should be confirmed once we can get the PDF."
+    },
+    "56": {
+      "assignedTo": "Wimukthi",
+      "topic": "OSP",
+      "filterCategory": "Clustering-Based Placement",
+      "citation": "Wang, S., Zhang, X., Wang, J., Tao, T., Xin, K., Yan, H., & Li, S. (2023). Optimal sensor placement for the routine monitoring of urban drainage systems: A re-clustering method. Journal of Environmental Management, 335, 117579. https://doi.org/10.1016/j.jenvman.2023.117579",
+      "intro": "Most sensor-placement studies for urban drainage target one specific event, such as an illicit polluting discharge or urban flooding, and look only at hydraulic or only at water-quality information. The authors argue that routine monitoring, which picks up slow, accumulating problems such as corrosion, damage and misconnections, has been largely ignored. They also note two practical gaps in existing clustering approaches: nodes are chosen only for being representative of one attribute (usually the water-level time series), when real deployment also weighs things like topological criticality or how much effluent a node receives; and placement schemes are rarely compared against each other with a quantitative indicator.",
+      "methods": "A SWMM model of the network generates an attribute dataset for every node: maximum and average water level (plus overflow volume in a combined system, under several design storms), average COD concentration (300 mg/L in dry-weather inflow with a fixed decay coefficient of 0.2), elevation and coordinates. K-means clustering groups similar nodes, and each cluster centroid becomes a sensor site. A 're-clustering potential index' is then computed for each cluster and the clusters with the highest values are split further: Average Closeness Centrality (ACC), so topologically central nodes get more sensors, or Average Node Inflow (ANI), so nodes taking more dry-weather flow (more residents) get more. The number of extra clusters is set from the ratio of each cluster's index to the minimum (ACC) or to the average (ANI), and the two clustering results are merged into the final layout. Layouts are scored with information theory: joint entropy H (information collected, higher is better) and total correlation C (redundancy between sensors, lower is better), computed from quantised level and COD time series using a k-nearest-neighbour mutual-information estimator.",
+      "scope": "Two networks. SWMM Applications Manual Example 8: a 0.12 km2 combined sewer with 31 nodes and 35 links, 19 candidate underground nodes, 2 to 5 sensors, tested under 2-, 5-, 10-, 50- and 100-year storms, without re-clustering. The 'X' network: a separate sewer serving an industrial park in Wenzhou, China, 2.63 km2, 786 nodes (785 candidates), 785 conduits, 36,852 people and 7,370 m3/day, analysed in dry weather only, with initial cluster numbers from 8 to 30 and both indices.",
+      "usefulness": "This is the closest method in my set to what our project does for a separate gravity sewer, and it gives us three things. First, a clear, reproducible baseline: cluster nodes on simulated behaviour and put a sensor at each centroid. We could run it on the SA Water network with our SWMM outputs and compare it with our own placements on the same scoring. Second, the re-clustering step is a simple, transparent way to add utility priorities on top of a pure information objective. ANI (more sensors where more homes drain) maps directly onto our growth question, and ACC onto network criticality. Third, joint entropy and total correlation give a single, quantitative way to compare any two layouts, which addresses their own complaint that schemes are rarely compared; it also lines up with the mutual-information placement of Crowley et al. (2025). On Example 8, their 3-sensor layout spread sensors across upstream, interceptor and downstream areas, while NSGA-II (Banik et al. 2017) and a Bayesian decision network (Sambito et al. 2020) bunched them downstream.",
+      "limitations": "The authors concede that both re-clustering indices are 'relatively straightforward' and can reduce the information content of the layout; with ANI, re-clustering did worse than plain clustering in several cases, and with ACC it was worse at initial cluster numbers of 16 and 24. The rule that sets how many extra clusters to add is ad hoc (a ratio rounded to an integer). Beyond what they state: water quality is a single COD tracer at a fixed concentration and decay rate, not measured data; the real network is tested in dry weather only; the results are entropy scores, not detection of actual faults, so there is no measure of how well the layout catches a blockage or overflow; the choice of quantisation step (0.001 m for level, 0.005 for COD) affects the entropy values; K-means needs the number of clusters set in advance and can change with initialisation; and the network data are available only on request.",
+      "conclusions": "On Example 8, 3 sensors gave the highest joint entropy with acceptable total correlation; 4 and 5 sensors were not better because the extra sensors were highly dependent on each other. The clustering layout beat every alternative 3-sensor layout tested, and layouts drawn from three different clusters beat those drawn from two or one. On the X network, information rises with the number of sensors, and re-clustering generally beat plain clustering with the same total number of sensors. With ACC the best layout began with 28 clusters and ended with 38 sensors, with 20 or 22 initial clusters suggested if the budget is tight; with ANI, 28 sensors was suggested as a balance between information and cost. The authors' overall recommendation is an initial clustering number of 20 for both indices, and they call for more rigorous ways to set the re-clustering number.",
+      "reflection": "What stays with me is the finding that adding sensors can lower the information score when the new sensors largely repeat what existing ones already see. That is a direct argument against fixed-spacing rules like Sydney Water's 'every 3rd, every 30th chamber' (GL-14), and a useful line for our report: more sensors is not automatically better. I am less convinced by the water-quality half of the method; for blockage and overflow detection, level is what matters, and a single synthetic COD tracer adds complexity without real data behind it. The part I would borrow is the structure: a data-driven representativeness step, a transparent utility-priority step, and an information-theoretic score to compare layouts. The gap I would flag is that none of it is checked against actual detection of a fault, which is exactly what our blockage and growth simulations can provide."
+    },
+    "57": {
+      "assignedTo": "Wimukthi",
+      "topic": "Sensors",
+      "filterCategory": "Model Calibration",
+      "citation": "Wani, O., Blumensaat, F., Scheidegger, A., Doppler, T., & Rieckermann, J. (2015). Parameter estimation of urban drainage models using binary observations from low-cost sensors. Extended abstract, International Urban Drainage Modelling Conference (UDM2015), Calibration session.",
+      "intro": "Flowmeters and level gauges are expensive to install and maintain, so only a few points in a drainage network are usually measured. Cheaper, robust sensors that only say whether something happened (an overflow, or a level being exceeded) are far more common: electrical switches at overflow crests, motion detectors at weirs, temperature probes and flood floats. The authors argue that until now there has been no statistically sound way to use these yes/no signals to calibrate a drainage model, only ad hoc approaches, and set out to test how much information binary data really carry.",
+      "methods": "They build a formal likelihood function for binary observations. The true system response is modelled as a deterministic SWMM simulation plus a 'bias' term, an autocorrelated Gaussian process that absorbs input errors and model-structure deficits. A binary signal is the event that this response exceeds a threshold, so its likelihood is a multivariate normal probability integrated over the corresponding region, computed numerically (Genz's algorithm, R pmvnorm). Parameters are inferred in a Bayesian framework with truncated-normal priors based on physical limits and expert judgement, sampled by MCMC (5,000 samples), and the best estimate is taken at the posterior maximum (also searched with generalised simulated annealing). Performance is measured by Nash-Sutcliffe efficiency (NSE). Two experiments: calibrating on continuous versus binary data, and generating 16 binary datasets with thresholds from 0 to 300 L/s in 20 L/s steps to see how the threshold affects information content.",
+      "scope": "One small urban catchment: Adliswil near Zurich, about 1 km by 3 km, modelled in EPA SWMM 5.1 with 101 subcatchments, 458 junctions and 461 conduits. Ten parameters were calibrated (subcatchment imperviousness, width, slope and roughness, conduit roughness, plus storage and weir heights). Data came from a 1.5-year campaign with 6 rain gauges and level and flow measurements; only the outlet was used. The binary data were not real sensor readings: continuous flow was converted to yes/no at a 100 L/s threshold. A repeat with level instead of flow is reported briefly.",
+      "usefulness": "This is the evidence I need for a question our project keeps returning to: is a cheap level switch worth anything compared with a proper level sensor or flowmeter? The answer here is yes, more than you might expect. A model calibrated on binary data reached NSE 0.78 against 0.80 with continuous flow, and binary data narrowed the parameter ranges well beyond the priors. It also gives a practical design rule for the switch itself: information is highest when the threshold sits in the middle of the range the system actually experiences, and falls towards zero if the switch is set so high it never trips or so low it always does. For our alarm depth, that means the trigger level should be chosen against the observed depth range at each chamber, not as one value for the whole network. Their conclusion, many cheap sensors plus a few accurate flowmeters, is the same mix Sydney Water arrived at in practice (level switches, analogue level sensors and a few flow meters; GL-14).",
+      "limitations": "The authors are clear that binary data lose most of the information about peak flows, because they record only how long a threshold is exceeded, not by how much. Binary signals are assumed error-free; a model of sensor error is left to future work because it makes the computation much harder. The binary datasets are synthetic, derived from continuous flow, and real binary data from a campaign in Lucerne were still being analysed. Calibration on level data was weaker than on flowmeter data. Beyond what they state: this is a 7-page conference extended abstract, not a peer-reviewed journal paper; it covers one small catchment and one sensor location (the outlet); the threshold experiment scores NSE only at the posterior maximum, without checking uncertainty coverage; and it is about calibrating a model, not about where to put sensors.",
+      "conclusions": "Binary observations are inferior to continuous measurements but carry substantial information for calibrating urban drainage models. The proposed likelihood function, for the first time, lets that information be extracted in a probabilistic framework, and it also quantifies uncertainty from parameters, inputs and model structure. The information content of a binary sensor depends strongly on its threshold, peaking for a centrally placed threshold. An optimal monitoring design is therefore unlikely to rely on cheap sensors alone, and should combine many of them with a few accurate flowmeters.",
+      "reflection": "I read this alongside the placement papers because it changes what 'one sensor' means. Most placement methods, including Wang et al. (2023) and Crowley et al. (2025), assume every site gets a continuous level series. If a utility can afford ten switches for the price of one level sensor, the real question is the mix and where each type goes, not just how many locations. This paper does not answer that, as it calibrates from a single outlet, but it gives the statistical basis for treating switch data as real evidence, and the threshold result is directly usable for setting our alarm levels. Its age (2015) and abstract-only status mean I would cite it for the idea and the threshold finding, and look for the authors' later journal work before leaning on the numbers."
     }
   },
   "greyLiterature": [
@@ -2534,6 +2592,58 @@ window.__BUNDLED_DATA__ = {
         "limitations": "Abstract only; full paper is behind WEF access. Combined sewer system. Results not yet fully validated at the time of the abstract.",
         "conclusions": "Level sensor data can detect blockages in under an hour with methods that need little training data.",
         "reflection": "Future work only (blockage detection with the same sensors)."
+      }
+    },
+    {
+      "id": "ASHIS-GL-17",
+      "title": "Optimal Sensor Placement for Sewer Capacity Risk Management (PhD dissertation)",
+      "organization": "Colorado State University (H. R. Kimbrough)",
+      "year": 2019,
+      "category": "Sensors & Monitoring Hardware",
+      "summary": "A PhD dissertation on finding the few sewer locations with unacceptable capacity risk by placing level sensors and moving them over time. It scores risk as severity times likelihood, estimates likelihood from level data at 456 US manholes, and compares search strategies in a simulated 400-manhole network.",
+      "assignedTo": "Ashis Jose",
+      "pdfUrl": "./contributors/ashis-jose/grey/ASHIS-GL-17_Kimbrough_2019_Sewer_Capacity_Risk_Sensor_Placement_Dissertation.pdf",
+      "url": "https://mountainscholar.org/handle/10217/195315",
+      "keyTakeaways": [
+        "Risk is scored as severity times occurrence (FMEA), with occurrence linked to how often a pipe runs at or above 0.7 d/D.",
+        "About 30 days of level data ranked risky locations with roughly 80% accuracy.",
+        "Moving sensors with a multi-phase search found high-risk sites at about one seventh of the cost of a sequential search."
+      ],
+      "steps": {
+        "citation": "Kimbrough, H. R. (2019). Optimal sensor placement for sewer capacity risk management [Doctoral dissertation, Colorado State University].",
+        "intro": "Sewer overflows and basement backups are common, and most could be prevented if failing pipes were found early. Risk depends on consequence and likelihood, but the likelihood of a given pipe failing is hard to estimate because networks are large and data is scarce. Failure is defined as surcharge (d/D above 1).",
+        "methods": "Adapts Failure Modes and Effects Analysis, scoring each location by severity times occurrence. Occurrence comes from logistic regression on level data from 456 manholes in seven US systems; severity from aerial imagery. Spatial clustering of overflows is tested with Moran's I, and an agent-based simulation on a synthetic 400-manhole network compares simulated annealing, sequential, greedy and multi-phase search.",
+        "scope": "Capacity failure (surcharge) from maintenance problems, mainly blockages, in US sanitary sewers. Structural failure, odour and infiltration and inflow are excluded. Placement strategies are tested in simulation only.",
+        "usefulness": "The closest source found on sensor placement for sewer capacity risk. The severity times likelihood score and the 0.7 d/D threshold were used in our Simulation 2.6, and the 30-day finding supports asking SA Water for a short period of level records.",
+        "limitations": "Validated only in simulation on a synthetic network under static conditions. Assumes failures cluster in space. The 30-day period was chosen somewhat arbitrarily, severity ignores overflow size, and all data is from the US. The author works for a flow-monitoring company.",
+        "conclusions": "An FMEA-based framework can be applied to sewer capacity risk, level monitors find at-risk pipes before they fail, and a multi-phase search of moving sensors was the most robust and easiest to explain to operators.",
+        "reflection": "His risk is already in the network, while ours arrives with new housing over several years, but both come down to a pipe running out of free capacity. A mix of a few fixed sensors and one or two moved each month is worth testing in our cost step."
+      }
+    },
+    {
+      "id": "ASHIS-GL-18",
+      "title": "Applying Kimbrough (2019) to the Growth Scenario (team report)",
+      "organization": "Capstone team PG-S2-22 (A. J. Kalathil)",
+      "year": 2026,
+      "category": "Urban Growth & Sewer Capacity",
+      "summary": "A short team report on ASHIS-GL-17. Part A summarises Kimbrough's dissertation. Part B shows how the team's growth simulation works and proposes weighting each growth event by severity times likelihood, so sensors are placed to notice the growth most likely to cause an overflow.",
+      "assignedTo": "Ashis Jose",
+      "pdfUrl": "./contributors/ashis-jose/grey/ASHIS-GL-18_Kalathil_2026_Applying_Kimbrough_to_Growth_Scenario.pdf",
+      "pages": 4,
+      "keyTakeaways": [
+        "In Simulation 2.5 every growth event counts the same, whether it lifts a nearly empty pipe or pushes a nearly full one towards surcharge.",
+        "Simulation 2.6 showed the growth plan and the risk plan choose different places (with three sensors, 39% vs 28% of growth noticed and 7% vs 14% of risk watched).",
+        "Proposed: score each growth event by how far it pushes a pipe towards 0.7 d/D times severity, and place sensors by weighted coverage, using the saved runs with no new SWMM runs."
+      ],
+      "steps": {
+        "citation": "Kalathil, A. J. (2026). Applying Kimbrough (2019) to the growth scenario. Capstone team PG-S2-22 report, Optimal Sensor Placement for Wastewater Network Monitoring.",
+        "intro": "Kimbrough's risk framework finds existing pipes at risk of surcharge. This report asks how the same idea could guide sensor placement for overflow risk from new housing.",
+        "methods": "Reviews the dissertation, then describes the team's growth simulation (8,200 SWMM runs) and adapts R = S x O so that occurrence is the chance a growth event pushes a pipe past 0.7 d/D.",
+        "scope": "The Walkerville growth scenario in the team's uncalibrated SWMM model, within the agreed overflow-from-growth scope.",
+        "usefulness": "Merges the separate growth and risk placement goals into one and uses severity and likelihood wording that utilities already know.",
+        "limitations": "Severity is a simple stand-in, the 0.7 threshold comes from US data, the model is not calibrated, and using the threshold for future growth has not been tested in the literature.",
+        "conclusions": "Risk-weighted growth coverage is a practical next step that can be built by rescoring the saved runs.",
+        "reflection": "Read together with ASHIS-GL-17. The next step was to build this as a new simulation version and compare its locations with the growth and risk plans."
       }
     },
     {
