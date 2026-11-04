@@ -595,7 +595,7 @@ window.RESEARCH_GEOGRAPHY_DATA = {
       "kind": "country"
     },
     {
-      "id": "geonames-1791388",
+      "id": "wenzhou",
       "name": "Wenzhou",
       "country": "China",
       "lat": 27.9994,
@@ -603,7 +603,7 @@ window.RESEARCH_GEOGRAPHY_DATA = {
       "kind": "city"
     },
     {
-      "id": "geonames-2661861",
+      "id": "adliswil",
       "name": "Adliswil",
       "country": "Switzerland",
       "lat": 47.31,
@@ -3604,7 +3604,7 @@ window.RESEARCH_GEOGRAPHY_DATA = {
       "url": "",
       "locations": [
         {
-          "placeId": "geonames-1791388",
+          "placeId": "wenzhou",
           "relation": "study",
           "evidence": "WZ is a city located in the southeast coastal district of China with a subtropical monsoon climate. X is a small industrial park in WZ, which has a separate sewerage network. (The authors' affiliation names Wenzhou Drainage Co., Wenzhou; the SWMM Example 8 network is a textbook case with no location.)",
           "source": "./contributors/wimukthi/papers/Siyi_2023_Optimal-Sensor-Placement-for-the-Routine-Monitoring-of-Urban-Drainage-Systems.pdf",
@@ -3624,7 +3624,7 @@ window.RESEARCH_GEOGRAPHY_DATA = {
       "url": "",
       "locations": [
         {
-          "placeId": "geonames-2661861",
+          "placeId": "adliswil",
           "relation": "study",
           "evidence": "We demonstrate the potential of the suggested technique by calibrating a rainfall-runoff model for the small urban drainage system of Adliswil near Zurich.",
           "source": "./contributors/wimukthi/papers/Omar_2015_Parameter-Estimation-of-Urban-Drainage-Models-Using-Binary-Observations.pdf",

@@ -597,6 +597,22 @@
       "lat": 60.1282,
       "lon": 18.6435,
       "kind": "country"
+    },
+    {
+      "id": "wenzhou",
+      "name": "Wenzhou",
+      "country": "China",
+      "lat": 27.9994,
+      "lon": 120.6668,
+      "kind": "city"
+    },
+    {
+      "id": "adliswil",
+      "name": "Adliswil",
+      "country": "Switzerland",
+      "lat": 47.31,
+      "lon": 8.5246,
+      "kind": "city"
     }
   ]
 }

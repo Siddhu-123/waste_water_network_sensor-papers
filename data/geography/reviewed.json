@@ -2838,7 +2838,7 @@
       "organization": "Tongji University; Wenzhou Drainage Co., Ltd.",
       "locations": [
         {
-          "placeId": "geonames-1791388",
+          "placeId": "wenzhou",
           "relation": "study",
           "evidence": "WZ is a city located in the southeast coastal district of China with a subtropical monsoon climate. X is a small industrial park in WZ, which has a separate sewerage network. (The authors' affiliation names Wenzhou Drainage Co., Wenzhou; the SWMM Example 8 network is a textbook case with no location.)",
           "source": "./contributors/wimukthi/papers/Siyi_2023_Optimal-Sensor-Placement-for-the-Routine-Monitoring-of-Urban-Drainage-Systems.pdf",
@@ -2855,7 +2855,7 @@
       "organization": "ETH Zurich; Eawag",
       "locations": [
         {
-          "placeId": "geonames-2661861",
+          "placeId": "adliswil",
           "relation": "study",
           "evidence": "We demonstrate the potential of the suggested technique by calibrating a rainfall-runoff model for the small urban drainage system of Adliswil near Zurich.",
           "source": "./contributors/wimukthi/papers/Omar_2015_Parameter-Estimation-of-Urban-Drainage-Models-Using-Binary-Observations.pdf",
