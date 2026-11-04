@@ -593,6 +593,22 @@ window.RESEARCH_GEOGRAPHY_DATA = {
       "lat": 60.1282,
       "lon": 18.6435,
       "kind": "country"
+    },
+    {
+      "id": "geonames-1791388",
+      "name": "Wenzhou",
+      "country": "China",
+      "lat": 27.9994,
+      "lon": 120.6668,
+      "kind": "city"
+    },
+    {
+      "id": "geonames-2661861",
+      "name": "Adliswil",
+      "country": "Switzerland",
+      "lat": 47.31,
+      "lon": 8.5246,
+      "kind": "city"
     }
   ],
   "records": [
@@ -3578,6 +3594,46 @@ window.RESEARCH_GEOGRAPHY_DATA = {
       "unmappedReason": ""
     },
     {
+      "id": 56,
+      "type": "academic",
+      "title": "Optimal sensor placement for the routine monitoring of urban drainage systems: A re-clustering method",
+      "authors": "Siyi Wang, Xiangwei Zhang, Jiaying Wang, Tao Tao, Kunlun Xin, Hexiang Yan, Shuping Li",
+      "assignedTo": "Wimukthi",
+      "organization": "Tongji University; Wenzhou Drainage Co., Ltd.",
+      "pdfUrl": "./contributors/wimukthi/papers/Siyi_2023_Optimal-Sensor-Placement-for-the-Routine-Monitoring-of-Urban-Drainage-Systems.pdf",
+      "url": "",
+      "locations": [
+        {
+          "placeId": "geonames-1791388",
+          "relation": "study",
+          "evidence": "WZ is a city located in the southeast coastal district of China with a subtropical monsoon climate. X is a small industrial park in WZ, which has a separate sewerage network. (The authors' affiliation names Wenzhou Drainage Co., Wenzhou; the SWMM Example 8 network is a textbook case with no location.)",
+          "source": "./contributors/wimukthi/papers/Siyi_2023_Optimal-Sensor-Placement-for-the-Routine-Monitoring-of-Urban-Drainage-Systems.pdf",
+          "page": 6
+        }
+      ],
+      "unmappedReason": ""
+    },
+    {
+      "id": 57,
+      "type": "academic",
+      "title": "Parameter estimation of urban drainage models using binary observations from low-cost sensors",
+      "authors": "Omar Wani, Frank Blumensaat, Andreas Scheidegger, Tobias Doppler, Jörg Rieckermann",
+      "assignedTo": "Wimukthi",
+      "organization": "ETH Zurich; Eawag",
+      "pdfUrl": "./contributors/wimukthi/papers/Omar_2015_Parameter-Estimation-of-Urban-Drainage-Models-Using-Binary-Observations.pdf",
+      "url": "",
+      "locations": [
+        {
+          "placeId": "geonames-2661861",
+          "relation": "study",
+          "evidence": "We demonstrate the potential of the suggested technique by calibrating a rainfall-runoff model for the small urban drainage system of Adliswil near Zurich.",
+          "source": "./contributors/wimukthi/papers/Omar_2015_Parameter-Estimation-of-Urban-Drainage-Models-Using-Binary-Observations.pdf",
+          "page": 3
+        }
+      ],
+      "unmappedReason": ""
+    },
+    {
       "id": "ASHIS-GL-01",
       "type": "grey",
       "title": "Sewerage Code of Australia: SA Water Supplementary Documentation, Part 1 Design (Issue 03)",
@@ -3764,6 +3820,38 @@ window.RESEARCH_GEOGRAPHY_DATA = {
       "url": "https://www.accesswater.org/publications/proceedings/-10117329/data-driven-blockage-detection-in-sewer-collection-systems",
       "locations": [],
       "unmappedReason": "No local PDF in the library, so no full text was read."
+    },
+    {
+      "id": "ASHIS-GL-17",
+      "type": "grey",
+      "title": "Optimal Sensor Placement for Sewer Capacity Risk Management (PhD dissertation)",
+      "authors": "",
+      "assignedTo": "Ashis Jose",
+      "organization": "Colorado State University (H. R. Kimbrough)",
+      "pdfUrl": "./contributors/ashis-jose/grey/ASHIS-GL-17_Kimbrough_2019_Sewer_Capacity_Risk_Sensor_Placement_Dissertation.pdf",
+      "url": "https://mountainscholar.org/handle/10217/195315",
+      "locations": [
+        {
+          "placeId": "united-states",
+          "relation": "study",
+          "evidence": "The data collected for this research was from sanitary sewers located in the United States.",
+          "source": "./contributors/ashis-jose/grey/ASHIS-GL-17_Kimbrough_2019_Sewer_Capacity_Risk_Sensor_Placement_Dissertation.pdf",
+          "page": 31
+        }
+      ],
+      "unmappedReason": ""
+    },
+    {
+      "id": "ASHIS-GL-18",
+      "type": "grey",
+      "title": "Applying Kimbrough (2019) to the Growth Scenario (team report)",
+      "authors": "",
+      "assignedTo": "Ashis Jose",
+      "organization": "Capstone team PG-S2-22 (A. J. Kalathil)",
+      "pdfUrl": "./contributors/ashis-jose/grey/ASHIS-GL-18_Kalathil_2026_Applying_Kimbrough_to_Growth_Scenario.pdf",
+      "url": "",
+      "locations": [],
+      "unmappedReason": "No explicit study-site sentence found; header affiliations, reference lists and publisher text were excluded."
     }
   ]
 };
