@@ -1,6 +1,6 @@
 {
   "contributor": "Ashis Jose",
-  "totalCount": 17,
+  "totalCount": 18,
   "greyLiterature": [
     {
       "id": "ASHIS-GL-01",
@@ -441,6 +441,32 @@
         "limitations": "Severity is a simple stand-in, the 0.7 threshold comes from US data, the model is not calibrated, and using the threshold for future growth has not been tested in the literature.",
         "conclusions": "Risk-weighted growth coverage is a practical next step that can be built by rescoring the saved runs.",
         "reflection": "Read together with ASHIS-GL-17. The next step was to build this as a new simulation version and compare its locations with the growth and risk plans."
+      }
+    },
+    {
+      "id": "ASHIS-GL-19",
+      "title": "Simulation 3: Possible Sources of Error (team report)",
+      "organization": "Capstone team PG-S2-22 (A. J. Kalathil)",
+      "year": 2026,
+      "category": "Hydraulic Simulators & Modeling",
+      "summary": "A short team report listing where the Simulation 3 SWMM model is simpler than the real Walkerville network, rated by how much each point could change the chosen sensor sites. Each point was checked against the Simulation 3 code, settings and saved runs.",
+      "assignedTo": "Ashis Jose",
+      "pdfUrl": "./contributors/ashis-jose/grey/ASHIS-GL-19_Kalathil_2026_Sim3_Possible_Errors_Report.pdf",
+      "pages": 6,
+      "keyTakeaways": [
+        "The solver is healthy: all runs settled except one Dry run, and the continuity error was at most 0.47%.",
+        "High-rated points: design roughness on old clay pipes, a flat peak factor of 2.0, constant peak flows, even leakage, assumed leakage rates, one area growing at a time, and noise-free sensor readings.",
+        "The model has not been compared with any measured level or flow, so it shows likely sensor sites rather than exact depths."
+      ],
+      "steps": {
+        "citation": "Kalathil, A. J. (2026). Simulation 3: Possible sources of error. Capstone team PG-S2-22 report, Optimal Sensor Placement for Wastewater Network Monitoring.",
+        "intro": "Simulation 3 grows one area of Walkerville at a time and asks which manholes would notice it. This report lists where the model may differ from the real network.",
+        "methods": "Review of the Simulation 3 code, its settings file and its saved runs (448 growth runs in eight cases). Each point is rated High, Medium or Low by whether it could change the chosen sensor sites.",
+        "scope": "The council sewer network draining to node 606 in Walkerville (887 pipes, 328 manholes) as modelled in EPA SWMM.",
+        "usefulness": "Shows which Simulation 3 results to trust and which assumptions most need real data.",
+        "limitations": "Where the direction of an error is not known, the report says so rather than estimating it. No new runs were made to size each error.",
+        "conclusions": "The numerical side is sound; the main uncertainty is in roughness, peaking, wet-weather leakage, outside flows and how growth and sensor readings are represented. Calibration against measured data is the largest single gap.",
+        "reflection": "Read with the Simulation 3 page. Several points are already tested in later versions, such as whole-suburb growth and uneven leakage in Sim 3-e and 3-e.1."
       }
     }
   ]
