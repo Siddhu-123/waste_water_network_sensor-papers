@@ -66,5 +66,17 @@
       "size": "1.1 MB"
     }
   ],
-  "compiledPapers": []
+  "compiledPapers": [
+    {
+      "id": "compiled-paper-information-topology",
+      "title": "Information, Topology and Evaluation in Sensor Placement for Urban Drainage Networks: A Literature Review",
+      "topic": "OSP",
+      "filterCategory": "Compiled Review",
+      "assignedTo": "Ashis Jose",
+      "description": "Ashis Jose's compiled literature review of his four research papers (29, 36, 37, 38).",
+      "pdfUrl": "./contributors/ashis-jose/compiled-papers/Sewer_OSP_Information_Topology_Literature_Review_V1.pdf",
+      "pages": 10,
+      "size": "84 KB"
+    }
+  ]
 }
