@@ -2,6 +2,9 @@
 // Papers UI: Table & Compiled Cards
 // ==========================================
 
+// Shared LaTeX co-editor (Cloudflare Worker, prototype).
+const LATEX_EDITOR_URL = "https://latex-coedit-prototype.sidcode3535.workers.dev/#team-paper-89ce2522d00a";
+
 function renderTable() {
   const tbody = document.getElementById("tableBody");
   tbody.innerHTML = "";
@@ -64,8 +67,9 @@ document.getElementById("academicSort")?.addEventListener("change", () => {
 function renderCompiledPaperCard(paper) {
   const isTeam = isTeamPaper(paper);
   const authors = formatAuthors(paper);
+  const editorUrl = paper.latexEditorUrl || LATEX_EDITOR_URL;
   const teamBadge = isTeam
-    ? '<span class="badge-tag" style="background: rgba(37, 99, 235, 0.15); color: #60a5fa; border: 1px solid rgba(96, 165, 250, 0.3); font-size: var(--fs-ui); padding: 2px 8px; border-radius: 4px; font-weight: 600;">👥 Team Compiled</span>'
+    ? `<span class="badge-tag" style="background: rgba(37, 99, 235, 0.15); color: #60a5fa; border: 1px solid rgba(96, 165, 250, 0.3); font-size: var(--fs-ui); padding: 2px 8px; border-radius: 4px; font-weight: 600;">${escapeHtml(paper.badge || "👥 Team Compiled")}</span>`
     : "";
 
   return `
@@ -86,9 +90,9 @@ function renderCompiledPaperCard(paper) {
       <p class="compiled-paper-description">${escapeHtml(
         paper.description || "Compiled paper for this topic.",
       )}</p>
-      <a class="btn-action btn-pdf" href="${escapeHtml(
+      ${isTeam ? '<div style="display:flex; gap:8px; flex-wrap:wrap;">' : ""}<a class="btn-action btn-pdf" href="${escapeHtml(
         getPdfViewerUrl(paper),
-      )}" target="_blank" rel="noopener">📄 PDF</a>
+      )}" target="_blank" rel="noopener">📄 PDF</a>${isTeam ? `<a class="btn-action btn-pdf" href="${escapeHtml(editorUrl)}" target="_blank" rel="noopener" title="Open this team document in the shared LaTeX editor">✍ Edit in LaTeX</a></div>` : ""}
     </article>
   `;
 }
@@ -157,7 +161,7 @@ function renderCompiledPapers() {
     if (teamPapers.length) {
       html += `
         <div class="compiled-shelf">
-          <div class="compiled-shelf-label">👥 Team Compiled Paper</div>
+          <div class="compiled-shelf-label">👥 Team Compiled Paper and Report</div>
           <div class="compiled-papers-grid">
             ${teamPapers.map(renderCompiledPaperCard).join("")}
           </div>

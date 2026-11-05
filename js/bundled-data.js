@@ -14,6 +14,20 @@ window.__BUNDLED_DATA__ = {
       "size": "564 KB",
       "isTeam": true
     },
+    "teamProjectReport": {
+      "id": "team-project-report",
+      "title": "Project Report and Handover: Optimal Sensor Placement for Wastewater Network Monitoring",
+      "topic": "OSP",
+      "filterCategory": "Project Report",
+      "assignedTo": "Team",
+      "badge": "👥 Team Report",
+      "description": "Team report on the engineering work: a browser-based sensor-placement sandbox built on openly published South Australian sewer data for the Walkerville council area, three EPA SWMM hydraulic simulation studies, and the public site that presents them. It covers the data, models, algorithms, results, verification, assumptions and limitations, and how to reproduce, run and extend the work. It is the companion to the team compiled paper.",
+      "pdfUrl": "./contributors/team_project_report.pdf",
+      "pages": 25,
+      "size": "500 KB",
+      "latexEditorUrl": "https://latex-coedit-prototype.sidcode3535.workers.dev/#team-report-33bd85c9b19b",
+      "isTeam": true
+    },
     "contributors": [
       {
         "name": "Satya Siddhartha",
@@ -985,6 +999,17 @@ window.__BUNDLED_DATA__ = {
       "size": "55 KB"
     },
     {
+      "id": "compiled-paper-information-topology",
+      "title": "Information, Topology and Evaluation in Sensor Placement for Urban Drainage Networks: A Literature Review",
+      "topic": "OSP",
+      "filterCategory": "Compiled Review",
+      "assignedTo": "Ashis Jose",
+      "description": "Ashis Jose's compiled literature review of his four research papers (29, 36, 37, 38).",
+      "pdfUrl": "./contributors/ashis-jose/compiled-papers/Sewer_OSP_Information_Topology_Literature_Review_V1.pdf",
+      "pages": 10,
+      "size": "84 KB"
+    },
+    {
       "id": "compiled-paper-algorithms",
       "title": "Optimal Sensor Placement in Sewerage Networks: A Literature Review",
       "topic": "Algorithm",
@@ -1016,6 +1041,20 @@ window.__BUNDLED_DATA__ = {
       "pdfUrl": "./contributors/team_compiled_paper.pdf",
       "pages": 42,
       "size": "564 KB",
+      "isTeam": true
+    },
+    {
+      "id": "team-project-report",
+      "title": "Project Report and Handover: Optimal Sensor Placement for Wastewater Network Monitoring",
+      "topic": "OSP",
+      "filterCategory": "Project Report",
+      "assignedTo": "Team",
+      "badge": "👥 Team Report",
+      "description": "Team report on the engineering work: a browser-based sensor-placement sandbox built on openly published South Australian sewer data for the Walkerville council area, three EPA SWMM hydraulic simulation studies, and the public site that presents them. It covers the data, models, algorithms, results, verification, assumptions and limitations, and how to reproduce, run and extend the work. It is the companion to the team compiled paper.",
+      "pdfUrl": "./contributors/team_project_report.pdf",
+      "pages": 25,
+      "size": "500 KB",
+      "latexEditorUrl": "https://latex-coedit-prototype.sidcode3535.workers.dev/#team-report-33bd85c9b19b",
       "isTeam": true
     }
   ],
@@ -2644,6 +2683,58 @@ window.__BUNDLED_DATA__ = {
         "limitations": "Severity is a simple stand-in, the 0.7 threshold comes from US data, the model is not calibrated, and using the threshold for future growth has not been tested in the literature.",
         "conclusions": "Risk-weighted growth coverage is a practical next step that can be built by rescoring the saved runs.",
         "reflection": "Read together with ASHIS-GL-17. The next step was to build this as a new simulation version and compare its locations with the growth and risk plans."
+      }
+    },
+    {
+      "id": "ASHIS-GL-19",
+      "title": "Simulation 3: Possible Sources of Error (team report)",
+      "organization": "Capstone team PG-S2-22 (A. J. Kalathil)",
+      "year": 2026,
+      "category": "Hydraulic Simulators & Modeling",
+      "summary": "A short team report listing where the Simulation 3 SWMM model is simpler than the real Walkerville network, rated by how much each point could change the chosen sensor sites. Each point was checked against the Simulation 3 code, settings and saved runs.",
+      "assignedTo": "Ashis Jose",
+      "pdfUrl": "./contributors/ashis-jose/grey/ASHIS-GL-19_Kalathil_2026_Sim3_Possible_Errors_Report.pdf",
+      "pages": 6,
+      "keyTakeaways": [
+        "The solver is healthy: all runs settled except one Dry run, and the continuity error was at most 0.47%.",
+        "High-rated points: design roughness on old clay pipes, a flat peak factor of 2.0, constant peak flows, even leakage, assumed leakage rates, one area growing at a time, and noise-free sensor readings.",
+        "The model has not been compared with any measured level or flow, so it shows likely sensor sites rather than exact depths."
+      ],
+      "steps": {
+        "citation": "Kalathil, A. J. (2026). Simulation 3: Possible sources of error. Capstone team PG-S2-22 report, Optimal Sensor Placement for Wastewater Network Monitoring.",
+        "intro": "Simulation 3 grows one area of Walkerville at a time and asks which manholes would notice it. This report lists where the model may differ from the real network.",
+        "methods": "Review of the Simulation 3 code, its settings file and its saved runs (448 growth runs in eight cases). Each point is rated High, Medium or Low by whether it could change the chosen sensor sites.",
+        "scope": "The council sewer network draining to node 606 in Walkerville (887 pipes, 328 manholes) as modelled in EPA SWMM.",
+        "usefulness": "Shows which Simulation 3 results to trust and which assumptions most need real data.",
+        "limitations": "Where the direction of an error is not known, the report says so rather than estimating it. No new runs were made to size each error.",
+        "conclusions": "The numerical side is sound; the main uncertainty is in roughness, peaking, wet-weather leakage, outside flows and how growth and sensor readings are represented. Calibration against measured data is the largest single gap.",
+        "reflection": "Read with the Simulation 3 page. Several points are already tested in later versions, such as whole-suburb growth and uneven leakage in Sim 3-e and 3-e.1."
+      }
+    },
+    {
+      "id": "ASHIS-GL-20",
+      "title": "Adding Homes Gradually Across the Suburb: Strategies for Distributed Growth Over Time (team report)",
+      "organization": "Capstone team PG-S2-22 (A. J. Kalathil)",
+      "year": 2026,
+      "category": "Urban Growth & Sewer Capacity",
+      "summary": "A team report setting out ways to model housing growth that is spread across Walkerville and arrives over years. It separates where homes connect (five spatial strategies) from when they arrive (four time profiles), shows with maps and charts on the real network what each changes, links each strategy to earlier studies, and recommends how to run them.",
+      "assignedTo": "Ashis Jose",
+      "pdfUrl": "./contributors/ashis-jose/grey/ASHIS-GL-20_Kalathil_2026_Distributed_Growth_Strategies_Report.pdf",
+      "pages": 9,
+      "keyTakeaways": [
+        "On the trunk the spread of new homes hardly matters (about 3% variation between random draws), but on small branches it matters a great deal (about 68% for random scatter and over 300% for clustered sites).",
+        "Because each run is held until levels settle, any time profile can be applied to one set of runs on a ladder of totals, so time paths need no extra SWMM runs.",
+        "Comparing spread and concentrated growth, and running many scenarios rather than one forecast, follows earlier urban drainage studies such as Mikovits et al. (2018) and van der Werf et al. (2023)."
+      ],
+      "steps": {
+        "citation": "Kalathil, A. J. (2026). Adding homes gradually across the suburb: Strategies for modelling distributed housing growth over time in the Walkerville sewer model. Capstone team PG-S2-22 report.",
+        "intro": "The industry partner noted that homes take years from approval to connection and that infill is usually spread across the network. The current model adds growth one area at a time and assumes even arrival.",
+        "methods": "Defines five spatial strategies (proportional, corridor-weighted, random scatter, clustered sites, real data) and four time profiles (even, S-curve, early surge, batches). New homes are added up upstream of each manhole on the real network, with 1,000 random draws for the scatter and cluster strategies.",
+        "scope": "Walkerville council sewer network as modelled (887 pipes, 328 manholes), with the PlanSA 2041 high (436 homes) and medium (351 homes) cases scaled to the modelled area.",
+        "usefulness": "Gives the team a clear menu of growth scenarios, an estimate of run times, and a reason to test sensor placements against spread-out growth, not just the average.",
+        "limitations": "Figures show added flow, not water levels, which needs SWMM runs. The corridor share, cluster sites and two of the time shapes are illustrative. The earlier studies cited are mostly combined sewers.",
+        "conclusions": "Keep the proportional rule as the base with all four time profiles, add random scatter to give each result a range, and use corridor and cluster cases as stress tests until zoning and approval data are available.",
+        "reflection": "Read with ASHIS-GL-19. It answers the partner's request for spread and gradual growth, and points to branch sensors as the ones most affected by where growth lands."
       }
     },
     {

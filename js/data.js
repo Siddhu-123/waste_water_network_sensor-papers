@@ -471,7 +471,11 @@ async function loadContributorPapers() {
           isTeam: true,
         },
       ]);
-    } else {
+    }
+    if (manifest.teamProjectReport) {
+      mergeCompiledPapers([{ ...manifest.teamProjectReport, isTeam: true }]);
+    }
+    if (!manifest.teamCompiledPaper) {
       try {
         const teamRes = await fetch(
           "./contributors/team_compiled_paper.json",

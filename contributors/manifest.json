@@ -11,6 +11,19 @@
     "pages": 42,
     "size": "564 KB"
   },
+  "teamProjectReport": {
+    "id": "team-project-report",
+    "title": "Project Report and Handover: Optimal Sensor Placement for Wastewater Network Monitoring",
+    "topic": "OSP",
+    "filterCategory": "Project Report",
+    "assignedTo": "Team",
+    "badge": "👥 Team Report",
+    "description": "Team report on the engineering work: a browser-based sensor-placement sandbox built on openly published South Australian sewer data for the Walkerville council area, three EPA SWMM hydraulic simulation studies, and the public site that presents them. It covers the data, models, algorithms, results, verification, assumptions and limitations, and how to reproduce, run and extend the work. It is the companion to the team compiled paper.",
+    "pdfUrl": "./contributors/team_project_report.pdf",
+    "pages": 25,
+    "size": "500 KB",
+    "latexEditorUrl": "https://latex-coedit-prototype.sidcode3535.workers.dev/#team-report-33bd85c9b19b"
+  },
   "contributors": [
     {
       "name": "Satya Siddhartha",

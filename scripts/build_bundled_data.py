@@ -41,10 +41,11 @@ def build_bundled_data():
                     item["assignedTo"] = name
             all_grey.extend(items)
 
-    team_compiled = manifest.get("teamCompiledPaper")
-    if team_compiled:
-        team_compiled["isTeam"] = True
-        all_compiled.append(team_compiled)
+    for team_key in ("teamCompiledPaper", "teamProjectReport"):
+        team_item = manifest.get(team_key)
+        if team_item:
+            team_item["isTeam"] = True
+            all_compiled.append(team_item)
 
     summaries_path = ROOT / "summaries.json"
     summaries = json.loads(summaries_path.read_text(encoding="utf-8")) if summaries_path.is_file() else {}
