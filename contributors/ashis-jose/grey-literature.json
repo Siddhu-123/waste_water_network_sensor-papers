@@ -1,6 +1,6 @@
 {
   "contributor": "Ashis Jose",
-  "totalCount": 18,
+  "totalCount": 19,
   "greyLiterature": [
     {
       "id": "ASHIS-GL-01",
@@ -467,6 +467,32 @@
         "limitations": "Where the direction of an error is not known, the report says so rather than estimating it. No new runs were made to size each error.",
         "conclusions": "The numerical side is sound; the main uncertainty is in roughness, peaking, wet-weather leakage, outside flows and how growth and sensor readings are represented. Calibration against measured data is the largest single gap.",
         "reflection": "Read with the Simulation 3 page. Several points are already tested in later versions, such as whole-suburb growth and uneven leakage in Sim 3-e and 3-e.1."
+      }
+    },
+    {
+      "id": "ASHIS-GL-20",
+      "title": "Adding Homes Gradually Across the Suburb: Strategies for Distributed Growth Over Time (team report)",
+      "organization": "Capstone team PG-S2-22 (A. J. Kalathil)",
+      "year": 2026,
+      "category": "Urban Growth & Sewer Capacity",
+      "summary": "A team report setting out ways to model housing growth that is spread across Walkerville and arrives over years. It separates where homes connect (five spatial strategies) from when they arrive (four time profiles), shows with maps and charts on the real network what each changes, links each strategy to earlier studies, and recommends how to run them.",
+      "assignedTo": "Ashis Jose",
+      "pdfUrl": "./contributors/ashis-jose/grey/ASHIS-GL-20_Kalathil_2026_Distributed_Growth_Strategies_Report.pdf",
+      "pages": 9,
+      "keyTakeaways": [
+        "On the trunk the spread of new homes hardly matters (about 3% variation between random draws), but on small branches it matters a great deal (about 68% for random scatter and over 300% for clustered sites).",
+        "Because each run is held until levels settle, any time profile can be applied to one set of runs on a ladder of totals, so time paths need no extra SWMM runs.",
+        "Comparing spread and concentrated growth, and running many scenarios rather than one forecast, follows earlier urban drainage studies such as Mikovits et al. (2018) and van der Werf et al. (2023)."
+      ],
+      "steps": {
+        "citation": "Kalathil, A. J. (2026). Adding homes gradually across the suburb: Strategies for modelling distributed housing growth over time in the Walkerville sewer model. Capstone team PG-S2-22 report.",
+        "intro": "The industry partner noted that homes take years from approval to connection and that infill is usually spread across the network. The current model adds growth one area at a time and assumes even arrival.",
+        "methods": "Defines five spatial strategies (proportional, corridor-weighted, random scatter, clustered sites, real data) and four time profiles (even, S-curve, early surge, batches). New homes are added up upstream of each manhole on the real network, with 1,000 random draws for the scatter and cluster strategies.",
+        "scope": "Walkerville council sewer network as modelled (887 pipes, 328 manholes), with the PlanSA 2041 high (436 homes) and medium (351 homes) cases scaled to the modelled area.",
+        "usefulness": "Gives the team a clear menu of growth scenarios, an estimate of run times, and a reason to test sensor placements against spread-out growth, not just the average.",
+        "limitations": "Figures show added flow, not water levels, which needs SWMM runs. The corridor share, cluster sites and two of the time shapes are illustrative. The earlier studies cited are mostly combined sewers.",
+        "conclusions": "Keep the proportional rule as the base with all four time profiles, add random scatter to give each result a range, and use corridor and cluster cases as stress tests until zoning and approval data are available.",
+        "reflection": "Read with ASHIS-GL-19. It answers the partner's request for spread and gradual growth, and points to branch sensors as the ones most affected by where growth lands."
       }
     }
   ]
