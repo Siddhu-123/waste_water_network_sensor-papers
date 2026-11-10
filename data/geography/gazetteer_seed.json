@@ -613,6 +613,14 @@
       "lat": 47.31,
       "lon": 8.5246,
       "kind": "city"
+    },
+    {
+      "id": "suwon",
+      "name": "Suwon",
+      "country": "South Korea",
+      "lat": 37.2911,
+      "lon": 127.0089,
+      "kind": "city"
     }
   ]
 }

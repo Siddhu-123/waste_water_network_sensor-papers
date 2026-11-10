@@ -609,6 +609,14 @@ window.RESEARCH_GEOGRAPHY_DATA = {
       "lat": 47.31,
       "lon": 8.5246,
       "kind": "city"
+    },
+    {
+      "id": "suwon",
+      "name": "Suwon",
+      "country": "South Korea",
+      "lat": 37.2911,
+      "lon": 127.0089,
+      "kind": "city"
     }
   ],
   "records": [
@@ -3634,6 +3642,38 @@ window.RESEARCH_GEOGRAPHY_DATA = {
       "unmappedReason": ""
     },
     {
+      "id": 58,
+      "type": "academic",
+      "title": "Optimal allocation and operation of sewer monitoring sites for wastewater-based disease surveillance: A methodological proposal",
+      "authors": "Keugtae Kim, Min Jeong Ban, Sungpyo Kim, Mi-Hyun Park, Michael K. Stenstrom, Joo-Hyon Kang",
+      "assignedTo": "Wimukthi",
+      "organization": "Dongguk University; University of Suwon",
+      "pdfUrl": "./contributors/wimukthi/papers/Keugtae_2022_Optimal-Allocation-and-Operation-of-Sewer-Monitoring-Sites.pdf",
+      "url": "",
+      "locations": [
+        {
+          "placeId": "suwon",
+          "relation": "study",
+          "evidence": "The study catchment was a sewershed section (Seoho sewershed) in Suwon City, Republic of Korea.",
+          "source": "./contributors/wimukthi/papers/Keugtae_2022_Optimal-Allocation-and-Operation-of-Sewer-Monitoring-Sites.pdf",
+          "page": 2
+        }
+      ],
+      "unmappedReason": ""
+    },
+    {
+      "id": "compiled-paper-information-topology",
+      "type": "compiled",
+      "title": "Information, Topology and Evaluation in Sensor Placement for Urban Drainage Networks: A Literature Review",
+      "authors": "",
+      "assignedTo": "Ashis Jose",
+      "organization": "",
+      "pdfUrl": "./contributors/ashis-jose/compiled-papers/Sewer_OSP_Information_Topology_Literature_Review_V1.pdf",
+      "url": "",
+      "locations": [],
+      "unmappedReason": "Compiled review; not extracted and excluded from the map."
+    },
+    {
       "id": "ASHIS-GL-01",
       "type": "grey",
       "title": "Sewerage Code of Australia: SA Water Supplementary Documentation, Part 1 Design (Issue 03)",
@@ -3849,6 +3889,30 @@ window.RESEARCH_GEOGRAPHY_DATA = {
       "assignedTo": "Ashis Jose",
       "organization": "Capstone team PG-S2-22 (A. J. Kalathil)",
       "pdfUrl": "./contributors/ashis-jose/grey/ASHIS-GL-18_Kalathil_2026_Applying_Kimbrough_to_Growth_Scenario.pdf",
+      "url": "",
+      "locations": [],
+      "unmappedReason": "No explicit study-site sentence found; header affiliations, reference lists and publisher text were excluded."
+    },
+    {
+      "id": "ASHIS-GL-19",
+      "type": "grey",
+      "title": "Simulation 3: Possible Sources of Error (team report)",
+      "authors": "",
+      "assignedTo": "Ashis Jose",
+      "organization": "Capstone team PG-S2-22 (A. J. Kalathil)",
+      "pdfUrl": "./contributors/ashis-jose/grey/ASHIS-GL-19_Kalathil_2026_Sim3_Possible_Errors_Report.pdf",
+      "url": "",
+      "locations": [],
+      "unmappedReason": "No explicit study-site sentence found; header affiliations, reference lists and publisher text were excluded."
+    },
+    {
+      "id": "ASHIS-GL-20",
+      "type": "grey",
+      "title": "Adding Homes Gradually Across the Suburb: Strategies for Distributed Growth Over Time (team report)",
+      "authors": "",
+      "assignedTo": "Ashis Jose",
+      "organization": "Capstone team PG-S2-22 (A. J. Kalathil)",
+      "pdfUrl": "./contributors/ashis-jose/grey/ASHIS-GL-20_Kalathil_2026_Distributed_Growth_Strategies_Report.pdf",
       "url": "",
       "locations": [],
       "unmappedReason": "No explicit study-site sentence found; header affiliations, reference lists and publisher text were excluded."

@@ -2865,6 +2865,23 @@
       "unmappedReason": "",
       "pdfSha256": "f5b5547e203a07cc9ec8c7cfd664a5e01bf5a874a1837e685e56e88f1d367d84",
       "metadataSha256": "88459ecfcbb676c9b0b9e57d73a185d72e11c297dc038ebf205fa8f46c61c3f6"
+    },
+    {
+      "type": "academic",
+      "id": 58,
+      "organization": "Dongguk University; University of Suwon",
+      "locations": [
+        {
+          "placeId": "suwon",
+          "relation": "study",
+          "evidence": "The study catchment was a sewershed section (Seoho sewershed) in Suwon City, Republic of Korea.",
+          "source": "./contributors/wimukthi/papers/Keugtae_2022_Optimal-Allocation-and-Operation-of-Sewer-Monitoring-Sites.pdf",
+          "page": 2
+        }
+      ],
+      "unmappedReason": "",
+      "pdfSha256": "f5121def73489f9d2e45f76551eca27bc2ce3e24ff1ae78b2550889080ad55b1",
+      "metadataSha256": "8791f1692c9c86c013c83c20aeaf2efa24116fd4906715696d0536775a807f63"
     }
   ]
 }
