@@ -208,6 +208,22 @@
       "scholarUrl": "https://scholar.google.com/scholar?q=Parameter+estimation+of+urban+drainage+models+using+binary+observations+from+low-cost+sensors",
       "pages": 7,
       "size": "629 KB"
+    },
+    {
+      "id": 58,
+      "title": "Optimal allocation and operation of sewer monitoring sites for wastewater-based disease surveillance: A methodological proposal",
+      "authors": "Keugtae Kim, Min Jeong Ban, Sungpyo Kim, Mi-Hyun Park, Michael K. Stenstrom, Joo-Hyon Kang",
+      "journal": "Journal of Environmental Management, Vol. 320, Art. 115806 (2022)",
+      "categoryKey": "sensor-placement",
+      "categoryLabel": "Sensor Placement Optimization",
+      "topic": "OSP",
+      "filterCategory": "Pandemic Monitoring",
+      "assignedTo": "Wimukthi",
+      "doi": "10.1016/j.jenvman.2022.115806",
+      "pdfUrl": "./contributors/wimukthi/papers/Keugtae_2022_Optimal-Allocation-and-Operation-of-Sewer-Monitoring-Sites.pdf",
+      "scholarUrl": "https://scholar.google.com/scholar?q=Optimal+allocation+and+operation+of+sewer+monitoring+sites+for+wastewater-based+disease+surveillance+A+methodological+proposal",
+      "pages": 10,
+      "size": "8.9 MB"
     }
   ],
   "compiledPapers": [
