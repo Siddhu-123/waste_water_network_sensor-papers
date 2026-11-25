@@ -1,0 +1,803 @@
+/* ==========================================
+ * Mobile layout (phones under 600px)
+ * Spacing, sizing and type only; colours come from the base styles.
+ * ========================================== */
+
+:root {
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 24px;
+  --space-6: 32px;
+  --space-7: 48px;
+  --space-8: 64px;
+  --radius-s: 8px;
+  --radius-m: 12px;
+  --radius-l: 18px;
+  --tap-sm: 32px;
+  --tap-md: 38px;
+  --tap-lg: 40px;
+  --fs-mobile-input: 16px;
+}
+
+@media (max-width: 599px) {
+  body {
+    padding-top: var(--space-3);
+    padding-right: max(var(--space-3), env(safe-area-inset-right));
+    padding-bottom: max(var(--space-5), env(safe-area-inset-bottom));
+    padding-left: max(var(--space-3), env(safe-area-inset-left));
+    font-size: 14px;
+    line-height: 18px;
+    font-weight: 400;
+  }
+
+  /* Type scale: page, section, item, body, meta, eyebrows */
+  header .header-top h1 {
+    font-size: 22px;
+    line-height: 28px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    margin-bottom: 0;
+  }
+
+  .compiled-papers-title,
+  .library-view-heading,
+  .grey-lit-hero-text h2,
+  .instructor-hero-text h2,
+  .instructor-section-title {
+    font-size: 18px;
+    line-height: 24px;
+    font-weight: 700;
+  }
+
+  .compiled-paper-description,
+  .grey-lit-hero-text p,
+  .grey-lit-summary,
+  .takeaways-list,
+  .takeaways-list li,
+  .welcome-banner-title,
+  .library-empty p {
+    font-size: 14px;
+    line-height: 18px;
+    font-weight: 400;
+  }
+
+  .compiled-paper-meta,
+  .library-results-summary,
+  .compiled-papers-count,
+  .year-badge {
+    font-size: 12px;
+    line-height: 16px;
+    font-weight: 400;
+  }
+
+  .compiled-paper-meta,
+
+  .compiled-papers-kicker,
+  .compiled-shelf-label {
+    font-size: 11px;
+    line-height: 14px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+
+  /* 1. One level of boxes: flatten outer section/shelf/filter wrappers */
+  .compiled-papers-panel,
+  .compiled-papers-panel.is-squeezed,
+  .compiled-shelf,
+  .filter-panel,
+  #academicSection > #filterPanel,
+  #greyLitFilterPanel,
+  .grey-lit-hero {
+    background: transparent;
+    border: 0;
+    border-radius: 0;
+    box-shadow: none;
+    padding: 0;
+  }
+
+  .compiled-papers-panel:hover,
+  .compiled-shelf:hover,
+  .filter-panel:hover,
+  .grey-lit-hero:hover {
+    box-shadow: none;
+  }
+
+  /* 6. Welcome banner: 12px 16px pad, 32px chips, 8px gaps, 32px top-right close */
+  .welcome-contributor-banner {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    margin-bottom: var(--space-4);
+    padding: var(--space-2) var(--space-3);
+    border-radius: 14px;
+    gap: var(--space-2);
+  }
+
+  .welcome-banner-content {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: var(--space-2);
+    width: 100%;
+    min-width: 0;
+  }
+
+  .welcome-banner-title {
+    padding-right: 36px;
+  }
+
+  .welcome-chip-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+  }
+
+  .welcome-chip {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    height: 28px;
+    min-height: 28px;
+    padding: 6px var(--space-3);
+    border-radius: 999px;
+    font-size: 13px;
+    line-height: 18px;
+    font-weight: 500;
+  }
+
+  .welcome-banner-close {
+    position: absolute;
+    top: var(--space-2);
+    right: var(--space-2);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 28px;
+    min-width: 32px;
+    min-height: 28px;
+    padding: 0;
+    border-radius: var(--radius-s);
+    font-size: 14px;
+    line-height: 18px;
+  }
+
+  /* Header: 32px below section, 40px pill action buttons in 2-col grid */
+  header {
+    margin-bottom: var(--space-5);
+    padding-bottom: var(--space-4);
+  }
+
+  .header-top {
+    flex-direction: column;
+    align-items: stretch;
+    gap: var(--space-4);
+  }
+
+  .header-actions {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--space-2);
+    width: 100%;
+  }
+
+  .header-actions > .btn-profile-pill,
+  .header-actions > .btn-action,
+  .header-actions .btn-action[style*="font-size"] {
+    width: 100%;
+    min-width: 0;
+    height: 32px;
+    min-height: 32px;
+    padding: 0 var(--space-3) !important;
+    border-radius: 999px;
+    justify-content: center;
+    text-align: center;
+    font-size: 14px !important;
+    line-height: 18px;
+    font-weight: 600;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .header-actions > .btn-profile-pill #headerProfileName {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .header-actions > :last-child {
+    grid-column: 1 / -1;
+  }
+
+  /* Compiled papers: flat panel & shelves, plain headers, full-width cards */
+  .compiled-papers-panel,
+  .compiled-papers-panel.is-squeezed {
+    margin-bottom: var(--space-5);
+  }
+
+  .compiled-papers-header {
+    margin-bottom: var(--space-2);
+    gap: var(--space-2);
+  }
+
+  .compiled-papers-panel.is-squeezed .compiled-papers-header {
+    margin-bottom: 0;
+  }
+
+  .compiled-header-actions {
+    gap: var(--space-2);
+  }
+
+  .btn-squeeze-toggle {
+    min-height: 32px;
+    padding: 6px var(--space-3);
+    border-radius: 10px;
+    font-size: 14px;
+    line-height: 18px;
+    font-weight: 600;
+  }
+
+  .compiled-shelves-container {
+    gap: var(--space-4);
+  }
+
+  .compiled-shelf-label {
+    display: block;
+    margin-bottom: var(--space-2);
+  }
+
+  .compiled-shelf-label::after {
+    display: none;
+    content: none;
+  }
+
+  .compiled-papers-grid {
+    gap: var(--space-3);
+  }
+
+  .compiled-paper-card {
+    border-radius: 14px;
+    padding: var(--space-3);
+    gap: var(--space-2);
+  }
+
+  .compiled-paper-card h3 {
+    font-size: 15px;
+    line-height: 20px;
+    font-weight: 600;
+    margin: 0 !important;
+  }
+
+  .compiled-paper-card .btn-action {
+    height: 32px;
+    min-height: 32px;
+    padding: 0 var(--space-3);
+    border-radius: 10px;
+    font-size: 14px;
+    line-height: 18px;
+    font-weight: 600;
+  }
+
+  .compiled-paper-card > .btn-pdf {
+    width: 100%;
+  }
+
+  .compiled-paper-card > div:last-child .btn-action {
+    flex: 1 1 140px;
+    width: auto;
+  }
+
+  /* Library tabs: 2-column segmented control, min-height 52px, radius 12px, wrapping labels */
+  .library-nav-tabs {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    align-items: stretch;
+    gap: var(--space-1);
+    margin: 0 0 var(--space-5);
+    padding: var(--space-1);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-m);
+  }
+
+  .library-tab {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    grid-template-rows: auto 1fr;
+    align-items: center;
+    row-gap: var(--space-1);
+    column-gap: var(--space-2);
+    width: 100%;
+    min-width: 0;
+    min-height: 44px;
+    padding: var(--space-2) 10px;
+    background: transparent;
+    border: 1px solid transparent;
+    border-radius: var(--radius-s);
+    box-shadow: none;
+    white-space: normal;
+    text-align: left;
+    font-size: 14px;
+    line-height: 18px;
+    font-weight: 600;
+  }
+
+  .library-tab:hover {
+    box-shadow: none;
+  }
+
+
+  .library-tab .tab-icon {
+    grid-column: 1;
+    grid-row: 1;
+    line-height: 1;
+    flex-shrink: 0;
+  }
+
+  .library-tab .tab-count {
+    grid-column: 2;
+    grid-row: 1;
+    justify-self: end;
+    flex-shrink: 0;
+    font-size: 12px;
+    line-height: 16px;
+    font-weight: 400;
+    padding: 0 var(--space-2);
+  }
+
+  .library-tab .tab-label {
+    grid-column: 1 / -1;
+    grid-row: 2;
+    align-self: start;
+    display: block;
+    min-width: 0;
+    overflow: visible;
+    text-overflow: clip;
+    white-space: normal;
+    font-size: 14px;
+    line-height: 18px;
+    font-weight: 600;
+  }
+
+  /* Grey lit hero: flat, 8px under heading, 40px full-width CTA, 32px to next section */
+  .grey-lit-hero {
+    margin: 0 0 var(--space-5);
+    gap: var(--space-3);
+  }
+
+  .grey-lit-hero-text h2 {
+    margin: 0 0 var(--space-2);
+  }
+
+  .grey-lit-hero-text p {
+    margin: 0;
+  }
+
+  .grey-lit-hero .btn-findings-reader {
+    width: 100%;
+    min-height: 32px;
+    padding: 9px var(--space-4);
+    border-radius: 10px;
+    justify-content: center;
+    text-align: center;
+    font-size: 14px;
+    line-height: 18px;
+    font-weight: 600;
+  }
+
+  /* Filter blocks inside Academic & Grey Lit */
+  #academicSection > #filterPanel,
+  #greyLitFilterPanel {
+    margin-top: 0;
+    margin-bottom: var(--space-4);
+  }
+
+  .filter-panel .library-view-bar,
+  .filter-panel-header {
+    margin: 0 0 var(--space-4);
+    row-gap: var(--space-2);
+    column-gap: var(--space-2);
+    align-items: stretch;
+  }
+
+  .library-heading-group {
+    flex: 1 1 100%;
+    gap: var(--space-1) var(--space-2);
+    margin-bottom: 0;
+  }
+
+  .filter-panel .controls-bar,
+  #greyLitFilterPanel .grey-lit-controls-container {
+    gap: var(--space-3);
+    margin: 0;
+  }
+
+  .grey-lit-search-row {
+    gap: var(--space-2);
+  }
+
+  .grey-lit-search-row > .btn-action {
+    width: 100%;
+    height: 38px !important;
+    min-height: 38px;
+    border-radius: 10px;
+    padding: 0 var(--space-3) !important;
+    font-size: 14px !important;
+    line-height: 18px;
+    font-weight: 600;
+  }
+
+  /* 5. Inputs & selects: 44px high, radius 10px, 16px font (stops iOS zoom) */
+  .search-box {
+    width: 100%;
+    min-width: 0;
+    flex: 1 1 100%;
+  }
+
+  .search-box input,
+  .filter-select,
+  .library-sort,
+  .grey-lit-contributor-select,
+  .profile-notes-search input,
+  .switch-person-form input {
+    width: 100%;
+    min-width: 0;
+    height: 38px;
+    min-height: 38px;
+    border-radius: 10px;
+    font-size: var(--fs-mobile-input);
+    line-height: 18px;
+  }
+
+  .search-box input {
+    padding: 0 var(--space-3) 0 42px;
+  }
+
+  .filter-select,
+  .library-sort,
+  .grey-lit-contributor-select {
+    padding: 0 32px 0 var(--space-3);
+  }
+
+  /* List / Tiles segmented control: 36px high, 2px inner padding, radius 10px */
+  .library-view-toggle {
+    width: 100%;
+    height: 32px;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 2px;
+    padding: 2px;
+    border-radius: 10px;
+  }
+
+  .library-view-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    min-width: 0;
+    height: 100%;
+    min-height: 0;
+    padding: 0 var(--space-3);
+    border-radius: var(--radius-s);
+    font-size: 14px;
+    line-height: 18px;
+    font-weight: 600;
+  }
+
+
+  /* Category chips: flat horizontal scroll rail, 32px pills, 6px 12px pad, 14/20 500 */
+  .category-bar {
+    flex-wrap: nowrap;
+    align-items: center;
+    gap: var(--space-2);
+    width: 100%;
+    max-width: 100%;
+    overflow-x: auto;
+    overflow-y: hidden;
+    scroll-snap-type: x proximity;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    background: transparent;
+    border: 0;
+    border-radius: 0;
+    padding: 2px 0;
+  }
+
+  .category-bar[hidden] {
+    display: none;
+  }
+
+  .category-bar::-webkit-scrollbar {
+    display: none;
+  }
+
+  .category-pillar {
+    flex: 0 0 auto;
+    flex-direction: row;
+    align-items: center;
+    gap: var(--space-2);
+    max-width: none;
+  }
+
+  .category-pillar + .category-pillar {
+    padding-left: var(--space-2);
+    border-left: 1px solid var(--border-color);
+  }
+
+  .category-pillar-label {
+    display: none;
+  }
+
+  .category-pillar-segments {
+    display: flex;
+    flex-wrap: nowrap;
+    gap: var(--space-2);
+  }
+
+  .category-segment,
+  .category-sub-bar .category-segment {
+    flex: 0 0 auto;
+    scroll-snap-align: start;
+    height: 28px;
+    min-height: 28px;
+    padding: 6px var(--space-3);
+    border-radius: 999px;
+    border: 1px solid var(--border-color);
+    font-size: 13px;
+    line-height: 18px;
+    font-weight: 500;
+  }
+
+  .category-segment[aria-pressed="true"],
+
+  .category-segment .category-count {
+    font-size: 12px;
+    line-height: 16px;
+    font-weight: 400;
+  }
+
+  /* 2. Paper & Grey Lit inset grouped list (iOS Settings style) */
+  #papersTableContainer,
+  #greyLitGrid {
+    --library-columns: var(--space-5) minmax(0, 1fr) auto;
+    --library-gap: var(--space-3);
+    margin-top: 0;
+  }
+
+  #papersTableContainer[data-view="list"],
+  #greyLitGrid[data-view="list"] {
+    border: 1px solid var(--border-color);
+    border-radius: 14px;
+    overflow: hidden;
+    box-shadow: none;
+  }
+
+  #papersTableContainer[data-view="list"]:hover,
+  #greyLitGrid[data-view="list"]:hover {
+    box-shadow: none;
+  }
+
+  #papersTableContainer[data-view="list"] tbody tr,
+  #greyLitGrid[data-view="list"] .grey-lit-card {
+    position: relative;
+    align-items: start;
+    column-gap: var(--space-2);
+    row-gap: var(--space-2);
+    min-height: 0;
+    margin: 0;
+    padding: var(--space-2) var(--space-3);
+    background: transparent;
+    border: 0;
+    border-bottom: 0;
+    border-radius: 0;
+    box-shadow: none;
+  }
+
+  #papersTableContainer[data-view="list"] tbody tr::after,
+  #greyLitGrid[data-view="list"] .grey-lit-card::after {
+    content: "";
+    position: absolute;
+    left: var(--space-4);
+    right: 0;
+    bottom: 0;
+    height: 1px;
+    pointer-events: none;
+  }
+
+  #papersTableContainer[data-view="list"] tbody tr:last-child::after,
+  #greyLitGrid[data-view="list"] .grey-lit-card:last-child::after {
+    display: none;
+  }
+
+  #papersTableContainer[data-view="list"] tbody tr:hover,
+  #papersTableContainer[data-view="list"] tbody tr:active,
+  #greyLitGrid[data-view="list"] .grey-lit-card:hover,
+  #greyLitGrid[data-view="list"] .grey-lit-card:active {
+    border: 0;
+    box-shadow: none;
+  }
+
+  #papersTableContainer[data-view="list"] tbody tr:hover td,
+  #papersTableContainer[data-view="list"] tbody tr:active td {
+    background: transparent;
+  }
+
+  #papersTableContainer[data-view="list"] td.col-num,
+  #greyLitGrid[data-view="list"] .grey-lit-num {
+    grid-column: 1;
+    grid-row: 1;
+    align-self: start;
+    padding-top: 2px !important;
+    font-size: 12px;
+    line-height: 16px;
+    font-weight: 400;
+  }
+
+  #papersTableContainer[data-view="list"] td.col-main,
+  #greyLitGrid[data-view="list"] .grey-lit-main {
+    display: contents !important;
+  }
+
+  /* Row: 2-line title, 1-line byline, then labelled actions (Summary / PDF / Source) */
+  #papersTableContainer[data-view="list"] .paper-title,
+  #greyLitGrid[data-view="list"] .grey-lit-title {
+    grid-column: 2 / -1;
+    grid-row: 1;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    white-space: normal;
+    overflow-wrap: anywhere;
+    font-size: 15px;
+    line-height: 20px;
+    font-weight: 600;
+    margin: 0;
+  }
+
+  #papersTableContainer[data-view="list"] .library-byline,
+  #greyLitGrid[data-view="list"] .library-byline {
+    grid-column: 2 / -1;
+    grid-row: 2;
+    align-self: center;
+    min-width: 0;
+    margin: 0;
+    display: block;
+    font-size: 12px;
+    line-height: 16px;
+    font-weight: 400;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  #papersTableContainer[data-view="list"] td.col-actions,
+  #greyLitGrid[data-view="list"] .grey-lit-footer {
+    grid-column: 2 / -1;
+    grid-row: 3;
+    align-self: center;
+    justify-self: start;
+    padding: 0 !important;
+  }
+
+  #greyLitGrid[data-view="list"] .grey-lit-takeaways-container {
+    grid-column: 1 / -1;
+    grid-row: 4;
+  }
+
+  #papersTableContainer[data-view="list"] .action-btns,
+  #greyLitGrid[data-view="list"] .grey-lit-actions {
+    width: auto;
+    justify-content: flex-start;
+    gap: 6px;
+    flex-wrap: nowrap;
+  }
+
+  #papersTableContainer[data-view="list"] .btn-action,
+  #greyLitGrid[data-view="list"] .btn-action {
+    flex: 0 0 auto;
+    width: auto;
+    min-width: 0;
+    height: 28px;
+    min-height: 28px;
+    padding: 0 10px;
+    border-radius: 8px;
+    gap: 4px;
+    font-size: 12px;
+    line-height: 16px;
+    font-weight: 600;
+  }
+
+  #papersTableContainer[data-view="list"] .btn-pdf,
+  #greyLitGrid[data-view="list"] .btn-pdf {
+    min-width: 0;
+    padding-inline: 10px;
+  }
+
+  /* Show the text label next to each icon so every action says what it does */
+  #papersTableContainer[data-view="list"] .action-label,
+  #greyLitGrid[data-view="list"] .action-label {
+    position: static;
+    width: auto;
+    height: auto;
+    margin: 0;
+    clip-path: none;
+    overflow: visible;
+  }
+
+  /* Tiles view: 12px card gap, 14px card radius, 8pt internal spacing, 40px buttons */
+  #papersTableContainer[data-view="tiles"] tr,
+  #greyLitGrid[data-view="tiles"] .grey-lit-card {
+    min-height: 0;
+    padding: var(--space-3);
+    border-radius: 14px;
+  }
+
+  #papersTableContainer[data-view="tiles"] .library-tile-top,
+  #greyLitGrid[data-view="tiles"] .library-tile-top {
+    margin-bottom: var(--space-2);
+  }
+
+  #papersTableContainer[data-view="tiles"] .paper-title,
+  #greyLitGrid[data-view="tiles"] .grey-lit-title {
+    font-size: 15px;
+    line-height: 20px;
+    font-weight: 600;
+    margin: 0 0 var(--space-2);
+  }
+
+  #papersTableContainer[data-view="tiles"] .library-byline,
+  #greyLitGrid[data-view="tiles"] .library-byline {
+    font-size: 12px;
+    line-height: 16px;
+    font-weight: 400;
+    margin-bottom: var(--space-2);
+  }
+
+  #papersTableContainer[data-view="tiles"] .library-journal,
+  #greyLitGrid[data-view="tiles"] .grey-lit-summary {
+    font-size: 14px;
+    line-height: 18px;
+    font-weight: 400;
+    margin: 0 0 var(--space-3);
+  }
+
+  #papersTableContainer[data-view="tiles"] td.col-contributor,
+  #greyLitGrid[data-view="tiles"] .library-contributor {
+    margin-bottom: var(--space-3);
+  }
+
+  #papersTableContainer[data-view="tiles"] td.col-actions,
+  #greyLitGrid[data-view="tiles"] .grey-lit-footer {
+    padding-top: var(--space-3) !important;
+  }
+
+  #papersTableContainer[data-view="tiles"] .action-btns,
+  #greyLitGrid[data-view="tiles"] .grey-lit-actions {
+    gap: var(--space-2);
+  }
+
+  #papersTableContainer[data-view="tiles"] .btn-action,
+  #greyLitGrid[data-view="tiles"] .btn-action {
+    min-height: 32px;
+    height: 32px;
+    padding: 0 var(--space-3);
+    border-radius: 10px;
+    font-size: 14px;
+    line-height: 18px;
+    font-weight: 600;
+  }
+}
+
+
+@media (max-width: 599px) {
+  .compiled-shelf-collapsible > summary {
+    min-height: var(--tap-md);
+  }
+}

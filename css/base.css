@@ -150,3 +150,17 @@ h6 {
   background: #2dd4bf;
   flex-shrink: 0;
 }
+
+/* Public read-only view (?public=1): no identity, no editing controls */
+.public-view .welcome-contributor-banner,
+.public-view #headerProfileBtn,
+.public-view .edit-only,
+.public-view [data-edit-only],
+.public-view #instructorSection,
+.public-view #profileModal {
+  display: none !important;
+}
+
+html:not(.public-view) .public-only {
+  display: none !important;
+}

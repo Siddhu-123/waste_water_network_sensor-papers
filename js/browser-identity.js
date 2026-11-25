@@ -106,6 +106,7 @@
   // Resolve the saved name: browserID mapping first, then legacy keys (which are
   // migrated into the mapping so nothing is lost). Returns "" when unset.
   function getSavedName() {
+    if (global.PUBLIC_MODE) return "";
     if (memory.unsaved) return memory.name;
     const id = getBrowserId();
     const entry = readMap().map[id];
@@ -123,6 +124,7 @@
   }
 
   function setName(value) {
+    if (global.PUBLIC_MODE) return "";
     const name = cleanName(value);
     const id = getBrowserId();
     memory.name = name;
@@ -159,7 +161,7 @@
 
   // URL params only seed an identity when this browser has none saved.
   function seedFromParams(search) {
-    if (hasName()) return false;
+    if (global.PUBLIC_MODE || hasName()) return false;
     try {
       const params = new URLSearchParams(search == null ? global.location.search : search);
       const seed = cleanName(params.get("user") || params.get("contributor"));

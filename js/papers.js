@@ -92,7 +92,7 @@ function renderCompiledPaperCard(paper) {
       )}</p>
       ${isTeam ? '<div style="display:flex; gap:8px; flex-wrap:wrap;">' : ""}<a class="btn-action btn-pdf" href="${escapeHtml(
         getPdfViewerUrl(paper),
-      )}" target="_blank" rel="noopener">📄 PDF</a>${isTeam ? `<a class="btn-action btn-pdf" href="${escapeHtml(editorUrl)}" target="_blank" rel="noopener" title="Open this team document in the shared LaTeX editor">✍ Edit in LaTeX</a></div>` : ""}
+      )}" target="_blank" rel="noopener">📄 PDF</a>${isTeam ? `<a class="btn-action btn-pdf" href="${escapeHtml(editorUrl)}" target="_blank" rel="noopener" title="Open this team document in the shared LaTeX editor" data-edit-only>✍ Edit in LaTeX</a></div>` : ""}
     </article>
   `;
 }
@@ -170,12 +170,12 @@ function renderCompiledPapers() {
     }
     if (individualPapers.length) {
       html += `
-        <div class="compiled-shelf">
-          <div class="compiled-shelf-label">📄 Contributor Compiled Papers</div>
+        <details class="compiled-shelf compiled-shelf-collapsible" id="contributorCompiledShelf"${contributorShelfOpen ? " open" : ""}>
+          <summary class="compiled-shelf-label">📄 Contributor Compiled Papers (${individualPapers.length})</summary>
           <div class="compiled-papers-grid">
             ${individualPapers.map(renderCompiledPaperCard).join("")}
           </div>
-        </div>
+        </details>
       `;
     }
     list.innerHTML = html;
@@ -189,3 +189,13 @@ function renderCompiledPapers() {
   }
   updateCompiledSqueezeState();
 }
+
+// Contributor compiled papers start collapsed; remember the reader's choice across re-renders.
+var contributorShelfOpen = false;
+document.addEventListener(
+  "toggle",
+  (event) => {
+    if (event.target.id === "contributorCompiledShelf") contributorShelfOpen = event.target.open;
+  },
+  true,
+);

@@ -14,7 +14,8 @@
     />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf_viewer.min.css" />
     <script src="./annotation-config.js?v=remote-api-1"></script>
-    <script src="./js/browser-identity.js"></script>
+    <script src="./js/public-mode.js?v=public-v2"></script>
+    <script src="./js/browser-identity.js?v=public-v1"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
     <style>
       :root {
@@ -1575,6 +1576,16 @@
           z-index: 120 !important;
         }
       }
+
+      /* Public read-only view (?public=1): reading and navigation only */
+      .public-view .tools-segment,
+      .public-view #undoButton,
+      .public-view #redoButton,
+      .public-view #saveButton,
+      .public-view #syncPill,
+      .public-view #userSelectorBtn {
+        display: none !important;
+      }
     </style>
   <!-- live presentation sync -->
   <script>(function(){var l=/^(localhost|127\.0\.0\.1)$/.test(location.hostname),s=document.createElement("script");s.src=(l?"http://localhost:8787":"https://capstone-live.sidcode3535.workers.dev")+"/present.js";s.defer=true;document.head.appendChild(s)})();</script>
@@ -3130,7 +3141,7 @@
 
         /* Solid Manual Save to Cloud */
         async function saveSharedAnnotations() {
-          if (isSaving) return;
+          if (isSaving || window.PUBLIC_MODE) return;
 
           const author = getActiveUser();
           const currentPayload = annotationPayload();

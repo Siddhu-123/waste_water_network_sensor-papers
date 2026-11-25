@@ -2598,3 +2598,32 @@ tr:hover td {
 #filterPanel,
 #greyLitFilterPanel { margin-bottom: 8px; }
 #greyLitFilterPanel .grey-lit-controls-container { gap: 8px; margin: 0; }
+
+/* Collapsible contributor shelf (closed by default) */
+.compiled-shelf-collapsible > summary {
+  cursor: pointer;
+  list-style: none;
+  min-height: 32px;
+}
+
+.compiled-shelf-collapsible > summary::-webkit-details-marker {
+  display: none;
+}
+
+.compiled-shelf-collapsible > summary::before {
+  content: "▸";
+  display: inline-block;
+  transition: transform 150ms ease;
+}
+
+.compiled-shelf-collapsible[open] > summary::before {
+  transform: rotate(90deg);
+}
+
+.compiled-shelf-collapsible:not([open]) > summary {
+  margin-bottom: 0;
+}
+
+.compiled-shelf-collapsible > summary:hover {
+  color: var(--text-secondary);
+}

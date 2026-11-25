@@ -13,12 +13,13 @@
       href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="css/base.css?v=layout-v15" />
+    <script src="js/public-mode.js?v=public-v2"></script>
+    <link rel="stylesheet" href="css/base.css?v=public-v2" />
     <link rel="stylesheet" href="css/controls.css?v=section-v1" />
-    <link rel="stylesheet" href="css/papers.css?v=section-v2" />
+    <link rel="stylesheet" href="css/papers.css?v=section-v3" />
     <link rel="stylesheet" href="css/modals.css?v=switch-person-v1" />
     <link rel="stylesheet" href="css/research-map.css?v=layout-v17" />
-    <link rel="stylesheet" href="css/neon.css?v=neon-v1" />
+    <link rel="stylesheet" href="css/mobile.css?v=mobile-v1" />
   <!-- live presentation sync -->
   <script>(function(){var l=/^(localhost|127\.0\.0\.1)$/.test(location.hostname),s=document.createElement("script");s.src=(l?"http://localhost:8787":"https://capstone-live.sidcode3535.workers.dev")+"/present.js";s.defer=true;document.head.appendChild(s)})();</script>
   </head>
@@ -123,10 +124,18 @@
             href="https://github.com/Siddhu-123/waste_water_network_sensor-papers/edit/main/summaries.json"
             target="_blank"
             rel="noopener"
-            class="btn-action btn-scholar"
+            class="btn-action btn-scholar edit-only"
             style="padding: 10px 16px; font-size: var(--fs-ui)"
           >
             ✎ Edit Shared Summaries on GitHub
+          </a>
+          <a
+            href="?public=0"
+            class="btn-action btn-scholar public-only"
+            style="padding: 10px 16px; font-size: var(--fs-ui)"
+            title="Team members: pick your name to add notes and highlights"
+          >
+            Contributor sign-in
           </a>
         </div>
       </div>
@@ -613,11 +622,11 @@
 
     <script src="js/bundled-data.js?v=report-v1"></script>
     <script src="js/data.js?v=report-v1"></script>
-    <script src="js/papers.js?v=report-v1"></script>
+    <script src="js/papers.js?v=shelf-v1"></script>
     <script src="js/category-groups.js?v=groups-v1"></script>
     <script src="js/filters.js?v=section-v1"></script>
     <script src="js/modals.js"></script>
-    <script src="js/browser-identity.js"></script>
+    <script src="js/browser-identity.js?v=public-v1"></script>
     <script src="js/profile.js?v=switch-person-v1"></script>
     <script src="js/annotations.js?v=layout-v1"></script>
     <script src="js/grey-literature.js?v=profile-dashboard-v2"></script>
