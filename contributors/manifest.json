@@ -6,10 +6,10 @@
     "topic": "OSP",
     "filterCategory": "Compiled Review",
     "assignedTo": "Team",
-    "description": "Compiled team review of where to place a small number of sensors in a wastewater network. It covers sensor technologies, placement and optimisation methods, sewer condition and failure factors, and the openly available South Australian network data. The review finds that the best location depends on what the sensor must detect (level trend, overflow alarm, flow, contaminant or gas), and that published percentage gains are network-specific. It sets out a staged, purpose-specific placement method to be tested on the SA Water network.",
+    "description": "Compiled team review of where to place a small number of sensors in a gravity sewer so that growth from new housing can be seen early. It covers sensor technologies, placement and optimisation methods, sewer condition and failure factors, and the openly available South Australian network data, then applies the review to the Walkerville placement model. On that uncalibrated public-data model, one level sensor sees every Design-wet growth run and five see 94% of runs on average across seven wet cases, while float switches alone reach no more than 35% at any budget.",
     "pdfUrl": "./contributors/team_compiled_paper.pdf",
-    "pages": 42,
-    "size": "564 KB"
+    "pages": 45,
+    "size": "582 KB"
   },
   "teamProjectReport": {
     "id": "team-project-report",
