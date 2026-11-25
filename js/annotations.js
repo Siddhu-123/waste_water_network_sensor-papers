@@ -25,7 +25,7 @@ async function loadAnnotationsSummary() {
     }
   } catch (_e) {}
 
-  if (apiBase !== null) {
+  if (apiBase !== null && !window.PUBLIC_MODE) {
     try {
       const res = await fetch(apiBase + "/api/annotations", { cache: "no-store" });
       if (res.ok) {

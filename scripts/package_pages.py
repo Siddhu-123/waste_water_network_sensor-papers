@@ -18,7 +18,7 @@ def main():
     if output.exists():
         parser.error("output already exists; choose a fresh staging directory")
     output.mkdir(parents=True)
-    for name in ("index.html", "pdf-viewer.html", "annotation-config.js", "summaries.json", ".nojekyll"):
+    for name in ("index.html", "pdf-viewer.html", "view.html", "annotation-config.js", "summaries.json", ".nojekyll"):
         source = root / name
         if source.is_file():
             shutil.copy2(source, output / name)

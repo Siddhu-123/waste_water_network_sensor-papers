@@ -13,15 +13,18 @@
       href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
       rel="stylesheet"
     />
-    <script src="js/public-mode.js?v=public-v2"></script>
-    <link rel="stylesheet" href="css/base.css?v=public-v2" />
+    <script src="js/public-mode.js?v=public-v3"></script>
+    <script src="js/theme.js?v=theme-v1"></script>
+    <link rel="stylesheet" href="css/base.css?v=public-v3" />
     <link rel="stylesheet" href="css/controls.css?v=section-v1" />
     <link rel="stylesheet" href="css/papers.css?v=section-v3" />
     <link rel="stylesheet" href="css/modals.css?v=switch-person-v1" />
     <link rel="stylesheet" href="css/research-map.css?v=layout-v17" />
     <link rel="stylesheet" href="css/mobile.css?v=mobile-v2" />
+    <link rel="stylesheet" href="css/theme-light-auto.css?v=theme-v1" />
+    <link rel="stylesheet" href="css/theme-light.css?v=theme-v1" />
   <!-- live presentation sync -->
-  <script>(function(){var l=/^(localhost|127\.0\.0\.1)$/.test(location.hostname),s=document.createElement("script");s.src=(l?"http://localhost:8787":"https://capstone-live.sidcode3535.workers.dev")+"/present.js";s.defer=true;document.head.appendChild(s)})();</script>
+  <script>(function(){if(window.PUBLIC_MODE)return;var l=/^(localhost|127\.0\.0\.1)$/.test(location.hostname),s=document.createElement("script");s.src=(l?"http://localhost:8787":"https://capstone-live.sidcode3535.workers.dev")+"/present.js";s.defer=true;document.head.appendChild(s)})();</script>
   </head>
   <body>
     <div
@@ -100,6 +103,7 @@
           <h1>Wastewater Research Library</h1>
         </div>
         <div class="header-actions">
+          <button type="button" class="theme-toggle" data-theme-toggle aria-label="Switch to light theme" title="Switch to light theme">☀</button>
           <button
             class="btn-profile-pill"
             id="headerProfileBtn"
@@ -128,14 +132,6 @@
             style="padding: 10px 16px; font-size: var(--fs-ui)"
           >
             ✎ Edit Shared Summaries on GitHub
-          </a>
-          <a
-            href="?public=0"
-            class="btn-action btn-scholar public-only"
-            style="padding: 10px 16px; font-size: var(--fs-ui)"
-            title="Team members: pick your name to add notes and highlights"
-          >
-            Contributor sign-in
           </a>
         </div>
       </div>
@@ -637,14 +633,14 @@
     <script src="js/modals.js"></script>
     <script src="js/browser-identity.js?v=public-v1"></script>
     <script src="js/profile.js?v=switch-person-v1"></script>
-    <script src="js/annotations.js?v=layout-v1"></script>
+    <script src="js/annotations.js?v=public-v3"></script>
     <script src="js/grey-literature.js?v=mobile-v2"></script>
     <script src="js/instructor.js?v=profile-dashboard-v2"></script>
     <script src="js/main.js"></script>
     <script src="js/library-views.js?v=layout-v4"></script>
     <script src="js/world-land.js"></script>
     <script src="js/research-geography-data.js"></script>
-    <script src="js/research-map.js?v=layout-v16"></script>
+    <script src="js/research-map.js?v=theme-v1"></script>
   </body>
 </html>
 

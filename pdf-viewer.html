@@ -14,7 +14,8 @@
     />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf_viewer.min.css" />
     <script src="./annotation-config.js?v=remote-api-1"></script>
-    <script src="./js/public-mode.js?v=public-v2"></script>
+    <script src="./js/public-mode.js?v=public-v3"></script>
+    <script src="./js/theme.js?v=theme-v1"></script>
     <script src="./js/browser-identity.js?v=public-v1"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
     <style>
@@ -1587,8 +1588,10 @@
         display: none !important;
       }
     </style>
+    <link rel="stylesheet" href="./css/theme-light-viewer.css?v=theme-v1" />
+    <link rel="stylesheet" href="./css/theme-light.css?v=theme-v1" />
   <!-- live presentation sync -->
-  <script>(function(){var l=/^(localhost|127\.0\.0\.1)$/.test(location.hostname),s=document.createElement("script");s.src=(l?"http://localhost:8787":"https://capstone-live.sidcode3535.workers.dev")+"/present.js";s.defer=true;document.head.appendChild(s)})();</script>
+  <script>(function(){if(window.PUBLIC_MODE)return;var l=/^(localhost|127\.0\.0\.1)$/.test(location.hostname),s=document.createElement("script");s.src=(l?"http://localhost:8787":"https://capstone-live.sidcode3535.workers.dev")+"/present.js";s.defer=true;document.head.appendChild(s)})();</script>
   </head>
   <body>
     <div class="app-shell">
@@ -1642,6 +1645,7 @@
         </div>
 
         <div class="header-right">
+          <button type="button" class="nav-btn theme-toggle" data-theme-toggle aria-label="Switch to light theme" title="Switch to light theme">☀</button>
           <!-- Sync Status Pill -->
           <span class="sync-pill" id="syncPill" title="Cloud sync status">
             <span class="sync-dot" id="syncDot"></span>
@@ -1760,6 +1764,8 @@
     <script>
       (() => {
         "use strict";
+        // Public visitors are sent to view.html by public-mode.js; never start the editor for them.
+        if (window.PUBLIC_MODE) return;
 
         // Unique Color Palettes for Contributors
         const USER_PALETTES = [

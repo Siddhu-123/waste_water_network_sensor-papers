@@ -1,0 +1,81 @@
+/* ==========================================
+ * Theme toggle button + light theme.
+ * Dark stays the default; everything below the toggle only applies to
+ * html[data-theme="light"] (set by js/theme.js).
+ * ========================================== */
+
+.theme-toggle:not(.nav-btn) {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  border-radius: 999px;
+  border: 1px solid var(--border-color, rgba(148, 163, 184, 0.28));
+  background: transparent;
+  color: inherit;
+  font-size: 18px;
+  line-height: 1;
+  cursor: pointer;
+  flex: none;
+}
+.theme-toggle:hover { border-color: var(--border-hover, #38bdf8); }
+.theme-toggle:focus-visible { outline: 2px solid var(--accent-blue, #38bdf8); outline-offset: 2px; }
+
+/* Viewer toolbar button (.nav-btn) keeps the toolbar's own size and look. */
+
+@media (max-width: 599px) {
+  header { position: relative; }
+  /* Sits on the title row, top right, so the two-column button grid is unchanged. */
+  .header-actions > .theme-toggle {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 32px;
+    height: 32px;
+    font-size: 16px;
+  }
+  header .header-top h1 { padding-right: 40px; }
+}
+
+/* ---------- Light palette: same hues, darker where text sits on white ---------- */
+html[data-theme="light"] {
+  color-scheme: light;
+  --bg-primary: #f4f6fa;
+  --bg-secondary: #ffffff;
+  --bg-card: #ffffff;
+  --border-color: #d5dce8;
+  --border-hover: #0284c7;
+  --text-primary: #0f172a;
+  --text-secondary: #475569;
+  --text-muted: #64748b;
+  --accent-blue: #0369a1;
+  --accent-indigo: #4f46e5;
+  --accent-emerald: #047857;
+  --accent-amber: #b45309;
+  --key-yellow: #a16207;
+
+  /* PDF viewer tokens */
+  --bg: #eef1f6;
+  --header-bg: rgba(255, 255, 255, 0.96);
+  --sidebar-bg: #ffffff;
+  --panel: #f6f8fb;
+  --panel-2: #eaf0f7;
+  --line: rgba(15, 23, 42, 0.1);
+  --line-strong: rgba(15, 23, 42, 0.2);
+  --text: #0f172a;
+  --muted: #475569;
+  --accent: #0f766e;
+  --accent-strong: #0d9488;
+  --accent-bg: rgba(13, 148, 136, 0.1);
+  --warning: #b45309;
+  --danger: #dc2626;
+}
+html[data-theme="light"] body { background: var(--bg-primary); color: var(--text-primary); }
+
+/* ---------- Hand fixes the generator cannot infer ---------- */
+html[data-theme="light"] h1 { background: linear-gradient(135deg, #0369a1 0%, #4f46e5 100%); -webkit-background-clip: text; background-clip: text; }
+/* Summary step numbers: dark text needs a light gold chip. */
+html[data-theme="light"] .step-badge { background: #fcd34d; color: #422006; }
+html[data-theme="light"] .nav-btn.theme-toggle { color: var(--text); }

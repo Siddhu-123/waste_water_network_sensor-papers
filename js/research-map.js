@@ -690,6 +690,15 @@
     return `<article class="research-map-record"><div class="research-map-record-top"><span class="research-map-type ${escapeHtml(record.type)}">${escapeHtml(typeLabel(record.type))}</span>${assignedTo ? `<span class="research-map-assignee" title="${escapeHtml(assignedTo)}">${escapeHtml(assignedTo)}</span>` : ""}</div><h4>${escapeHtml(record.title || `Record ${record.id}`)}</h4>${authors}${organization}${relation}${unmapped}<div class="research-map-record-links">${links.join("")}</div></article>`;
   }
 
+  // Canvas colours follow the page theme (js/theme.js sets html[data-theme="light"]).
+  function mapInk() {
+    return document.documentElement.getAttribute("data-theme") === "light"
+      ? { sea: "#eef3f9", land: "rgba(71, 85, 105, 0.55)", lensLand: "rgba(71, 85, 105, 0.5)", grid: "rgba(71, 85, 105, 0.14)", label: "#0f172a", labelHalo: "#ffffff" }
+      : { sea: "#080d17", land: "rgba(210, 220, 233, 0.68)", lensLand: "rgba(189, 208, 226, 0.58)", grid: "rgba(110, 134, 163, 0.14)", label: "#f2fcff", labelHalo: "#07101a" };
+  }
+  new MutationObserver(() => { if (data) { map.base = null; draw(); } })
+    .observe(document.documentElement, { attributes: true, attributeFilter: ["data-theme"] });
+
   // The static layer (background, land dots, graticule, markers) is painted once per layout or filter
   // change and blitted each frame, so pointer movement only pays for the lens.
   function baseLayer() {
@@ -699,11 +708,12 @@
     canvas.width = el.canvas.width; canvas.height = el.canvas.height;
     const g = canvas.getContext("2d", { alpha: false });
     g.setTransform(map.dpr, 0, 0, map.dpr, 0, 0);
-    g.fillStyle = "#080d17";
+    const ink = mapInk();
+    g.fillStyle = ink.sea;
     g.fillRect(0, 0, map.width, map.height);
-    g.fillStyle = "rgba(210, 220, 233, 0.68)";
+    g.fillStyle = ink.land;
     for (const dot of map.landDots) { g.beginPath(); g.arc(dot.x, dot.y, DOT_RADIUS, 0, Math.PI * 2); g.fill(); }
-    g.strokeStyle = "rgba(110, 134, 163, 0.14)";
+    g.strokeStyle = ink.grid;
     g.lineWidth = 1;
     for (let lat = -30; lat <= 60; lat += 30) {
       const y = point(lat, 0).y;
@@ -760,8 +770,8 @@
         const labelWidth = g.measureText(pin.place.name).width;
         const labelX = Math.max(bounds.left + 5, Math.min(bounds.right - labelWidth - 5, x + GLOW_RADIUS.lens + 3));
         const labelY = Math.max(bounds.top + 10, Math.min(bounds.bottom - 10, y - GLOW_RADIUS.lens - 2));
-        g.lineWidth = 3; g.strokeStyle = "#07101a"; g.strokeText(pin.place.name, labelX, labelY);
-        g.fillStyle = "#f2fcff"; g.fillText(pin.place.name, labelX, labelY);
+        g.lineWidth = 3; g.strokeStyle = mapInk().labelHalo; g.strokeText(pin.place.name, labelX, labelY);
+        g.fillStyle = mapInk().label; g.fillText(pin.place.name, labelX, labelY);
       }
     }
   }
@@ -797,8 +807,9 @@
     const toLens = (p) => ({ x: x + (p.x - x) * zoom, y: y + (p.y - y) * zoom });
     ctx.save();
     ctx.beginPath(); ctx.rect(left, top, map.lens, map.lens); ctx.clip();
-    ctx.fillStyle = "#080d17"; ctx.fillRect(left, top, map.lens, map.lens);
-    ctx.fillStyle = "rgba(189, 208, 226, 0.58)";
+    const lensInk = mapInk();
+    ctx.fillStyle = lensInk.sea; ctx.fillRect(left, top, map.lens, map.lens);
+    ctx.fillStyle = lensInk.lensLand;
     const step = LENS_STEP / zoom;
     const i0 = Math.ceil((x + (left - x) / zoom) / step), i1 = Math.floor((x + (left + map.lens - x) / zoom) / step);
     const j0 = Math.ceil((y + (top - y) / zoom) / step), j1 = Math.floor((y + (top + map.lens - y) / zoom) / step);

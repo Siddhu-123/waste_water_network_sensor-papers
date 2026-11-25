@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="robots" content="noindex" />
+    <meta name="referrer" content="no-referrer" />
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'self'; script-src 'self' https://cdnjs.cloudflare.com; worker-src 'self' blob: https://cdnjs.cloudflare.com; style-src 'self' https://fonts.googleapis.com; font-src https://fonts.gstatic.com data:; img-src 'self' data: blob:; connect-src 'self' https://cdnjs.cloudflare.com; object-src 'none'; base-uri 'none'; form-action 'none'; frame-ancestors 'none'"
+    />
+    <title>Wastewater Research Library · Reader</title>
+    <script src="js/theme.js?v=theme-v1"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" />
+    <link rel="stylesheet" href="css/view.css?v=view-v1" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+  </head>
+  <body>
+    <header class="bar">
+      <a class="bar-btn back" href="index.html?public=1" aria-label="Back to the library">← Library</a>
+      <h1 class="title" id="docTitle">Loading…</h1>
+      <div class="bar-group" aria-label="Pages">
+        <button class="bar-btn" type="button" id="prevBtn" aria-label="Previous page">◀</button>
+        <span class="indicator" id="pageIndicator" aria-live="polite">– / –</span>
+        <button class="bar-btn" type="button" id="nextBtn" aria-label="Next page">▶</button>
+      </div>
+      <div class="bar-group" aria-label="Zoom">
+        <button class="bar-btn" type="button" id="zoomOutBtn" aria-label="Zoom out">−</button>
+        <span class="indicator" id="zoomIndicator">Fit</span>
+        <button class="bar-btn" type="button" id="zoomInBtn" aria-label="Zoom in">+</button>
+      </div>
+      <button class="bar-btn theme-btn" type="button" data-theme-toggle aria-label="Switch to light theme" title="Switch to light theme">☀</button>
+    </header>
+    <main id="pages" class="pages" tabindex="-1"></main>
+    <p class="status" id="status" role="status"></p>
+    <script src="js/view.js?v=view-v2"></script>
+  </body>
+</html>

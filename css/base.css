@@ -156,7 +156,7 @@ h6 {
 .public-view #headerProfileBtn,
 .public-view .edit-only,
 .public-view [data-edit-only],
-.public-view #instructorSection,
+.public-view #instructorSection, .public-view #contributorCompiledShelf,
 .public-view #profileModal {
   display: none !important;
 }
