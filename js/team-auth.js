@@ -28,6 +28,13 @@
     return base + "/api/login";
   }
 
+  // Team members by first name; the value is the key the library's data uses.
+  function teamOptions() {
+    const team = (window.TeamNames && window.TeamNames.list) || [];
+    const esc = (t) => String(t).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]);
+    return team.map((p) => '<option value="' + esc(p.key) + '">' + esc(p.first) + "</option>").join("");
+  }
+
   function buildDialog(askName) {
     const dialog = document.createElement("dialog");
     dialog.className = "team-auth-dialog";
@@ -36,7 +43,7 @@
       '<form method="dialog" style="display:grid;gap:10px;margin:0">' +
       '<strong style="font-size:15px">' + (askName ? "Team login" : "Team password") + '</strong>' +
       '<span style="opacity:.75">Shared notes and highlights are for the project team. Enter the password once on this browser.</span>' +
-      (askName ? '<input type="text" name="author" placeholder="Your name (shown on your notes)" autocomplete="name" maxlength="60" required style="padding:8px 10px;border-radius:8px;border:1px solid rgba(128,128,128,.5);font:inherit;background:Field;color:FieldText">' : "") +
+      (askName ? '<select name="author" required style="padding:8px 10px;border-radius:8px;border:1px solid rgba(128,128,128,.5);font:inherit;background:Field;color:FieldText"><option value="">Your name</option>' + teamOptions() + "</select>" : "") +
       '<input type="password" name="password" placeholder="Team password" autocomplete="current-password" required style="padding:8px 10px;border-radius:8px;border:1px solid rgba(128,128,128,.5);font:inherit;background:Field;color:FieldText">' +
       '<span class="team-auth-error" role="alert" style="color:#d33;min-height:1.2em"></span>' +
       '<div style="display:flex;gap:8px;justify-content:flex-end">' +
@@ -77,7 +84,7 @@
           const data = await res.json().catch(() => ({}));
           if (!res.ok || !data.token) throw new Error(data.error || "Login failed (HTTP " + res.status + ")");
           try { localStorage.setItem(KEY, data.token); } catch (_e) {}
-          finish(askName ? { name: author.value.trim() } : true);
+          finish(askName ? { name: author.value } : true);
         } catch (err) {
           error.textContent = err.message || "Login failed.";
           input.select();
@@ -101,12 +108,27 @@
     location.href = "index.html?public=0";
   }
 
+  // Log out: forget the token, the saved name and the cached team notes on this
+  // browser, then show the public library.
+  function logout() {
+    clear();
+    if (window.BrowserIdentity) window.BrowserIdentity.setName("");
+    try {
+      Object.keys(localStorage)
+        .filter((k) => k.startsWith("capstone_annotations"))
+        .forEach((k) => localStorage.removeItem(k));
+    } catch (_e) {}
+    location.href = "index.html?public=1";
+  }
+
   document.addEventListener("click", (event) => {
-    const trigger = event.target.closest && event.target.closest("[data-team-login]");
+    if (!event.target.closest) return;
+    const trigger = event.target.closest("[data-team-login],[data-team-logout]");
     if (!trigger) return;
     event.preventDefault();
-    login();
+    if (trigger.hasAttribute("data-team-logout")) logout();
+    else login();
   });
 
-  window.TeamAuth = { token, headers, clear, unlock, login, loginUrl };
+  window.TeamAuth = { token, headers, clear, unlock, login, logout, loginUrl };
 })();
