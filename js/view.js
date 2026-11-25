@@ -3,7 +3,7 @@
 (function () {
   "use strict";
 
-  const PDFJS = "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/";
+  const PDFJS = "vendor/pdfjs-3.11.174/build/";
   const params = new URLSearchParams(location.search);
   const el = {
     title: document.getElementById("docTitle"),

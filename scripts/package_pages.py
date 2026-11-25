@@ -12,8 +12,6 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 
 WORKER = "https://pdf-annotations.sidcode3535.workers.dev"
-CDN = "https://cdnjs.cloudflare.com"
-PRESENCE = "https://capstone-live.sidcode3535.workers.dev"  # team "who's online" script
 
 
 class InlineCode(HTMLParser):
@@ -55,12 +53,12 @@ def add_csp(page, extra_connect=""):
     hashes = sorted({sha(s) for s in found.scripts} | {sha(h) for h in found.handlers})
     policy = "; ".join([
         "default-src 'self'",
-        "script-src 'self' " + CDN + " " + PRESENCE + (" 'unsafe-hashes' " if found.handlers else " ") + " ".join(hashes),
-        "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com " + CDN,
+        "script-src 'self'" + (" 'unsafe-hashes' " if found.handlers else " ") + " ".join(hashes),
+        "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
         "font-src 'self' https://fonts.gstatic.com data:",
         "img-src 'self' data: blob:",
-        "connect-src 'self' " + WORKER + " " + CDN + " " + PRESENCE + " wss://capstone-live.sidcode3535.workers.dev" + (" " + extra_connect if extra_connect else ""),
-        "worker-src 'self' blob: " + CDN,
+        "connect-src 'self' " + WORKER + (" " + extra_connect if extra_connect else ""),
+        "worker-src 'self' blob:",
         "frame-src 'self'",
         "object-src 'none'",
         "base-uri 'self'",
@@ -90,7 +88,7 @@ def main():
         source = root / name
         if source.is_file():
             shutil.copy2(source, output / name)
-    for name in ("js", "css", "contributors", "annotations", "assets", "images", "r"):
+    for name in ("js", "css", "contributors", "annotations", "assets", "images", "r", "vendor"):
         source = root / name
         if source.is_dir():
             shutil.copytree(source, output / name, ignore=shutil.ignore_patterns(".DS_Store", "__pycache__"))

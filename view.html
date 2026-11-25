@@ -7,14 +7,14 @@
     <meta name="referrer" content="no-referrer" />
     <meta
       http-equiv="Content-Security-Policy"
-      content="default-src 'self'; script-src 'self' https://cdnjs.cloudflare.com; worker-src 'self' blob: https://cdnjs.cloudflare.com; style-src 'self' https://fonts.googleapis.com; font-src https://fonts.gstatic.com data:; img-src 'self' data: blob:; connect-src 'self' https://cdnjs.cloudflare.com; object-src 'none'; base-uri 'none'; form-action 'none'; frame-ancestors 'none'"
+      content="default-src 'self'; script-src 'self'; worker-src 'self' blob:; style-src 'self' https://fonts.googleapis.com; font-src https://fonts.gstatic.com data:; img-src 'self' data: blob:; connect-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-ancestors 'none'"
     />
     <title>Wastewater Research Library · Reader</title>
     <script src="js/theme.js?v=theme-v1"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" />
     <link rel="stylesheet" href="css/view.css?v=view-v1" />
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+    <script src="vendor/pdfjs-3.11.174/build/pdf.min.js"></script>
   </head>
   <body>
     <header class="bar">
@@ -34,6 +34,6 @@
     </header>
     <main id="pages" class="pages" tabindex="-1"></main>
     <p class="status" id="status" role="status"></p>
-    <script src="js/view.js?v=view-v2"></script>
+    <script src="js/view.js?v=view-v3"></script>
   </body>
 </html>
