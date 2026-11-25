@@ -17,3 +17,8 @@ __pycache__/
 .cache/
 _site/
 data/geography/extraction-cache.json
+
+# Local worker secrets
+cloudflare-backend/.dev.vars
+.dev.vars
+cloudflare-backend/.wrangler/

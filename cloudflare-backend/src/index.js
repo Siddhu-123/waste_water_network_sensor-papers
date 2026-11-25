@@ -6,12 +6,97 @@
 // In-memory fallback if KV is not bound (e.g. initial local dev)
 const memoryStorage = new Map();
 
+// Only the library site (and local development) may call this API from a browser.
+const ALLOWED_ORIGINS = [/^https:\/\/siddhu-123\.github\.io$/, /^http:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/];
+let requestOrigin = "";
+
 function applyCorsHeaders(headers = new Headers()) {
-  headers.set("Access-Control-Allow-Origin", "*");
+  if (requestOrigin && ALLOWED_ORIGINS.some((re) => re.test(requestOrigin))) {
+    headers.set("Access-Control-Allow-Origin", requestOrigin);
+    headers.set("Vary", "Origin");
+  }
   headers.set("Access-Control-Allow-Methods", "GET, POST, OPTIONS, DELETE");
   headers.set("Access-Control-Allow-Headers", "Content-Type, Authorization");
   headers.set("Access-Control-Max-Age", "86400");
   return headers;
+}
+
+/* ---------- Team password and tokens ----------
+ * Secrets (set with `wrangler secret put`): TEAM_PASSWORD, TOKEN_SECRET.
+ * POST /api/login {password} returns a signed token the team's browsers keep in
+ * localStorage and send as "Authorization: Bearer <token>". Every annotation
+ * route needs it. Changing TEAM_PASSWORD or TOKEN_SECRET signs everyone out.
+ * Without both secrets the API refuses all annotation requests (fails closed). */
+const TOKEN_DAYS = 180;
+const MAX_FAILED_LOGINS = 10; // per IP per 15 minutes
+const encoder = new TextEncoder();
+
+function b64url(bytes) {
+  let bin = "";
+  for (const b of new Uint8Array(bytes)) bin += String.fromCharCode(b);
+  return btoa(bin).replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, "");
+}
+
+function fromB64url(text) {
+  const bin = atob(text.replace(/-/g, "+").replace(/_/g, "/") + "===".slice((text.length + 3) % 4));
+  return Uint8Array.from(bin, (c) => c.charCodeAt(0));
+}
+
+async function hmac(secret, message) {
+  const key = await crypto.subtle.importKey("raw", encoder.encode(secret), { name: "HMAC", hash: "SHA-256" }, false, ["sign"]);
+  return new Uint8Array(await crypto.subtle.sign("HMAC", key, encoder.encode(message)));
+}
+
+function sameBytes(a, b) {
+  if (a.length !== b.length) return false;
+  let diff = 0;
+  for (let i = 0; i < a.length; i++) diff |= a[i] ^ b[i];
+  return diff === 0;
+}
+
+function authConfigured(env) {
+  return Boolean(env.TEAM_PASSWORD && env.TOKEN_SECRET);
+}
+
+// Tokens are bound to the current password, so a new password revokes old tokens.
+async function passwordTag(env) {
+  return b64url((await hmac(env.TOKEN_SECRET, "password:" + env.TEAM_PASSWORD)).slice(0, 12));
+}
+
+async function issueToken(env) {
+  const now = Math.floor(Date.now() / 1000);
+  const payload = b64url(encoder.encode(JSON.stringify({ v: 1, iat: now, exp: now + TOKEN_DAYS * 86400, pw: await passwordTag(env) })));
+  return { token: payload + "." + b64url(await hmac(env.TOKEN_SECRET, payload)), expiresAt: new Date((now + TOKEN_DAYS * 86400) * 1000).toISOString() };
+}
+
+async function validToken(env, request) {
+  if (!authConfigured(env)) return false;
+  const match = (request.headers.get("Authorization") || "").match(/^Bearer ([A-Za-z0-9_-]+)\.([A-Za-z0-9_-]+)$/);
+  if (!match) return false;
+  try {
+    if (!sameBytes(fromB64url(match[2]), await hmac(env.TOKEN_SECRET, match[1]))) return false;
+    const claims = JSON.parse(new TextDecoder().decode(fromB64url(match[1])));
+    return claims.v === 1 && claims.exp > Date.now() / 1000 && claims.pw === (await passwordTag(env));
+  } catch (_e) {
+    return false;
+  }
+}
+
+async function handleLogin(request, env) {
+  if (!authConfigured(env)) return jsonResponse({ error: "Team login is not set up yet." }, 503);
+  const ip = request.headers.get("CF-Connecting-IP") || "unknown";
+  const failKey = "login-fail:" + ip;
+  const failures = Number((env.ANNOTATIONS_KV && (await env.ANNOTATIONS_KV.get(failKey))) || 0);
+  if (failures >= MAX_FAILED_LOGINS) return jsonResponse({ error: "Too many attempts. Try again in 15 minutes." }, 429);
+  const body = await request.json().catch(() => null);
+  const password = body && typeof body.password === "string" ? body.password : "";
+  // Compare fixed-length digests so timing does not reveal the password length or prefix.
+  const ok = sameBytes(await hmac(env.TOKEN_SECRET, "check:" + password), await hmac(env.TOKEN_SECRET, "check:" + env.TEAM_PASSWORD));
+  if (!ok) {
+    if (env.ANNOTATIONS_KV) await env.ANNOTATIONS_KV.put(failKey, String(failures + 1), { expirationTtl: 900 });
+    return jsonResponse({ error: "Wrong team password." }, 401);
+  }
+  return jsonResponse(await issueToken(env));
 }
 
 function jsonResponse(data, status = 200, extraHeaders = {}) {
@@ -210,6 +295,7 @@ export default {
     const url = new URL(request.url);
     const pathname = url.pathname.replace(/\/+$/, "") || "/";
     const method = request.method;
+    requestOrigin = request.headers.get("Origin") || "";
 
     // Handle CORS preflight
     if (method === "OPTIONS") {
@@ -228,6 +314,16 @@ export default {
         hasKV: Boolean(env.ANNOTATIONS_KV),
         time: new Date().toISOString(),
       });
+    }
+
+    if (pathname === "/api/login" && method === "POST") {
+      return handleLogin(request, env);
+    }
+
+    // Everything below is team-only.
+    if (pathname.startsWith("/api/")) {
+      if (!authConfigured(env)) return jsonResponse({ error: "Team login is not set up yet." }, 503);
+      if (!(await validToken(env, request))) return jsonResponse({ error: "Team password required." }, 401);
     }
 
     // 1. GET /api/annotations -> Global Summary for Table Badges & Instructor Mode

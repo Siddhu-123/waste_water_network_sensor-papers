@@ -13,10 +13,11 @@
       rel="stylesheet"
     />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf_viewer.min.css" />
-    <script src="./annotation-config.js?v=remote-api-1"></script>
+    <script src="./annotation-config.js?v=auth-v1"></script>
     <script src="./js/public-mode.js?v=public-v3"></script>
     <script src="./js/theme.js?v=theme-v1"></script>
     <script src="./js/browser-identity.js?v=public-v1"></script>
+    <script src="./js/team-auth.js?v=auth-v1"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
     <style>
       :root {
@@ -3086,9 +3087,15 @@
 
           if (hasApi && paperId) {
             try {
-              const response = await fetch(apiUrl("/annotations/" + encodeURIComponent(paperId)), {
+              const getShared = () => fetch(apiUrl("/annotations/" + encodeURIComponent(paperId)), {
                 cache: "no-store",
+                headers: window.TeamAuth.headers(),
               });
+              let response = await getShared();
+              if (response.status === 401) {
+                window.TeamAuth.clear();
+                if (await window.TeamAuth.unlock(apiUrl("/login"))) response = await getShared();
+              }
               if (!response.ok) throw new Error("API returned " + response.status);
               documentData = await response.json();
               loadedFromApi = true;
@@ -3183,9 +3190,9 @@
           setStatus("Saving annotations to backend…", "neutral");
 
           try {
-            const response = await fetch(apiUrl("/annotations/" + encodeURIComponent(paperId)), {
+            const postShared = () => fetch(apiUrl("/annotations/" + encodeURIComponent(paperId)), {
               method: "POST",
-              headers: { "Content-Type": "application/json" },
+              headers: window.TeamAuth.headers({ "Content-Type": "application/json" }),
               body: JSON.stringify({
                 paperId,
                 revision: annotationRevision,
@@ -3193,6 +3200,11 @@
                 annotations: currentPayload,
               }),
             });
+            let response = await postShared();
+            if (response.status === 401) {
+              window.TeamAuth.clear();
+              if (await window.TeamAuth.unlock(apiUrl("/login"))) response = await postShared();
+            }
 
             const data = await response.json().catch(() => ({}));
             if (response.status === 409) {

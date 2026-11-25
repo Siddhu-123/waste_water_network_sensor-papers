@@ -7,14 +7,16 @@ window.CLOUDFLARE_WORKER_URL = "https://pdf-annotations.sidcode3535.workers.dev"
 // 2. Computed API Base with priority:
 // Explicit custom API > saved custom API > Cloudflare. Retired Vercel links use Cloudflare.
 window.ANNOTATION_API_BASE = (function () {
+  // Overrides may only point at the live worker or a local test server, so a
+  // crafted link cannot send the team password or token anywhere else.
   function activeApi(value) {
     const base = String(value || "").trim().replace(/\/+$/, "");
     try {
-      if (new URL(base).hostname === "waste-water-network-sensor-papers-two.vercel.app") {
-        return window.CLOUDFLARE_WORKER_URL;
-      }
+      const url = new URL(base);
+      const local = url.protocol === "http:" && (url.hostname === "127.0.0.1" || url.hostname === "localhost");
+      if (local || url.origin === window.CLOUDFLARE_WORKER_URL) return url.origin;
     } catch (_e) {}
-    return base;
+    return window.CLOUDFLARE_WORKER_URL;
   }
   try {
     const urlParams = new URLSearchParams(window.location.search);

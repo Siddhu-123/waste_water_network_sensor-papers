@@ -25,9 +25,12 @@ async function loadAnnotationsSummary() {
     }
   } catch (_e) {}
 
-  if (apiBase !== null && !window.PUBLIC_MODE) {
+  // Note counts need the team token; without one the cached counts stay as they are.
+  const teamToken = window.TeamAuth ? window.TeamAuth.token() : "";
+  if (apiBase !== null && !window.PUBLIC_MODE && teamToken) {
     try {
-      const res = await fetch(apiBase + "/api/annotations", { cache: "no-store" });
+      const res = await fetch(apiBase + "/api/annotations", { cache: "no-store", headers: { Authorization: "Bearer " + teamToken } });
+      if (res.status === 401) window.TeamAuth.clear();
       if (res.ok) {
         const data = await res.json();
         if (data && typeof data === "object") {

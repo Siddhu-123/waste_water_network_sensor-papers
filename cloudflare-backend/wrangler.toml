@@ -1,4 +1,4 @@
-name = "wastewater-annotations-api"
+name = "pdf-annotations"
 main = "src/index.js"
 compatibility_date = "2024-09-01"
 
@@ -7,10 +7,13 @@ compatibility_date = "2024-09-01"
 # 1. Run: npx wrangler kv:namespace create ANNOTATIONS_KV
 # 2. Copy the returned ID and replace YOUR_KV_NAMESPACE_ID below.
 #
-# [[kv_namespaces]]
-# binding = "ANNOTATIONS_KV"
-# id = "YOUR_KV_NAMESPACE_ID"
-# preview_id = "YOUR_PREVIEW_KV_NAMESPACE_ID"
+[[kv_namespaces]]
+binding = "ANNOTATIONS_KV"
+id = "2d59bd0c12bb439b9e0069132c2ce51d"
+
+# Team password: set once with `npx wrangler secret put TEAM_PASSWORD`
+# and `npx wrangler secret put TOKEN_SECRET` (a long random string).
+# For `wrangler dev`, put both in a git-ignored .dev.vars file.
 
 [observability]
 enabled = true
