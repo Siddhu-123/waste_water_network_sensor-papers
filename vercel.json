@@ -1,0 +1,6 @@
+{
+  "redirects": [
+    { "source": "/", "destination": "https://siddhu-123.github.io/waste_water_network_sensor-papers/", "permanent": true },
+    { "source": "/:path*", "destination": "https://siddhu-123.github.io/waste_water_network_sensor-papers/:path*", "permanent": true }
+  ]
+}

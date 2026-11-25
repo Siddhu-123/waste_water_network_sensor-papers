@@ -232,7 +232,7 @@ function renderInstructorDashboard() {
             </div>
           </td>
           <td>
-            <button type="button" class="btn-action btn-scholar instructor-inspect-btn" onclick="setInstructorStudent('${escapeHtml(student.name)}')">
+            <button type="button" class="btn-action btn-scholar instructor-inspect-btn" data-action="setInstructorStudent" data-arg="${escapeHtml(student.name)}">
               Inspect →
             </button>
           </td>
@@ -297,7 +297,7 @@ function renderInstructorDashboard() {
               <a href="${escapeHtml(getPdfViewerUrl(stats.latestWorkedPaper))}" target="_blank" rel="noopener" class="btn-action btn-pdf" style="display: inline-flex;">
                 📄 Open PDF + Notes
               </a>
-              <button type="button" class="btn-action btn-summary" onclick="openSummary(${stats.latestWorkedPaper.id})">
+              <button type="button" class="btn-action btn-summary" data-action="openSummary" data-arg="${stats.latestWorkedPaper.id}" data-arg-type="number">
                 📝 Summary
               </button>
             </div>
@@ -381,7 +381,7 @@ function updateInstructorPills() {
     const isSelected = currentInstructorStudent === name;
     const label = name === "all" ? "👥 Entire Team Overview" : name;
     html += `
-      <button type="button" class="instructor-pill ${isSelected ? 'active' : ''}" onclick="setInstructorStudent('${escapeHtml(name)}')">
+      <button type="button" class="instructor-pill ${isSelected ? 'active' : ''}" data-action="setInstructorStudent" data-arg="${escapeHtml(name)}">
         ${escapeHtml(label)}
       </button>
     `;

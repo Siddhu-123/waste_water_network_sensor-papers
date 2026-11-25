@@ -1,30 +1,21 @@
-// Public read-only view. A browser that has never picked a contributor name
-// (for example a phone that scanned a printed QR code) gets it automatically,
-// even when the link carries ?user=<name>. ?public=1 forces it; ?public=0 is the
-// team entry and shows the normal page so a name can be picked. Public visitors
+// Public read-only view. Every browser gets it unless it holds a team token from
+// the footer "Team login" (for example a phone that scanned a printed QR code).
+// ?public=1 forces it even for the team. Public visitors
 // get no sign-in, editing or contributor sections, the read-only reader instead of
 // the annotation editor, and the pages make no backend calls for them.
 (function (global) {
-  function hasSavedName() {
-    try {
-      const store = global.localStorage;
-      const legacy = store.getItem("capstone_user_name") || store.getItem("pdf_active_user") || "";
-      if (legacy.trim() && legacy.trim().toLowerCase() !== "unknown user") return true;
-      const map = JSON.parse(store.getItem("capstone_browser_identity_map") || "null");
-      const id = store.getItem("capstone_device_id");
-      return Boolean(map && id && map.map && map.map[id] && map.map[id].name);
-    } catch (e) {
-      return false;
-    }
-  }
-
   let flag = null;
   try {
     flag = new URLSearchParams(global.location.search).get("public");
   } catch (e) {
     flag = null;
   }
-  const on = flag === "1" || (flag !== "0" && !hasSavedName());
+  // The team view needs a team token (from the footer Team login). A saved name
+  // alone, or ?public=0, is not enough.
+  function hasTeamToken() {
+    try { return Boolean(global.localStorage.getItem("library_team_token")); } catch (e) { return false; }
+  }
+  const on = flag === "1" || !hasTeamToken();
   global.PUBLIC_MODE = on;
   if (!on) return;
 

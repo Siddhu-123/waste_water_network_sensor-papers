@@ -56,8 +56,16 @@
 
   // Shows the password dialog and resolves true once a token is saved, false if skipped.
   // With { askName: true } it also asks for the author name and resolves { name } instead.
+  // The saved name, if it is one of the team's.
+  function knownName() {
+    const team = (window.TeamNames && window.TeamNames.list) || [];
+    let name = "";
+    try { name = window.BrowserIdentity ? window.BrowserIdentity.getName() : ""; } catch (_e) {}
+    return team.some((p) => p.key === name) ? name : "";
+  }
+
   function unlock(url, options) {
-    const askName = Boolean(options && options.askName);
+    const askName = Boolean(options && options.askName) || !knownName();
     if (pending) return pending;
     pending = new Promise((resolve) => {
       const dialog = buildDialog(askName);
@@ -79,12 +87,12 @@
           const res = await fetch(url || loginUrl(), {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ password: input.value }),
+            body: JSON.stringify({ password: input.value, name: author ? author.value : knownName() }),
           });
           const data = await res.json().catch(() => ({}));
           if (!res.ok || !data.token) throw new Error(data.error || "Login failed (HTTP " + res.status + ")");
           try { localStorage.setItem(KEY, data.token); } catch (_e) {}
-          finish(askName ? { name: author.value } : true);
+          finish(options && options.askName ? { name: data.name } : true);
         } catch (err) {
           error.textContent = err.message || "Login failed.";
           input.select();

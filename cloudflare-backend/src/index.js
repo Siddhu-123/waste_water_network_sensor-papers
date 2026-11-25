@@ -31,7 +31,10 @@ const TOKEN_DAYS = 180;
 const MAX_FAILED_LOGINS = 5; // wrong passwords allowed before a lockout
 const LOCK_BASE_SECONDS = 15 * 60; // first lockout; each later one doubles
 const LOCK_MAX_SECONDS = 24 * 60 * 60;
+const GLOBAL_FAILS_PER_HOUR = 200; // across all addresses; stops slow distributed guessing
 const encoder = new TextEncoder();
+// Team members' names as the library stores them. A token is issued for one of these.
+const TEAM_NAMES = ["Satya Siddhartha", "Rijoy John", "Ashis Jose", "Abraham", "Wimukthi"];
 
 function b64url(bytes) {
   let bin = "";
@@ -65,22 +68,24 @@ async function passwordTag(env) {
   return b64url((await hmac(env.TOKEN_SECRET, "password:" + env.TEAM_PASSWORD)).slice(0, 12));
 }
 
-async function issueToken(env) {
+async function issueToken(env, name) {
   const now = Math.floor(Date.now() / 1000);
-  const payload = b64url(encoder.encode(JSON.stringify({ v: 1, iat: now, exp: now + TOKEN_DAYS * 86400, pw: await passwordTag(env) })));
+  const payload = b64url(encoder.encode(JSON.stringify({ v: 2, n: name, iat: now, exp: now + TOKEN_DAYS * 86400, pw: await passwordTag(env) })));
   return { token: payload + "." + b64url(await hmac(env.TOKEN_SECRET, payload)), expiresAt: new Date((now + TOKEN_DAYS * 86400) * 1000).toISOString() };
 }
 
+// Returns the token's claims ({ n: name, ... }) when it is valid, otherwise null.
 async function validToken(env, request) {
-  if (!authConfigured(env)) return false;
+  if (!authConfigured(env)) return null;
   const match = (request.headers.get("Authorization") || "").match(/^Bearer ([A-Za-z0-9_-]+)\.([A-Za-z0-9_-]+)$/);
-  if (!match) return false;
+  if (!match) return null;
   try {
-    if (!sameBytes(fromB64url(match[2]), await hmac(env.TOKEN_SECRET, match[1]))) return false;
+    if (!sameBytes(fromB64url(match[2]), await hmac(env.TOKEN_SECRET, match[1]))) return null;
     const claims = JSON.parse(new TextDecoder().decode(fromB64url(match[1])));
-    return claims.v === 1 && claims.exp > Date.now() / 1000 && claims.pw === (await passwordTag(env));
+    const ok = claims.v === 2 && TEAM_NAMES.includes(claims.n) && claims.exp > Date.now() / 1000 && claims.pw === (await passwordTag(env));
+    return ok ? claims : null;
   } catch (_e) {
-    return false;
+    return null;
   }
 }
 
@@ -92,15 +97,23 @@ async function handleLogin(request, env) {
   // { fails, strikes, until }: fails since the last lockout, lockouts so far, lockout end.
   let record = env.ANNOTATIONS_KV ? await env.ANNOTATIONS_KV.get(failKey, "json").catch(() => null) : null;
   if (!record || typeof record !== "object") record = { fails: 0, strikes: 0, until: 0 };
+  const hourKey = "login-fail-global:" + Math.floor(now / 3600);
+  const globalFails = Number((env.ANNOTATIONS_KV && (await env.ANNOTATIONS_KV.get(hourKey))) || 0);
+  if (globalFails >= GLOBAL_FAILS_PER_HOUR) {
+    return jsonResponse({ error: "Team login is paused for up to an hour after too many wrong passwords." }, 429);
+  }
   if (record.until > now) {
     const wait = record.until - now;
     return jsonResponse({ error: `Too many wrong passwords. Try again in ${Math.ceil(wait / 60)} minutes.`, retryAfter: wait }, 429, { "Retry-After": String(wait) });
   }
   const body = await request.json().catch(() => null);
   const password = body && typeof body.password === "string" ? body.password : "";
+  const name = body && typeof body.name === "string" ? body.name : "";
+  if (!TEAM_NAMES.includes(name)) return jsonResponse({ error: "Choose your name from the team list." }, 400);
   // Compare fixed-length digests so timing does not reveal the password length or prefix.
   const ok = sameBytes(await hmac(env.TOKEN_SECRET, "check:" + password), await hmac(env.TOKEN_SECRET, "check:" + env.TEAM_PASSWORD));
   if (!ok) {
+    if (env.ANNOTATIONS_KV) await env.ANNOTATIONS_KV.put(hourKey, String(globalFails + 1), { expirationTtl: 7200 });
     record.fails += 1;
     const left = MAX_FAILED_LOGINS - record.fails;
     let message = `Wrong team password. ${left} ${left === 1 ? "try" : "tries"} left.`;
@@ -116,7 +129,7 @@ async function handleLogin(request, env) {
     return jsonResponse({ error: message, triesLeft: record.until > now ? 0 : MAX_FAILED_LOGINS - record.fails }, record.until > now ? 429 : 401);
   }
   if (env.ANNOTATIONS_KV && (record.fails || record.strikes)) await env.ANNOTATIONS_KV.delete(failKey);
-  return jsonResponse(await issueToken(env));
+  return jsonResponse(Object.assign({ name }, await issueToken(env, name)));
 }
 
 function jsonResponse(data, status = 200, extraHeaders = {}) {
@@ -341,9 +354,16 @@ export default {
     }
 
     // Everything below is team-only.
+    let claims = null;
     if (pathname.startsWith("/api/")) {
       if (!authConfigured(env)) return jsonResponse({ error: "Team login is not set up yet." }, 503);
-      if (!(await validToken(env, request))) return jsonResponse({ error: "Team password required." }, 401);
+      claims = await validToken(env, request);
+      if (!claims) return jsonResponse({ error: "Team password required." }, 401);
+    }
+
+    // Lets the LaTeX editor (bound as a service) check a team token.
+    if (pathname === "/api/verify" && method === "GET") {
+      return jsonResponse({ ok: true, name: claims.n });
     }
 
     // 1. GET /api/annotations -> Global Summary for Table Badges & Instructor Mode
@@ -433,9 +453,15 @@ export default {
             }, 409);
           }
 
-          const author = (typeof body.author === "string" && body.author.trim())
-            ? body.author.trim().slice(0, 80)
-            : "Team Contributor";
+          // The signed-in name is the author. Notes already stored keep their
+          // original author; new notes are credited to whoever saves them.
+          const author = claims.n;
+          const storedAuthors = new Map(
+            (currentDoc && Array.isArray(currentDoc.annotations) ? currentDoc.annotations : []).map((a) => [a.id, a.createdBy]),
+          );
+          for (const ann of normalizedAnnotations) {
+            ann.createdBy = storedAuthors.has(ann.id) ? storedAuthors.get(ann.id) : author;
+          }
 
           const newRevision = `rev-${Date.now()}-${crypto.randomUUID().slice(0, 8)}`;
           const savedDocument = {

@@ -48,7 +48,7 @@ function renderTable() {
               <td class="col-contributor"><span class="meta-chip library-contributor">${escapeHtml(paper.assignedTo)}</span></td>
               <td class="col-actions">
                   <div class="action-btns mobile-actions">
-                      <button class="btn-action btn-summary" onclick="openSummary(${paper.id})" title="View 8-Step Research Summary" aria-label="Summary"><span aria-hidden="true">📝</span><span class="action-label">Summary</span></button>
+                      <button class="btn-action btn-summary" data-action="openSummary" data-arg="${paper.id}" data-arg-type="number" title="View 8-Step Research Summary" aria-label="Summary"><span aria-hidden="true">📝</span><span class="action-label">Summary</span></button>
                       <a class="btn-action btn-pdf" id="paper-pdf-btn-${paper.id}" href="${escapeHtml(getPdfViewerUrl(paper))}" target="_blank" rel="noopener" title="Read paper and annotations" aria-label="PDF"><span aria-hidden="true">📄</span><span class="action-label">PDF</span><span class="notes-count-pill" id="paper-badge-${paper.id}" style="display:none;"></span></a>
                       <a class="btn-action btn-scholar" href="${paper.scholarUrl}" target="_blank" rel="noopener" title="Search on Google Scholar" aria-label="Source"><span aria-hidden="true">🔗</span><span class="action-label">Source</span></a>
                   </div>

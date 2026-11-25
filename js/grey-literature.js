@@ -288,7 +288,7 @@ function renderGreyLitCards() {
         <div class="library-empty-icon">🔍</div>
         <h3>No matching grey literature found</h3>
         <p>Try clearing your search query or selecting a different category.</p>
-        <button class="btn-action btn-scholar library-empty-reset" onclick="resetGreyLitFilters()">Reset Filters</button>
+        <button class="btn-action btn-scholar library-empty-reset" data-action="resetGreyLitFilters">Reset Filters</button>
       </div>
     `;
     return;
@@ -345,7 +345,7 @@ function renderGreyLitCards() {
             ${item.pages ? `<span>📄 ${item.pages}p</span>` : ""}
           </div>
           <div class="grey-lit-actions">
-            <button type="button" class="btn-action btn-summary" onclick="openGreyLitSummary('${item.id}')" title="Open 8-step summary" aria-label="Summary">
+            <button type="button" class="btn-action btn-summary" data-action="openGreyLitSummary" data-arg="${item.id}" title="Open 8-step summary" aria-label="Summary">
               <span aria-hidden="true">📝</span><span class="action-label">Summary</span>
             </button>
             ${
@@ -364,7 +364,7 @@ function renderGreyLitCards() {
             }
             ${
               hasTakeaways
-                ? `<button type="button" class="btn-action btn-scholar" id="btn-takeaways-${item.id}" onclick="toggleTakeaways('${item.id}')" title="Toggle AI Key Findings" aria-label="Details" aria-expanded="false" aria-controls="takeaways-${item.id}">
+                ? `<button type="button" class="btn-action btn-scholar" id="btn-takeaways-${item.id}" data-action="toggleTakeaways" data-arg="${item.id}" title="Toggle AI Key Findings" aria-label="Details" aria-expanded="false" aria-controls="takeaways-${item.id}">
                     <span aria-hidden="true">💡</span><span class="action-label">Details <span class="ai-badge-sm">AI</span></span>
                    </button>`
                 : ""
