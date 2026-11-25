@@ -22,7 +22,7 @@ def main():
         source = root / name
         if source.is_file():
             shutil.copy2(source, output / name)
-    for name in ("js", "css", "contributors", "annotations", "assets", "images"):
+    for name in ("js", "css", "contributors", "annotations", "assets", "images", "r"):
         source = root / name
         if source.is_dir():
             shutil.copytree(source, output / name, ignore=shutil.ignore_patterns(".DS_Store", "__pycache__"))

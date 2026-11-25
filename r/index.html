@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Wastewater Research Library</title>
+<script>
+  // Short links for printed QR codes: r/?review, r/?library. Always opens the public read-only view.
+  (function () {
+    var links = {
+      library: "../index.html?public=1",
+      review: "../pdf-viewer.html?paper=team-compiled-paper&pdf=contributors%2Fteam_compiled_paper.pdf&title=Optimal+Sensor+Placement+for+Wastewater+Network+Monitoring&topic=OSP&public=1"
+    };
+    var key = location.search.replace(/^\?/, "").split(/[&=]/)[0].toLowerCase();
+    location.replace(links[key] || links.library);
+  })();
+</script>
+</head>
+<body>
+<p><a href="../index.html?public=1">Open the research library</a></p>
+</body>
+</html>
