@@ -249,11 +249,13 @@ function filterAndRenderGreyLit() {
     return true;
   });
 
+  const filtered = greyMajor !== "all" || greySub !== "all" || activeContributorFilter !== "all" || Boolean(greyLitSearchQuery);
+  const greyPanel = document.getElementById("greyLitFilterPanel");
+  if (greyPanel) greyPanel.dataset.filtered = String(filtered);
   const summary = document.getElementById("greyResultsSummary");
   if (summary) {
     const selection = greyMajor === "all" ? "All reports" : categorySelectionLabel("grey", greyLitData, greyMajor, greySub);
     const user = activeContributorFilter === "all" ? "" : ` · ${activeContributorFilter}`;
-    const filtered = greyMajor !== "all" || activeContributorFilter !== "all" || Boolean(greyLitSearchQuery);
     summary.textContent = `${selection}${user} · ${filteredGreyLitData.length}${filtered ? ` of ${greyLitData.length}` : ""}`;
   }
   renderGreyLitCards();

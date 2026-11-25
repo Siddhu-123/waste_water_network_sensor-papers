@@ -194,11 +194,13 @@ function categorySelectionLabel(section, records, major, sub) {
 
 function updateFilterSummary(visibleCount) {
   const summary = document.getElementById("academicResultsSummary");
-  if (!summary) return;
   const count = visibleCount ?? papersData.length;
   const selection = academicMajor === "all" ? "All papers" : categorySelectionLabel("academic", papersData, academicMajor, academicSub);
   const user = document.getElementById("userFilter").value;
-  const filtered = academicMajor !== "all" || user !== "all" || document.getElementById("searchInput").value.length > 0;
+  const filtered = academicMajor !== "all" || academicSub !== "all" || user !== "all" || document.getElementById("searchInput").value.trim().length > 0;
+  const panel = document.getElementById("filterPanel");
+  if (panel) panel.dataset.filtered = String(filtered);
+  if (!summary) return;
   summary.textContent = `${selection}${user === "all" ? "" : ` · ${user}`} · ${count}${filtered ? ` of ${papersData.length}` : ""}`;
 }
 

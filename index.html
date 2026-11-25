@@ -19,7 +19,7 @@
     <link rel="stylesheet" href="css/papers.css?v=section-v3" />
     <link rel="stylesheet" href="css/modals.css?v=switch-person-v1" />
     <link rel="stylesheet" href="css/research-map.css?v=layout-v17" />
-    <link rel="stylesheet" href="css/mobile.css?v=mobile-v1" />
+    <link rel="stylesheet" href="css/mobile.css?v=mobile-v2" />
   <!-- live presentation sync -->
   <script>(function(){var l=/^(localhost|127\.0\.0\.1)$/.test(location.hostname),s=document.createElement("script");s.src=(l?"http://localhost:8787":"https://capstone-live.sidcode3535.workers.dev")+"/present.js";s.defer=true;document.head.appendChild(s)})();</script>
   </head>
@@ -241,8 +241,8 @@
           aria-controls="academicSection"
           onclick="switchLibraryTab('academic')"
         >
-          <span class="tab-icon">📚</span>
-          <span class="tab-label">Peer-Reviewed Papers</span>
+          <span class="tab-icon" aria-hidden="true">📚</span>
+          <span class="tab-label"><span class="tab-label-full">Peer-Reviewed Papers</span><span class="tab-label-short" aria-hidden="true">Papers</span></span>
           <span class="tab-count" id="academicTabCount">–</span>
         </button>
         <button
@@ -253,8 +253,8 @@
           aria-controls="greyLitSection"
           onclick="switchLibraryTab('grey-literature')"
         >
-          <span class="tab-icon">🏢</span>
-          <span class="tab-label">Grey Literature & Utility Reports</span>
+          <span class="tab-icon" aria-hidden="true">🏢</span>
+          <span class="tab-label"><span class="tab-label-full">Grey Literature & Utility Reports</span><span class="tab-label-short" aria-hidden="true">Reports</span></span>
           <span class="tab-count" id="greyLitTabCount">–</span>
         </button>
       </nav>
@@ -263,7 +263,7 @@
       <!-- SECTION 1: Academic Literature             -->
       <!-- ========================================== -->
       <section id="academicSection" aria-label="Peer-Reviewed Academic Literature">
-        <div class="filter-panel" id="filterPanel">
+        <div class="filter-panel" id="filterPanel" data-filtered="false">
           <div class="library-view-bar filter-panel-header">
             <div class="library-heading-group">
               <h2 class="library-view-heading" id="academicViewHeading">Peer-reviewed papers</h2>
@@ -319,6 +319,14 @@
             >
               <option value="all">User: All</option>
             </select>
+            <button
+              type="button"
+              id="academicResetBtn"
+              class="btn-action btn-scholar mobile-reset-btn"
+              onclick="resetAcademicFilters()"
+            >
+              Reset Filters
+            </button>
             <div class="category-bar" id="academicCategoryBar" role="group" aria-label="Research groups"></div>
             <div class="category-bar category-sub-bar" id="academicSubBar" role="group" aria-label="Research sub-groups" hidden></div>
           </div>
@@ -370,7 +378,7 @@
           </button>
         </div>
 
-        <div class="filter-panel" id="greyLitFilterPanel">
+        <div class="filter-panel" id="greyLitFilterPanel" data-filtered="false">
           <div class="library-view-bar filter-panel-header">
             <div class="library-heading-group">
               <h2 class="library-view-heading" id="greyViewHeading">Reports and documents</h2>
@@ -421,7 +429,8 @@
               </select>
               <button
                 type="button"
-                class="btn-action btn-scholar"
+                id="greyResetBtn"
+                class="btn-action btn-scholar grey-reset-btn"
                 onclick="resetGreyLitFilters()"
                 style="padding: 10px 18px; font-size: var(--fs-ui); height: 42px; white-space: nowrap;"
               >
@@ -624,12 +633,12 @@
     <script src="js/data.js?v=report-v1"></script>
     <script src="js/papers.js?v=shelf-v1"></script>
     <script src="js/category-groups.js?v=groups-v1"></script>
-    <script src="js/filters.js?v=section-v1"></script>
+    <script src="js/filters.js?v=mobile-v2"></script>
     <script src="js/modals.js"></script>
     <script src="js/browser-identity.js?v=public-v1"></script>
     <script src="js/profile.js?v=switch-person-v1"></script>
     <script src="js/annotations.js?v=layout-v1"></script>
-    <script src="js/grey-literature.js?v=profile-dashboard-v2"></script>
+    <script src="js/grey-literature.js?v=mobile-v2"></script>
     <script src="js/instructor.js?v=profile-dashboard-v2"></script>
     <script src="js/main.js"></script>
     <script src="js/library-views.js?v=layout-v4"></script>
