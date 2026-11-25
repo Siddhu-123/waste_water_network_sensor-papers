@@ -164,3 +164,25 @@ h6 {
 html:not(.public-view) .public-only {
   display: none !important;
 }
+
+/* Small team entry at the end of the public library page. */
+.site-foot {
+  display: flex;
+  justify-content: center;
+  padding: 24px 16px 32px;
+}
+.team-login-link {
+  background: none;
+  border: 0;
+  padding: 4px 8px;
+  font: inherit;
+  font-size: 12px;
+  color: inherit;
+  opacity: 0.55;
+  cursor: pointer;
+}
+.team-login-link:hover,
+.team-login-link:focus-visible {
+  opacity: 0.9;
+  text-decoration: underline;
+}

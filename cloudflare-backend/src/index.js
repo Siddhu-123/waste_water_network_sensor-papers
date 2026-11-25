@@ -28,7 +28,9 @@ function applyCorsHeaders(headers = new Headers()) {
  * route needs it. Changing TEAM_PASSWORD or TOKEN_SECRET signs everyone out.
  * Without both secrets the API refuses all annotation requests (fails closed). */
 const TOKEN_DAYS = 180;
-const MAX_FAILED_LOGINS = 10; // per IP per 15 minutes
+const MAX_FAILED_LOGINS = 5; // wrong passwords allowed before a lockout
+const LOCK_BASE_SECONDS = 15 * 60; // first lockout; each later one doubles
+const LOCK_MAX_SECONDS = 24 * 60 * 60;
 const encoder = new TextEncoder();
 
 function b64url(bytes) {
@@ -86,16 +88,34 @@ async function handleLogin(request, env) {
   if (!authConfigured(env)) return jsonResponse({ error: "Team login is not set up yet." }, 503);
   const ip = request.headers.get("CF-Connecting-IP") || "unknown";
   const failKey = "login-fail:" + ip;
-  const failures = Number((env.ANNOTATIONS_KV && (await env.ANNOTATIONS_KV.get(failKey))) || 0);
-  if (failures >= MAX_FAILED_LOGINS) return jsonResponse({ error: "Too many attempts. Try again in 15 minutes." }, 429);
+  const now = Math.floor(Date.now() / 1000);
+  // { fails, strikes, until }: fails since the last lockout, lockouts so far, lockout end.
+  let record = env.ANNOTATIONS_KV ? await env.ANNOTATIONS_KV.get(failKey, "json").catch(() => null) : null;
+  if (!record || typeof record !== "object") record = { fails: 0, strikes: 0, until: 0 };
+  if (record.until > now) {
+    const wait = record.until - now;
+    return jsonResponse({ error: `Too many wrong passwords. Try again in ${Math.ceil(wait / 60)} minutes.`, retryAfter: wait }, 429, { "Retry-After": String(wait) });
+  }
   const body = await request.json().catch(() => null);
   const password = body && typeof body.password === "string" ? body.password : "";
   // Compare fixed-length digests so timing does not reveal the password length or prefix.
   const ok = sameBytes(await hmac(env.TOKEN_SECRET, "check:" + password), await hmac(env.TOKEN_SECRET, "check:" + env.TEAM_PASSWORD));
   if (!ok) {
-    if (env.ANNOTATIONS_KV) await env.ANNOTATIONS_KV.put(failKey, String(failures + 1), { expirationTtl: 900 });
-    return jsonResponse({ error: "Wrong team password." }, 401);
+    record.fails += 1;
+    const left = MAX_FAILED_LOGINS - record.fails;
+    let message = `Wrong team password. ${left} ${left === 1 ? "try" : "tries"} left.`;
+    if (record.fails >= MAX_FAILED_LOGINS) {
+      record.strikes += 1;
+      record.fails = 0;
+      const lock = Math.min(LOCK_BASE_SECONDS * 2 ** (record.strikes - 1), LOCK_MAX_SECONDS);
+      record.until = now + lock;
+      message = `Too many wrong passwords. Try again in ${Math.ceil(lock / 60)} minutes.`;
+    }
+    // Keep the strike count for a day after the last lockout so repeat offenders wait longer.
+    if (env.ANNOTATIONS_KV) await env.ANNOTATIONS_KV.put(failKey, JSON.stringify(record), { expirationTtl: Math.max(record.until - now, 0) + LOCK_MAX_SECONDS });
+    return jsonResponse({ error: message, triesLeft: record.until > now ? 0 : MAX_FAILED_LOGINS - record.fails }, record.until > now ? 429 : 401);
   }
+  if (env.ANNOTATIONS_KV && (record.fails || record.strikes)) await env.ANNOTATIONS_KV.delete(failKey);
   return jsonResponse(await issueToken(env));
 }
 

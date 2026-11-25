@@ -22,15 +22,22 @@
     try { localStorage.removeItem(KEY); } catch (_e) {}
   }
 
-  function buildDialog() {
+  // The worker on the live site; any host can override via annotation-config.js.
+  function loginUrl() {
+    const base = String(window.ANNOTATION_API_BASE || "https://pdf-annotations.sidcode3535.workers.dev").replace(/\/+$/, "");
+    return base + "/api/login";
+  }
+
+  function buildDialog(askName) {
     const dialog = document.createElement("dialog");
     dialog.className = "team-auth-dialog";
-    dialog.style.cssText = "max-width:340px;width:calc(100% - 32px);padding:20px;border-radius:12px;border:1px solid rgba(128,128,128,.4);background:Canvas;color:CanvasText;font:14px/1.4 Inter,system-ui,sans-serif";
+    dialog.style.cssText = "position:fixed;inset:0;margin:auto;height:fit-content;max-width:340px;width:calc(100% - 32px);padding:20px;border-radius:12px;border:1px solid rgba(128,128,128,.4);background:Canvas;color:CanvasText;font:14px/1.4 Inter,system-ui,sans-serif";
     dialog.innerHTML =
       '<form method="dialog" style="display:grid;gap:10px;margin:0">' +
-      '<strong style="font-size:15px">Team password</strong>' +
+      '<strong style="font-size:15px">' + (askName ? "Team login" : "Team password") + '</strong>' +
       '<span style="opacity:.75">Shared notes and highlights are for the project team. Enter the password once on this browser.</span>' +
-      '<input type="password" name="password" autocomplete="current-password" required style="padding:8px 10px;border-radius:8px;border:1px solid rgba(128,128,128,.5);font:inherit;background:Field;color:FieldText">' +
+      (askName ? '<input type="text" name="author" placeholder="Your name (shown on your notes)" autocomplete="name" maxlength="60" required style="padding:8px 10px;border-radius:8px;border:1px solid rgba(128,128,128,.5);font:inherit;background:Field;color:FieldText">' : "") +
+      '<input type="password" name="password" placeholder="Team password" autocomplete="current-password" required style="padding:8px 10px;border-radius:8px;border:1px solid rgba(128,128,128,.5);font:inherit;background:Field;color:FieldText">' +
       '<span class="team-auth-error" role="alert" style="color:#d33;min-height:1.2em"></span>' +
       '<div style="display:flex;gap:8px;justify-content:flex-end">' +
       '<button type="button" value="skip" style="padding:7px 12px;border-radius:8px;font:inherit">Read without notes</button>' +
@@ -41,23 +48,28 @@
   }
 
   // Shows the password dialog and resolves true once a token is saved, false if skipped.
-  function unlock(loginUrl) {
+  // With { askName: true } it also asks for the author name and resolves { name } instead.
+  function unlock(url, options) {
+    const askName = Boolean(options && options.askName);
     if (pending) return pending;
     pending = new Promise((resolve) => {
-      const dialog = buildDialog();
+      const dialog = buildDialog(askName);
       const form = dialog.querySelector("form");
       const input = form.elements.password;
+      const author = form.elements.author;
       const error = dialog.querySelector(".team-auth-error");
       const submit = form.querySelector('button[type="submit"]');
       const finish = (ok) => { dialog.close(); dialog.remove(); pending = null; resolve(ok); };
-      form.querySelector('button[value="skip"]').addEventListener("click", () => finish(false));
+      const skip = form.querySelector('button[value="skip"]');
+      if (askName) skip.textContent = "Cancel";
+      skip.addEventListener("click", () => finish(false));
       dialog.addEventListener("cancel", (event) => { event.preventDefault(); finish(false); });
       form.addEventListener("submit", async (event) => {
         event.preventDefault();
         submit.disabled = true;
         error.textContent = "";
         try {
-          const res = await fetch(loginUrl, {
+          const res = await fetch(url || loginUrl(), {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ password: input.value }),
@@ -65,7 +77,7 @@
           const data = await res.json().catch(() => ({}));
           if (!res.ok || !data.token) throw new Error(data.error || "Login failed (HTTP " + res.status + ")");
           try { localStorage.setItem(KEY, data.token); } catch (_e) {}
-          finish(true);
+          finish(askName ? { name: author.value.trim() } : true);
         } catch (err) {
           error.textContent = err.message || "Login failed.";
           input.select();
@@ -74,10 +86,27 @@
         }
       });
       dialog.showModal();
-      input.focus();
+      (author || input).focus();
     });
     return pending;
   }
 
-  window.TeamAuth = { token, headers, clear, unlock };
+  // Footer "Team login" on the public page: name + password, then the team view.
+  async function login() {
+    const result = await unlock(loginUrl(), { askName: true });
+    if (!result || !result.name) return;
+    // Public mode blocks saving a name, so lift it for this one write before leaving the page.
+    window.PUBLIC_MODE = false;
+    if (window.BrowserIdentity) window.BrowserIdentity.setName(result.name);
+    location.href = "index.html?public=0";
+  }
+
+  document.addEventListener("click", (event) => {
+    const trigger = event.target.closest && event.target.closest("[data-team-login]");
+    if (!trigger) return;
+    event.preventDefault();
+    login();
+  });
+
+  window.TeamAuth = { token, headers, clear, unlock, login, loginUrl };
 })();
