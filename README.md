@@ -1,375 +1,141 @@
-# Wastewater Research Corpus
+# Wastewater Research Library
 
-This repository contains the Paper 1 wastewater-sensor literature viewer. It stores research-paper PDFs, 8-step summaries, contributor metadata, topic-level compiled papers, and industry grey literature across **58 research papers**, **5 contributor compiled reviews**, **1 team-wide compiled paper**, and **111 grey literature / utility reports** (175 total documents).
+> A static browser library for the Capstone PG-S2-22 team's wastewater sensor papers, compiled reviews and utility reports.
 
-Open [`index.html`](./index.html) to use the viewer.
+![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?logo=javascript&logoColor=black) ![HTML/CSS](https://img.shields.io/badge/HTML%2FCSS-E34F26?logo=html5&logoColor=white) ![Python](https://img.shields.io/badge/Python-3776AB?logo=python&logoColor=white) ![Web](https://img.shields.io/badge/platform-web-blue) ![Status](https://img.shields.io/badge/status-active-brightgreen)
 
-## Repository layout
+Open [`index.html`](./index.html), or use the shared library link: https://siddhu-123.github.io/waste_water_network_sensor-papers/index.html. A direct Vercel deployment is also available at https://waste-water-network-sensor-papers-two.vercel.app/.
 
-```text
-sensor_papers/
-├── index.html                         Dynamic viewer with nested filters & squeeze toggle
-├── css/
-│   ├── base.css                       Design tokens, typography, and reset
-│   ├── controls.css                   Search bar, topic/category filters & squeeze toggle
-│   ├── papers.css                     Papers table, responsive cards & compiled papers
-│   ├── modals.css                     8-step summary modal & contributor profile modal
-│   └── style.css                      Master stylesheet importing all modules
-├── js/
-│   ├── data.js                        State, normalization, duplicate detection & loaders
-│   ├── filters.js                     Filter controls, dropdowns, pills & table filter logic
-│   ├── papers.js                      Table and compiled papers DOM rendering
-│   ├── modals.js                      8-step research summary dialog controller
-│   ├── profile.js                     Contributor profile dashboard, device & welcome banner
-│   ├── annotations.js                 Annotation counts and live table badges
-│   ├── grey-literature.js             Grey literature catalog, filters, utility themes & modal rendering
-│   └── main.js                        Bootstrap and lifecycle initialization
-├── pdf-viewer.html                    PDF.js viewer with shared highlights & sticker notes
-├── annotation-config.js               Optional Vercel API URL for GitHub Pages
-├── package.json                        Vercel Blob dependency for the API
-├── summaries.json                     Shared 8-step summaries
-├── annotations/                       Optional committed fallback annotations
-├── api/                               Vercel OAuth and annotation API routes
-├── server/                            Server-only GitHub/OAuth and Blob helpers
-├── scripts/
-│   └── validate_repo.py               Automated repository consistency validator
-├── contributors/
-│   ├── manifest.json                  Registered contributors & team compiled paper entry
-│   ├── team_compiled_paper.pdf        Team-wide compiled paper PDF
-│   ├── team_compiled_paper.json       Team compiled paper metadata
-│   ├── _template/
-│   │   ├── papers.json                Copy this for new research/compiled paper contributions
-│   │   └── grey-literature.json       Copy this for new grey literature contributions
-│   └── <contributor>/
-│       ├── papers.json                Research-paper and compiled-paper metadata
-│       ├── papers/                    Individual research-paper PDFs
-│       ├── compiled-papers/           Topic-level compiled-paper PDFs
-│       ├── grey-literature.json       Industry reports & utility grey literature metadata
-│       └── grey/                      Grey literature report PDFs (standards, utility guidelines, manuals)
-```
+## At a glance
 
-All paper records across contributors are loaded dynamically from their respective JSON files. `index.html` contains no hardcoded paper data.
+| | |
+|---|---|
+| **What** | Searchable corpus: 58 research papers, 5 compiled reviews, 1 team paper and 111 grey-literature reports |
+| **Stack** | Vanilla JavaScript, vendored PDF.js, Python scripts, Cloudflare Worker for shared notes |
+| **Status** | Active |
+| **Run it** | `python3 -m http.server 8000`, then open `http://localhost:8000` |
 
-## PDF Viewer: Table of Contents & Accurate Page Labels
+## Features
 
-Click **PDF + Notes** beside any paper to open the workspace in [`pdf-viewer.html`](./pdf-viewer.html):
+- Nested topic, user and category filters with a squeeze/expand toggle.
+- 8-step summaries in `summaries.json` and contributor profile cards.
+- PDF.js viewer with a table of contents, true publisher page labels and click-to-jump navigation.
+- Shared rectangular highlights and draggable sticker notes, stored as normalized coordinates.
+- Team and contributor compiled-paper shelves, plus a grey-literature tab.
+- Duplicate detection by DOI, then by normalized title, first author and year.
+- Research map generated from paper PDFs in CI, with reviewed overrides.
+- Repository consistency validator run locally and in GitHub Actions.
 
-- **Table of Contents Sidebar (📑):** Displays the full document structure and headings. Click any heading to jump smoothly to that section.
-- **True Page Label Synchronization:** When papers have publisher front matter (e.g. Roman numerals `i–iv` followed by Arabic `1–28`), the Table of Contents and toolbar display the publisher's true page label (e.g. `Page 1 (5 of 32)`) matching the printed page numbers in the document.
-- **Click-to-Jump Navigation:** Click on the page indicator in the toolbar to jump directly to any page number or publisher page label (e.g. typing `iv` or `1`).
-- **Automated Heading Extraction:** For papers without embedded PDF bookmarks, the viewer automatically reconstructs full text lines using baseline clustering and font metrics to detect and present section headings.
+## Progress
 
-## Shared PDF highlights and sticker notes
+| Area / Feature | Status | Notes |
+|---|---|---|
+| Viewer, filters and compiled-paper shelves | ✅ Done | Paper data is loaded from contributor JSON, not hardcoded in HTML |
+| PDF viewer, summaries and shared annotations | ✅ Done | Cloudflare Worker is the default annotation store |
+| Grey-literature catalogue and research map | ✅ Done | Map data is regenerated on pushes to `main` |
+| Validator and GitHub Actions build | ✅ Done | Tests, geography build, validation and Pages deploy |
+| Atomic writes and auth parity on Cloudflare | ⏳ Planned | Review recommends D1 conditional updates; GitHub OAuth routes are not ported |
+| Retire the Vercel store after another comparison | ⏳ Planned | Vercel remains deployed with its original data |
 
-Click **PDF + Notes** beside any paper. The viewer supports rectangular highlights and draggable sticker notes. Annotation positions are stored as normalized coordinates, so they remain aligned when the PDF is viewed on a different screen size.
+## Quick start
 
-The recommended shared library link is:
+Prerequisites: Python 3. No package install is needed to view the library.
+
+1. From this directory, run `python3 -m http.server 8000`.
+2. Open http://localhost:8000 and use the topic, user and category filters.
+3. Click **PDF + Notes** beside a paper to open the PDF viewer.
+4. Run `python3 scripts/validate_repo.py` before committing.
+
+GitHub Actions runs the same validator on pushes and pull requests, then publishes the site to GitHub Pages from `main`.
+
+## Project structure
 
 ```text
-https://siddhu-123.github.io/waste_water_network_sensor-papers/index.html
+.
+├── index.html              # Main viewer with nested filters
+├── pdf-viewer.html         # PDF.js viewer with highlights and notes
+├── view.html, r/           # Additional view pages
+├── css/, js/               # Stylesheets and viewer modules
+├── vendor/pdfjs-3.11.174/  # Bundled PDF.js
+├── contributors/           # Manifest, templates and per-member paper folders
+├── summaries.json          # Shared 8-step paper summaries
+├── annotations/            # Optional committed annotation fallback
+├── api/, server/           # Vercel OAuth and annotation routes
+├── cloudflare-backend/     # Cloudflare Worker annotation API
+├── data/geography/         # Reviewed mappings and gazetteer data
+├── scripts/                # Data builders, validators and transfer tools
+└── docs/                   # Backend review and location-automation notes
 ```
 
-GitHub Pages hosts this public library, while Vercel hosts the API and stores one small private JSON object per paper in Vercel Blob. The viewer fetches that object whenever someone opens the PDF, so annotations are shared without adding JSON files or PDF copies to GitHub. The direct Vercel site is also available at `https://waste-water-network-sensor-papers-two.vercel.app/`.
+## Tech stack
 
-The viewer has two modes:
+- Vanilla JavaScript and modular CSS; no frontend build step.
+- PDF.js 3.11.174 is vendored under `vendor/`.
+- Python 3 scripts build bundled data, geography data and validate the repository.
+- Cloudflare Worker plus KV holds shared annotations by default (`cloudflare-backend/`).
+- Vercel Blob and the GitHub OAuth routes remain as a separate, alternate store.
+- GitHub Pages hosts the viewer; GitHub Actions builds, validates and deploys it.
 
-- **GitHub Pages mode:** the public viewer calls the Vercel API through [`annotation-config.js`](./annotation-config.js), so shared annotations work from the library link above.
-- **Vercel mode:** the viewer and API use the same Vercel origin. Shared annotations are loaded from Vercel Blob.
-- **Local preview:** the viewer can load an optional committed JSON fallback and download a local backup. Shared saving is disabled on `file://` pages.
+## How it works
 
-Share the GitHub Pages link above with the team. The Vercel URL is a direct alternative.
+All paper records are loaded from contributor JSON files; `index.html` contains no hardcoded paper data. Every push to `main` runs `.github/workflows/validate.yml`: it tests ingestion, regenerates geography and browser data, validates both and publishes the site. Pull requests run the same steps without deploying.
 
-### Shared saves with Vercel Blob
+`annotation-config.js` sets the API base in this order: `?api=` query, saved localStorage override, Cloudflare Worker, then same origin. Overrides are accepted only for the live Worker or a local server. Shared saves use the Cloudflare Worker; Vercel remains a separate store, not a synced copy. On `file://` pages shared saving is disabled, and the viewer can load a committed JSON fallback from `annotations/` and download a local backup. See [the backend review](docs/cloudflare-backend-review.md) for the transfer status and open items.
 
-Shared annotations are saved directly to Vercel Blob via the Vercel API.
+For PDFs without embedded bookmarks, the viewer reconstructs headings from text lines using baseline clustering and font metrics. It shows publisher page labels, such as Roman front matter followed by printed page numbers, in the table of contents and toolbar.
 
-- **Storage:** Vercel Blob stores one JSON object per paper under `annotations/paper-<paperId>.json`.
-- **Zero Login Friction:** Teammates can view, highlight, add sticker notes, and hit **Save shared annotations** without having to authenticate through GitHub OAuth. Notes are attributed using the active contributor context or author name.
-- **Concurrency Safety:** Each save checks the current Blob revision ETag (`ifMatch`), ensuring concurrent edits do not silently overwrite teammate notes.
-- **Vercel Requirement:** The Vercel project only requires the Vercel Blob store connected (which provides `BLOB_READ_WRITE_TOKEN`). GitHub OAuth app setup is completely optional.
+The Vercel backend is still present as an alternate store: it keeps one JSON object per paper in Blob under `annotations/paper-<paperId>.json`, checks the Blob revision ETag on save, and needs `BLOB_READ_WRITE_TOKEN`. GitHub OAuth is optional there.
 
-## Registered contributors
+The viewer keeps suspected duplicates visible with a warning badge showing the earlier paper ID and uploader. It compares DOIs first, then normalized title, first author and year. Duplicate identities are validation warnings, not errors.
 
-Use the exact names already listed in [`contributors/manifest.json`](./contributors/manifest.json):
+## Adding content
 
-- Satya Siddhartha
-- Abraham
-- Ashis Jose
-- Rijoy John
-- Wimukthi
+Use the exact contributor names in [`contributors/manifest.json`](./contributors/manifest.json). Do not rename a contributor folder or change a registered name without updating the manifest.
 
-Do not rename a contributor folder or change the registered name without updating the manifest.
+### Research paper
 
-## Add an individual research paper
+1. Open your own `contributors/<your-slug>/papers.json`, copying [`contributors/_template/papers.json`](./contributors/_template/papers.json) if needed.
+2. Pick a numeric ID unique across all contributors and put the PDF in your `papers/` folder.
+3. Add a record with `pages`, `size` (for example `"1.2 MB"`) and a `pdfUrl` beginning `./contributors/`.
+4. Add the matching 8-step entry to [`summaries.json`](./summaries.json) under the same numeric ID.
+5. Add the canonical DOI when one exists, and set `assignedTo`, `topic` and `filterCategory` in both metadata locations so nested filters stay correct.
 
-1. Open your own `contributors/<your-slug>/papers.json` file.
-2. Copy the structure from [`contributors/_template/papers.json`](./contributors/_template/papers.json).
-3. Choose a unique numeric paper ID. Check the latest papers across all contributors to ensure your ID is unique (e.g. 24, 25, ...).
-4. Place the PDF in your contributor's `papers/` folder.
-5. Add the record to `papers.json`. Include `pages` (integer page count) and `size` (human-readable file size, e.g. `"1.2 MB"`). Use a PDF path beginning with `./contributors/`.
-6. Add the matching 8-step entry to [`summaries.json`](./summaries.json) using the same numeric ID.
+The 8 steps are citation, intro, aims and research methods, scope, usefulness, limitations, conclusions and reflection.
 
-Template for `summaries.json`:
+### Compiled paper
 
-```json
-  "24": {
-    "assignedTo": "Your Name",
-    "topic": "Sensors",
-    "filterCategory": "Level & Flow",
-    "citation": "",
-    "intro": "",
-    "methods": "",
-    "scope": "",
-    "usefulness": "",
-    "limitations": "",
-    "conclusions": "",
-    "reflection": ""
-  }
-```
+The single team paper lives at the `contributors/` root: [`team_compiled_paper.pdf`](./contributors/team_compiled_paper.pdf) with metadata in `team_compiled_paper.json`, registered as `teamCompiledPaper`. The team report PDF is registered as `teamProjectReport`.
 
-7. Add the DOI when the paper has one. Use the canonical value, such as `10.1234/example-doi`.
-8. Set `assignedTo`, `topic`, and `filterCategory` in both metadata locations so the nested filters remain correct.
+For an individual or co-authored review (2 or 3 teammates):
 
-Template for `papers.json`:
+1. Put the PDF in `contributors/<your-slug>/compiled-papers/` named `<first-author-first-name>_<published-year>_<paper-name>.pdf`, with underscores between words.
+2. Add an entry to the `compiledPapers` array in your `papers.json` with `id`, `title`, `topic`, `filterCategory`, `assignedTo`, `description`, `pages`, `size` and `pdfUrl`.
+3. For co-authors, use an array of names or a comma-separated string. The paper appears under either contributor's filter and lists all co-authors.
 
-```json
-{
-  "id": 24,
-  "title": "Paper title",
-  "authors": "Authors (year)",
-  "journal": "Journal, volume, pages",
-  "categoryKey": "other",
-  "categoryLabel": "Network optimisation",
-  "topic": "Algorithms",
-  "filterCategory": "Network optimisation",
-  "assignedTo": "Abraham",
-  "doi": "10.1234/example-doi",
-  "pages": 15,
-  "size": "1.2 MB",
-  "pdfUrl": "./contributors/abraham/papers/paper-24.pdf",
-  "scholarUrl": "https://scholar.google.com/"
-}
-```
+### Grey literature
 
-## Team compiled paper
+Grey literature covers utility reports, overflow case studies, design standards, regulator guidelines, sensor manuals and drainage master plans.
 
-The team compiled paper is the collaborative review authored together by the entire team:
-
-- **PDF location:** [`contributors/team_compiled_paper.pdf`](./contributors/team_compiled_paper.pdf)
-- **Metadata location:** [`contributors/team_compiled_paper.json`](./contributors/team_compiled_paper.json) and registered under `teamCompiledPaper` in [`contributors/manifest.json`](./contributors/manifest.json).
-- **Structure:**
-  ```json
-  "teamCompiledPaper": {
-    "id": "team-compiled-paper",
-    "title": "Optimal Sensor Placement for Wastewater Network Monitoring",
-    "topic": "OSP",
-    "filterCategory": "Compiled Review",
-    "assignedTo": "Team",
-    "description": "Compiled team review of where to place a small number of sensors in a wastewater network. It covers sensor technologies, placement and optimisation methods, sewer condition and failure factors, and the openly available South Australian network data. The review finds that the best location depends on what the sensor must detect (level trend, overflow alarm, flow, contaminant or gas), and that published percentage gains are network-specific. It sets out a staged, purpose-specific placement method to be tested on the SA Water network.",
-    "pages": 42,
-    "size": "564 KB",
-    "pdfUrl": "./contributors/team_compiled_paper.pdf"
-  }
-  ```
-- Because only one team compiled paper exists at a time, it sits directly in the `contributors/` root folder rather than inside any individual teammate's directory.
-
-## Add a contributor compiled paper (single or co-authored)
-
-A contributor compiled paper is a review, report, or thesis document written by an individual contributor or co-authored by 2 or 3 teammates.
-
-1. Put the PDF in `contributors/<your-slug>/compiled-papers/`.
-2. Name the file `<first-author-first-name>_<published-year>_<paper-name>.pdf`, using the paper title as the paper name and underscores between every word.
-3. Add an entry to the `compiledPapers` array in your `papers.json`.
-4. Set `id`, `title`, `topic`, `filterCategory`, `assignedTo`, `description`, `pages`, `size`, and `pdfUrl`.
-
-### Single-author compiled paper:
-```json
-{
-  "id": "abraham-sa-wastewater-data",
-  "title": "Public Wastewater Network Data in South Australia",
-  "topic": "OSP",
-  "filterCategory": "Compiled Review",
-  "assignedTo": "Abraham",
-  "description": "Abraham's compiled review on public wastewater network data in South Australia.",
-  "pages": 13,
-  "size": "330 KB",
-  "pdfUrl": "./contributors/abraham/compiled-papers/Public Wastewater Network Data in South Australia.pdf"
-}
-```
-
-### Co-authored compiled paper (2 or 3 teammates):
-When two or three teammates collaborate on a compiled paper, `assignedTo` can be set as an array of names or a comma-separated string:
-```json
-{
-  "id": "abraham-ashis-review",
-  "title": "Joint Review on Acoustic Sensor Placement",
-  "topic": "OSP",
-  "filterCategory": "Compiled Review",
-  "assignedTo": ["Abraham", "Ashis Jose"],
-  "description": "Co-authored compiled paper by Abraham and Ashis Jose.",
-  "pdfUrl": "./contributors/abraham/compiled-papers/joint_review.pdf"
-}
-```
-*Co-authored papers will automatically appear when filtering by either teammate's name, and will list all co-authors on the card.*
-
-## Add grey literature & utility reports
-
-Grey literature encompasses water utility engineering reports, overflow mitigation case studies, design standards (e.g. ASCE MOP 60, WSA 02), regulatory guidelines (e.g. UK DWMP, US EPA CSO/SSO), manufacturer sensor manuals (e.g. Siemens SITRANS, Pulsar), and municipal drainage master plans. These provide empirical ground truth and industry operational benchmarks alongside academic research.
-
-Follow these steps to add grey literature or utility reports to the repository:
-
-1. **Place the PDF in your contributor directory:**
-   - Save the PDF into `contributors/<your-slug>/grey/`.
-   - Name the file using standard descriptive naming: `GL_<Year>_<Org>_<ShortTitle>.pdf` (for example, `GL_2024_SydneyWater_WWOM_Synthesis_Report.pdf` or `GL_2017_USEPA_SWMM_Reference_Manual_Vol2_Hydraulics.pdf`).
-   - *Note:* If a document is only available via a web portal without an open PDF download, you can link it directly via `url` and set `pdfUrl` to `"#"` (or omit `pdfUrl`).
-
-2. **Register your grey literature file in `manifest.json`:**
-   Open [`contributors/manifest.json`](./contributors/manifest.json) and verify that your contributor entry defines `"greyLiteratureFile"`. If it doesn't already exist, add it:
-   ```json
-   {
-     "name": "Your Name",
-     "slug": "your-slug",
-     "file": "./your-slug/papers.json",
-     "greyLiteratureFile": "./your-slug/grey-literature.json"
-   }
-   ```
-   *(Optional)* If you author an overarching executive synthesis or multi-section report in markdown, you can also register it via `"findingsDocument": "./your-slug/compiled-papers/GREY_LITERATURE_FINDINGS.md"`.
-
-3. **Add the entry to `contributors/<your-slug>/grey-literature.json`:**
-   Copy the template from [`contributors/_template/grey-literature.json`](./contributors/_template/grey-literature.json) or add a new record to the `"greyLiterature"` array in your JSON file:
-
-   ```json
-   {
-     "id": "GL-01",
-     "title": "Sydney Water Wastewater Overflow Model (WWOM) 2016–2024 Synthesis Report",
-     "organization": "Sydney Water",
-     "year": 2024,
-     "category": "Network Overflows & Surcharging",
-     "summary": "Synthesizes Sydney Water's strategic pivot from storage-based containment (>A$18B, 350+ yrs) to I&I source control (17x cheaper). Evaluates network-wide level sensor rollouts.",
-     "assignedTo": "Your Name",
-     "pdfUrl": "./contributors/your-slug/grey/GL_2024_SydneyWater_WWOM_Synthesis_Report.pdf",
-     "url": "https://www.sydneywater.com.au",
-     "pages": 45,
-     "size": "2.4 MB",
-     "keyTakeaways": [
-       "Storage containment rejected as unaffordable; pivoted to I&I source control target 2060.",
-       "Operating licence target reformed from spill frequency to -6% wet-weather overflow volume.",
-       "Active network sensing: 8,000+ level sensors deployed, detecting 300–370 blockages before spills occur."
-     ],
-     "steps": {
-       "citation": "Sydney Water Corporation (2024). Wastewater Overflow Model 2016–2024 Synthesis Report. Sydney, NSW.",
-       "intro": "Why the utility commissioned the study and the core regulatory/operational problem.",
-       "methods": "Hydraulic modeling, monitoring network design, and multi-criteria assessment methods used.",
-       "scope": "Geographical network scope, pipe asset classes, and weather scenario assumptions.",
-       "usefulness": "Direct engineering value and insights for sewer sensor placement and overflow mitigation.",
-       "limitations": "Model uncertainties, boundary conditions, data availability gaps, or local constraints.",
-       "conclusions": "Primary policy or engineering conclusions reached by the utility.",
-       "reflection": "Relevance to our capstone sensor placement algorithms and South Australian network application."
-     }
-   }
-   ```
-
-   **Field requirements and options:**
-   - `id` *(string, required)*: Unique identifier string within the corpus (e.g. `"GL-01"`, `"SATYA-GL-01"`).
-   - `title` *(string, required)*: Complete report or guideline title (validated by `validate_repo.py`).
-   - `organization` *(string, required)*: Authoring utility, agency, or publisher (e.g. `"Sydney Water"`, `"SA Water"`, `"WSAA"`, `"Icon Water"`, `"Watercare"`, `"US EPA"`, `"Siemens"`, `"ASCE"`, `"Water UK"`). The viewer matches this to utility brand colors and styled badges automatically (validated by `validate_repo.py`).
-   - `year` *(integer, optional)*: Year of publication (e.g. `2024`).
-   - `category` *(string, optional)*: Thematic category used for dynamic filter pills (e.g. `"Hydraulic Simulators & Modeling"`, `"Network Overflows & Surcharging"`, `"Standards & Codes"`, `"Sensors & Equipment"`).
-   - `summary` *(string, optional)*: High-level executive overview of the report.
-   - `assignedTo` *(string, optional)*: Registered contributor name responsible for review.
-   - `pdfUrl` *(string, optional)*: Relative path to the PDF beginning with `./contributors/...` (validated for file existence), or `"#"`.
-   - `url` *(string, optional)*: External agency URL or official web download portal.
-   - `pages` *(integer, optional)* & `size` *(string, optional)*: Page count and human-readable file size.
-   - `keyTakeaways` *(array of strings, optional)*: Bullet points shown when users click **Details (AI)** on the card.
-   - `steps` *(object, optional)*: 8-step structured summary matching academic papers (`citation`, `intro`, `methods`, `scope`, `usefulness`, `limitations`, `conclusions`, `reflection`). When provided, the modal renders all 8 numbered steps; if omitted, the modal cleanly falls back to `summary` and `keyTakeaways`.
-
-4. **Update `totalCount`:**
-   Update the `"totalCount"` property at the top of your `grey-literature.json` to reflect the total number of items in the array.
-
-5. **Validate and test locally:**
-   Run the repository validator before committing:
-   ```bash
-   python3 scripts/validate_repo.py
-   ```
-   Start the local preview:
-   ```bash
-   python3 -m http.server 8000
-   ```
-   Open `http://localhost:8000` and click the **🏢 Grey Literature & Utility Reports** tab to confirm that the report renders with correct badges, category filters, PDF links, and summary modals.
-
-## How the viewer and filters work
-
-- **Topic:** Shows topics found in research papers and compiled papers. Selecting a topic dynamically refines the user dropdown and category pills.
-- **User:** Shows registered contributors with material matching the selected topic.
-- **Category buttons:** Filter research papers by specific subcategories within the active topic.
-- **Squeeze filters:** Click **Squeeze filters** to hide the search, topic, user, and category controls while keeping the current selection summary visible. Click **Expand filters** to restore them.
-- **Mobile layout:** On small screens, filters stack vertically, category buttons wrap, compiled-paper cards use one column, and research papers become readable cards with full-width actions.
-- **Layered Compiled Papers Shelves:**
-  - **When "User: All" is selected:**
-    - **Top Shelf (`👥 Team Compiled Paper`):** Displays the collaborative team review across the top.
-    - **Bottom Shelf (`📄 Contributor Compiled Papers`):** Displays individual and co-authored compiled reviews underneath.
-  - **When a specific user is selected (e.g. "Abraham"):**
-    - The team paper is hidden.
-    - Only that teammate's individual and co-authored compiled papers are displayed.
-- **Squeeze / Expand Toggle (`▲ Squeeze / ▼ Expand`):**
-  - Click the **Squeeze** button in the compiled papers header to minimize the section into a slim ~48px strip (`All topics compiled papers · X available [▼ Expand]`).
-  - This immediately pulls the research papers table front-and-center so users can inspect research papers on first glance.
-  - Click **Expand** to restore the stacked shelves at any time.
-
-## Possible duplicate uploads
-
-The viewer keeps suspected duplicates visible. It first compares DOI values; when no DOI is available, it compares the normalized title, first author, and year. The later upload receives a small warning badge beside its title showing the existing paper ID and earlier uploader. Review the badge before deleting or replacing either record.
-
-Research-paper IDs must still be unique. Duplicate DOI or title/author/year matches are reported as validation warnings so contributors can review them without blocking a valid upload.
-
-## Shared summaries
-
-[`summaries.json`](./summaries.json) contains the shared 8-step content for individual research papers:
-
-1. Citation
-2. Introduction
-3. Aims and research methods
-4. Scope
-5. Usefulness
-6. Limitations
-7. Conclusions
-8. Reflection
-
-The top-level key must match the research-paper `id` in the contributor file. Keep IDs unique across the whole repository.
+1. Put the PDF in `contributors/<your-slug>/grey/` named `GL_<Year>_<Org>_<ShortTitle>.pdf`. A web-only document can use `url` with `pdfUrl` set to `"#"` or omitted.
+2. Make sure your manifest entry defines `greyLiteratureFile` (and optionally `findingsDocument`); add it if missing. Copy the record template from [`contributors/_template/grey-literature.json`](./contributors/_template/grey-literature.json).
+3. Add the record to the contributor's `grey-literature.json`. `id`, `title` and `organization` are required; optional fields are `year`, `category`, `summary`, `assignedTo`, `pdfUrl`, `url`, `pages`, `size`, `keyTakeaways` and an 8-key `steps` object. The viewer matches `organization` to utility badge colours and renders all 8 steps when present, otherwise it falls back to `summary` and `keyTakeaways`.
+4. Update `totalCount` at the top of that file.
+5. Run `python3 scripts/validate_repo.py`, then `python3 -m http.server 8000` and check the **Grey Literature & Utility Reports** tab for badges, filters, PDF links and modals.
 
 ## Before committing
 
-Check that:
+- JSON is valid; PDF paths beginning `./` exist; research and compiled-paper IDs are unique.
+- DOIs are valid; papers without a DOI are checked for repeated title, first author and year.
+- Contributor names match the manifest; co-author lists use registered names.
+- `topic`, `filterCategory` and `assignedTo` are correct; grey-literature records have `title` and `organization`.
+- Manifest `greyLiteratureFile` and `findingsDocument` paths resolve, and grey-literature `pdfUrl` paths point to existing PDFs.
 
-- the JSON files are valid;
-- every PDF path points to an existing file in the repository;
-- the research-paper ID is unique;
-- the DOI is valid; review any duplicate-identity warnings;
-- papers without a DOI are reviewed for repeated title, first author, and year;
-- compiled-paper IDs are unique;
-- contributor names match the manifest exactly;
-- co-authored `assignedTo` lists contain valid registered contributors;
-- `topic`, `filterCategory`, and `assignedTo` are correct;
-- grey literature entries contain required `title` and `organization` fields;
-- `greyLiteratureFile` and `findingsDocument` paths in `manifest.json` resolve to existing files;
-- grey literature `pdfUrl` paths beginning with `./` point to existing PDFs in the repository.
+Run `python3 scripts/validate_repo.py`.
 
-Run the repository validator before committing:
+## Research map
 
-```bash
-python3 scripts/validate_repo.py
-```
+Adding or changing contributor metadata and PDFs on `main` runs the GitHub Actions build before publishing. It extracts study locations, regenerates map data and validates the library; ambiguous, missing or unreadable locations stay unmapped with a reason, and compiled reviews are excluded from map display. Human corrections belong in `data/geography/reviewed.json`. Details: [automatic location processing](docs/research-location-automation.md) and the [GeoNames notice](data/geography/NOTICE.md).
 
-For a local browser check, run a static server from this directory:
-```bash
-python3 -m http.server 8000
-```
-and open `http://localhost:8000`. GitHub Actions runs the same validator on pushes and pull requests.
+## Credits
 
-## Automatic research map updates
-
-Adding or changing contributor metadata and PDFs on `main` now runs the GitHub Actions build before publishing to GitHub Pages. The build extracts supported study locations, regenerates map/browser data and validates the library. Ambiguous, missing or unreadable locations remain unmapped with a reason. Compiled reviews remain excluded from the map.
-
-Existing curated mappings are preserved in `data/geography/reviewed.json`; corrections belong there. New city matches use the pinned GeoNames catalogue with country context and supporting PDF passages. Details: [automatic location processing](docs/research-location-automation.md). Coordinate attribution: [GeoNames notice](data/geography/NOTICE.md).
-
-The frontend already defaults to the live Cloudflare annotation Worker. Vercel remains a separate store and alternate deployment; see [backend review and measured findings](docs/cloudflare-backend-review.md) before migrating or reconciling annotation data.
+Compiled by the Capstone PG-S2-22 team: Satya Siddhartha, Abraham, Ashis Jose, Rijoy John and Wimukthi. The team paper and project report are listed in `contributors/manifest.json`.
