@@ -1,30 +1,70 @@
-# Wastewater Research Library
+<a id="readme-top"></a>
 
-> A static browser library for the Capstone PG-S2-22 team's wastewater sensor papers, compiled reviews and utility reports.
+<div align="center">
+
+<h1>Wastewater Research Library</h1>
+
+<p><b>A static browser library for the Capstone PG-S2-22 team's wastewater sensor papers, compiled reviews and utility reports.</b><br/>
+58 research papers, 5 compiled reviews, 1 team paper and 111 grey-literature reports, with shared notes and a generated research map.</p>
+
+<p>
+  <a href="https://siddhu-123.github.io/waste_water_network_sensor-papers/index.html"><b>Live demo</b></a> ·
+  <a href="#features">Features</a> ·
+  <a href="#quick-start">Quick start</a> ·
+  <a href="#how-it-works">How it works</a>
+</p>
 
 ![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?logo=javascript&logoColor=black) ![HTML/CSS](https://img.shields.io/badge/HTML%2FCSS-E34F26?logo=html5&logoColor=white) ![Python](https://img.shields.io/badge/Python-3776AB?logo=python&logoColor=white) ![Web](https://img.shields.io/badge/platform-web-blue) ![Status](https://img.shields.io/badge/status-active-brightgreen)
 
-Open [`index.html`](./index.html), or use the shared library link: https://siddhu-123.github.io/waste_water_network_sensor-papers/index.html. A direct Vercel deployment is also available at https://waste-water-network-sensor-papers-two.vercel.app/.
+</div>
 
-## At a glance
+<p align="center"><img src="docs/screenshots/research-library.png" alt="Wastewater research library with nested filters and paper cards" width="900" /></p>
 
-| | |
-|---|---|
-| **What** | Searchable corpus: 58 research papers, 5 compiled reviews, 1 team paper and 111 grey-literature reports |
-| **Stack** | Vanilla JavaScript, vendored PDF.js, Python scripts, Cloudflare Worker for shared notes |
-| **Status** | Active |
-| **Run it** | `python3 -m http.server 8000`, then open `http://localhost:8000` |
+Open [`index.html`](./index.html), or use the shared library link above. A direct Vercel deployment is also available at https://waste-water-network-sensor-papers-two.vercel.app/.
+
+## Highlights
+
+- **Data outside the HTML.** All paper records come from contributor JSON; `index.html` contains no hardcoded paper data.
+- **A real PDF reading experience.** Vendored PDF.js 3.11.174 renders a reconstructed table of contents with publisher page labels and click-to-jump navigation.
+- **Shared annotations.** Rectangular highlights and draggable sticker notes are stored as normalized coordinates in a Cloudflare Worker with KV.
+- **Checked in CI.** A Python validator runs locally and in GitHub Actions before the site is published to GitHub Pages.
+- **A generated research map.** Study locations are extracted from paper PDFs in CI, with reviewed overrides kept in `data/geography/reviewed.json`.
 
 ## Features
 
-- Nested topic, user and category filters with a squeeze/expand toggle.
-- 8-step summaries in `summaries.json` and contributor profile cards.
-- PDF.js viewer with a table of contents, true publisher page labels and click-to-jump navigation.
-- Shared rectangular highlights and draggable sticker notes, stored as normalized coordinates.
-- Team and contributor compiled-paper shelves, plus a grey-literature tab.
-- Duplicate detection by DOI, then by normalized title, first author and year.
-- Research map generated from paper PDFs in CI, with reviewed overrides.
-- Repository consistency validator run locally and in GitHub Actions.
+### Library
+
+- **Nested filters.** Topic, user and category filters with a squeeze/expand toggle.
+- **8-step summaries.** Shared summaries in `summaries.json`, plus contributor profile cards.
+- **Three shelves.** Team and contributor compiled papers, plus a grey-literature tab.
+- **Duplicate warnings.** DOI first, then normalized title, first author and year; suspected duplicates stay visible with the earlier paper ID and uploader, and duplicate identities are validation warnings, not errors.
+
+### Reader and annotations
+
+- **PDF.js viewer.** Table of contents, true publisher page labels and click-to-jump navigation.
+- **Shared notes.** Rectangular highlights and draggable sticker notes, stored as normalized coordinates.
+
+### Data and CI
+
+- **Research map.** Generated from paper PDFs in CI, with reviewed overrides.
+- **Repository validator.** Python checks run locally and in GitHub Actions.
+
+## How it works
+
+```mermaid
+flowchart LR
+  A["Contributor JSON and PDFs"] --> B["Build scripts and validator"]
+  B --> C["Bundled browser data"]
+  C --> D["Library index.html"]
+  C --> E["Research map data"]
+  D --> F["PDF.js viewer"]
+  F --> G["Cloudflare Worker annotations"]
+  H["GitHub Actions"] --> B
+  H --> I["GitHub Pages"]
+  C --> I
+```
+
+All paper records are loaded from contributor JSON files; `index.html` contains no hardcoded paper data. Every push to `main` runs `.github/workflows/validate.yml`: it tests ingestion, regenerates geography and browser data, validates both and publishes the site, while pull requests run the same steps without deploying. `annotation-config.js` sets the API base in this order: `?api=` query, saved localStorage override, Cloudflare Worker, then same origin, and overrides are accepted only for the live Worker or a local server. Shared saves use the Cloudflare Worker; Vercel remains a separate store, not a synced copy, keeping one JSON object per paper in Blob under `annotations/paper-<paperId>.json`, checking the Blob revision ETag on save and requiring `BLOB_READ_WRITE_TOKEN`, with GitHub OAuth optional there. On `file://` pages shared saving is disabled, and the viewer can load a committed JSON fallback from `annotations/` and download a local backup; see [the backend review](docs/cloudflare-backend-review.md) for the transfer status and open items. For PDFs without embedded bookmarks, the viewer reconstructs headings from text lines using baseline clustering and font metrics, then shows publisher page labels, such as Roman front matter followed by printed page numbers, in the table of contents and toolbar.
 
 ## Progress
 
@@ -41,14 +81,26 @@ Open [`index.html`](./index.html), or use the shared library link: https://siddh
 
 Prerequisites: Python 3. No package install is needed to view the library.
 
-1. From this directory, run `python3 -m http.server 8000`.
+1. From this directory, start a static server:
+
+   ```sh
+   python3 -m http.server 8000
+   ```
+
 2. Open http://localhost:8000 and use the topic, user and category filters.
 3. Click **PDF + Notes** beside a paper to open the PDF viewer.
-4. Run `python3 scripts/validate_repo.py` before committing.
+4. Run the validator before committing:
+
+   ```sh
+   python3 scripts/validate_repo.py
+   ```
 
 GitHub Actions runs the same validator on pushes and pull requests, then publishes the site to GitHub Pages from `main`.
 
 ## Project structure
+
+<details>
+<summary><b>Project structure</b></summary>
 
 ```text
 .
@@ -67,26 +119,18 @@ GitHub Actions runs the same validator on pushes and pull requests, then publish
 └── docs/                   # Backend review and location-automation notes
 ```
 
+</details>
+
 ## Tech stack
 
-- Vanilla JavaScript and modular CSS; no frontend build step.
-- PDF.js 3.11.174 is vendored under `vendor/`.
-- Python 3 scripts build bundled data, geography data and validate the repository.
-- Cloudflare Worker plus KV holds shared annotations by default (`cloudflare-backend/`).
-- Vercel Blob and the GitHub OAuth routes remain as a separate, alternate store.
-- GitHub Pages hosts the viewer; GitHub Actions builds, validates and deploys it.
-
-## How it works
-
-All paper records are loaded from contributor JSON files; `index.html` contains no hardcoded paper data. Every push to `main` runs `.github/workflows/validate.yml`: it tests ingestion, regenerates geography and browser data, validates both and publishes the site. Pull requests run the same steps without deploying.
-
-`annotation-config.js` sets the API base in this order: `?api=` query, saved localStorage override, Cloudflare Worker, then same origin. Overrides are accepted only for the live Worker or a local server. Shared saves use the Cloudflare Worker; Vercel remains a separate store, not a synced copy. On `file://` pages shared saving is disabled, and the viewer can load a committed JSON fallback from `annotations/` and download a local backup. See [the backend review](docs/cloudflare-backend-review.md) for the transfer status and open items.
-
-For PDFs without embedded bookmarks, the viewer reconstructs headings from text lines using baseline clustering and font metrics. It shows publisher page labels, such as Roman front matter followed by printed page numbers, in the table of contents and toolbar.
-
-The Vercel backend is still present as an alternate store: it keeps one JSON object per paper in Blob under `annotations/paper-<paperId>.json`, checks the Blob revision ETag on save, and needs `BLOB_READ_WRITE_TOKEN`. GitHub OAuth is optional there.
-
-The viewer keeps suspected duplicates visible with a warning badge showing the earlier paper ID and uploader. It compares DOIs first, then normalized title, first author and year. Duplicate identities are validation warnings, not errors.
+| Layer | Technology |
+|---|---|
+| Frontend | Vanilla JavaScript and modular CSS; no frontend build step |
+| PDF | PDF.js 3.11.174, vendored under `vendor/` |
+| Scripts | Python 3 for bundled data, geography data and repository validation |
+| Shared notes | Cloudflare Worker plus KV by default (`cloudflare-backend/`) |
+| Alternate store | Vercel Blob and the GitHub OAuth routes remain as a separate store |
+| Hosting and CI | GitHub Pages, built and deployed by GitHub Actions |
 
 ## Adding content
 
@@ -120,7 +164,12 @@ Grey literature covers utility reports, overflow case studies, design standards,
 2. Make sure your manifest entry defines `greyLiteratureFile` (and optionally `findingsDocument`); add it if missing. Copy the record template from [`contributors/_template/grey-literature.json`](./contributors/_template/grey-literature.json).
 3. Add the record to the contributor's `grey-literature.json`. `id`, `title` and `organization` are required; optional fields are `year`, `category`, `summary`, `assignedTo`, `pdfUrl`, `url`, `pages`, `size`, `keyTakeaways` and an 8-key `steps` object. The viewer matches `organization` to utility badge colours and renders all 8 steps when present, otherwise it falls back to `summary` and `keyTakeaways`.
 4. Update `totalCount` at the top of that file.
-5. Run `python3 scripts/validate_repo.py`, then `python3 -m http.server 8000` and check the **Grey Literature & Utility Reports** tab for badges, filters, PDF links and modals.
+5. Validate, serve and check the **Grey Literature & Utility Reports** tab for badges, filters, PDF links and modals:
+
+   ```sh
+   python3 scripts/validate_repo.py
+   python3 -m http.server 8000
+   ```
 
 ## Before committing
 
@@ -139,3 +188,5 @@ Adding or changing contributor metadata and PDFs on `main` runs the GitHub Actio
 ## Credits
 
 Compiled by the Capstone PG-S2-22 team: Satya Siddhartha, Abraham, Ashis Jose, Rijoy John and Wimukthi. The team paper and project report are listed in `contributors/manifest.json`.
+
+<p align="right"><a href="#readme-top">Back to top ↑</a></p>
