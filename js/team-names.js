@@ -6,7 +6,7 @@
   "use strict";
 
   const TEAM = [
-    { key: "Satya Siddhartha", first: "Satya", full: "Satya Siddhartha Balanagu" },
+    { key: "Satya Siddhartha", first: "Satya", full: "B S Siddhartha" },
     { key: "Rijoy John", first: "Rijoy", full: "Rijoy John" },
     { key: "Ashis Jose", first: "Ashis", full: "Ashis Jose Kalathil" },
     { key: "Abraham", first: "Abraham", full: "Abraham Paul Jaison" },
